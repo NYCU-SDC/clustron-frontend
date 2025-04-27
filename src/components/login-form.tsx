@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { handleLogin } from "@/components/auth/auth";
+import { FetchAuthToken } from "@/components/auth/AuthService";
 import { useNavigate } from "react-router";
 
 export function LoginForm({
@@ -16,8 +16,8 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const navigate = useNavigate();
 
-  async function onLoginClick() {
-    const token = await handleLogin("test@nycu.edu.tw");
+  async function processLogin() {
+    const token = await FetchAuthToken("test@nycu.edu.tw");
     if (token) {
       navigate("/dashboard");
     } else {
@@ -42,7 +42,7 @@ export function LoginForm({
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={onLoginClick}
+                onClick={processLogin}
               >
                 Login with NYCU Portal
               </Button>
@@ -54,7 +54,7 @@ export function LoginForm({
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={onLoginClick}
+                onClick={processLogin}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path

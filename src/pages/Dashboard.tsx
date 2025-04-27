@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router";
+import { jwtDecode } from "jwt-decode";
+import { setupAutoRefresh } from "@/components/auth/AuthService";
 
 type JWTPayload = {
   username: string;
@@ -16,14 +17,15 @@ export default function Dashboard() {
   const [countdown, setCountdown] = useState<number | null>(null);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (!storedToken) {
-      navigate("/login");
-      return;
-    }
-    setToken(storedToken);
+    async function init() {
+      const storedToken = localStorage.getItem("accessToken");
+      if (!storedToken) {
+        navigate("/login");
+        return;
+      }
 
-    if (storedToken) {
+      setToken(storedToken);
+
       try {
         const decoded = jwtDecode<JWTPayload>(storedToken);
         setUsername(decoded.username);
@@ -33,17 +35,24 @@ export default function Dashboard() {
 
         const secondsLeft = Math.floor((expTime - Date.now()) / 1000);
         setCountdown(secondsLeft);
+        setupAutoRefresh(storedToken);
 
-        const interval = setInterval(() => {
-          setCountdown((prev) => (prev && prev > 0 ? prev - 1 : 0));
+        const interval = setInterval(async () => {
+          setCountdown((prev) => {
+            if (prev && prev > 0) return prev - 1;
+            return 0;
+          });
         }, 1000);
 
         return () => clearInterval(interval);
       } catch (error) {
         console.error("Failed to decode token:", error);
+        navigate("/login");
       }
     }
-  }, []);
+
+    init();
+  }, [navigate]);
 
   return (
     <div className="p-8">
