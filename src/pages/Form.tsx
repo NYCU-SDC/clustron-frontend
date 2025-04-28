@@ -1,5 +1,5 @@
-import { OnboardingForm } from "@/components/ui/OnboardingForm";
+import { Onboarding } from "@/components/Onboarding";
 
 export default function Form() {
-  return <OnboardingForm defaultData={{}} />;
+  return <Onboarding defaultData={{}} />;
 }
