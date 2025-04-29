@@ -8,9 +8,7 @@ export default function Home() {
       {/* <div>Hello world</div> */}
       <button
         onClick={() => navigate("/Onboarding")}
-        className="px-4 py-2 bg-blue-600 text-white rounded 
-                hover:shadow-lg hover:ring-2 hover:ring-blue-300 
-                active:bg-blue-700 transition duration-150"
+        className="px-4 py-2 bg-black text-white hover:bg-gray-700 active:bg-gray-800 transition-colors"
       >
         前往填寫 Form
       </button>

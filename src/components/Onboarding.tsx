@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import {
   Form,
@@ -34,6 +35,7 @@ type Props = {
 };
 
 export function Onboarding({ defaultData }: Props) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -47,17 +49,19 @@ export function Onboarding({ defaultData }: Props) {
   const onSubmit = (data: FormValues) => {
     console.log("送出資料：", data);
     setTimeout(() => {
-      toast.success("資料儲存成功！");
+      toast.success(t("onboarding.toastSuccess"));
       navigate("/");
     }, 500);
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <Card className="w-full max-w-md mx-auto mt-10">
+      <Card className="w-full max-w-md">
         <CardContent className="p-6 space-y-8">
           <div className="text-center space-y-2">
-            <h1 className="text-left text-3xl font-bold">請輸入您的基本資料</h1>
+            <h1 className="text-3xl whitespace-nowrap font-bold">
+              {t("onboarding.title")}
+            </h1>
           </div>
 
           <Form {...form}>
@@ -67,11 +71,15 @@ export function Onboarding({ defaultData }: Props) {
                 name="User"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-bold">姓名 *</FormLabel>
+                    <FormLabel className="font-bold">
+                      {t("onboarding.nameLabel")} *
+                    </FormLabel>
                     <FormControl className="text-sm">
-                      <Input {...field} placeholder="您的姓名" />
+                      <Input
+                        {...field}
+                        placeholder={t("onboarding.namePlaceholder")}
+                      />
                     </FormControl>
-
                     <FormMessage />
                   </FormItem>
                 )}
@@ -83,14 +91,16 @@ export function Onboarding({ defaultData }: Props) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-bold">
-                      Linux 使用者名稱
+                      {t("onboarding.usernameLabel")}
                     </FormLabel>
                     <FormControl className="text-sm">
-                      <Input {...field} placeholder="使用者名稱" />
+                      <Input
+                        {...field}
+                        placeholder={t("onboarding.usernamePlaceholder")}
+                      />
                     </FormControl>
-
                     <FormDescription className="text-xs">
-                      用以登入遠端伺服器的使用者名稱
+                      {t("onboarding.usernameDescription")}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -102,24 +112,29 @@ export function Onboarding({ defaultData }: Props) {
                 name="PublicKey"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-bold">公鑰</FormLabel>
+                    <FormLabel className="font-bold">
+                      {t("onboarding.publicKeyLabel")}
+                    </FormLabel>
                     <FormControl className="text-sm">
-                      <Input {...field} placeholder="公鑰" />
+                      <Input
+                        {...field}
+                        placeholder={t("onboarding.publicKeyPlaceholder")}
+                      />
                     </FormControl>
                     <FormDescription className="text-xs">
-                      用以登入遠端伺服器的公鑰
+                      {t("onboarding.publicKeyDescription")}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <div className="flex gap-4 text-right">
+              <div className="flex gap-4">
                 <Button
                   type="submit"
                   className="inline-flex w-24 ml-auto bg-black text-white hover:bg-gray-700 active:bg-gray-800 transition-colors"
                 >
-                  完成
+                  {t("onboarding.submitButton")}
                 </Button>
               </div>
             </form>

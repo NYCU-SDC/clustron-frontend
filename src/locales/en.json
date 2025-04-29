@@ -1,0 +1,15 @@
+{
+  "onboarding": {
+    "title": "Enter Your Basic Information",
+    "nameLabel": "Name",
+    "namePlaceholder": "Your Real Name",
+    "usernameLabel": "Linux Username",
+    "usernamePlaceholder": "Username",
+    "usernameDescription": "The username to login to the remote server",
+    "publicKeyLabel": "Public Key",
+    "publicKeyPlaceholder": "Key",
+    "publicKeyDescription": "The public key to access remote server",
+    "submitButton": "Save",
+    "toastSuccess": "Success save data"
+  }
+}
