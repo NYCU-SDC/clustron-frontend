@@ -34,7 +34,7 @@ type Props = {
   };
 };
 
-export function Onboarding({ defaultData }: Props) {
+export function OnboardingForm({ defaultData }: Props) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const form = useForm<FormValues>({

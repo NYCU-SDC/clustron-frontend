@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "@/pages/Home";
-import Form from "@/pages/Form";
+import Onboarding from "@/pages/Onboarding";
 import { Toaster } from "@/components/ui/sonner";
 
 const App = () => {
@@ -8,7 +8,7 @@ const App = () => {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/Onboarding" element={<Form />} />
+        <Route path="/Onboarding" element={<Onboarding />} />
       </Routes>
       <Toaster />
     </>
