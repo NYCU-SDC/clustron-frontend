@@ -1,78 +1,106 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { jwtDecode } from "jwt-decode";
-import { setupAutoRefresh } from "@/components/auth/AuthService";
-
-type JWTPayload = {
-  username: string;
-  role?: string;
-  exp: number;
-};
+import { JWTPayload } from "@/types/type";
+import { useCookies } from "react-cookie";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const [token, setToken] = useState<string | null>(null);
-  const [username, setUsername] = useState<string | null>(null);
-  const [expiresAt, setExpiresAt] = useState<string | null>(null);
-  const [countdown, setCountdown] = useState<number | null>(null);
+  const { logout } = useAuth();
+  const [cookies] = useCookies(["accessToken", "refreshToken"]);
+
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [refreshToken, setRefreshToken] = useState<string | null>(null);
+  const [accessExpiresAt, setAccessExpiresAt] = useState<string | null>(null);
+  const [refreshExpiresAt, setRefreshExpiresAt] = useState<string | null>(null);
+
+  const [accessCountdown, setAccessCountdown] = useState<number | null>(null);
+  const [refreshCountdown, setRefreshCountdown] = useState<number | null>(null);
 
   useEffect(() => {
-    async function init() {
-      const storedToken = localStorage.getItem("accessToken");
-      if (!storedToken) {
-        navigate("/login");
-        return;
-      }
+    const storedAccessToken = cookies.accessToken;
+    const storedRefreshToken = cookies.refreshToken;
+    if (!storedAccessToken || !storedRefreshToken) {
+      navigate("/login");
+      return;
+    }
+    const decodedAccess = jwtDecode<JWTPayload>(storedAccessToken);
+    const accessExpMs = decodedAccess.exp * 1000;
+    setAccessExpiresAt(new Date(accessExpMs).toLocaleString());
+    setAccessToken(storedAccessToken);
 
-      setToken(storedToken);
+    const decodedRefresh = jwtDecode<JWTPayload>(storedRefreshToken);
+    const refreshExpMs = decodedRefresh.exp * 1000;
+    setRefreshExpiresAt(new Date(refreshExpMs).toLocaleString());
+    setRefreshToken(storedRefreshToken);
 
-      try {
-        const decoded = jwtDecode<JWTPayload>(storedToken);
-        setUsername(decoded.username);
-
-        const expTime = decoded.exp * 1000;
-        setExpiresAt(new Date(expTime).toLocaleString());
-
-        const secondsLeft = Math.floor((expTime - Date.now()) / 1000);
-        setCountdown(secondsLeft);
-        setupAutoRefresh(storedToken);
-
-        const interval = setInterval(async () => {
-          setCountdown((prev) => {
-            if (prev && prev > 0) return prev - 1;
-            return 0;
-          });
-        }, 1000);
-
-        return () => clearInterval(interval);
-      } catch (error) {
-        console.error("Failed to decode token:", error);
-        navigate("/login");
-      }
+    const interval = setInterval(() => {
+      const now = Date.now();
+      setAccessCountdown(Math.max(0, Math.floor((accessExpMs - now) / 1000)));
+      setRefreshCountdown(Math.max(0, Math.floor((refreshExpMs - now) / 1000)));
+    }, 1000);
+    {
+      const now = Date.now();
+      setAccessCountdown(Math.max(0, Math.floor((accessExpMs - now) / 1000)));
+      setRefreshCountdown(Math.max(0, Math.floor((refreshExpMs - now) / 1000)));
     }
 
-    init();
-  }, [navigate]);
+    return () => clearInterval(interval);
+  }, [cookies.accessToken, cookies.refreshToken, navigate]);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-      {token ? (
-        <div className="space-y-3">
-          <p>
-            <strong>Username:</strong> {username}
-          </p>
-          <p>
-            <strong>Expires At:</strong> {expiresAt}
-          </p>
-          <p>
-            <strong>Token expires in:</strong> {countdown} seconds
-          </p>
-          <p className="text-sm text-gray-500 break-all">
-            <strong>Token:</strong>
-            <br />
-            {token}
-          </p>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <button
+          onClick={handleLogout}
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+        >
+          登出
+        </button>
+      </div>
+
+      {accessToken && refreshToken ? (
+        <div className="space-y-6">
+          <div>
+            <h2 className="text-xl font-semibold mb-2">Access Token</h2>
+            <p>
+              <strong>Expires At: </strong>
+              {accessExpiresAt}
+            </p>
+            <p>
+              <strong>Expires In: </strong>
+              {accessCountdown} 秒
+            </p>
+            <p className="text-sm text-gray-500 break-all">
+              <strong>Token: </strong>
+              <br />
+              {accessToken}
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-xl font-semibold mb-2">Refresh Token</h2>
+            <p>
+              <strong>Expires At: </strong>
+              {refreshExpiresAt}
+            </p>
+            <p>
+              <strong>Expires In: </strong>
+              {refreshCountdown} 秒
+            </p>
+            <p className="text-sm text-gray-500 break-all">
+              <strong>Token:</strong>
+              <br />
+              {refreshToken}
+            </p>
+          </div>
         </div>
       ) : (
         <p>No token found</p>

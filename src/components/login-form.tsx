@@ -7,18 +7,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { FetchAuthToken } from "@/components/auth/AuthService";
 import { useNavigate } from "react-router";
+import { useAuth } from "@/hooks/useAuth";
+// import { initiateOAuth } from '@/lib/auth/oauth'
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const navigate = useNavigate();
+  const { login } = useAuth();
+  // const { pathname, search } = useLocation()
+  // const startOAuth = initiateOAuth()
 
   async function processLogin() {
-    const token = await FetchAuthToken("test@nycu.edu.tw");
-    if (token) {
+    if (await login("test@nycu.edu.tw")) {
       navigate("/dashboard");
     } else {
       alert("login failed");
