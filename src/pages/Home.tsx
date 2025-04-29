@@ -5,7 +5,6 @@ export default function Home() {
 
   return (
     <div className="p-6 space-y-4">
-      {/* <div>Hello world</div> */}
       <button
         onClick={() => navigate("/Onboarding")}
         className="px-4 py-2 bg-black text-white hover:bg-gray-700 active:bg-gray-800 transition-colors"

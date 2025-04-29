@@ -55,92 +55,90 @@ export function OnboardingForm({ defaultData }: Props) {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <Card className="w-full max-w-md">
-        <CardContent className="p-6 space-y-8">
-          <div className="text-center space-y-2">
-            <h1 className="text-3xl whitespace-nowrap font-bold">
-              {t("onboarding.title")}
-            </h1>
-          </div>
+    <Card className="w-full max-w-md">
+      <CardContent className="p-6 space-y-8">
+        <div className="text-center space-y-2">
+          <h1 className="text-3xl whitespace-nowrap font-bold">
+            {t("onboarding.title")}
+          </h1>
+        </div>
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="User"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-bold">
-                      {t("onboarding.nameLabel")} *
-                    </FormLabel>
-                    <FormControl className="text-sm">
-                      <Input
-                        {...field}
-                        placeholder={t("onboarding.namePlaceholder")}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="User"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-bold">
+                    {t("onboarding.nameLabel")} *
+                  </FormLabel>
+                  <FormControl className="text-sm">
+                    <Input
+                      {...field}
+                      placeholder={t("onboarding.namePlaceholder")}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <FormField
-                control={form.control}
-                name="PublicKeyName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-bold">
-                      {t("onboarding.usernameLabel")}
-                    </FormLabel>
-                    <FormControl className="text-sm">
-                      <Input
-                        {...field}
-                        placeholder={t("onboarding.usernamePlaceholder")}
-                      />
-                    </FormControl>
-                    <FormDescription className="text-xs">
-                      {t("onboarding.usernameDescription")}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <FormField
+              control={form.control}
+              name="PublicKeyName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-bold">
+                    {t("onboarding.usernameLabel")}
+                  </FormLabel>
+                  <FormControl className="text-sm">
+                    <Input
+                      {...field}
+                      placeholder={t("onboarding.usernamePlaceholder")}
+                    />
+                  </FormControl>
+                  <FormDescription className="text-xs">
+                    {t("onboarding.usernameDescription")}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <FormField
-                control={form.control}
-                name="PublicKey"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-bold">
-                      {t("onboarding.publicKeyLabel")}
-                    </FormLabel>
-                    <FormControl className="text-sm">
-                      <Input
-                        {...field}
-                        placeholder={t("onboarding.publicKeyPlaceholder")}
-                      />
-                    </FormControl>
-                    <FormDescription className="text-xs">
-                      {t("onboarding.publicKeyDescription")}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <FormField
+              control={form.control}
+              name="PublicKey"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-bold">
+                    {t("onboarding.publicKeyLabel")}
+                  </FormLabel>
+                  <FormControl className="text-sm">
+                    <Input
+                      {...field}
+                      placeholder={t("onboarding.publicKeyPlaceholder")}
+                    />
+                  </FormControl>
+                  <FormDescription className="text-xs">
+                    {t("onboarding.publicKeyDescription")}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <div className="flex gap-4">
-                <Button
-                  type="submit"
-                  className="inline-flex w-24 ml-auto bg-black text-white hover:bg-gray-700 active:bg-gray-800 transition-colors"
-                >
-                  {t("onboarding.submitButton")}
-                </Button>
-              </div>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
-    </div>
+            <div className="flex gap-4">
+              <Button
+                type="submit"
+                className="inline-flex w-24 ml-auto bg-black text-white hover:bg-gray-700 active:bg-gray-800 transition-colors"
+              >
+                {t("onboarding.submitButton")}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 }

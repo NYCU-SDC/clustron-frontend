@@ -8,7 +8,9 @@ export default function Onboarding() {
         <LanguageSwitcher />
       </div>
 
-      <OnboardingForm defaultData={{}} />
+      <div className="flex flex-1 items-center justify-center">
+        <OnboardingForm defaultData={{}} />
+      </div>
     </div>
   );
 }
