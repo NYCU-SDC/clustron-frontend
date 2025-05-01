@@ -5,6 +5,6 @@ export type JWTPayload = {
 };
 
 export type AuthContextType = {
-  login: (email: string) => Promise<boolean>;
+  login: () => void;
   logout: () => void;
 };

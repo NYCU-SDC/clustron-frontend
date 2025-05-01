@@ -2,7 +2,6 @@ import { useEffect, useCallback, ReactNode } from "react";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import { JWTPayload } from "@/types/type";
-import { FetchAuthToken } from "@/lib/request/fetchAuthToken";
 import { refreshAuthToken } from "@/lib/request/refreshAuthToken";
 import { authContext } from "@/lib/auth/authContext";
 
@@ -31,6 +30,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     clearTimeout(refreshTimer);
   }, []);
 
+  const login = useCallback(() => {
+    const callbackUrl = `${window.location.protocol}//${window.location.host}/callback`;
+    const redirectUrl = `${window.location.href}`;
+    console.log(
+      `${import.meta.env.VITE_BACKEND_BASE_URL}/api/oauth2/google?c=${callbackUrl}&r=${redirectUrl}`,
+    );
+    window.location.href = `${import.meta.env.VITE_BACKEND_BASE_URL}/api/oauth2/google?c=${callbackUrl}&r=${redirectUrl}`;
+    console.log(
+      `${import.meta.env.VITE_BACKEND_BASE_URL}/api/oauth2/google?c=${callbackUrl}&r=${redirectUrl}`,
+    );
+  }, []);
+
   const logout = useCallback(() => {
     removeCookie("accessToken", { path: "/" });
     removeCookie("refreshToken", { path: "/" });
@@ -44,11 +55,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const accessExpirationTime = getExpiraionTime(accessToken);
       if (accessExpirationTime) {
         const timeUntilAccessExpiration =
-          accessExpirationTime - Date.now() - 60 * 1000;
+          accessExpirationTime - Date.now() - 890 * 1000; // 890 is for test and debug
+
         if (timeUntilAccessExpiration > 0) {
           accessTimer = window.setTimeout(async () => {
-            const data = await refreshAuthToken();
+            const data = await refreshAuthToken(cookies["refreshToken"]);
             if (!data) {
+              console.log("data is NULL");
               logout();
               return;
             }
@@ -57,6 +70,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setAutoRefresh(data.accessToken, data.refreshToken);
           }, timeUntilAccessExpiration);
         }
+      } else {
+        // assume user haven't open the clustron website for a long time so timeUntilAccessExpiration < 0
+        // it need to refreshed immediately
+        (async () => {
+          const data = await refreshAuthToken(cookies["refreshToken"]);
+          if (!data) {
+            logout();
+            return;
+          }
+          setCookie("accessToken", data.accessToken, { path: "/" });
+          setCookie("refreshToken", data.refreshToken, { path: "/" });
+          setAutoRefresh(data.accessToken, data.refreshToken);
+        })();
       }
 
       const refreshExpirationTime = getExpiraionTime(refreshToken);
@@ -70,19 +96,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     },
     [getExpiraionTime, logout, setCookie, clearTimers],
-  );
-
-  const login = useCallback(
-    async (email: string): Promise<boolean> => {
-      logout();
-      const data = await FetchAuthToken(email);
-      if (!data) return false;
-      setCookie("accessToken", data.accessToken, { path: "/" });
-      setCookie("refreshToken", data.refreshToken, { path: "/" });
-      setAutoRefresh(data.accessToken, data.refreshToken);
-      return true;
-    },
-    [logout, setCookie, setAutoRefresh],
   );
 
   useEffect(() => {
