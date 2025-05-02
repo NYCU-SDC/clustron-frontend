@@ -3,7 +3,7 @@ import LanguageSwitcher from "@/components/LangSwitch";
 
 export default function Onboarding() {
   return (
-    <div className="p-6 space-y-4">
+    <div className="h-screen flex flex-col p-6 space-y-4">
       <div className="flex justify-end">
         <LanguageSwitcher />
       </div>

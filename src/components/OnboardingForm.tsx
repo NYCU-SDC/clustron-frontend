@@ -15,16 +15,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-
-const formSchema = z.object({
-  User: z.string().nonempty("不得為空"),
-  PublicKeyName: z.string(),
-  PublicKey: z.string(),
-});
-
-type FormValues = z.infer<typeof formSchema>;
 
 type Props = {
   defaultData: {
@@ -37,6 +30,15 @@ type Props = {
 export function OnboardingForm({ defaultData }: Props) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const formSchema = z.object({
+    User: z.string().nonempty(t("onboarding.nonEmpty")),
+    PublicKeyName: z.string(),
+    PublicKey: z.string(),
+  });
+
+  type FormValues = z.infer<typeof formSchema>;
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -47,7 +49,7 @@ export function OnboardingForm({ defaultData }: Props) {
   });
 
   const onSubmit = (data: FormValues) => {
-    console.log("送出資料：", data);
+    console.log("sendData", data);
     setTimeout(() => {
       toast.success(t("onboarding.toastSuccess"));
       navigate("/");
@@ -115,9 +117,10 @@ export function OnboardingForm({ defaultData }: Props) {
                     {t("onboarding.publicKeyLabel")}
                   </FormLabel>
                   <FormControl className="text-sm">
-                    <Input
+                    <Textarea
                       {...field}
                       placeholder={t("onboarding.publicKeyPlaceholder")}
+                      className="w-full h-24 resize-none"
                     />
                   </FormControl>
                   <FormDescription className="text-xs">

@@ -10,6 +10,7 @@
     "publicKeyPlaceholder": "公鑰",
     "publicKeyDescription": "用以登入遠端伺服器的公鑰",
     "submitButton": "完成",
-    "toastSuccess": "資料儲存成功"
+    "toastSuccess": "資料儲存成功",
+    "nonEmpty": "此欄位不得為空"
   }
 }

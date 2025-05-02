@@ -10,6 +10,7 @@
     "publicKeyPlaceholder": "Key",
     "publicKeyDescription": "The public key to access remote server",
     "submitButton": "Save",
-    "toastSuccess": "Success save data"
+    "toastSuccess": "Success save data",
+    "nonEmpty": "Cannot be empty"
   }
 }
