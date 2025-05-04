@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = useCallback(() => {
     const callbackUrl = `${window.location.protocol}//${window.location.host}/callback`;
-    const redirectUrl = `${window.location.href}`;
+    const redirectUrl = `${window.location.protocol}//${window.location.host}/`;
     console.log(
       `${import.meta.env.VITE_BACKEND_BASE_URL}/api/oauth2/google?c=${callbackUrl}&r=${redirectUrl}`,
     );

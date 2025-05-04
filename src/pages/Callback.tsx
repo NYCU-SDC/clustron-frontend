@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, CheckCircle } from "lucide-react";
 
 export default function Callback() {
   const [, setCookie] = useCookies(["accessToken", "refreshToken"]);
-  const navigate = useNavigate();
-
   const [status, setStatus] = useState<"loading" | "success" | "error">(
     "loading",
   );
@@ -16,7 +13,7 @@ export default function Callback() {
     const params = new URLSearchParams(window.location.search);
     const accessToken = params.get("token");
     const refreshToken = params.get("refreshToken");
-    const redirectTo = "/home";
+    const redirectTo = params.get("r") || "/";
 
     if (!accessToken || !refreshToken) {
       setStatus("error");
@@ -30,28 +27,28 @@ export default function Callback() {
 
     setTimeout(() => {
       window.location.href = redirectTo;
-    }, 3000);
-  }, [navigate, setCookie]);
+    }, 1000);
+  }, []);
 
-  if (status === "error") {
-    return (
-      <Alert variant="destructive">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Error</AlertTitle>
-        <AlertDescription>Login Failed</AlertDescription>
-      </Alert>
-    );
-  }
+  return (
+    <div className="flex items-start min-h-screen p-2">
+      {status === "error" && (
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>Login Failed</AlertDescription>
+        </Alert>
+      )}
 
-  if (status === "success") {
-    return (
-      <Alert>
-        <CheckCircle className="h-4 w-4" />
-        <AlertTitle>Login Successful</AlertTitle>
-        <AlertDescription>Redirecting to homepage...</AlertDescription>
-      </Alert>
-    );
-  }
+      {status === "success" && (
+        <Alert>
+          <CheckCircle className="h-4 w-4" />
+          <AlertTitle>Login Successful</AlertTitle>
+          <AlertDescription>Redirecting...</AlertDescription>
+        </Alert>
+      )}
 
-  return <p>Loading...</p>;
+      {status === "loading" && <p>Loading...</p>}
+    </div>
+  );
 }
