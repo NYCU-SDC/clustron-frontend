@@ -1,20 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-
-const courses = [
-  {
-    title: "Course 1 Title",
-    desc: "Course description Lorem ipsum dolor sit amet consectetur...",
-  },
-  {
-    title: "Course 2 Title",
-    desc: "Course description Lorem ipsum dolor sit amet consectetur...",
-  },
-  {
-    title: "Course 3 Title",
-    desc: "Course description Lorem ipsum dolor sit amet consectetur...",
-  },
-];
+import { courseList } from "@/lib/courseMock";
 
 export default function CourseList() {
   const navigate = useNavigate();
@@ -32,10 +18,10 @@ export default function CourseList() {
       </div>
 
       <div className="space-y-4">
-        {courses.map((course, idx) => (
+        {courseList.map((course) => (
           <div
-            key={idx}
-            onClick={() => navigate("/GroupMem")}
+            key={course.id}
+            onClick={() => navigate(`/group/${course.id}`)}
             className="cursor-pointer rounded-lg border p-6 hover:bg-gray-50 transition"
           >
             <h2 className="text-xl font-semibold mb-2">{course.title}</h2>

@@ -1,4 +1,4 @@
-import MemberActionMenu from "./MemberActionMenu";
+import MemberDeleteMenu from "./MemberActionMenu";
 
 type Props = {
   name: string;
@@ -24,7 +24,7 @@ export default function GroupMemberRow({
       <td className="py-2">{dept}</td>
       <td className="py-2">{role}</td>
       <td className="py-2 text-right pr-4">
-        <MemberActionMenu onDelete={onDelete} />
+        <MemberDeleteMenu onConfirm={onDelete} />
       </td>
     </tr>
   );

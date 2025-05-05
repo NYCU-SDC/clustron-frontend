@@ -39,12 +39,12 @@ export default function AddMemberRow({
               .split("\n")
               .map((r) => r.trim())
               .filter(Boolean);
-            console.log("🧩 Parsed rows:", rows);
+            console.log("Parsed rows:", rows);
 
             if (rows.length > 1) {
-              e.preventDefault(); // 阻止預設貼上行為
+              e.preventDefault();
               const newMembers = rows.map((r) => ({ id: r, role: "Student" }));
-              console.log("✅ Members to add:", newMembers);
+              console.log(" Members to add:", newMembers);
               onAddBatch(newMembers);
             }
           }}

@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import GroupMemberRow from "@/components/group/GroupMemberRow";
 import AddMemberButton from "@/components/group/AddMemberButton";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function GroupMemberTable() {
+  const { id } = useParams();
   const [members, setMembers] = useState([
     {
       name: "王小明",
@@ -30,7 +32,7 @@ export default function GroupMemberTable() {
       <CardContent className="p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Members</h2>
-          <AddMemberButton />
+          <AddMemberButton groupId={id!} />
         </div>
         <table className="w-full text-left text-sm border-t border-gray-200">
           <thead>
