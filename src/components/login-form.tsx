@@ -7,13 +7,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useAuth } from "@/hooks/useAuth";
+import { useContext } from "react";
+import { authContext } from "@/lib/auth/authContext";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const { login } = useAuth();
+  // "!: Non-null Assertion"
+  const { login } = useContext(authContext)!;
 
   return (
     <div

@@ -4,7 +4,11 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, CheckCircle } from "lucide-react";
 
 export default function Callback() {
-  const [, setCookie] = useCookies(["accessToken", "refreshToken"]);
+  const [, setCookie] = useCookies([
+    "accessToken",
+    "refreshTokenExpirationTime",
+    "refreshToken",
+  ]);
   const [status, setStatus] = useState<"loading" | "success" | "error">(
     "loading",
   );
@@ -13,7 +17,8 @@ export default function Callback() {
     const params = new URLSearchParams(window.location.search);
     const accessToken = params.get("token");
     const refreshToken = params.get("refreshToken");
-    const redirectTo = params.get("r") || "/";
+    // const redirectTo = params.get("r") || "/";
+    const redirectTo = "/dashboard";
 
     if (!accessToken || !refreshToken) {
       setStatus("error");
@@ -22,7 +27,11 @@ export default function Callback() {
 
     setCookie("accessToken", accessToken, { path: "/" });
     setCookie("refreshToken", refreshToken, { path: "/" });
-
+    setCookie(
+      "refreshTokenExpirationTime",
+      Math.floor(Date.now() / 1000) + 1 * 24 * 60 * 60,
+      { path: "/" },
+    );
     setStatus("success");
 
     setTimeout(() => {

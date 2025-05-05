@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { jwtDecode } from "jwt-decode";
-import { JWTPayload } from "@/types/type";
+import { accessTokenType } from "@/types/type";
 import { useCookies } from "react-cookie";
-import { useAuth } from "@/hooks/useAuth";
+import { useContext } from "react";
+import { authContext } from "@/lib/auth/authContext";
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { logout } = useAuth();
-  const [cookies] = useCookies(["accessToken", "refreshToken"]);
+  const { logout } = useContext(authContext)!;
+  const [cookies] = useCookies([
+    "accessToken",
+    "refreshTokenExpirationTime",
+    "refreshToken",
+  ]);
 
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
@@ -21,17 +26,21 @@ export default function Dashboard() {
   useEffect(() => {
     const storedAccessToken = cookies.accessToken;
     const storedRefreshToken = cookies.refreshToken;
-    if (!storedAccessToken || !storedRefreshToken) {
+    const storedRefreshTokenExpirationTime = cookies.refreshTokenExpirationTime;
+    if (
+      !storedAccessToken ||
+      !storedRefreshToken ||
+      !storedRefreshTokenExpirationTime
+    ) {
       navigate("/login");
       return;
     }
-    const decodedAccess = jwtDecode<JWTPayload>(storedAccessToken);
+    const decodedAccess = jwtDecode<accessTokenType>(storedAccessToken);
     const accessExpMs = decodedAccess.exp * 1000;
     setAccessExpiresAt(new Date(accessExpMs).toLocaleString());
     setAccessToken(storedAccessToken);
 
-    const decodedRefresh = jwtDecode<JWTPayload>(storedRefreshToken);
-    const refreshExpMs = decodedRefresh.exp * 1000;
+    const refreshExpMs = storedRefreshTokenExpirationTime * 1000;
     setRefreshExpiresAt(new Date(refreshExpMs).toLocaleString());
     setRefreshToken(storedRefreshToken);
 

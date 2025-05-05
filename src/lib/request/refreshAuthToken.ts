@@ -1,21 +1,29 @@
 export async function refreshAuthToken(refreshToken?: string): Promise<{
   accessToken: string;
+  expirationTime: number;
   refreshToken: string;
 } | null> {
   if (!refreshToken) {
     return null;
   }
-  const res = await fetch("http://localhost:3001/refresh", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+
+  const res = await fetch(
+    `${import.meta.env.VITE_BACKEND_BASE_URL}/api/refreshToken/${refreshToken}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     },
-    body: JSON.stringify({ refreshToken }),
-  });
+  );
 
   if (!res.ok) {
     return null;
   }
   const data = await res.json();
-  return { accessToken: data.accessToken, refreshToken: data.refreshToken };
+  return {
+    accessToken: data.accessToken,
+    expirationTime: data.expirationTime,
+    refreshToken: data.refreshToken,
+  };
 }
