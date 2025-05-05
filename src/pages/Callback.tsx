@@ -17,8 +17,7 @@ export default function Callback() {
     const params = new URLSearchParams(window.location.search);
     const accessToken = params.get("token");
     const refreshToken = params.get("refreshToken");
-    // const redirectTo = params.get("r") || "/";
-    const redirectTo = "/dashboard";
+    const redirectTo = params.get("r") || "/";
 
     if (!accessToken || !refreshToken) {
       setStatus("error");
