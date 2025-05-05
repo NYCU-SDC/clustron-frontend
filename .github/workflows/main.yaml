@@ -61,7 +61,7 @@ jobs:
 
       - name: Build Vite production
         run: npm run build
-  
+
   Push-Image:
     name: Build Docker image
     runs-on: ubuntu-latest
@@ -94,7 +94,7 @@ jobs:
             nycusdc/clustron-frontend:pr-${{ github.event.number }}
             nycusdc/clustron-frontend:${{ github.sha }}
           context: .
-  
+
   Deploy:
     name: Deploy
     needs: Push-Image
