@@ -94,7 +94,7 @@ jobs:
           cache-to: type=gha,mode=max
           push: true
           tags: |
-            nycusdc/clustron-frontend:pr-${{ github.event.number }}
+            nycusdc/clustron-frontend:dev
             nycusdc/clustron-frontend:${{ github.sha }}
           context: .
 
