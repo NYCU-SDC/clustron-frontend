@@ -1,17 +1,16 @@
-import { useNavigate } from "react-router";
-import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const navigate = useNavigate();
+
   return (
-    <div className="flex justify-center items-center h-screen">
-      <Button
-        variant="outline"
-        className="w-50"
-        onClick={() => navigate("/login")}
+    <div className="p-6 space-y-4">
+      <button
+        onClick={() => navigate("/Onboarding")}
+        className="px-4 py-2 bg-black text-white hover:bg-gray-700 active:bg-gray-800 transition-colors"
       >
-        Login
-      </Button>
+        前往填寫 Form
+      </button>
     </div>
   );
 }
