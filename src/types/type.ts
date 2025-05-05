@@ -10,8 +10,3 @@ export type accessTokenType = {
   iat: number;
   jti: string;
 };
-
-export type AuthContextType = {
-  login: () => void;
-  logout: () => void;
-};
