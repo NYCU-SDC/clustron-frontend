@@ -11,7 +11,7 @@ export default function AddMemberButton({ groupId }: Props) {
   return (
     <button
       onClick={() => navigate(`/group/${groupId}/add-member`)}
-      className="flex items-center gap-1 bg-gray-900 text-white px-4 py-2 rounded text-sm hover:bg-gray-800"
+      className="flex items-center  bg-gray-900 text-white px-4 py-2 rounded text-sm hover:bg-gray-800"
     >
       <Plus className="w-4 h-4" />
       New Members

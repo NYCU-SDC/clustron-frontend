@@ -10,7 +10,7 @@ export default function CourseList() {
       <div className="flex justify-between mb-6">
         <h1 className="text-2xl font-bold">Courses</h1>
         <Button
-          onClick={() => navigate("/AddCourse")}
+          onClick={() => navigate("/add-group")}
           className="bg-gray-900 text-white"
         >
           + New Course

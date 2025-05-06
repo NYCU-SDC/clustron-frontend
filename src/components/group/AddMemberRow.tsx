@@ -32,8 +32,6 @@ export default function AddMemberRow({
           onChange={(e) => onChange(index, "id", e.target.value)}
           onPaste={(e) => {
             const pasted = e.clipboardData.getData("text");
-            console.log("📋 Paste event triggered");
-            console.log("🚀 Raw pasted content:", pasted);
 
             const rows = pasted
               .split("\n")

@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AddMemberRow from "@/components/group/AddMemberRow";
-import { courseData } from "@/lib/courseMock";
-import GroupSideBarTEMP from "@/components/group/GroupSideBarTEMP";
+import { getGroupById, Member, mockGroups } from "@/lib/courseMock";
+import { findUserByIdOrEmail } from "@/lib/userMock";
 
 export default function AddMemberPage() {
   const { id } = useParams();
-  const course = courseData[id as keyof typeof courseData];
-  if (!course) return <div className="p-6">Course not found.</div>;
+  const group = getGroupById(id || "");
 
   const navigate = useNavigate();
   const [members, setMembers] = useState([{ id: "", role: "" }]);
+
+  if (!group) return <div className="p-6">Course not found.</div>;
 
   const updateRow = (index: number, key: "id" | "role", value: string) => {
     const next = [...members];
@@ -30,15 +31,38 @@ export default function AddMemberPage() {
   };
 
   const handleSave = () => {
-    // mock
-    // console.log("Saving members to group:", id);
-    // console.table(members);
-    navigate(`/group/${id}`);
+    const newMockMembers: Member[] = [];
+    for (let i = 0; i < members.length; i++) {
+      const input = members[i].id;
+      const role = members[i].role;
+      const user = findUserByIdOrEmail(input);
+
+      if (!user) {
+        alert(`User not found: ${input}`);
+        return;
+      }
+
+      newMockMembers.push({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        studentId: user.studentId,
+        dept: user.dept || "",
+        role: role as Member["role"], // ✅ 修正這裡
+        accessLevel: user.accessLevel,
+      });
+    }
+
+    const targetGroup = mockGroups.find((g) => g.id === group.id);
+    if (targetGroup) {
+      targetGroup.members.push(...newMockMembers);
+    }
+
+    navigate(`/group/${group.id}/settings`);
   };
 
   return (
     <div className="flex">
-      <GroupSideBarTEMP title={course.title} />
       <main className="flex-1 p-6">
         <h1 className="text-2xl font-bold mb-6">Add New Members</h1>
         <table className="w-full text-left text-sm border-t border-gray-200">
@@ -68,7 +92,7 @@ export default function AddMemberPage() {
 
         <div className="mt-6 flex gap-3">
           <button
-            onClick={() => navigate(`/group/${id}`)}
+            onClick={() => navigate(`/group/${group.id}/settings`)}
             className="px-4 py-2 border rounded"
           >
             Cancel

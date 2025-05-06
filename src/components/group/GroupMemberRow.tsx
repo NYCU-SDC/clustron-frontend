@@ -6,7 +6,8 @@ type Props = {
   email: string;
   dept: string;
   role: string;
-  onDelete: () => void;
+  onDelete?: () => void;
+  showActions?: boolean;
 };
 
 export default function GroupMemberRow({
@@ -16,16 +17,25 @@ export default function GroupMemberRow({
   dept,
   role,
   onDelete,
+  showActions = false, // 加預設值避免 undefined
 }: Props) {
   return (
     <tr className="hover:bg-gray-100">
       <td className="py-2">{name}</td>
-      <td className="py-2">{id || email}</td>
+      <td className="py-2">
+        <div className="flex flex-col">
+          <span className="font-medium">{id}</span>
+          <span className="text-gray-500 text-xs">{email}</span>
+        </div>
+      </td>
       <td className="py-2">{dept}</td>
       <td className="py-2">{role}</td>
-      <td className="py-2 text-right pr-4">
-        <MemberDeleteMenu onConfirm={onDelete} />
-      </td>
+
+      {showActions && (
+        <td className="py-2 text-right pr-4">
+          <MemberDeleteMenu onConfirm={onDelete!} />
+        </td>
+      )}
     </tr>
   );
 }

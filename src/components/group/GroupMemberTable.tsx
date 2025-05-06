@@ -1,39 +1,31 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
 import GroupMemberRow from "@/components/group/GroupMemberRow";
 import AddMemberButton from "@/components/group/AddMemberButton";
 import { Card, CardContent } from "@/components/ui/card";
+import type { Member } from "@/lib/courseMock";
 
-export default function GroupMemberTable() {
-  const { id } = useParams();
-  const [members, setMembers] = useState([
-    {
-      name: "王小明",
-      id: "113999321",
-      email: "liam@gmail.com",
-      dept: "CS",
-      role: "Student",
-    },
-    {
-      name: "WANG",
-      id: "1139991",
-      email: "liam@gmail.com",
-      dept: "EECS",
-      role: "Student",
-    },
-  ]);
+type Props = {
+  members: Member[];
+  showActions?: boolean;
+  showAddButton?: boolean;
+  groupId?: string;
+  onRemove?: (index: number) => void;
+};
 
-  const handleRemove = (index: number) => {
-    setMembers((prev) => prev.filter((_, i) => i !== index));
-  };
-
+export default function GroupMemberTable({
+  members,
+  showActions = true,
+  showAddButton = false,
+  groupId,
+  onRemove,
+}: Props) {
   return (
     <Card>
       <CardContent className="p-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Members</h2>
-          <AddMemberButton groupId={id!} />
+          <h3 className="font-bold text-lg">Members</h3>
+          {showAddButton && groupId && <AddMemberButton groupId={groupId} />}
         </div>
+
         <table className="w-full text-left text-sm border-t border-gray-200">
           <thead>
             <tr className="text-gray-500">
@@ -41,12 +33,23 @@ export default function GroupMemberTable() {
               <th className="py-2">Student ID or Email</th>
               <th className="py-2">Department</th>
               <th className="py-2">Role</th>
-              <th className="py-2 text-right">Server Access</th>
+              {showActions && (
+                <th className="py-2 text-right">Server Access</th>
+              )}
             </tr>
           </thead>
           <tbody>
             {members.map((m, i) => (
-              <GroupMemberRow key={i} {...m} onDelete={() => handleRemove(i)} />
+              <GroupMemberRow
+                key={m.id}
+                name={m.username}
+                id={m.studentId}
+                email={m.email}
+                dept={m.dept}
+                role={m.role}
+                showActions={showActions}
+                onDelete={onRemove ? () => onRemove(i) : undefined}
+              />
             ))}
           </tbody>
         </table>
