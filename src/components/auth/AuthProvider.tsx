@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       // calculate how long to update accessToken
       const timeUntilAccessExpiration = Math.min(
-        accessExpirationTime - Date.now() - 890 * 1000,
+        accessExpirationTime - Date.now() - 60 * 1000,
         2147483647,
       );
 
