@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AddMemberRow from "@/components/group/AddMemberRow";
-import { getGroupById, Member, mockGroups } from "@/lib/courseMock";
+import { Member } from "@/lib/mockGroups";
 import { findUserByIdOrEmail } from "@/lib/userMock";
+import { useGroupContext } from "@/context/GroupContext";
 
 export default function AddMemberPage() {
-  const { id } = useParams();
-  const group = getGroupById(id || "");
-
+  const { id: groupId } = useParams();
   const navigate = useNavigate();
+  const { groups, setGroups } = useGroupContext();
+
+  const group = groups.find((g) => g.id === groupId);
   const [members, setMembers] = useState([{ id: "", role: "" }]);
 
   if (!group) return <div className="p-6">Course not found.</div>;
@@ -31,7 +33,8 @@ export default function AddMemberPage() {
   };
 
   const handleSave = () => {
-    const newMockMembers: Member[] = [];
+    const newMembers: Member[] = [];
+
     for (let i = 0; i < members.length; i++) {
       const input = members[i].id;
       const role = members[i].role;
@@ -42,7 +45,7 @@ export default function AddMemberPage() {
         return;
       }
 
-      newMockMembers.push({
+      newMembers.push({
         id: user.id,
         username: user.username,
         email: user.email,
@@ -53,10 +56,13 @@ export default function AddMemberPage() {
       });
     }
 
-    const targetGroup = mockGroups.find((g) => g.id === group.id);
-    if (targetGroup) {
-      targetGroup.members.push(...newMockMembers);
-    }
+    setGroups((prev) =>
+      prev.map((g) =>
+        g.id === group.id
+          ? { ...g, members: [...g.members, ...newMembers] }
+          : g,
+      ),
+    );
 
     navigate(`/group/${group.id}/settings`);
   };

@@ -1,11 +1,14 @@
 import { Outlet, useParams } from "react-router-dom";
 import GroupSideBarTEMP from "@/components/group/GroupSideBar";
-import { getGroupById } from "@/lib/courseMock";
+import { useGroupContext } from "@/context/GroupContext";
+import type { Group } from "@/lib/mockGroups";
 
 export default function GroupPage() {
   const { id } = useParams();
-  const group = getGroupById(id || "");
-  if (!group) return <div>Not found</div>;
+  const { groups } = useGroupContext();
+
+  const group: Group | undefined = groups.find((g) => g.id === id);
+  if (!group) return <div className="p-6">Group not found.</div>;
 
   return (
     <div className="flex min-h-screen bg-gray-50">

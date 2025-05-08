@@ -1,33 +1,56 @@
-// src/pages/GroupSettings.tsx
 import { useOutletContext } from "react-router-dom";
 import GroupDescription from "@/components/group/GroupDes";
 import GroupMemberTable from "@/components/group/GroupMemberTable";
-import { useState } from "react";
-import type { Member, Group } from "@/lib/courseMock";
-import { removeMemberFromGroup, mockGroups } from "@/lib/courseMock";
+import { useState, useMemo, useEffect } from "react";
+import type { Member } from "@/lib/mockGroups";
+import { useGroupContext } from "@/context/GroupContext";
 
 export type GroupContextType = {
-  group: Group;
   groupId: string;
 };
 
 export default function GroupSettings() {
-  const { group } = useOutletContext<GroupContextType>();
-  const [isArchived, setIsArchived] = useState(group.isArchived);
-  const [members, setMembers] = useState<Member[]>(group.members);
+  const { groupId } = useOutletContext<GroupContextType>();
+  const { groups, setGroups } = useGroupContext();
+
+  const group = useMemo(
+    () => groups.find((g) => g.id === groupId),
+    [groups, groupId],
+  );
+
+  const [isArchived, setIsArchived] = useState(group?.isArchived ?? false);
+  const [members, setMembers] = useState<Member[]>(group?.members ?? []);
+
+  // 當 context 的 group 更新時，保持 local state 同步（避免 stale）
+  useEffect(() => {
+    if (group) {
+      setIsArchived(group.isArchived);
+      setMembers(group.members);
+    }
+  }, [group]);
+
+  if (!group) return <div>Group not found.</div>;
 
   const handleRemove = (index: number) => {
     const target = members[index];
     setMembers((prev) => prev.filter((_, i) => i !== index));
-    removeMemberFromGroup(group.id, target.id);
+
+    setGroups((prev) =>
+      prev.map((g) =>
+        g.id === group.id
+          ? { ...g, members: g.members.filter((m) => m.id !== target.id) }
+          : g,
+      ),
+    );
   };
 
   const toggleArchive = () => {
     const next = !isArchived;
     setIsArchived(next);
 
-    const target = mockGroups.find((g) => g.id === group.id);
-    if (target) target.isArchived = next;
+    setGroups((prev) =>
+      prev.map((g) => (g.id === group.id ? { ...g, isArchived: next } : g)),
+    );
   };
 
   return (
@@ -36,8 +59,8 @@ export default function GroupSettings() {
 
       <GroupMemberTable
         members={members}
-        showActions
-        showAddButton
+        showActions={!isArchived}
+        showAddButton={!isArchived}
         groupId={group.id}
         isArchived={isArchived}
         onRemove={isArchived ? undefined : handleRemove}

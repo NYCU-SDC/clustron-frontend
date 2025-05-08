@@ -1,3 +1,5 @@
+// src/lib/mockGroups.ts
+
 export type Member = {
   id: string;
   username: string;
@@ -65,15 +67,9 @@ export const mockGroups: Group[] = [
 export function getGroupById(id: string): Group | null {
   return mockGroups.find((g) => g.id === id) ?? null;
 }
-export const courseList = mockGroups.map(({ id, title, description }) => ({
-  id,
-  title,
-  desc: description,
-}));
 
 export function removeMemberFromGroup(groupId: string, memberId: string) {
   const group = mockGroups.find((g) => g.id === groupId);
   if (!group) return;
-
   group.members = group.members.filter((m) => m.id !== memberId);
 }

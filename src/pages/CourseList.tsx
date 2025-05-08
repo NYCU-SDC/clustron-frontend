@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { courseList } from "@/lib/courseMock";
+import { useGroupContext } from "@/context/GroupContext";
 
 export default function CourseList() {
   const navigate = useNavigate();
+  const { groups } = useGroupContext();
 
   return (
     <div className="p-10">
@@ -18,14 +19,14 @@ export default function CourseList() {
       </div>
 
       <div className="space-y-4">
-        {courseList.map((course) => (
+        {groups.map((group) => (
           <div
-            key={course.id}
-            onClick={() => navigate(`/group/${course.id}`)}
+            key={group.id}
+            onClick={() => navigate(`/group/${group.id}`)}
             className="cursor-pointer rounded-lg border p-6 hover:bg-gray-50 transition"
           >
-            <h2 className="text-xl font-semibold mb-2">{course.title}</h2>
-            <p className="text-gray-600 text-sm">{course.desc}</p>
+            <h2 className="text-xl font-semibold mb-2">{group.title}</h2>
+            <p className="text-gray-600 text-sm">{group.description}</p>
           </div>
         ))}
       </div>

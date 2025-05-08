@@ -1,11 +1,15 @@
 import { useState } from "react";
-import AddMemberRow from "@/components/group/AddMemberRow";
 import { useNavigate } from "react-router-dom";
-import { mockGroups, Member } from "@/lib/courseMock";
+import AddMemberRow from "@/components/group/AddMemberRow";
+import { Member, Group } from "@/lib/mockGroups";
 import { v4 as uuidv4 } from "uuid";
+import { findUserByIdOrEmail } from "@/lib/userMock";
+import { useGroupContext } from "@/context/GroupContext";
 
 export default function AddGroupPage() {
   const navigate = useNavigate();
+  const { setGroups } = useGroupContext();
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [members, setMembers] = useState([{ id: "", role: "student" }]);
@@ -16,7 +20,9 @@ export default function AddGroupPage() {
     setMembers(next);
   };
 
-  const addRow = () => setMembers([...members, { id: "", role: "student" }]);
+  const addRow = () => {
+    setMembers([...members, { id: "", role: "student" }]);
+  };
 
   const removeRow = (index: number) => {
     const next = members.filter((_, i) => i !== index);
@@ -29,30 +35,43 @@ export default function AddGroupPage() {
 
   const handleSubmit = () => {
     const newGroupId = uuidv4().slice(0, 8);
-    const newMembers: Member[] = members.map((m, idx) => ({
-      id: `m${Date.now()}_${idx}`,
-      username: "", // optional init
-      email: m.id.includes("@") ? m.id : "",
-      studentId: m.id.includes("@") ? "" : m.id,
-      dept: "CS",
-      role: m.role as Member["role"],
-      accessLevel: "user",
-    }));
+    const newMembers: Member[] = [];
 
-    mockGroups.push({
+    for (let i = 0; i < members.length; i++) {
+      const input = members[i].id.trim();
+      const role = members[i].role;
+      const user = findUserByIdOrEmail(input);
+
+      if (!user) {
+        alert(`User not found: ${input}`);
+        return;
+      }
+
+      newMembers.push({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        studentId: user.studentId,
+        dept: user.dept || "",
+        role: role as Member["role"],
+        accessLevel: user.accessLevel,
+      });
+    }
+
+    const newGroup: Group = {
       id: newGroupId,
       title,
       description,
       isArchived: false,
       members: newMembers,
-    });
+    };
+
+    setGroups((prev) => [...prev, newGroup]);
     navigate("/");
-    // navigate(`/group/${newGroupId}`);
   };
 
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6">
-      {/* Title */}
       <div>
         <label className="block text-sm font-medium mb-1">Group Title</label>
         <input
@@ -63,7 +82,6 @@ export default function AddGroupPage() {
         />
       </div>
 
-      {/* Description */}
       <div>
         <label className="block text-sm font-medium mb-1">Description</label>
         <textarea
@@ -74,7 +92,6 @@ export default function AddGroupPage() {
         />
       </div>
 
-      {/* Add Members */}
       <div>
         <h2 className="text-lg font-semibold mb-2">Add New Members</h2>
         <table className="w-full text-left text-sm border-t border-gray-200">
@@ -103,7 +120,6 @@ export default function AddGroupPage() {
         </table>
       </div>
 
-      {/* Submit */}
       <div className="text-right">
         <button
           onClick={handleSubmit}
