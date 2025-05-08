@@ -48,7 +48,7 @@ export default function AddMemberPage() {
         email: user.email,
         studentId: user.studentId,
         dept: user.dept || "",
-        role: role as Member["role"], // ✅ 修正這裡
+        role: role as Member["role"],
         accessLevel: user.accessLevel,
       });
     }

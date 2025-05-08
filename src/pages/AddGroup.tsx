@@ -2,7 +2,7 @@ import { useState } from "react";
 import AddMemberRow from "@/components/group/AddMemberRow";
 import { useNavigate } from "react-router-dom";
 import { mockGroups, Member } from "@/lib/courseMock";
-import { v4 as uuidv4 } from "uuid"; // 用來產生 group id
+import { v4 as uuidv4 } from "uuid";
 
 export default function AddGroupPage() {
   const navigate = useNavigate();
@@ -43,6 +43,7 @@ export default function AddGroupPage() {
       id: newGroupId,
       title,
       description,
+      isArchived: false,
       members: newMembers,
     });
     navigate("/");

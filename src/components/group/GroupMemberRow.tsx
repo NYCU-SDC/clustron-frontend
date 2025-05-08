@@ -8,6 +8,7 @@ type Props = {
   role: string;
   onDelete?: () => void;
   showActions?: boolean;
+  isArchived?: boolean; // ✅ 新增
 };
 
 export default function GroupMemberRow({
@@ -17,7 +18,8 @@ export default function GroupMemberRow({
   dept,
   role,
   onDelete,
-  showActions = false, // 加預設值避免 undefined
+  showActions = false,
+  isArchived = false, //  預設 false
 }: Props) {
   return (
     <tr className="hover:bg-gray-100">
@@ -33,7 +35,7 @@ export default function GroupMemberRow({
 
       {showActions && (
         <td className="py-2 text-right pr-4">
-          <MemberDeleteMenu onConfirm={onDelete!} />
+          <MemberDeleteMenu onConfirm={onDelete!} isArchived={isArchived} />
         </td>
       )}
     </tr>

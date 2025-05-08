@@ -42,7 +42,7 @@ export default function AddMemberRow({
             if (rows.length > 1) {
               e.preventDefault();
               const newMembers = rows.map((r) => ({ id: r, role: "Student" }));
-              console.log(" Members to add:", newMembers);
+              // console.log(" Members to add:", newMembers);
               onAddBatch(newMembers);
             }
           }}

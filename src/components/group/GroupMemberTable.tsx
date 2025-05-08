@@ -2,13 +2,13 @@ import GroupMemberRow from "@/components/group/GroupMemberRow";
 import AddMemberButton from "@/components/group/AddMemberButton";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Member } from "@/lib/courseMock";
-
 type Props = {
   members: Member[];
   showActions?: boolean;
   showAddButton?: boolean;
   groupId?: string;
   onRemove?: (index: number) => void;
+  isArchived?: boolean; // ✅ 新增
 };
 
 export default function GroupMemberTable({
@@ -17,13 +17,16 @@ export default function GroupMemberTable({
   showAddButton = false,
   groupId,
   onRemove,
+  isArchived = false, // ✅ 預設 false
 }: Props) {
   return (
     <Card>
       <CardContent className="p-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-bold text-lg">Members</h3>
-          {showAddButton && groupId && <AddMemberButton groupId={groupId} />}
+          {showAddButton && groupId && (
+            <AddMemberButton groupId={groupId} isArchived={isArchived} />
+          )}
         </div>
 
         <table className="w-full text-left text-sm border-t border-gray-200">
@@ -49,6 +52,7 @@ export default function GroupMemberTable({
                 role={m.role}
                 showActions={showActions}
                 onDelete={onRemove ? () => onRemove(i) : undefined}
+                isArchived={isArchived} // ✅ 傳下去
               />
             ))}
           </tbody>

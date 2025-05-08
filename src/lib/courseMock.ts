@@ -12,6 +12,7 @@ export type Group = {
   id: string;
   title: string;
   description: string;
+  isArchived: boolean;
   members: Member[];
 };
 
@@ -20,6 +21,7 @@ export const mockGroups: Group[] = [
     id: "cs101",
     title: "CS 101 - Intro to Computer Science",
     description: "This is the CS101 course. Welcome!",
+    isArchived: false,
     members: [
       {
         id: "u001",
@@ -39,21 +41,13 @@ export const mockGroups: Group[] = [
         role: "student",
         accessLevel: "user",
       },
-      {
-        id: "u003",
-        username: " Smith",
-        email: "olivia@gmail.com",
-        studentId: "113000111",
-        dept: "CS",
-        role: "teacher",
-        accessLevel: "organizer",
-      },
     ],
   },
   {
     id: "ee201",
     title: "EE 201 - Circuits and Electronics",
     description: "EE fundamentals and labs.",
+    isArchived: false,
     members: [
       {
         id: "u003",

@@ -19,27 +19,33 @@ import { useState } from "react";
 
 type Props = {
   onConfirm: () => void;
+  isArchived?: boolean;
 };
 
-export default function MemberDeleteMenu({ onConfirm }: Props) {
+export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button className="p-2 rounded hover:bg-gray-200">
+          <button
+            className="p-2 rounded hover:bg-gray-200 disabled:opacity-50"
+            disabled={isArchived}
+          >
             <MoreHorizontal className="w-4 h-4" />
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            className="text-red-600"
-            onClick={() => setOpen(true)}
-          >
-            Remove User
-          </DropdownMenuItem>
-        </DropdownMenuContent>
+        {!isArchived && (
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
+              className="text-red-600"
+              onClick={() => setOpen(true)}
+            >
+              Remove User
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        )}
       </DropdownMenu>
 
       <Dialog open={open} onOpenChange={setOpen}>
@@ -57,7 +63,12 @@ export default function MemberDeleteMenu({ onConfirm }: Props) {
               <Button variant="outline">Cancel</Button>
             </DialogClose>
             <DialogClose asChild>
-              <Button variant="destructive" onClick={onConfirm}>
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  if (!isArchived) onConfirm();
+                }}
+              >
                 Delete
               </Button>
             </DialogClose>
