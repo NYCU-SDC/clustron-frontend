@@ -1,12 +1,11 @@
 import { useEffect, useCallback, ReactNode } from "react";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
-import { accessTokenType } from "@/types/type";
+import { AccessTokenType } from "@/types/type";
 import { refreshAuthToken } from "@/lib/request/refreshAuthToken";
 import { authContext } from "@/lib/auth/authContext";
 
 let accessTimer: number;
-let refreshTimer: number;
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [cookies, setCookie, removeCookie] = useCookies([
@@ -20,7 +19,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const clearTimers = useCallback(() => {
     clearTimeout(accessTimer);
-    clearTimeout(refreshTimer);
   }, []);
 
   const login = useCallback(() => {
@@ -42,7 +40,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       // get accessToken Expiration time
       const accessExpirationTime =
-        jwtDecode<accessTokenType>(accessToken).exp * 1000;
+        jwtDecode<AccessTokenType>(accessToken).exp * 1000;
 
       // calculate how long to update accessToken
       const timeUntilAccessExpiration = Math.min(
@@ -63,7 +61,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             path: "/",
           });
           setCookie("refreshToken", data.refreshToken, { path: "/" });
-          setAutoRefresh(data.accessToken, data.refreshToken);
         }, timeUntilAccessExpiration);
       } else {
         // assume user haven't open the clustron website for a long time so timeUntilAccessExpiration < 0
@@ -79,7 +76,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             path: "/",
           });
           setCookie("refreshToken", data.refreshToken, { path: "/" });
-          setAutoRefresh(data.accessToken, data.refreshToken);
         })();
       }
 
@@ -90,11 +86,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           refreshExpirationTime * 1000 - Date.now(),
           2147483647,
         );
-        if (timeUntilRefreshExpiration > 0) {
-          refreshTimer = window.setTimeout(() => {
-            logout();
-          }, timeUntilRefreshExpiration);
-        } else {
+        if (timeUntilRefreshExpiration < 0) {
           logout();
         }
       }

@@ -1,4 +1,4 @@
-export async function refreshAuthToken(refreshToken?: string): Promise<{
+export async function refreshAuthToken(refreshToken: string): Promise<{
   accessToken: string;
   expirationTime: number;
   refreshToken: string;

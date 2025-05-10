@@ -10,7 +10,7 @@ import {
 import { useContext } from "react";
 import { authContext } from "@/lib/auth/authContext";
 
-export function LoginForm({
+export default function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
