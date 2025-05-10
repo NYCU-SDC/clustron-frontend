@@ -3,16 +3,19 @@ import Home from "@/pages/Home";
 import Onboarding from "@/pages/Onboarding";
 import Setting from "./pages/Setting";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const App = () => {
   return (
     <>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/Onboarding" element={<Onboarding />} />
-        <Route path="/Setting" element={<Setting />} />
-      </Routes>
-      <Toaster />
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/Onboarding" element={<Onboarding />} />
+          <Route path="/Settings" element={<Setting />} />
+        </Routes>
+        <Toaster />
+      </ThemeProvider>
     </>
   );
 };
