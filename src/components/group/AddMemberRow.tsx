@@ -1,4 +1,5 @@
 import { CircleMinus, CirclePlus } from "lucide-react";
+import { roleAssignableMap } from "@/lib/permission";
 
 type Props = {
   index: number;
@@ -9,6 +10,8 @@ type Props = {
   onChange: (index: number, key: "id" | "role", value: string) => void;
   onRemove: (index: number) => void;
   onAdd: () => void;
+  currentUserRole: string;
+  isDuplicate?: boolean;
 };
 
 export default function AddMemberRow({
@@ -20,6 +23,8 @@ export default function AddMemberRow({
   onRemove,
   onAdd,
   onAddBatch,
+  currentUserRole,
+  isDuplicate,
 }: Props) {
   return (
     <tr className="hover:bg-gray-100">
@@ -28,8 +33,11 @@ export default function AddMemberRow({
           type="text"
           value={id}
           placeholder="Enter StudentID or Email"
-          className="w-full px-2 py-1 border rounded"
+          className={`w-full px-2 py-1 border rounded ${
+            isDuplicate ? "border-red-500 bg-red-50" : "border-gray-300"
+          }`}
           onChange={(e) => onChange(index, "id", e.target.value)}
+          title={isDuplicate ? "Duplicate entry" : ""}
           onPaste={(e) => {
             const pasted = e.clipboardData.getData("text");
 
@@ -42,7 +50,7 @@ export default function AddMemberRow({
             if (rows.length > 1) {
               e.preventDefault();
               const newMembers = rows.map((r) => ({ id: r, role: "Student" }));
-              // console.log(" Members to add:", newMembers);
+
               onAddBatch(newMembers);
             }
           }}
@@ -54,11 +62,14 @@ export default function AddMemberRow({
           className="w-full px-2 py-1 border rounded"
           onChange={(e) => onChange(index, "role", e.target.value)}
         >
-          <option value="Student">Student</option>
-          <option value="TA">TA</option>
-          <option value="Teacher">Teacher</option>
+          {roleAssignableMap[currentUserRole]?.map((r) => (
+            <option key={r} value={r}>
+              {r}
+            </option>
+          ))}
         </select>
       </td>
+
       <td className="py-2 text-center">
         {isLast ? (
           <button

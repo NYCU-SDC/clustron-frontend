@@ -5,6 +5,7 @@ import { Member, Group } from "@/lib/mockGroups";
 import { v4 as uuidv4 } from "uuid";
 import { findUserByIdOrEmail } from "@/lib/userMock";
 import { useGroupContext } from "@/context/GroupContext";
+import { useUserContext } from "@/context/UserContext";
 
 export default function AddGroupPage() {
   const navigate = useNavigate();
@@ -12,8 +13,9 @@ export default function AddGroupPage() {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [members, setMembers] = useState([{ id: "", role: "student" }]);
-
+  const [members, setMembers] = useState([{ id: "", role: "Student" }]);
+  const { user } = useUserContext();
+  const currentUserRole = user?.role || "Student";
   const updateRow = (index: number, key: "id" | "role", value: string) => {
     const next = [...members];
     next[index][key] = value;
@@ -21,12 +23,12 @@ export default function AddGroupPage() {
   };
 
   const addRow = () => {
-    setMembers([...members, { id: "", role: "student" }]);
+    setMembers([...members, { id: "", role: "Student" }]);
   };
 
   const removeRow = (index: number) => {
     const next = members.filter((_, i) => i !== index);
-    setMembers(next.length === 0 ? [{ id: "", role: "student" }] : next);
+    setMembers(next.length === 0 ? [{ id: "", role: "Student" }] : next);
   };
 
   const addBatchRows = (batch: { id: string; role: string }[]) => {
@@ -103,19 +105,27 @@ export default function AddGroupPage() {
             </tr>
           </thead>
           <tbody>
-            {members.map((m, i) => (
-              <AddMemberRow
-                key={i}
-                index={i}
-                id={m.id}
-                role={m.role}
-                onChange={updateRow}
-                onAdd={addRow}
-                onRemove={removeRow}
-                isLast={i === members.length - 1}
-                onAddBatch={addBatchRows}
-              />
-            ))}
+            {members.map((m, i) => {
+              const isDuplicate = members
+                .filter((_, idx) => idx !== i)
+                .some((other) => other.id.trim() === m.id.trim());
+
+              return (
+                <AddMemberRow
+                  key={i}
+                  index={i}
+                  id={m.id}
+                  role={m.role}
+                  onChange={updateRow}
+                  onAdd={addRow}
+                  onRemove={removeRow}
+                  isLast={i === members.length - 1}
+                  onAddBatch={addBatchRows}
+                  currentUserRole={currentUserRole}
+                  isDuplicate={isDuplicate} // ✅ 正確傳入
+                />
+              );
+            })}
           </tbody>
         </table>
       </div>

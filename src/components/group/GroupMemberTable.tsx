@@ -14,7 +14,6 @@ type Props = {
 export default function GroupMemberTable({
   members,
   showActions = true,
-  showAddButton = false,
   groupId,
   onRemove,
   isArchived = false, //
@@ -24,7 +23,7 @@ export default function GroupMemberTable({
       <CardContent className="p-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-bold text-lg">Members</h3>
-          {groupId && (
+          {showActions && groupId && (
             <AddMemberButton groupId={groupId} isArchived={isArchived} />
           )}
         </div>
@@ -36,9 +35,6 @@ export default function GroupMemberTable({
               <th className="py-2">Student ID or Email</th>
               <th className="py-2">Department</th>
               <th className="py-2">Role</th>
-              {showActions && (
-                <th className="py-2 text-right">Server Access</th>
-              )}
             </tr>
           </thead>
           <tbody>

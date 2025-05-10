@@ -4,14 +4,16 @@ import AddMemberRow from "@/components/group/AddMemberRow";
 import { Member } from "@/lib/mockGroups";
 import { findUserByIdOrEmail } from "@/lib/userMock";
 import { useGroupContext } from "@/context/GroupContext";
+import { useUserContext } from "@/context/UserContext";
 
 export default function AddMemberPage() {
   const { id: groupId } = useParams();
   const navigate = useNavigate();
   const { groups, setGroups } = useGroupContext();
-
+  const { user } = useUserContext();
+  const currentUserRole = user?.role || "Student";
   const group = groups.find((g) => g.id === groupId);
-  const [members, setMembers] = useState([{ id: "", role: "" }]);
+  const [members, setMembers] = useState([{ id: "", role: "Student" }]);
 
   if (!group) return <div className="p-6">Course not found.</div>;
 
@@ -21,7 +23,7 @@ export default function AddMemberPage() {
     setMembers(next);
   };
 
-  const addRow = () => setMembers([...members, { id: "", role: "" }]);
+  const addRow = () => setMembers([...members, { id: "", role: "Student" }]);
 
   const removeRow = (index: number) => {
     const next = members.filter((_, i) => i !== index);
@@ -76,23 +78,30 @@ export default function AddMemberPage() {
             <tr className="text-gray-500">
               <th className="py-2">Student ID or Email</th>
               <th className="py-2">Role</th>
-              <th className="py-2">Server Access</th>
             </tr>
           </thead>
           <tbody>
-            {members.map((m, i) => (
-              <AddMemberRow
-                key={i}
-                index={i}
-                id={m.id}
-                role={m.role}
-                onChange={updateRow}
-                onAdd={addRow}
-                onRemove={removeRow}
-                isLast={i === members.length - 1}
-                onAddBatch={addBatchRows}
-              />
-            ))}
+            {members.map((m, i) => {
+              const isDuplicate = members
+                .filter((_, idx) => idx !== i)
+                .some((other) => other.id.trim() === m.id.trim());
+
+              return (
+                <AddMemberRow
+                  key={i}
+                  index={i}
+                  id={m.id}
+                  role={m.role}
+                  onChange={updateRow}
+                  onAdd={addRow}
+                  onRemove={removeRow}
+                  isLast={i === members.length - 1}
+                  onAddBatch={addBatchRows}
+                  currentUserRole={currentUserRole}
+                  isDuplicate={isDuplicate} // ✅ 傳進去
+                />
+              );
+            })}
           </tbody>
         </table>
 
