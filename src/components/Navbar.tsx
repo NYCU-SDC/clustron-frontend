@@ -4,20 +4,20 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  // DropdownMenuLabel,
   DropdownMenuPortal,
   DropdownMenuSeparator,
-  // DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useTheme } from "@/components/ThemeProvider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import ModeToggle from "@/components/ModeToggle";
-import ProfileImg from "@/assets/Profile.png";
+import ProfileLightImg from "@/assets/Profile_light.png";
+import ProfileDarkImg from "@/assets/Profile_dark.png";
 
 export default function Navbar() {
+  const { setTheme } = useTheme();
   return (
     <nav className="w-full border-b">
       <div className="flex items-center justify-between w-full px-6 py-4">
@@ -29,9 +29,9 @@ export default function Navbar() {
             to="/Groups"
             className={({ isActive }) =>
               [
-                "text-base hover:bg-gray-100",
+                "text-base hover:bg-gray-100 dark:hover:bg-gray-600",
                 "px-3 py-2 rounded-lg",
-                !isActive && "text-gray-500",
+                !isActive && "text-gray-500 dark:text-gray-400",
               ]
                 .filter(Boolean)
                 .join(" ")
@@ -40,12 +40,12 @@ export default function Navbar() {
             Groups
           </NavLink>
           <NavLink
-            to="/Settings"
+            to="/Setting"
             className={({ isActive }) =>
               [
-                "text-base hover:bg-gray-100",
+                "text-base hover:bg-gray-100 dark:hover:bg-gray-600",
                 "px-3 py-2 rounded-lg",
-                !isActive && "text-gray-500",
+                !isActive && "text-gray-500 dark:text-gray-400",
               ]
                 .filter(Boolean)
                 .join(" ")
@@ -55,12 +55,19 @@ export default function Navbar() {
           </NavLink>
         </div>
         <div className="flex items-center space-x-4">
-          <ModeToggle />
-
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Avatar className="cursor-pointer">
-                <AvatarImage src={ProfileImg} alt="User" />
+                <AvatarImage
+                  src={ProfileLightImg}
+                  alt="User"
+                  className="block dark:hidden"
+                />
+                <AvatarImage
+                  src={ProfileDarkImg}
+                  alt="User"
+                  className="hidden dark:block"
+                />
                 <AvatarFallback>S</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
@@ -75,9 +82,25 @@ export default function Navbar() {
                     </DropdownMenuSubContent>
                   </DropdownMenuPortal>
                 </DropdownMenuSub>
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>Theme</DropdownMenuSubTrigger>
+                  <DropdownMenuPortal>
+                    <DropdownMenuSubContent>
+                      <DropdownMenuItem onClick={() => setTheme("light")}>
+                        Light
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setTheme("dark")}>
+                        Dark
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setTheme("system")}>
+                        System
+                      </DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuPortal>
+                </DropdownMenuSub>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Log out</DropdownMenuItem>
+              <DropdownMenuItem>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

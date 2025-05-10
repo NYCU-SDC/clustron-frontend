@@ -1,7 +1,10 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "@/pages/Home";
 import Onboarding from "@/pages/Onboarding";
-import Setting from "./pages/Setting";
+import SettingLayout from "./pages/SettingLayout";
+import SettingGeneral from "./pages/SettingGeneral";
+import SettingAddKey from "./pages/SettingAddKey";
+import SettingSSH from "./pages/SettingSSH";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
@@ -12,7 +15,12 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/Onboarding" element={<Onboarding />} />
-          <Route path="/Settings" element={<Setting />} />
+          <Route path="/Setting" element={<SettingLayout />}>
+            <Route index element={<Navigate to="general" replace />} />
+            <Route path="general" element={<SettingGeneral />} />
+            <Route path="ssh" element={<SettingSSH />} />
+            <Route path="addNewKey" element={<SettingAddKey />} />
+          </Route>
         </Routes>
         <Toaster />
       </ThemeProvider>

@@ -7,12 +7,12 @@ export default function SettingSideBar() {
       <ul className="space-y-4">
         <li>
           <NavLink
-            to={`/Settings/General`}
+            to={`/Setting/general`}
             className={({ isActive }) =>
               [
-                "text-base hover:bg-gray-100",
+                "text-base",
                 "pl-1 py-2 rounded-lg",
-                !isActive && "text-gray-500",
+                !isActive && "text-gray-500 dark:text-gray-400",
               ]
                 .filter(Boolean)
                 .join(" ")
@@ -23,12 +23,12 @@ export default function SettingSideBar() {
         </li>
         <li>
           <NavLink
-            to={`/Settings/SSH`}
+            to={`/Setting/ssh`}
             className={({ isActive }) =>
               [
-                "text-base hover:bg-gray-100",
+                "text-base",
                 "pl-1 py-2 rounded-lg",
-                !isActive && "text-gray-500",
+                !isActive && "text-gray-500 dark:text-gray-400",
               ]
                 .filter(Boolean)
                 .join(" ")
