@@ -1,0 +1,16 @@
+{
+  "onboarding": {
+    "title": "請輸入您的基本資料",
+    "nameLabel": "姓名",
+    "namePlaceholder": "您的姓名",
+    "usernameLabel": "Linux 使用者名稱",
+    "usernamePlaceholder": "使用者名稱",
+    "usernameDescription": "用以登入遠端伺服器的使用者名稱",
+    "publicKeyLabel": "公鑰",
+    "publicKeyPlaceholder": "公鑰",
+    "publicKeyDescription": "用以登入遠端伺服器的公鑰",
+    "submitButton": "完成",
+    "toastSuccess": "資料儲存成功",
+    "nonEmpty": "此欄位不得為空"
+  }
+}
