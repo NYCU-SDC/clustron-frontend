@@ -101,7 +101,6 @@ export default function AddGroupPage() {
             <tr>
               <th className="py-2">Student ID or Email</th>
               <th className="py-2">Role</th>
-              <th className="py-2">Server Access</th>
             </tr>
           </thead>
           <tbody>
@@ -122,7 +121,7 @@ export default function AddGroupPage() {
                   isLast={i === members.length - 1}
                   onAddBatch={addBatchRows}
                   currentUserRole={currentUserRole}
-                  isDuplicate={isDuplicate} // ✅ 正確傳入
+                  isDuplicate={isDuplicate} //
                 />
               );
             })}

@@ -27,7 +27,7 @@ export default function AddMemberPage() {
 
   const removeRow = (index: number) => {
     const next = members.filter((_, i) => i !== index);
-    setMembers(next.length === 0 ? [{ id: "", role: "" }] : next);
+    setMembers(next.length === 0 ? [{ id: "", role: "Student" }] : next);
   };
 
   const addBatchRows = (newData: { id: string; role: string }[]) => {
@@ -69,6 +69,11 @@ export default function AddMemberPage() {
     navigate(`/group/${group.id}/settings`);
   };
 
+  const hasDuplicate = members.some(
+    (m, i) =>
+      members.findIndex((other) => other.id.trim() === m.id.trim()) !== i,
+  );
+
   return (
     <div className="flex">
       <main className="flex-1 p-6">
@@ -98,7 +103,7 @@ export default function AddMemberPage() {
                   isLast={i === members.length - 1}
                   onAddBatch={addBatchRows}
                   currentUserRole={currentUserRole}
-                  isDuplicate={isDuplicate} // ✅ 傳進去
+                  isDuplicate={isDuplicate}
                 />
               );
             })}
@@ -114,7 +119,10 @@ export default function AddMemberPage() {
           </button>
           <button
             onClick={handleSave}
-            className="px-4 py-2 bg-gray-900 text-white rounded"
+            disabled={hasDuplicate}
+            className={`px-4 py-2 rounded text-white ${
+              hasDuplicate ? "bg-gray-400 cursor-not-allowed" : "bg-gray-900"
+            }`}
           >
             Save
           </button>

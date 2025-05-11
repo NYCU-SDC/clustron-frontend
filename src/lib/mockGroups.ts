@@ -6,7 +6,13 @@ export type Member = {
   email: string;
   studentId: string;
   dept: string;
-  role: "student" | "teacher" | "teacherAssistant";
+  role:
+    | "Admin"
+    | "Professor"
+    | "Teacher"
+    | "Teacher assistant"
+    | "Student"
+    | "Auditor";
   accessLevel: "admin" | "organizer" | "groupAdmin" | "user";
 };
 
@@ -31,7 +37,7 @@ export const mockGroups: Group[] = [
         email: "liam@gmail.com",
         studentId: "113999321",
         dept: "CS",
-        role: "student",
+        role: "Student",
         accessLevel: "user",
       },
       {
@@ -40,7 +46,7 @@ export const mockGroups: Group[] = [
         email: "olivia@gmail.com",
         studentId: "113000111",
         dept: "CS",
-        role: "student",
+        role: "Student",
         accessLevel: "user",
       },
       {
@@ -48,8 +54,8 @@ export const mockGroups: Group[] = [
         username: "John Chen",
         email: "john.chen@gmail.com",
         studentId: "116000444",
-        accessLevel: "groupAdmin",
-        role: "teacher",
+        accessLevel: "organizer",
+        role: "Teacher",
         dept: "EE",
       },
     ],
@@ -66,7 +72,7 @@ export const mockGroups: Group[] = [
         email: "emma@gmail.com",
         studentId: "110000111",
         dept: "CS",
-        role: "teacher",
+        role: "Teacher",
         accessLevel: "organizer",
       },
       {
@@ -75,7 +81,7 @@ export const mockGroups: Group[] = [
         email: "olivia@gmail.com",
         studentId: "113000111",
         dept: "CS",
-        role: "student",
+        role: "Student",
         accessLevel: "user",
       },
       {
@@ -84,7 +90,7 @@ export const mockGroups: Group[] = [
         email: "john.chen@gmail.com",
         studentId: "116000444",
         accessLevel: "user",
-        role: "student",
+        role: "Student",
         dept: "EE",
       },
     ],
@@ -101,7 +107,7 @@ export const mockGroups: Group[] = [
         email: "emma@gmail.com",
         studentId: "110000111",
         dept: "CS",
-        role: "teacher",
+        role: "Teacher",
         accessLevel: "organizer",
       },
       {
@@ -109,8 +115,8 @@ export const mockGroups: Group[] = [
         username: "John Chen",
         email: "john.chen@gmail.com",
         studentId: "116000444",
-        accessLevel: "organizer",
-        role: "teacherAssistant",
+        accessLevel: "groupAdmin",
+        role: "Teacher assistant",
         dept: "EE",
       },
     ],

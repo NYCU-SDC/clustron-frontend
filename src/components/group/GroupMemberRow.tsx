@@ -8,7 +8,7 @@ type Props = {
   role: string;
   onDelete?: () => void;
   showActions?: boolean;
-  isArchived?: boolean; // ✅ 新增
+  isArchived?: boolean;
 };
 
 export default function GroupMemberRow({
@@ -19,7 +19,7 @@ export default function GroupMemberRow({
   role,
   onDelete,
   showActions = false,
-  isArchived = false, //  預設 false
+  isArchived = false,
 }: Props) {
   return (
     <tr className="hover:bg-gray-100">

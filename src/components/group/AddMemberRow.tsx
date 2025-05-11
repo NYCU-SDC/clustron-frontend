@@ -22,7 +22,7 @@ export default function AddMemberRow({
   onChange,
   onRemove,
   onAdd,
-  onAddBatch,
+  onAddBatch, //多行貼上
   currentUserRole,
   isDuplicate,
 }: Props) {
