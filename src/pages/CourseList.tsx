@@ -1,24 +1,27 @@
+// src/pages/CourseList.tsx
+
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useGroupContext } from "@/context/GroupContext";
 import { useUserContext } from "@/context/UserContext";
 import { useState } from "react";
-import { canArchiveGroup } from "@/lib/permission"; // 決定誰能建立課程
+import { canArchiveGroup } from "@/lib/permission";
+import { useGetGroups } from "@/api/queries/useGetGroups";
 
 export default function CourseList() {
   const navigate = useNavigate();
-  const { groups } = useGroupContext();
   const { user, login } = useUserContext();
   const isAdmin = user?.accessLevel === "admin";
   const [inputId, setInputId] = useState("");
 
+  const { data, isLoading } = useGetGroups(); // ⬅️ 改用 API
+  // console.log("[CourseList] groups data:", data);
   const handleLogin = () => {
     const ok = login(inputId.trim());
     if (!ok) alert("使用者不存在");
   };
 
   const canCreateCourse =
-    isAdmin || (user && canArchiveGroup(user.accessLevel)); // e.g., admin, organizer
+    isAdmin || (user && canArchiveGroup(user.accessLevel));
 
   return (
     <div className="p-4 space-y-4">
@@ -56,37 +59,36 @@ export default function CourseList() {
           )}
         </div>
 
-        <div className="space-y-4">
-          {groups
-            .filter(
-              (group) =>
-                isAdmin ||
-                group.members.some((m) => m.studentId === user?.studentId),
-            )
-            .map((group) => {
-              const member = group.members.find(
-                (m) => m.studentId === user?.studentId,
-              );
-              const accessLevel = isAdmin ? "admin" : member?.accessLevel;
-              const isReadonly = accessLevel === "user";
+        {isLoading ? (
+          <p className="text-gray-500">Loading...</p>
+        ) : (
+          <div className="space-y-4">
+            {data?.items
+              .filter(
+                (group) => isAdmin || group.me.role.accessLevel !== "user",
+              )
+              .map((group) => {
+                const isReadonly = group.me.role.accessLevel === "user";
+                const path = isReadonly ? `/${group.id}` : `/group/${group.id}`;
 
-              const path = isReadonly ? `/${group.id}` : `/group/${group.id}`;
-
-              return (
-                <div
-                  key={group.id}
-                  onClick={() => navigate(path)}
-                  className="cursor-pointer rounded-lg border p-6 hover:bg-gray-50 transition"
-                >
-                  <h2 className="text-xl font-semibold mb-2">{group.title}</h2>
-                  <p className="text-gray-600 text-sm">{group.description}</p>
-                  {isAdmin && (
-                    <p className="text-xs text-gray-400">(admin view)</p>
-                  )}
-                </div>
-              );
-            })}
-        </div>
+                return (
+                  <div
+                    key={group.id}
+                    onClick={() => navigate(path)}
+                    className="cursor-pointer rounded-lg border p-6 hover:bg-gray-50 transition"
+                  >
+                    <h2 className="text-xl font-semibold mb-2">
+                      {group.title}
+                    </h2>
+                    <p className="text-gray-600 text-sm">{group.description}</p>
+                    {isAdmin && (
+                      <p className="text-xs text-gray-400">(admin view)</p>
+                    )}
+                  </div>
+                );
+              })}
+          </div>
+        )}
       </div>
     </div>
   );

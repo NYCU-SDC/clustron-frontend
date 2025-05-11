@@ -1,21 +1,28 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AddMemberRow from "@/components/group/AddMemberRow";
-import { Member, Group } from "@/lib/mockGroups";
-import { v4 as uuidv4 } from "uuid";
-import { findUserByIdOrEmail } from "@/lib/userMock";
-import { useGroupContext } from "@/context/GroupContext";
 import { useUserContext } from "@/context/UserContext";
+import { useCreateGroup } from "@/api/mutations/useCreateGroup";
 
 export default function AddGroupPage() {
   const navigate = useNavigate();
-  const { setGroups } = useGroupContext();
-
+  const { user } = useUserContext();
+  const currentUserRole = user?.role || "Student";
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [members, setMembers] = useState([{ id: "", role: "Student" }]);
-  const { user } = useUserContext();
-  const currentUserRole = user?.role || "Student";
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const { mutate: createGroup, isPending } = useCreateGroup({
+    onSuccess: () => navigate("/"),
+
+    onError: (err: unknown) => {
+      const message =
+        err instanceof Error ? err.message : "建立失敗，請稍後再試";
+      setErrorMsg(message);
+    },
+  });
+
   const updateRow = (index: number, key: "id" | "role", value: string) => {
     const next = [...members];
     next[index][key] = value;
@@ -36,40 +43,34 @@ export default function AddGroupPage() {
   };
 
   const handleSubmit = () => {
-    const newGroupId = uuidv4().slice(0, 8);
-    const newMembers: Member[] = [];
+    setErrorMsg("");
 
-    for (let i = 0; i < members.length; i++) {
-      const input = members[i].id.trim();
-      const role = members[i].role;
-      const user = findUserByIdOrEmail(input);
+    const hasEmpty = members.some((m) => !m.id.trim() || !m.role);
+    const isDuplicate = members.some(
+      (m, i) => members.findIndex((n) => n.id.trim() === m.id.trim()) !== i,
+    );
 
-      if (!user) {
-        alert(`User not found: ${input}`);
-        return;
-      }
-
-      newMembers.push({
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        studentId: user.studentId,
-        dept: user.dept || "",
-        role: role as Member["role"],
-        accessLevel: user.accessLevel,
-      });
+    if (!title.trim()) {
+      setErrorMsg("請輸入課程名稱");
+      return;
+    }
+    if (hasEmpty) {
+      setErrorMsg("請填寫所有成員欄位");
+      return;
+    }
+    if (isDuplicate) {
+      setErrorMsg("有重複的成員 ID 或 Email");
+      return;
     }
 
-    const newGroup: Group = {
-      id: newGroupId,
+    createGroup({
       title,
       description,
-      isArchived: false,
-      members: newMembers,
-    };
-
-    setGroups((prev) => [...prev, newGroup]);
-    navigate("/");
+      members: members.map((m) => ({
+        member: m.id.trim(),
+        role: m.role,
+      })),
+    });
   };
 
   return (
@@ -121,20 +122,24 @@ export default function AddGroupPage() {
                   isLast={i === members.length - 1}
                   onAddBatch={addBatchRows}
                   currentUserRole={currentUserRole}
-                  isDuplicate={isDuplicate} //
+                  isDuplicate={isDuplicate}
                 />
               );
             })}
           </tbody>
         </table>
+        {errorMsg && <p className="text-red-600 text-sm mt-2">{errorMsg}</p>}
       </div>
 
       <div className="text-right">
         <button
           onClick={handleSubmit}
-          className="bg-gray-900 text-white px-4 py-2 rounded"
+          disabled={isPending}
+          className={`bg-gray-900 text-white px-4 py-2 rounded ${
+            isPending ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         >
-          Create Group
+          {isPending ? "Saving..." : "Create Group"}
         </button>
       </div>
     </div>
