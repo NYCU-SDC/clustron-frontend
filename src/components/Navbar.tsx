@@ -12,9 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "@/components/ThemeProvider";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import ProfileLightImg from "@/assets/Profile_light.png";
-import ProfileDarkImg from "@/assets/Profile_dark.png";
+import { CircleUserRound } from "lucide-react";
 
 export default function Navbar() {
   const { setTheme } = useTheme();
@@ -57,19 +55,7 @@ export default function Navbar() {
         <div className="flex items-center space-x-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Avatar className="cursor-pointer">
-                <AvatarImage
-                  src={ProfileLightImg}
-                  alt="User"
-                  className="block dark:hidden"
-                />
-                <AvatarImage
-                  src={ProfileDarkImg}
-                  alt="User"
-                  className="hidden dark:block"
-                />
-                <AvatarFallback>S</AvatarFallback>
-              </Avatar>
+              <CircleUserRound strokeWidth={1.5} className="cursor-pointer" />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
               <DropdownMenuGroup>

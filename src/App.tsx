@@ -4,7 +4,7 @@ import Onboarding from "@/pages/Onboarding";
 import SettingLayout from "./pages/SettingLayout";
 import SettingGeneral from "./pages/SettingGeneral";
 import SettingAddKey from "./pages/SettingAddKey";
-import SettingSSH from "./pages/SettingSSH";
+import SettingSsh from "./pages/SettingSsh";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
@@ -18,7 +18,7 @@ const App = () => {
           <Route path="/Setting" element={<SettingLayout />}>
             <Route index element={<Navigate to="general" replace />} />
             <Route path="general" element={<SettingGeneral />} />
-            <Route path="ssh" element={<SettingSSH />} />
+            <Route path="ssh" element={<SettingSsh />} />
             <Route path="addNewKey" element={<SettingAddKey />} />
           </Route>
         </Routes>
