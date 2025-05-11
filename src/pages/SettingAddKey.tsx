@@ -1,3 +1,9 @@
+import SettingAddKeyForm from "@/components/SettingAddKeyForm";
+
 export default function SettingAddKey() {
-  return <>Add key</>;
+  return (
+    <div className="w-full max-w-5xl px-6 py-8">
+      <SettingAddKeyForm />
+    </div>
+  );
 }

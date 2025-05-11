@@ -11,13 +11,19 @@ import {
 } from "@/components/ui/table";
 
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router";
 
 export default function SettingKeyTable() {
+  const navigate = useNavigate();
+
   return (
     <Card>
       <CardHeader className="py-5 flex justify-between">
         <CardTitle className="text-2xl">SSH Keys</CardTitle>
-        <Button> ＋ New SSH Keys</Button>
+        <Button onClick={() => navigate("/Setting/addNewKey")}>
+          {" "}
+          ＋ New SSH Keys
+        </Button>
       </CardHeader>
       <CardContent>
         <Table>
