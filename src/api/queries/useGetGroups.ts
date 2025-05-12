@@ -1,19 +1,45 @@
-// src/api/queries/useGetGroups.ts
 import { useQuery } from "@tanstack/react-query";
-import { getGroups } from "@/api/groups/getGroups";
-import { useUserContext } from "@/context/UserContext"; // ⬅️ 加這行
+import { mockGroups } from "@/lib/mockGroups";
+import { transformGroupsToSummaries } from "@/lib/transGtoS";
+import { useUserContext } from "@/context/UserContext";
+import type { GroupSummary, PaginatedResponse } from "@/types/group";
 
-export function useGetGroups(page = 1, size = 10) {
+export function useGetGroups() {
   const { user } = useUserContext();
-  const accessLevel = user?.accessLevel ?? "user";
-  const userId = user?.id ?? "";
 
   return useQuery({
-    queryKey: ["groups", page, size, accessLevel, userId],
-    queryFn: () => {
-      console.log(`[useGetGroups] fetching page ${page} as ${accessLevel}`);
-      return getGroups(page, size, "asc", "title", accessLevel);
+    queryKey: ["groups", user?.studentId],
+    queryFn: async (): Promise<PaginatedResponse<GroupSummary>> => {
+      if (!user)
+        return {
+          items: [],
+          totalItems: 0,
+          totalPages: 1,
+          currentPage: 1,
+          pageSize: 0,
+          hasNextPage: false,
+        };
+      console.log("目前登入使用者：", user);
+      console.log("使用者身份：", user.accessLevel);
+      const visibleGroups =
+        user.accessLevel === "admin"
+          ? mockGroups // ✅ admin 看到所有群組
+          : mockGroups.filter((group) =>
+              group.members.some(
+                (member) => member.studentId === user.studentId,
+              ),
+            );
+
+      const summaries = transformGroupsToSummaries(visibleGroups, user);
+
+      return {
+        items: summaries,
+        totalItems: summaries.length,
+        totalPages: 1,
+        currentPage: 1,
+        pageSize: summaries.length,
+        hasNextPage: false,
+      };
     },
-    enabled: !!user,
   });
 }

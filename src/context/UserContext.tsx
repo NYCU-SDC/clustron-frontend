@@ -29,7 +29,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         email: fallback.email,
         studentId: fallback.studentId,
         dept: fallback.dept,
-        role: fallback.role as Member["role"], // 只取 student / teacher / TA 的 subset
+        role: fallback.role as Member["role"],
         accessLevel: fallback.accessLevel,
       };
       setUser(fallbackMember);

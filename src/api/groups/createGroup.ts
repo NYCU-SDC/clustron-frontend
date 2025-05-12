@@ -1,22 +1,22 @@
 // src/api/groups/createGroup.ts
 
 import { mockGroups } from "@/lib/mockGroups";
-import type { CreateGroupInput } from "@/types/group";
+import type { AccessLevel, CreateGroupInput } from "@/types/group";
 
 export async function createGroup(payload: CreateGroupInput) {
   await new Promise((r) => setTimeout(r, 1000));
 
   const id = `mock-${Date.now()}`;
   const createdAt = new Date().toISOString();
-
+  const accessLevel: AccessLevel = "organizer"; //改這裡
   const newGroup = {
     id,
     title: payload.title,
     description: payload.description,
-    isArchived: false,
+    isArchived: true,
     createdAt,
     updatedAt: createdAt,
-    members: [], // ✅ 初始為空
+    members: [],
   };
 
   mockGroups.unshift(newGroup); // ✅ push 進 mock 資料
@@ -32,7 +32,7 @@ export async function createGroup(payload: CreateGroupInput) {
       role: {
         id: `mock-role-${id}`,
         role: "test-creator",
-        accessLevel: "organizer",
+        accessLevel,
       },
     },
   };

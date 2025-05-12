@@ -21,7 +21,13 @@ export default function GroupMemberTable({
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteMembers(groupId);
 
-  console.log(data);
+  console.log("完整的分页数据:", data);
+
+  // 打印每页的详细信息
+  data?.pages.forEach((page, index) => {
+    console.log(`第 ${index + 1} 页数据:`, page);
+    console.log(`第 ${index + 1} 页有 ${page.items.length} 个成员`);
+  });
   const members: MemberResponse[] =
     data?.pages.flatMap((page) => page.items) ?? [];
 
@@ -55,7 +61,7 @@ export default function GroupMemberTable({
                     name={m.title}
                     id={m.id}
                     email={m.description}
-                    dept="NA"
+                    dept={"N/A"}
                     role={m.me.role.role}
                     showActions={showActions}
                     onDelete={onRemove ? () => onRemove(m.id) : undefined}
