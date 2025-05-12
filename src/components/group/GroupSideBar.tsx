@@ -13,12 +13,12 @@ export default function GroupSideBar({ title }: { title: string }) {
       <h2 className="text-xl font-semibold mb-4">{title}</h2>
       <ul className="space-y-2">
         <li>
-          <NavLink to={`/group/${id}`} end className={linkClass}>
+          <NavLink to={`/groups/${id}`} end className={linkClass}>
             Overview
           </NavLink>
         </li>
         <li>
-          <NavLink to={`/group/${id}/settings`} className={linkClass}>
+          <NavLink to={`/groups/${id}/settings`} className={linkClass}>
             Group Settings
           </NavLink>
         </li>

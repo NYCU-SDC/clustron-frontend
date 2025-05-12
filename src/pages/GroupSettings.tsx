@@ -1,10 +1,11 @@
 import { useOutletContext } from "react-router-dom";
 import GroupDescription from "@/components/group/GroupDes";
 import GroupMemberTable from "@/components/group/GroupMemberTable";
-import { useState, useMemo, useEffect } from "react";
-import type { Member } from "@/lib/mockGroups";
-import { useGroupContext } from "@/context/GroupContext";
 import { useUserContext } from "@/context/UserContext";
+import { useGetGroupById } from "@/api/queries/useGetGroupById";
+import { useArchiveGroup } from "@/api/mutations/useArchiveGroup";
+import { useUnarchiveGroup } from "@/api/mutations/useUnarchiveGroup";
+import { useRemoveMember } from "@/api/mutations/useRemoveMember";
 import {
   canAddMember,
   canRemoveMember,
@@ -17,55 +18,37 @@ export type GroupContextType = {
 
 export default function GroupSettings() {
   const { groupId } = useOutletContext<GroupContextType>();
-  const { groups, setGroups } = useGroupContext();
-  const { user } = useUserContext(); // 🔑 取得目前登入使用者
-  if (!user) return <div>User not logged in.</div>;
+  const { user } = useUserContext();
+  const { data: group, isLoading } = useGetGroupById(groupId);
+
+  const archiveMutation = useArchiveGroup();
+  const unarchiveMutation = useUnarchiveGroup();
+  const removeMutation = useRemoveMember(groupId, {
+    onSuccess: () => console.log("已刪除"),
+    onError: (err) =>
+      alert("刪除失敗：" + (err instanceof Error ? err.message : "")),
+  });
+
+  if (isLoading || !user || !group) {
+    return <div className="p-4">Loading or user not found.</div>;
+  }
+
+  const accessLevel = group.me.role.accessLevel;
   const isAdmin = user.accessLevel === "admin";
-  const group = useMemo(
-    () => groups.find((g) => g.id === groupId),
-    [groups, groupId],
-  );
+  const canEdit = isAdmin || canRemoveMember(accessLevel);
+  const canToggleArchive = isAdmin || canArchiveGroup(accessLevel);
+  const canAdd = isAdmin || canAddMember(accessLevel);
 
-  const [isArchived, setIsArchived] = useState(group?.isArchived ?? false);
-  const [members, setMembers] = useState<Member[]>(group?.members ?? []);
-
-  useEffect(() => {
-    if (group) {
-      setIsArchived(group.isArchived);
-      setMembers(group.members);
-    }
-  }, [group]);
-
-  if (!group || !user) return <div>Group not found or user not logged in.</div>;
-  const courseLevel = group.members.find(
-    (m) => m.studentId === user.studentId,
-  )?.accessLevel;
-  const canEdit =
-    isAdmin || (courseLevel ? canRemoveMember(courseLevel) : false);
-  const canToggleArchive =
-    isAdmin || (courseLevel ? canArchiveGroup(courseLevel) : false);
-  const canAdd = isAdmin || (courseLevel ? canAddMember(courseLevel) : false);
-
-  const handleRemove = (index: number) => {
-    const target = members[index];
-    setMembers((prev) => prev.filter((_, i) => i !== index));
-
-    setGroups((prev) =>
-      prev.map((g) =>
-        g.id === group.id
-          ? { ...g, members: g.members.filter((m) => m.id !== target.id) }
-          : g,
-      ),
-    );
+  const handleRemove = (memberId: string) => {
+    removeMutation.mutate(memberId);
   };
 
   const toggleArchive = () => {
-    const next = !isArchived;
-    setIsArchived(next);
-
-    setGroups((prev) =>
-      prev.map((g) => (g.id === group.id ? { ...g, isArchived: next } : g)),
-    );
+    if (group.isArchived) {
+      unarchiveMutation.mutate(group.id);
+    } else {
+      archiveMutation.mutate(group.id);
+    }
   };
 
   return (
@@ -73,10 +56,9 @@ export default function GroupSettings() {
       <GroupDescription title={group.title} desc={group.description} />
 
       <GroupMemberTable
-        members={members}
         groupId={group.id}
-        isArchived={isArchived}
-        onRemove={canEdit && !isArchived ? handleRemove : undefined}
+        isArchived={group.isArchived}
+        onRemove={canEdit && !group.isArchived ? handleRemove : undefined}
         showAddButton={canAdd}
         showActions={canEdit}
       />
@@ -84,18 +66,23 @@ export default function GroupSettings() {
       {canToggleArchive && (
         <div className="mt-10 p-4 border rounded bg-gray-50">
           <h2 className="font-bold text-lg mb-2">
-            {isArchived ? "Unarchive This Group" : "Archive This Group"}
+            {group.isArchived ? "Unarchive This Group" : "Archive This Group"}
           </h2>
           <p className="text-sm text-gray-600 mb-4">
-            {isArchived
+            {group.isArchived
               ? "This will reactivate the group and allow updates again."
               : "This will turn the group into archive state, no update can be made before it is activated again."}
           </p>
           <button
             onClick={toggleArchive}
             className="bg-gray-900 text-white px-4 py-2 rounded"
+            disabled={archiveMutation.isPending || unarchiveMutation.isPending}
           >
-            {isArchived ? "Unarchive" : "Archive"}
+            {archiveMutation.isPending || unarchiveMutation.isPending
+              ? "Saving..."
+              : group.isArchived
+                ? "Unarchive"
+                : "Archive"}
           </button>
         </div>
       )}

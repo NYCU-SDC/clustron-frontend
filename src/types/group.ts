@@ -1,6 +1,6 @@
 // src/types/group.ts
 
-export type AccessLevel = "user" | "group-admin" | "organizer" | "admin";
+export type AccessLevel = "user" | "groupAdmin" | "organizer" | "admin";
 
 export type GroupRole = {
   id: string;

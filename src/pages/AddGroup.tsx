@@ -14,7 +14,7 @@ export default function AddGroupPage() {
   const [errorMsg, setErrorMsg] = useState("");
 
   const { mutate: createGroup, isPending } = useCreateGroup({
-    onSuccess: () => navigate("/"),
+    onSuccess: () => navigate("/groups"),
 
     onError: (err: unknown) => {
       const message =

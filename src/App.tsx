@@ -17,11 +17,11 @@ const App = () => {
     <UserProvider>
       <GroupProvider>
         <Routes>
-          <Route path="/" element={<CourseList />} />
-          <Route path="/add-group" element={<AddGroupPage />} />
-          <Route path="/:id" element={<CourseDescriptionPage />} />
+          <Route path="/groups" element={<CourseList />} />
+          <Route path="/groups/new" element={<AddGroupPage />} />
+          <Route path="/groups/:id/info" element={<CourseDescriptionPage />} />
           <Route path="/Onboarding" element={<Onboarding />} />
-          <Route path="/group/:id" element={<GroupPage />}>
+          <Route path="/groups/:id" element={<GroupPage />}>
             <Route index element={<GroupOverview />} />
             <Route path="settings" element={<GroupSettings />} />
             <Route path="add-member" element={<AddMemberPage />} />

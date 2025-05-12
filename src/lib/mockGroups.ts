@@ -22,6 +22,8 @@ export type Group = {
   description: string;
   isArchived: boolean;
   members: Member[];
+  createdAt: string; // ✅ 新增
+  updatedAt: string;
 };
 
 export const mockGroups: Group[] = [
@@ -59,6 +61,8 @@ export const mockGroups: Group[] = [
         dept: "EE",
       },
     ],
+    createdAt: "20250000",
+    updatedAt: "20250111",
   },
   {
     id: "ee201",
@@ -94,6 +98,8 @@ export const mockGroups: Group[] = [
         dept: "EE",
       },
     ],
+    createdAt: "20250820",
+    updatedAt: "20250821",
   },
   {
     id: "ee203",
@@ -120,6 +126,8 @@ export const mockGroups: Group[] = [
         dept: "EE",
       },
     ],
+    createdAt: "20250820",
+    updatedAt: "20250821",
   },
 ];
 

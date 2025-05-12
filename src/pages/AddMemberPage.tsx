@@ -66,7 +66,7 @@ export default function AddMemberPage() {
       ),
     );
 
-    navigate(`/group/${group.id}/settings`);
+    navigate(`/groups/${group.id}/settings`);
   };
 
   const hasDuplicate = members.some(
@@ -112,7 +112,7 @@ export default function AddMemberPage() {
 
         <div className="mt-6 flex gap-3">
           <button
-            onClick={() => navigate(`/group/${group.id}/settings`)}
+            onClick={() => navigate(`/groups/${group.id}/settings`)}
             className="px-4 py-2 border rounded"
           >
             Cancel

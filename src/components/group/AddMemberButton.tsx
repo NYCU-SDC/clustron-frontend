@@ -11,7 +11,7 @@ export default function AddMemberButton({ groupId, isArchived }: Props) {
 
   const handleClick = () => {
     if (isArchived) return; // 不做任何事
-    navigate(`/group/${groupId}/add-member`);
+    navigate(`/groups/${groupId}/add-member`);
   };
 
   return (

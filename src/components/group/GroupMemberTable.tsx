@@ -1,23 +1,30 @@
 import GroupMemberRow from "@/components/group/GroupMemberRow";
 import AddMemberButton from "@/components/group/AddMemberButton";
 import { Card, CardContent } from "@/components/ui/card";
-import type { Member } from "@/lib/mockGroups";
+import { useInfiniteMembers } from "@/api/mutations/useGetMembers";
+import type { MemberResponse } from "@/api/groups/getMember";
+
 type Props = {
-  members: Member[];
   showActions?: boolean;
   showAddButton?: boolean;
-  groupId?: string;
-  onRemove?: (index: number) => void;
-  isArchived?: boolean; // ✅ 新增
+  groupId: string;
+  onRemove?: (memberId: string) => void;
+  isArchived?: boolean;
 };
 
 export default function GroupMemberTable({
-  members,
   showActions = true,
   groupId,
   onRemove,
-  isArchived = false, //
+  isArchived = false,
 }: Props) {
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteMembers(groupId);
+
+  console.log(data);
+  const members: MemberResponse[] =
+    data?.pages.flatMap((page) => page.items) ?? [];
+
   return (
     <Card>
       <CardContent className="p-6">
@@ -28,31 +35,49 @@ export default function GroupMemberTable({
           )}
         </div>
 
-        <table className="w-full text-left text-sm border-t border-gray-200">
-          <thead>
-            <tr className="text-gray-500">
-              <th className="py-2">Name</th>
-              <th className="py-2">Student ID or Email</th>
-              <th className="py-2">Department</th>
-              <th className="py-2">Role</th>
-            </tr>
-          </thead>
-          <tbody>
-            {members.map((m, i) => (
-              <GroupMemberRow
-                key={m.id}
-                name={m.username}
-                id={m.studentId}
-                email={m.email}
-                dept={m.dept}
-                role={m.role}
-                showActions={showActions}
-                onDelete={onRemove ? () => onRemove(i) : undefined}
-                isArchived={isArchived} //
-              />
-            ))}
-          </tbody>
-        </table>
+        {isLoading ? (
+          <p className="text-sm text-gray-500">Loading members...</p>
+        ) : (
+          <>
+            <table className="w-full text-left text-sm border-t border-gray-200">
+              <thead>
+                <tr className="text-gray-500">
+                  <th className="py-2">Name</th>
+                  <th className="py-2">Student ID or Email</th>
+                  <th className="py-2">Department</th>
+                  <th className="py-2">Role</th>
+                </tr>
+              </thead>
+              <tbody>
+                {members.map((m) => (
+                  <GroupMemberRow
+                    key={m.id}
+                    name={m.title}
+                    id={m.id}
+                    email={m.description}
+                    dept="NA"
+                    role={m.me.role.role}
+                    showActions={showActions}
+                    onDelete={onRemove ? () => onRemove(m.id) : undefined}
+                    isArchived={isArchived}
+                  />
+                ))}
+              </tbody>
+            </table>
+
+            {hasNextPage && (
+              <div className="mt-4 flex justify-center">
+                <button
+                  onClick={() => fetchNextPage()}
+                  disabled={isFetchingNextPage}
+                  className="text-sm text-blue-600 hover:underline"
+                >
+                  {isFetchingNextPage ? "Loading more..." : "Load more"}
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </CardContent>
     </Card>
   );

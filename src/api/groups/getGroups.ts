@@ -1,25 +1,15 @@
-// src/api/groups/getGroups.ts
-
-import type { GroupRole, GroupSummary, PaginatedResponse } from "@/types/group";
+import type { GroupSummary, PaginatedResponse } from "@/types/group";
 import { mockGroups } from "@/lib/mockGroups";
 
-// 模擬目前使用者的 accessLevel，真實應從 userContext 或登入狀態取得
-const mockMeRole: GroupRole = {
-  id: "temp-role-id",
-  role: "creator",
-  accessLevel: "admin", // 模擬為 admin 使用者
-};
-
 export async function getGroups(
-  page: number = 1,
-  size: number = 10,
+  page = 1,
+  size = 10,
   sort: "asc" | "desc" = "asc",
   sortBy: keyof GroupSummary = "title",
+  accessLevel: "admin" | "organizer" | "groupAdmin" | "user" = "user",
 ): Promise<PaginatedResponse<GroupSummary>> {
-  console.log("[getGroups] called");
-  await new Promise((r) => setTimeout(r, 500)); // 模擬延遲
+  await new Promise((r) => setTimeout(r, 500));
 
-  // 轉換 mockGroups -> GroupSummary[]
   const all: GroupSummary[] = mockGroups.map((g) => ({
     id: g.id,
     title: g.title,
@@ -28,11 +18,15 @@ export async function getGroups(
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     me: {
-      role: mockMeRole,
+      role: {
+        id: "mock-role-id",
+        role: "creator",
+        accessLevel, // ✅ 根據傳入的 user 權限
+      },
     },
   }));
 
-  // 排序
+  // 排序、分頁同原本
   all.sort((a, b) => {
     const aVal = a[sortBy] ?? "";
     const bVal = b[sortBy] ?? "";
@@ -41,7 +35,6 @@ export async function getGroups(
       : String(bVal).localeCompare(String(aVal));
   });
 
-  // 分頁
   const totalItems = all.length;
   const totalPages = Math.ceil(totalItems / size);
   const start = (page - 1) * size;
