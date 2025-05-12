@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useCookies } from "react-cookie";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle, CheckCircle } from "lucide-react";
+import { jwtDecode } from "jwt-decode";
+import { AccessTokenType } from "@/types/type";
+import { toast } from "sonner";
+import { useNavigate } from "react-router";
 
 export default function Callback() {
   const [, setCookie] = useCookies([
@@ -9,19 +11,19 @@ export default function Callback() {
     "refreshTokenExpirationTime",
     "refreshToken",
   ]);
-  const [status, setStatus] = useState<"loading" | "success" | "error">(
-    "loading",
-  );
+  const navigate = useNavigate();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const accessToken = params.get("token");
     const refreshToken = params.get("refreshToken");
-    const redirectTo = params.get("r") || "/";
 
     if (!accessToken || !refreshToken) {
-      setStatus("error");
-      return;
+      const timer = setTimeout(() => {
+        navigate("/login");
+        toast("Login Failed");
+      }, 0);
+      return () => clearTimeout(timer);
     }
 
     setCookie("accessToken", accessToken, { path: "/" });
@@ -31,32 +33,21 @@ export default function Callback() {
       Math.floor(Date.now() / 1000) + 1 * 24 * 60 * 60,
       { path: "/" },
     );
-    setStatus("success");
 
-    setTimeout(() => {
-      window.location.href = redirectTo;
-    }, 1000);
-  }, []);
+    let redirectTo;
+    if (jwtDecode<AccessTokenType>(accessToken).Role === "ROLE_NOT_SETUP") {
+      redirectTo = "/onboading";
+    } else {
+      redirectTo = "/";
+    }
 
-  return (
-    <div className="flex items-start min-h-screen p-2">
-      {status === "error" && (
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>Login Failed</AlertDescription>
-        </Alert>
-      )}
+    const timer = setTimeout(() => {
+      navigate(redirectTo);
+      toast("Login Successfully");
+    }, 0);
 
-      {status === "success" && (
-        <Alert>
-          <CheckCircle className="h-4 w-4" />
-          <AlertTitle>Login Successful</AlertTitle>
-          <AlertDescription>Redirecting...</AlertDescription>
-        </Alert>
-      )}
+    return () => clearTimeout(timer);
+  }, [navigate, setCookie]);
 
-      {status === "loading" && <p>Loading...</p>}
-    </div>
-  );
+  return <p>Loading...</p>;
 }
