@@ -2,6 +2,7 @@
 
 import { mockGroups } from "@/lib/mockGroups";
 import type { Member } from "@/lib/mockGroups";
+import { mockUsers } from "@/lib/userMock";
 
 type AddMemberRequest = {
   member: string; // email or studentId
@@ -21,8 +22,15 @@ type AddMemberResponse = {
 };
 
 function generateMember(input: string, role: string): Member {
-  const id = `mock-${Math.random().toString(36).slice(2, 8)}`;
-  const email = input.includes("@") ? input : `${input}@mock.com`;
+  // 查找 mockUsers 中是否有与 input（email 或 studentId）匹配的用户
+  const user = mockUsers.find(
+    (user) => user.studentId === input || user.email === input,
+  );
+
+  if (!user) {
+    throw new Error(`User with ${input} not found`);
+  }
+
   const accessLevel =
     role === "Teacher"
       ? "organizer"
@@ -31,11 +39,11 @@ function generateMember(input: string, role: string): Member {
         : "user";
 
   return {
-    id,
-    username: email.split("@")[0],
-    email,
-    studentId: input.match(/^\d+$/) ? input : `s${id}`,
-    dept: "CS",
+    id: user.id,
+    username: user.username,
+    email: user.email,
+    studentId: user.studentId,
+    dept: user.dept,
     role: role as Member["role"],
     accessLevel,
   };

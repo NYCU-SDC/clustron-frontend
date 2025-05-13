@@ -1,4 +1,5 @@
 import MemberDeleteMenu from "./MemberActionMenu";
+import { TableRow, TableCell } from "@/components/ui/table";
 
 type Props = {
   name: string;
@@ -22,22 +23,22 @@ export default function GroupMemberRow({
   isArchived = false,
 }: Props) {
   return (
-    <tr className="hover:bg-gray-100">
-      <td className="py-2">{name}</td>
-      <td className="py-2">
+    <TableRow className="hover:bg-muted">
+      <TableCell>{name}</TableCell>
+      <TableCell>
         <div className="flex flex-col">
           <span className="font-medium">{id}</span>
-          <span className="text-gray-500 text-xs">{email}</span>
+          <span className="text-muted-foreground text-xs">{email}</span>
         </div>
-      </td>
-      <td className="py-2">{dept}</td>
-      <td className="py-2">{role}</td>
+      </TableCell>
+      <TableCell>{dept}</TableCell>
+      <TableCell>{role}</TableCell>
 
       {showActions && (
-        <td className="py-2 text-right pr-4">
+        <TableCell className="text-right pr-4">
           <MemberDeleteMenu onConfirm={onDelete!} isArchived={isArchived} />
-        </td>
+        </TableCell>
       )}
-    </tr>
+    </TableRow>
   );
 }

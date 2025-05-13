@@ -1,9 +1,10 @@
+import { useInfiniteMembers } from "@/api/mutations/useGetMembers";
+import { mockUsers } from "@/lib/userMock";
 import GroupMemberRow from "@/components/group/GroupMemberRow";
 import AddMemberButton from "@/components/group/AddMemberButton";
 import { Card, CardContent } from "@/components/ui/card";
-import { useInfiniteMembers } from "@/api/mutations/useGetMembers";
 import type { MemberResponse } from "@/api/groups/getMember";
-import { mockUsers } from "@/lib/userMock";
+
 type Props = {
   showActions?: boolean;
   showAddButton?: boolean;
@@ -21,10 +22,6 @@ export default function GroupMemberTable({
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteMembers(groupId);
 
-  // data?.pages.forEach((page, index) => {
-  //   console.log(`第 ${index + 1} :`, page);
-  //   console.log(`第 ${index + 1} : ${page.items.length} `);
-  // });
   const members: MemberResponse[] =
     data?.pages.flatMap((page) => page.items) ?? [];
 
@@ -53,16 +50,19 @@ export default function GroupMemberTable({
               </thead>
               <tbody>
                 {members.map((m) => {
-                  // 使用 studentId 查找對應的 dept
                   const user = mockUsers.find((user) => user.id === m.id);
+                  // console.log(user)
                   const dept = user ? user.dept : "N/A";
                   const studentId = user ? user.studentId : "N/A";
+                  const email = user ? user.email : "N/A";
+                  console.log("Member Data:", m);
+                  console.log("User Data:", user);
                   return (
                     <GroupMemberRow
                       key={m.id}
                       name={m.title}
                       id={studentId}
-                      email={m.description}
+                      email={email}
                       dept={dept}
                       role={m.me.role.role}
                       showActions={showActions}

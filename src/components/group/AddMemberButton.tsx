@@ -1,5 +1,6 @@
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   groupId: string;
@@ -10,18 +11,19 @@ export default function AddMemberButton({ groupId, isArchived }: Props) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    if (isArchived) return; // 不做任何事
+    if (isArchived) return;
     navigate(`/groups/${groupId}/add-member`);
   };
 
   return (
-    <button
+    <Button
       onClick={handleClick}
       disabled={isArchived}
-      className="flex items-center gap-1 bg-gray-900 text-white px-4 py-2 rounded text-sm hover:bg-gray-800 disabled:opacity-50"
+      variant="default"
+      className="flex items-center gap-1"
     >
       <Plus className="w-4 h-4" />
       New Members
-    </button>
+    </Button>
   );
 }

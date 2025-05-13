@@ -1,19 +1,24 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AddMemberRow from "@/components/group/AddMemberRow";
-import { Member } from "@/lib/mockGroups";
-import { findUserByIdOrEmail } from "@/lib/userMock";
-import { useGroupContext } from "@/context/GroupContext";
+import { useAddMember } from "@/api/mutations/useAddMember"; // 引入 useAddMember
 import { useUserContext } from "@/context/UserContext";
+import { useGroupContext } from "@/context/GroupContext";
 
 export default function AddMemberPage() {
   const { id: groupId } = useParams();
   const navigate = useNavigate();
-  const { groups, setGroups } = useGroupContext();
+  const { groups } = useGroupContext();
   const { user } = useUserContext();
   const currentUserRole = user?.role || "Student";
   const group = groups.find((g) => g.id === groupId);
   const [members, setMembers] = useState([{ id: "", role: "Student" }]);
+
+  const { mutate: addMember } = useAddMember(groupId!, {
+    onSuccess: () => {
+      navigate(`/groups/${groupId}/settings`);
+    },
+  });
 
   if (!group) return <div className="p-6">Course not found.</div>;
 
@@ -30,49 +35,23 @@ export default function AddMemberPage() {
     setMembers(next.length === 0 ? [{ id: "", role: "Student" }] : next);
   };
 
-  const addBatchRows = (newData: { id: string; role: string }[]) => {
-    setMembers((prev) => [...prev, ...newData]);
-  };
-
   const handleSave = () => {
-    const newMembers: Member[] = [];
+    const newMembers = members.map((m) => ({
+      member: m.id,
+      role: m.role,
+    }));
 
-    for (let i = 0; i < members.length; i++) {
-      const input = members[i].id;
-      const role = members[i].role;
-      const user = findUserByIdOrEmail(input);
-
-      if (!user) {
-        alert(`User not found: ${input}`);
-        return;
-      }
-
-      newMembers.push({
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        studentId: user.studentId,
-        dept: user.dept || "",
-        role: role as Member["role"],
-        accessLevel: user.accessLevel,
-      });
-    }
-
-    setGroups((prev) =>
-      prev.map((g) =>
-        g.id === group.id
-          ? { ...g, members: [...g.members, ...newMembers] }
-          : g,
-      ),
-    );
-
-    navigate(`/groups/${group.id}/settings`);
+    addMember(newMembers); // 使用 useAddMember mutation 來新增成員
   };
 
   const hasDuplicate = members.some(
     (m, i) =>
       members.findIndex((other) => other.id.trim() === m.id.trim()) !== i,
   );
+
+  const handleAddBatch = (newMembers: { id: string; role: string }[]) => {
+    setMembers((prev) => [...prev, ...newMembers]);
+  };
 
   return (
     <div className="flex">
@@ -101,9 +80,9 @@ export default function AddMemberPage() {
                   onAdd={addRow}
                   onRemove={removeRow}
                   isLast={i === members.length - 1}
-                  onAddBatch={addBatchRows}
                   currentUserRole={currentUserRole}
                   isDuplicate={isDuplicate}
+                  onAddBatch={handleAddBatch}
                 />
               );
             })}

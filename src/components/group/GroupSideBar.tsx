@@ -1,12 +1,13 @@
 import { NavLink, useParams } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 export default function GroupSideBar({ title }: { title: string }) {
   const { id } = useParams();
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
-    `block px-2 py-1 rounded transition-colors ${
-      isActive ? "text-black font-medium" : "text-gray-500"
-    } hover:bg-gray-100`;
+    `w-full justify-start px-2 py-1 rounded text-sm ${
+      isActive ? "text-primary font-medium" : "text-muted-foreground"
+    }`;
 
   return (
     <aside className="w-64 border-r p-6">
@@ -14,12 +15,20 @@ export default function GroupSideBar({ title }: { title: string }) {
       <ul className="space-y-2">
         <li>
           <NavLink to={`/groups/${id}`} end className={linkClass}>
-            Overview
+            {({ isActive }) => (
+              <Button variant="ghost" className={linkClass({ isActive })}>
+                Overview
+              </Button>
+            )}
           </NavLink>
         </li>
         <li>
           <NavLink to={`/groups/${id}/settings`} className={linkClass}>
-            Group Settings
+            {({ isActive }) => (
+              <Button variant="ghost" className={linkClass({ isActive })}>
+                Group Settings
+              </Button>
+            )}
           </NavLink>
         </li>
       </ul>

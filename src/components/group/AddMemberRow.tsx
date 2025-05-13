@@ -1,5 +1,14 @@
 import { CircleMinus, CirclePlus } from "lucide-react";
 import { roleAssignableMap } from "@/lib/permission";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   index: number;
@@ -22,69 +31,71 @@ export default function AddMemberRow({
   onChange,
   onRemove,
   onAdd,
-  onAddBatch, //多行貼上
+  onAddBatch,
   currentUserRole,
   isDuplicate,
 }: Props) {
   return (
-    <tr className="hover:bg-gray-100">
-      <td className="py-2">
-        <input
-          type="text"
+    <tr className="hover:bg-muted">
+      <td className="py-2 px-2">
+        <Input
           value={id}
           placeholder="Enter StudentID or Email"
-          className={`w-full px-2 py-1 border rounded ${
-            isDuplicate ? "border-red-500 bg-red-50" : "border-gray-300"
-          }`}
+          className={isDuplicate ? "border-red-500 bg-red-50" : ""}
           onChange={(e) => onChange(index, "id", e.target.value)}
           title={isDuplicate ? "Duplicate entry" : ""}
           onPaste={(e) => {
             const pasted = e.clipboardData.getData("text");
-
             const rows = pasted
               .split("\n")
               .map((r) => r.trim())
               .filter(Boolean);
-            console.log("Parsed rows:", rows);
-
             if (rows.length > 1) {
               e.preventDefault();
               const newMembers = rows.map((r) => ({ id: r, role: "Student" }));
-
               onAddBatch(newMembers);
             }
           }}
         />
       </td>
-      <td className="py-2">
-        <select
+
+      <td className="py-2 px-2">
+        <Select
           value={role}
-          className="w-full px-2 py-1 border rounded"
-          onChange={(e) => onChange(index, "role", e.target.value)}
+          onValueChange={(value: string) => onChange(index, "role", value)}
         >
-          {roleAssignableMap[currentUserRole]?.map((r) => (
-            <option key={r} value={r}>
-              {r}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger>
+            <SelectValue placeholder="Select role" />
+          </SelectTrigger>
+          <SelectContent>
+            {roleAssignableMap[currentUserRole]?.map((r) => (
+              <SelectItem key={r} value={r}>
+                {r}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </td>
 
-      <td className="py-2 text-center">
+      <td className="py-2 px-2 text-center">
         {isLast ? (
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onAdd}
-            className="p-1 text-gray-600 hover:text-black"
+            className="text-gray-600 hover:text-black"
           >
             <CirclePlus size={16} />
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => onRemove(index)}
-            className="p-1 text-red-600 hover:text-red-800"
+            className="text-red-600 hover:text-red-800"
           >
             <CircleMinus size={16} />
-          </button>
+          </Button>
         )}
       </td>
     </tr>

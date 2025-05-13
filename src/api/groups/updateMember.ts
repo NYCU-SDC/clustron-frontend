@@ -25,7 +25,7 @@ export async function updateMember(
   memberId: string,
   payload: UpdateMemberRequest,
 ): Promise<UpdateMemberResponse> {
-  await new Promise((r) => setTimeout(r, 300)); // 模擬延遲
+  await new Promise((r) => setTimeout(r, 300));
 
   const group = mockGroups.find((g) => g.id === groupId);
   if (!group) throw new Error("Group not found");

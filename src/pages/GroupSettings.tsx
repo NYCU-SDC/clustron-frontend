@@ -7,7 +7,7 @@ import { useArchiveGroup } from "@/api/mutations/useArchiveGroup";
 import { useUnarchiveGroup } from "@/api/mutations/useUnarchiveGroup";
 import { useRemoveMember } from "@/api/mutations/useRemoveMember";
 import {
-  canAddMember,
+  // canAddMember,
   canRemoveMember,
   canArchiveGroup,
 } from "@/lib/permission";
@@ -37,7 +37,7 @@ export default function GroupSettings() {
   const isAdmin = user.accessLevel === "admin";
   const canEdit = isAdmin || canRemoveMember(accessLevel);
   const canToggleArchive = isAdmin || canArchiveGroup(accessLevel);
-  const canAdd = isAdmin || canAddMember(accessLevel);
+  // const canAdd = isAdmin || canAddMember(accessLevel);
 
   const handleRemove = (memberId: string) => {
     removeMutation.mutate(memberId);
@@ -59,7 +59,7 @@ export default function GroupSettings() {
         groupId={group.id}
         isArchived={group.isArchived}
         onRemove={canEdit && !group.isArchived ? handleRemove : undefined}
-        showAddButton={canAdd}
+        // showAddButton={canAdd}
         showActions={canEdit}
       />
 

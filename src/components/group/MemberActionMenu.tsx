@@ -29,12 +29,9 @@ export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button
-            className="p-2 rounded hover:bg-gray-200 disabled:opacity-50"
-            disabled={isArchived}
-          >
+          <Button variant="ghost" size="icon" disabled={isArchived}>
             <MoreHorizontal className="w-4 h-4" />
-          </button>
+          </Button>
         </DropdownMenuTrigger>
         {!isArchived && (
           <DropdownMenuContent align="end">
