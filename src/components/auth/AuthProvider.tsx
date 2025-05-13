@@ -21,10 +21,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     clearTimeout(accessTimer);
   }, []);
 
-  const login = useCallback(() => {
+  const login = useCallback((provider: "google" | "nycu") => {
     const callbackUrl = `${window.location.protocol}//${window.location.host}/callback`;
     const redirectUrl = `${window.location.protocol}//${window.location.host}/`;
-    window.location.href = `${import.meta.env.VITE_BACKEND_BASE_URL}/api/oauth2/google?c=${callbackUrl}&r=${redirectUrl}`;
+    const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+
+    const urlMap: Record<"google" | "nycu", string> = {
+      google: `${baseUrl}/api/oauth/google?c=${callbackUrl}&r=${redirectUrl}`,
+      nycu: `${baseUrl}/api/oauth/nycu?c=${callbackUrl}&r=${redirectUrl}`,
+    };
+    console.log(urlMap[provider]);
+    window.location.href = urlMap[provider];
   }, []);
 
   const logout = useCallback(() => {

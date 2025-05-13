@@ -32,7 +32,7 @@ export default function LoginForm({
               <Button
                 variant="outline"
                 className="w-full p-6 cursor-pointer"
-                onClick={login}
+                onClick={() => login("nycu")}
               >
                 <img
                   src={nycuLightImg}
@@ -54,7 +54,7 @@ export default function LoginForm({
               <Button
                 variant="outline"
                 className="w-full p-6 cursor-pointer"
-                onClick={login}
+                onClick={() => login("google")}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path

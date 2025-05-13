@@ -24,8 +24,9 @@ export default function Callback() {
     const params = new URLSearchParams(window.location.search);
     const accessToken = params.get("token");
     const refreshToken = params.get("refreshToken");
+    const error = params.get("error");
 
-    if (!accessToken || !refreshToken) {
+    if (!accessToken || !refreshToken || error) {
       navigate("/login");
       toast("Login Failed");
       return;

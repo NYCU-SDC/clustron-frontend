@@ -1,7 +1,7 @@
 import { createContext } from "react";
 
 type AuthContextType = {
-  login: () => void;
+  login: (provider: "google" | "nycu") => void;
   logout: () => void;
 };
 
