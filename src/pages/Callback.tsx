@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import { AccessTokenType } from "@/types/type";
@@ -11,19 +11,24 @@ export default function Callback() {
     "refreshTokenExpirationTime",
     "refreshToken",
   ]);
+  const [mounted, setMounted] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
     const params = new URLSearchParams(window.location.search);
     const accessToken = params.get("token");
     const refreshToken = params.get("refreshToken");
 
     if (!accessToken || !refreshToken) {
-      const timer = setTimeout(() => {
-        navigate("/login");
-        toast("Login Failed");
-      }, 0);
-      return () => clearTimeout(timer);
+      navigate("/login");
+      toast("Login Failed");
+      return;
     }
 
     setCookie("accessToken", accessToken, { path: "/" });
@@ -41,13 +46,9 @@ export default function Callback() {
       redirectTo = "/";
     }
 
-    const timer = setTimeout(() => {
-      navigate(redirectTo);
-      toast("Login Successfully");
-    }, 0);
-
-    return () => clearTimeout(timer);
-  }, [navigate, setCookie]);
+    navigate(redirectTo);
+    toast("Login Successfully");
+  }, [mounted]);
 
   return <p>Loading...</p>;
 }
