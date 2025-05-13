@@ -5,9 +5,9 @@ import { getGroupById } from "@/api/groups/getGroupById";
 
 export function useGetGroupById(id: string | undefined) {
   return useQuery({
-    queryKey: ["group", id],
+    queryKey: ["groups", id],
     queryFn: () => {
-      console.log("[useGetGroupById] fetching:", id);
+      // console.log("[useGetGroupById] fetching:", id);
       return getGroupById(id!);
     },
     enabled: !!id,

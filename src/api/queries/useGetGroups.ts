@@ -19,11 +19,12 @@ export function useGetGroups() {
           pageSize: 0,
           hasNextPage: false,
         };
-      console.log("目前登入使用者：", user);
-      console.log("使用者身份：", user.accessLevel);
+      // console.log("目前登入使用者：", user);
+      // console.log("使用者身份：", user.accessLevel);
+
       const visibleGroups =
         user.accessLevel === "admin"
-          ? mockGroups // ✅ admin 看到所有群組
+          ? mockGroups //
           : mockGroups.filter((group) =>
               group.members.some(
                 (member) => member.studentId === user.studentId,
@@ -31,6 +32,7 @@ export function useGetGroups() {
             );
 
       const summaries = transformGroupsToSummaries(visibleGroups, user);
+      // console.log("Transformed summaries:", summaries); // 確認轉換後的群組資料
 
       return {
         items: summaries,

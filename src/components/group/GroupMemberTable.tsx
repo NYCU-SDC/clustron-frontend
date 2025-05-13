@@ -3,7 +3,7 @@ import AddMemberButton from "@/components/group/AddMemberButton";
 import { Card, CardContent } from "@/components/ui/card";
 import { useInfiniteMembers } from "@/api/mutations/useGetMembers";
 import type { MemberResponse } from "@/api/groups/getMember";
-
+import { mockUsers } from "@/lib/userMock";
 type Props = {
   showActions?: boolean;
   showAddButton?: boolean;
@@ -21,13 +21,10 @@ export default function GroupMemberTable({
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteMembers(groupId);
 
-  console.log("完整的分页数据:", data);
-
-  // 打印每页的详细信息
-  data?.pages.forEach((page, index) => {
-    console.log(`第 ${index + 1} 页数据:`, page);
-    console.log(`第 ${index + 1} 页有 ${page.items.length} 个成员`);
-  });
+  // data?.pages.forEach((page, index) => {
+  //   console.log(`第 ${index + 1} :`, page);
+  //   console.log(`第 ${index + 1} : ${page.items.length} `);
+  // });
   const members: MemberResponse[] =
     data?.pages.flatMap((page) => page.items) ?? [];
 
@@ -55,19 +52,25 @@ export default function GroupMemberTable({
                 </tr>
               </thead>
               <tbody>
-                {members.map((m) => (
-                  <GroupMemberRow
-                    key={m.id}
-                    name={m.title}
-                    id={m.id}
-                    email={m.description}
-                    dept={"N/A"}
-                    role={m.me.role.role}
-                    showActions={showActions}
-                    onDelete={onRemove ? () => onRemove(m.id) : undefined}
-                    isArchived={isArchived}
-                  />
-                ))}
+                {members.map((m) => {
+                  // 使用 studentId 查找對應的 dept
+                  const user = mockUsers.find((user) => user.id === m.id);
+                  const dept = user ? user.dept : "N/A";
+                  const studentId = user ? user.studentId : "N/A";
+                  return (
+                    <GroupMemberRow
+                      key={m.id}
+                      name={m.title}
+                      id={studentId}
+                      email={m.description}
+                      dept={dept}
+                      role={m.me.role.role}
+                      showActions={showActions}
+                      onDelete={onRemove ? () => onRemove(m.id) : undefined}
+                      isArchived={isArchived}
+                    />
+                  );
+                })}
               </tbody>
             </table>
 
