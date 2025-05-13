@@ -12,5 +12,17 @@
     "submitButton": "Save",
     "toastSuccess": "Success save data",
     "nonEmpty": "Cannot be empty"
+  },
+  "login": {
+    "loginTitle": "Login",
+    "nycuLoginNote": "NYCU students log in via NYCU Portal",
+    "nycuLoginBtn": "Login with NYCU Portal",
+    "googleLoginNote": "Not an NYCU student? Log in via Google account",
+    "googleLoginBtn": "Login with Google"
+  },
+  "navbar": {
+    "loginBtn": "Login",
+    "groupLink": "Groups",
+    "settingLink": "Settings"
   }
 }

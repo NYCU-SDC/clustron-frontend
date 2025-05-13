@@ -12,5 +12,17 @@
     "submitButton": "完成",
     "toastSuccess": "資料儲存成功",
     "nonEmpty": "此欄位不得為空"
+  },
+  "login": {
+    "loginTitle": "登入",
+    "nycuLoginNote": "陽明交通大學在學生 請透過單一入口登入",
+    "nycuLoginBtn": "使用陽明交通大學單一入口登入",
+    "googleLoginNote": "非陽明交通大學在學生 請使用 Google 帳號登入",
+    "googleLoginBtn": "使用 Google 登入"
+  },
+  "navbar": {
+    "loginBtn": "登入",
+    "groupLink": "群組",
+    "settingLink": "設定"
   }
 }
