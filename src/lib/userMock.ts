@@ -56,8 +56,8 @@ export const mockUsers: User[] = [
     username: "John Chen",
     email: "john.chen@gmail.com",
     studentId: "116000444",
-    accessLevel: "user",
-    role: "Student",
+    accessLevel: "organizer",
+    role: "Teacher",
     dept: "EE",
   },
   {

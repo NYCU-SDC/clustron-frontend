@@ -19,8 +19,6 @@ export function useGetGroups() {
           pageSize: 0,
           hasNextPage: false,
         };
-      // console.log("目前登入使用者：", user);
-      // console.log("使用者身份：", user.accessLevel);
 
       const visibleGroups =
         user.accessLevel === "admin"
@@ -32,7 +30,6 @@ export function useGetGroups() {
             );
 
       const summaries = transformGroupsToSummaries(visibleGroups, user);
-      // console.log("Transformed summaries:", summaries); // 確認轉換後的群組資料
 
       return {
         items: summaries,

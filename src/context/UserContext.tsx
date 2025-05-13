@@ -2,9 +2,11 @@
 import { createContext, useContext, useState } from "react";
 import { Member, mockGroups } from "@/lib/mockGroups";
 import { mockUsers } from "@/lib/userMock";
+
 type UserContextType = {
   user: Member | null;
-  login: (studentId: string) => boolean;
+  setUser: (user: Member) => void; // ✅ 新增：直接設定使用者（JWT 解完後用）
+  login: (studentId: string) => boolean; // ✅ 保留：舊登入邏輯（學號）
 };
 
 const UserContext = createContext<UserContextType | null>(null);
@@ -12,7 +14,7 @@ const UserContext = createContext<UserContextType | null>(null);
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<Member | null>(null);
 
-  const login = (studentId: string) => {
+  const login = (studentId: string): boolean => {
     for (const group of mockGroups) {
       const found = group.members.find((m) => m.studentId === studentId);
       if (found) {
@@ -40,7 +42,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <UserContext.Provider value={{ user, login }}>
+    <UserContext.Provider value={{ user, setUser, login }}>
       {children}
     </UserContext.Provider>
   );

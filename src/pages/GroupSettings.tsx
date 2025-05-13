@@ -24,7 +24,7 @@ export default function GroupSettings() {
   const archiveMutation = useArchiveGroup();
   const unarchiveMutation = useUnarchiveGroup();
   const removeMutation = useRemoveMember(groupId, {
-    onSuccess: () => console.log("已刪除"),
+    onSuccess: () => console.log("Success Remove"),
     onError: (err) =>
       alert("刪除失敗：" + (err instanceof Error ? err.message : "")),
   });

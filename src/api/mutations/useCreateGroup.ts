@@ -12,12 +12,8 @@ export function useCreateGroup(options?: CreateGroupOptions) {
 
   return useMutation({
     mutationFn: async (payload: CreateGroupInput): Promise<GroupSummary> => {
-      console.log("Creating group with data:", payload); // 確認傳入的資料
-
       // 創建群組
       const newGroup = await createGroup(payload);
-
-      console.log("New group created:", newGroup); // 確認創建後的群組資料
 
       const groupSummary: GroupSummary = {
         id: newGroup.id,
@@ -35,24 +31,17 @@ export function useCreateGroup(options?: CreateGroupOptions) {
         },
       };
 
-      console.log("Group summary:", groupSummary); // 確認 groupSummary 是否正確
-
       return groupSummary;
     },
 
     onSuccess: async (data) => {
-      console.log("onSuccess triggered with data:", data); // 確認 onSuccess 是否被觸發
-
       await options?.onSuccess?.();
 
       // ✅ 重新抓取課程列表
       queryClient.invalidateQueries({ queryKey: ["groups"] });
-
-      console.log("Group created successfully:", data);
     },
 
     onError: (err) => {
-      console.error("Error in creating group:", err); // 在錯誤時輸出更多信息
       options?.onError?.(err);
     },
   });

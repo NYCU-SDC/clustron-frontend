@@ -61,8 +61,6 @@ export async function createGroup(payload: CreateGroupInput) {
 
   mockGroups.unshift(newGroup); // 將新群組加入 mockGroups
 
-  console.log("創建群組後的 mockGroups：", mockGroups); // 打印確認新增的群組
-
   return {
     id,
     title: newGroup.title,

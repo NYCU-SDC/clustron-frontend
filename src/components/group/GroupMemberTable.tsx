@@ -51,12 +51,9 @@ export default function GroupMemberTable({
               <tbody>
                 {members.map((m) => {
                   const user = mockUsers.find((user) => user.id === m.id);
-                  // console.log(user)
                   const dept = user ? user.dept : "N/A";
                   const studentId = user ? user.studentId : "N/A";
                   const email = user ? user.email : "N/A";
-                  console.log("Member Data:", m);
-                  console.log("User Data:", user);
                   return (
                     <GroupMemberRow
                       key={m.id}

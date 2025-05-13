@@ -1,25 +1,44 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/context/UserContext";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { canArchiveGroup } from "@/lib/permission";
 import { useGetGroups } from "@/api/queries/useGetGroups";
+import { setToken } from "@/lib/token";
+import { mockUsers } from "@/lib/userMock";
+import type { JwtPayload } from "@/types/jwt";
+function decodeJwtPayload(token: string): JwtPayload | null {
+  try {
+    const base64Payload = token.split(".")[1];
+    return JSON.parse(atob(base64Payload));
+  } catch {
+    return null;
+  }
+}
 
 export default function CourseList() {
   const navigate = useNavigate();
-  const { user, login } = useUserContext();
+  const { user, setUser } = useUserContext();
   const isAdmin = user?.accessLevel === "admin";
-  const [inputId, setInputId] = useState("");
+  const [inputToken, setInputToken] = useState("");
 
   const { data, isLoading } = useGetGroups();
-  useEffect(() => {
-    if (data?.items) {
-      console.log("CourseList 收到的課程：", data.items);
-    }
-  }, [data]);
+
   const handleLogin = () => {
-    const ok = login(inputId.trim());
-    if (!ok) alert("使用者不存在");
+    const decoded = decodeJwtPayload(inputToken.trim());
+    if (!decoded) {
+      alert("無效 JWT token");
+      return;
+    }
+
+    const fullUser = mockUsers.find((u) => u.id === decoded.id);
+    if (!fullUser) {
+      alert("找不到對應的使用者資料");
+      return;
+    }
+
+    setToken(inputToken.trim());
+    setUser(fullUser);
   };
 
   const canCreateCourse =
@@ -28,12 +47,12 @@ export default function CourseList() {
   return (
     <div className="p-4 space-y-4">
       {!user ? (
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-col sm:flex-row">
           <input
-            value={inputId}
-            onChange={(e) => setInputId(e.target.value)}
-            className="border px-3 py-1 rounded"
-            placeholder="輸入學號登入"
+            value={inputToken}
+            onChange={(e) => setInputToken(e.target.value)}
+            className="border px-3 py-1 rounded w-full"
+            placeholder="請貼上 JWT Token"
           />
           <button
             onClick={handleLogin}
@@ -66,6 +85,8 @@ export default function CourseList() {
             ) : (
               <div className="space-y-4">
                 {data?.items.map((group) => {
+                  const access = group.me?.role?.accessLevel;
+                  if (!access) return null;
                   const isReadonly = group.me.role.accessLevel === "user";
                   const path = isReadonly
                     ? `/groups/${group.id}/info`

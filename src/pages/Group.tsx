@@ -18,7 +18,6 @@ export default function GroupPage() {
   const isPreview = searchParams.get("preview") === "true";
 
   const { data: group, isLoading } = useGetGroupById(id);
-  // console.log("[GroupPage] group:", group);
   const accessLevel = group?.me.role.accessLevel;
   const isAdmin = user?.accessLevel === "admin";
 
