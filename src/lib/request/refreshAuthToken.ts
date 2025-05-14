@@ -7,15 +7,12 @@ export async function refreshAuthToken(refreshToken: string): Promise<{
     return null;
   }
 
-  const res = await fetch(
-    `${import.meta.env.VITE_BACKEND_BASE_URL}/api/refreshToken/${refreshToken}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
+  const res = await fetch(`/api/refreshToken/${refreshToken}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+  });
 
   if (!res.ok) {
     return null;

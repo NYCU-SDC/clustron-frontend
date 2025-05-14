@@ -31,8 +31,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
     const urlMap: Record<"google" | "nycu", string> = {
-      google: `${baseUrl}/api/oauth/google?c=${callbackUrl}&r=${redirectUrl}`,
-      nycu: `${baseUrl}/api/oauth/nycu?c=${callbackUrl}&r=${redirectUrl}`,
+      google: `${baseUrl}/api/login/oauth/google?c=${callbackUrl}&r=${redirectUrl}`,
+      nycu: `${baseUrl}/api/login/oauth/nycu?c=${callbackUrl}&r=${redirectUrl}`,
     };
     console.log(urlMap[provider]);
     window.location.href = urlMap[provider];
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     clearTimers();
     navigate("login");
     toast("Logged out.");
-  }, [removeCookie, clearTimers]);
+  }, []);
 
   const isLoggedIn = useCallback(() => {
     if (cookies.accessToken) {
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const setAutoRefresh = useCallback(
     (accessToken: string, refreshToken: string) => {
       clearTimers();
-
+      console.log("setAutoRefresh has been called.");
       // get accessToken Expiration time
       const accessExpirationTime =
         jwtDecode<AccessTokenType>(accessToken).exp * 1000;
@@ -111,7 +111,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       }
     },
-    [logout, setCookie, clearTimers],
+    [],
   );
 
   useEffect(() => {
