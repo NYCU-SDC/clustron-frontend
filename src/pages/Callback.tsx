@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
-import { AccessTokenType } from "@/types/type";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
+import { AccessTokenType } from "@/types/type";
 
 export default function Callback() {
   const [, setCookie] = useCookies([
@@ -13,6 +14,7 @@ export default function Callback() {
   ]);
   const [mounted, setMounted] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setMounted(true);
@@ -28,7 +30,7 @@ export default function Callback() {
 
     if (!accessToken || !refreshToken || error) {
       navigate("/login");
-      toast("Login Failed.");
+      toast(t("callback.loginFailToast"));
       return;
     }
 
@@ -48,8 +50,8 @@ export default function Callback() {
     }
 
     navigate(redirectTo);
-    toast("Login Successfully.");
+    toast(t("callback.loginSuccessToast"));
   }, [mounted]);
 
-  return <div className="min-h-screen">Loading...</div>;
+  return <div className="min-h-screen">{t("callback.loadingMessage")}</div>;
 }

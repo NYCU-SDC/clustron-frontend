@@ -5,8 +5,8 @@ import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Callback from "@/pages/Callback";
 import Onboarding from "@/pages/Onboarding";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import GuestRoute from "./components/GuestRoute";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import GuestRoute from "./components/auth/GuestRoute";
 
 const App = () => {
   return (

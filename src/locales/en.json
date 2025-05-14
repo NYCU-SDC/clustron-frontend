@@ -25,5 +25,19 @@
     "loginBtn": "Login",
     "groupLink": "Groups",
     "settingLink": "Settings"
+  },
+  "callback": {
+    "loadingMessage": "Loading...",
+    "loginSuccessToast": "Login Successful",
+    "loginFailToast": "Login Failed"
+  },
+  "authProvider": {
+    "logoutToast": "Logged out"
+  },
+  "guestRoute": {
+    "alreadyLoggedInToast": "You are already logged in"
+  },
+  "protectedRoute": {
+    "notLoggedInToast": "Please log in first"
   }
 }

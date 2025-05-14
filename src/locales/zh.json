@@ -25,5 +25,19 @@
     "logoutBtn": "登出",
     "groupLink": "群組",
     "settingLink": "設定"
+  },
+  "callback": {
+    "loadingMessage": "載入中...",
+    "loginSuccessToast": "登入成功",
+    "loginFailToast": "登入失敗"
+  },
+  "authProvider": {
+    "logoutToast": "登出成功"
+  },
+  "guestRoute": {
+    "alreadyLoggedInToast": "已登入"
+  },
+  "protectedRoute": {
+    "notLoggedInToast": "請先登入"
   }
 }

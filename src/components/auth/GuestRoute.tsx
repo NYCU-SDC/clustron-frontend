@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState, ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router";
 import { authContext } from "@/lib/auth/authContext";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 export default function GuestRoute({ children }: { children: ReactNode }) {
@@ -8,6 +9,7 @@ export default function GuestRoute({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [mounted, setMounted] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setMounted(true);
@@ -18,7 +20,7 @@ export default function GuestRoute({ children }: { children: ReactNode }) {
 
     if (isLoggedIn()) {
       navigate("/");
-      toast("You are already logged in.");
+      toast(t("guestRoute.alreadyLoggedInToast"));
     }
   }, [location, mounted]);
 

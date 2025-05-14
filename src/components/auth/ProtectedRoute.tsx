@@ -1,12 +1,14 @@
 import { useContext, useEffect, useState, ReactNode } from "react";
 import { useNavigate } from "react-router";
-import { authContext } from "@/lib/auth/authContext";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
+import { authContext } from "@/lib/auth/authContext";
 
 export default function ProtectedRoute({ children }: { children: ReactNode }) {
   const { isLoggedIn } = useContext(authContext);
   const navigate = useNavigate();
   const [mounted, setMounted] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setMounted(true);
@@ -17,7 +19,7 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
 
     if (!isLoggedIn()) {
       navigate("/login");
-      toast("Please log in first.");
+      toast(t("protectedRoute.notLoggedInToast"));
     }
   }, [mounted]);
 

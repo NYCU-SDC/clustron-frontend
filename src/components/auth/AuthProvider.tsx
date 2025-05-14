@@ -2,6 +2,7 @@ import { useEffect, useCallback, ReactNode } from "react";
 import { useNavigate } from "react-router";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
+import { useTranslation } from "react-i18next";
 import { AccessTokenType } from "@/types/type";
 import { refreshAuthToken } from "@/lib/request/refreshAuthToken";
 import { authContext } from "@/lib/auth/authContext";
@@ -11,6 +12,7 @@ let accessTimer: number;
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [cookies, setCookie, removeCookie] = useCookies([
     "accessToken",
@@ -34,7 +36,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       google: `${baseUrl}/api/login/oauth/google?c=${callbackUrl}&r=${redirectUrl}`,
       nycu: `${baseUrl}/api/login/oauth/nycu?c=${callbackUrl}&r=${redirectUrl}`,
     };
-    console.log(urlMap[provider]);
     window.location.href = urlMap[provider];
   }, []);
 
@@ -44,7 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     removeCookie("refreshToken", { path: "/" });
     clearTimers();
     navigate("login");
-    toast("Logged out.");
+    toast(t("authProvider.logoutToast"));
   }, []);
 
   const isLoggedIn = useCallback(() => {
