@@ -28,7 +28,7 @@ export default function Callback() {
 
     if (!accessToken || !refreshToken || error) {
       navigate("/login");
-      toast("Login Failed");
+      toast("Login Failed.");
       return;
     }
 
@@ -48,8 +48,8 @@ export default function Callback() {
     }
 
     navigate(redirectTo);
-    toast("Login Successfully");
+    toast("Login Successfully.");
   }, [mounted]);
 
-  return <p>Loading...</p>;
+  return <div className="min-h-screen">Loading...</div>;
 }

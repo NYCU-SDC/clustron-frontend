@@ -21,6 +21,7 @@
     "googleLoginBtn": "Login with Google"
   },
   "navbar": {
+    "logoutBtn": "Logout",
     "loginBtn": "Login",
     "groupLink": "Groups",
     "settingLink": "Settings"

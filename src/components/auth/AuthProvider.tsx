@@ -1,13 +1,17 @@
 import { useEffect, useCallback, ReactNode } from "react";
+import { useNavigate } from "react-router";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import { AccessTokenType } from "@/types/type";
 import { refreshAuthToken } from "@/lib/request/refreshAuthToken";
 import { authContext } from "@/lib/auth/authContext";
+import { toast } from "sonner";
 
 let accessTimer: number;
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const navigate = useNavigate();
+
   const [cookies, setCookie, removeCookie] = useCookies([
     "accessToken",
     "refreshTokenExpirationTime",
@@ -39,7 +43,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     removeCookie("refreshTokenExpirationTime", { path: "/" });
     removeCookie("refreshToken", { path: "/" });
     clearTimers();
+    navigate("login");
+    toast("Logged out.");
   }, [removeCookie, clearTimers]);
+
+  const isLoggedIn = useCallback(() => {
+    if (cookies.accessToken) {
+      return true;
+    }
+    return false;
+  }, [cookies.accessToken]);
 
   const setAutoRefresh = useCallback(
     (accessToken: string, refreshToken: string) => {
@@ -109,7 +122,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [accessToken, refreshToken, setAutoRefresh, clearTimers]);
 
   return (
-    <authContext.Provider value={{ login, logout }}>
+    <authContext.Provider value={{ login, logout, isLoggedIn }}>
       {children}
     </authContext.Provider>
   );

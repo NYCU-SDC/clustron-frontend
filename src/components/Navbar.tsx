@@ -3,9 +3,12 @@ import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ModeToggle";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "@/components/LangSwitch";
+import { useContext } from "react";
+import { authContext } from "@/lib/auth/authContext";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const { logout, isLoggedIn } = useContext(authContext);
   const { t } = useTranslation();
 
   return (
@@ -18,45 +21,59 @@ export default function Navbar() {
           >
             Clustron
           </NavLink>
-          <NavLink
-            to="/Groups"
-            className={({ isActive }) =>
-              [
-                "text-base hover:bg-gray-100 dark:hover:bg-gray-600",
-                "px-3 py-2 rounded-lg",
-                !isActive && "text-gray-500 dark:text-gray-400",
-              ]
-                .filter(Boolean)
-                .join(" ")
-            }
-          >
-            {t("navbar.groupLink")}
-          </NavLink>
-          <NavLink
-            to="/Setting"
-            className={({ isActive }) =>
-              [
-                "text-base hover:bg-gray-100 dark:hover:bg-gray-600",
-                "px-3 py-2 rounded-lg",
-                !isActive && "text-gray-500 dark:text-gray-400",
-              ]
-                .filter(Boolean)
-                .join(" ")
-            }
-          >
-            {t("navbar.settingLink")}
-          </NavLink>
+          {isLoggedIn() && (
+            <>
+              <NavLink
+                to="/Groups"
+                className={({ isActive }) =>
+                  [
+                    "text-base hover:bg-gray-100 dark:hover:bg-gray-600",
+                    "px-3 py-2 rounded-lg",
+                    !isActive && "text-gray-500 dark:text-gray-400",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")
+                }
+              >
+                {t("navbar.groupLink")}
+              </NavLink>
+              <NavLink
+                to="/Setting"
+                className={({ isActive }) =>
+                  [
+                    "text-base hover:bg-gray-100 dark:hover:bg-gray-600",
+                    "px-3 py-2 rounded-lg",
+                    !isActive && "text-gray-500 dark:text-gray-400",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")
+                }
+              >
+                {t("navbar.settingLink")}
+              </NavLink>
+            </>
+          )}
         </div>
         <div className="flex items-center space-x-4">
           <ModeToggle />
           <LanguageSwitcher />
-          <Button
-            variant="secondary"
-            className="cursor-pointer"
-            onClick={() => navigate("/login")}
-          >
-            {t("navbar.loginBtn")}
-          </Button>
+          {isLoggedIn() ? (
+            <Button
+              variant="secondary"
+              className="cursor-pointer"
+              onClick={logout}
+            >
+              {t("navbar.logoutBtn")}
+            </Button>
+          ) : (
+            <Button
+              variant="secondary"
+              className="cursor-pointer"
+              onClick={() => navigate("/login")}
+            >
+              {t("navbar.loginBtn")}
+            </Button>
+          )}
         </div>
       </div>
     </nav>

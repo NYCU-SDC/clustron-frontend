@@ -22,6 +22,7 @@
   },
   "navbar": {
     "loginBtn": "登入",
+    "logoutBtn": "登出",
     "groupLink": "群組",
     "settingLink": "設定"
   }
