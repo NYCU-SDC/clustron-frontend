@@ -20,7 +20,7 @@ export default function GuestRoute({ children }: { children: ReactNode }) {
 
     if (isLoggedIn()) {
       navigate("/");
-      toast(t("guestRoute.alreadyLoggedInToast"));
+      toast.warning(t("guestRoute.alreadyLoggedInToast"));
     }
   }, [location, mounted]);
 

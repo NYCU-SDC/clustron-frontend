@@ -30,7 +30,7 @@ export default function Callback() {
 
     if (!accessToken || !refreshToken || error) {
       navigate("/login");
-      toast(t("callback.loginFailToast"));
+      toast.error(t("callback.loginFailToast"));
       return;
     }
 
@@ -50,7 +50,7 @@ export default function Callback() {
     }
 
     navigate(redirectTo);
-    toast(t("callback.loginSuccessToast"));
+    toast.success(t("callback.loginSuccessToast"));
   }, [mounted]);
 
   return <div className="min-h-screen">{t("callback.loadingMessage")}</div>;

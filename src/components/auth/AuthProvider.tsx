@@ -58,7 +58,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const setAutoRefresh = useCallback(
     (accessToken: string, refreshToken: string) => {
       clearTimers();
-      console.log("setAutoRefresh has been called.");
       // get accessToken Expiration time
       const accessExpirationTime =
         jwtDecode<AccessTokenType>(accessToken).exp * 1000;

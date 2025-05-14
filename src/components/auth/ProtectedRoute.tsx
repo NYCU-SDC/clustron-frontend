@@ -19,7 +19,7 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
 
     if (!isLoggedIn()) {
       navigate("/login");
-      toast(t("protectedRoute.notLoggedInToast"));
+      toast.warning(t("protectedRoute.notLoggedInToast"));
     }
   }, [mounted]);
 
