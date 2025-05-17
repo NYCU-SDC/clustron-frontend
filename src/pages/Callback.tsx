@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useTranslation } from "react-i18next";
@@ -12,16 +12,13 @@ export default function Callback() {
     "refreshTokenExpirationTime",
     "refreshToken",
   ]);
-  const [mounted, setMounted] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const hasRun = useRef(false);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
+    if (hasRun.current) return;
+    hasRun.current = true;
 
     const params = new URLSearchParams(window.location.search);
     const accessToken = params.get("token");
@@ -51,7 +48,7 @@ export default function Callback() {
 
     navigate(redirectTo);
     toast.success(t("callback.loginSuccessToast"));
-  }, [mounted, navigate, setCookie, t]);
+  }, [navigate, setCookie, t]);
 
   return <div className="min-h-screen">{t("callback.loadingMessage")}</div>;
 }
