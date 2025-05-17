@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     clearTimers();
     navigate("login");
     toast(t("authProvider.logoutToast"));
-  }, []);
+  }, [clearTimers, navigate, removeCookie, t]);
 
   const isLoggedIn = useCallback(() => {
     if (cookies.accessToken) {
@@ -111,7 +111,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       }
     },
-    [],
+    [clearTimers, cookies.refreshTokenExpirationTime, logout, setCookie],
   );
 
   useEffect(() => {

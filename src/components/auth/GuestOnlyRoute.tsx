@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState, ReactNode } from "react";
-import { useNavigate, useLocation } from "react-router";
+import { useContext, useEffect, ReactNode } from "react";
+import { useNavigate } from "react-router";
 import { authContext } from "@/lib/auth/authContext";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -7,22 +7,14 @@ import { toast } from "sonner";
 export default function GuestOnlyRoute({ children }: { children: ReactNode }) {
   const { isLoggedIn } = useContext(authContext);
   const navigate = useNavigate();
-  const location = useLocation();
-  const [mounted, setMounted] = useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-
     if (isLoggedIn()) {
       navigate("/");
       toast.warning(t("guestRoute.alreadyLoggedInToast"));
     }
-  }, [location, mounted]);
+  }, [isLoggedIn, navigate, t]);
 
   if (isLoggedIn()) return null;
 

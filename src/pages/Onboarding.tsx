@@ -1,5 +1,5 @@
 import { OnboardingForm } from "@/components/OnboardingForm";
-import LanguageSwitcher from "@/components/LangSwitch";
+import LanguageSwitcher from "@/components/LangSwitcher";
 
 export default function Onboarding() {
   return (

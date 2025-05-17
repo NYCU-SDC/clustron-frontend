@@ -51,7 +51,7 @@ export default function Callback() {
 
     navigate(redirectTo);
     toast.success(t("callback.loginSuccessToast"));
-  }, [mounted]);
+  }, [mounted, navigate, setCookie, t]);
 
   return <div className="min-h-screen">{t("callback.loadingMessage")}</div>;
 }

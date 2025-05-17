@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ModeToggle";
 import { useTranslation } from "react-i18next";
-import LanguageSwitcher from "@/components/LangSwitch";
+import LangSwitcher from "@/components/LangSwitcher";
 import { useContext } from "react";
 import { authContext } from "@/lib/auth/authContext";
 
@@ -45,7 +45,7 @@ export default function Navbar() {
         </div>
         <div className="flex items-center space-x-4">
           <ModeToggle />
-          <LanguageSwitcher />
+          <LangSwitcher />
           {isLoggedIn() ? (
             <Button
               variant="secondary"

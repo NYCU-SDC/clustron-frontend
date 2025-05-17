@@ -3,7 +3,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useState, useEffect } from "react";
 
-export default function LanguageSwitcher() {
+export default function LangSwitcher() {
   const { i18n } = useTranslation();
   const [isEnglish, setIsEnglish] = useState(i18n.language === "en");
 
