@@ -2,15 +2,14 @@ import { useOutletContext } from "react-router-dom";
 import GroupDescription from "@/components/group/GroupDes";
 import GroupMemberTable from "@/components/group/GroupMemberTable";
 import { useUserContext } from "@/context/UserContext";
-import { useGetGroupById } from "@/api/queries/useGetGroupById";
+import { useGetGroupById } from "@/hooks/useGetGroupById";
 
 type GroupContextType = {
   groupId: string;
-  isPreview?: boolean;
 };
 
 export default function GroupOverview() {
-  const { groupId, isPreview } = useOutletContext<GroupContextType>();
+  const { groupId } = useOutletContext<GroupContextType>();
   const { user } = useUserContext();
 
   const { data: group, isLoading } = useGetGroupById(groupId);
@@ -21,13 +20,13 @@ export default function GroupOverview() {
   return (
     <>
       <GroupDescription title={group.title} desc={group.description} />
-      {!isPreview && (
+      {
         <GroupMemberTable
           groupId={group.id}
           showActions={false}
           isArchived={group.isArchived}
         />
-      )}
+      }
     </>
   );
 }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AddMemberRow from "@/components/group/AddMemberRow";
 import { useUserContext } from "@/context/UserContext";
-import { useCreateGroup } from "@/api/mutations/useCreateGroup";
+import { useCreateGroup } from "@/hooks/useCreateGroup";
 
 export default function AddGroupPage() {
   const navigate = useNavigate();

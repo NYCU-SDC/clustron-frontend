@@ -5,7 +5,6 @@ export type JwtPayload = {
   studentId: string;
   accessLevel: string;
   role: string;
-  dept: string;
   iat?: number;
   exp?: number;
 };

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createGroup } from "@/api/groups/createGroup";
+import { createGroup } from "@/lib/request/createGroup";
 import type { CreateGroupInput, GroupSummary } from "@/types/group";
 
 type CreateGroupOptions = {
@@ -12,7 +12,6 @@ export function useCreateGroup(options?: CreateGroupOptions) {
 
   return useMutation({
     mutationFn: async (payload: CreateGroupInput): Promise<GroupSummary> => {
-      // 創建群組
       const newGroup = await createGroup(payload);
 
       const groupSummary: GroupSummary = {
@@ -24,9 +23,9 @@ export function useCreateGroup(options?: CreateGroupOptions) {
         updatedAt: newGroup.updatedAt,
         me: {
           role: {
-            id: newGroup.me.role.id, // 來自 createGroup 中的 role.id
-            role: newGroup.me.role.role, // 來自 createGroup 中的 role.role
-            accessLevel: newGroup.me.role.accessLevel, // 來自 createGroup 中的 accessLevel
+            id: newGroup.me.role.id,
+            role: newGroup.me.role.role,
+            accessLevel: newGroup.me.role.accessLevel,
           },
         },
       };
@@ -37,8 +36,9 @@ export function useCreateGroup(options?: CreateGroupOptions) {
     onSuccess: async (data) => {
       await options?.onSuccess?.();
 
-      // ✅ 重新抓取課程列表
       queryClient.invalidateQueries({ queryKey: ["groups"] });
+
+      console.log("Group created successfully:", data);
     },
 
     onError: (err) => {

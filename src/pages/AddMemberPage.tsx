@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AddMemberRow from "@/components/group/AddMemberRow";
-import { useAddMember } from "@/api/mutations/useAddMember"; // 引入 useAddMember
+import { useAddMember } from "@/hooks/useAddMember"; // 引入 useAddMember
 import { useUserContext } from "@/context/UserContext";
 import { useGroupContext } from "@/context/GroupContext";
 

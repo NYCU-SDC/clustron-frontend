@@ -3,7 +3,6 @@ export type User = {
   username: string;
   email: string;
   studentId: string;
-  dept: string;
   role:
     | "Admin"
     | "Professor"
@@ -22,7 +21,6 @@ export const mockUsers: User[] = [
     studentId: "113999321",
     accessLevel: "user",
     role: "Student",
-    dept: "CS",
   },
   {
     id: "u002",
@@ -31,7 +29,6 @@ export const mockUsers: User[] = [
     studentId: "113000111",
     accessLevel: "user",
     role: "Student",
-    dept: "EE",
   },
   {
     id: "u003",
@@ -40,7 +37,6 @@ export const mockUsers: User[] = [
     studentId: "114000222",
     accessLevel: "user",
     role: "Student",
-    dept: "MS",
   },
   {
     id: "u004",
@@ -49,7 +45,6 @@ export const mockUsers: User[] = [
     studentId: "115000333",
     accessLevel: "groupAdmin",
     role: "Teacher assistant",
-    dept: "CS",
   },
   {
     id: "u005",
@@ -58,7 +53,6 @@ export const mockUsers: User[] = [
     studentId: "116000444",
     accessLevel: "organizer",
     role: "Teacher",
-    dept: "EE",
   },
   {
     id: "u006",
@@ -67,7 +61,6 @@ export const mockUsers: User[] = [
     studentId: "117000555",
     accessLevel: "organizer",
     role: "Teacher",
-    dept: "MS",
   },
   {
     id: "u007",
@@ -76,7 +69,6 @@ export const mockUsers: User[] = [
     studentId: "118000666",
     accessLevel: "admin",
     role: "Admin",
-    dept: "CS",
   },
   {
     id: "u008",
@@ -85,7 +77,6 @@ export const mockUsers: User[] = [
     studentId: "119000777",
     accessLevel: "user",
     role: "Student",
-    dept: "EE",
   },
   {
     id: "u009",
@@ -94,7 +85,6 @@ export const mockUsers: User[] = [
     studentId: "120000888",
     accessLevel: "organizer",
     role: "Teacher",
-    dept: "MS",
   },
   {
     id: "u010",
@@ -103,7 +93,6 @@ export const mockUsers: User[] = [
     studentId: "121000999",
     accessLevel: "user",
     role: "Student",
-    dept: "CS",
   },
   {
     id: "u011",
@@ -112,7 +101,6 @@ export const mockUsers: User[] = [
     studentId: "122001000",
     accessLevel: "user",
     role: "Student",
-    dept: "CS",
   },
   {
     id: "u012",
@@ -121,7 +109,6 @@ export const mockUsers: User[] = [
     studentId: "123001111",
     accessLevel: "user",
     role: "Student",
-    dept: "EE",
   },
   {
     id: "u013",
@@ -130,7 +117,6 @@ export const mockUsers: User[] = [
     studentId: "124001222",
     accessLevel: "groupAdmin",
     role: "Teacher assistant",
-    dept: "MS",
   },
   {
     id: "u014",
@@ -139,7 +125,6 @@ export const mockUsers: User[] = [
     studentId: "125001333",
     accessLevel: "user",
     role: "Student",
-    dept: "CS",
   },
   {
     id: "u015",
@@ -148,7 +133,6 @@ export const mockUsers: User[] = [
     studentId: "126001444",
     accessLevel: "organizer",
     role: "Teacher",
-    dept: "EE",
   },
   {
     id: "u016",
@@ -157,7 +141,6 @@ export const mockUsers: User[] = [
     studentId: "127001555",
     accessLevel: "user",
     role: "Student",
-    dept: "MS",
   },
   {
     id: "u017",
@@ -166,7 +149,6 @@ export const mockUsers: User[] = [
     studentId: "128001666",
     accessLevel: "user",
     role: "Student",
-    dept: "CS",
   },
   {
     id: "u018",
@@ -175,7 +157,6 @@ export const mockUsers: User[] = [
     studentId: "129001777",
     accessLevel: "groupAdmin",
     role: "Teacher assistant",
-    dept: "EE",
   },
   {
     id: "u019",
@@ -184,7 +165,6 @@ export const mockUsers: User[] = [
     studentId: "130001888",
     accessLevel: "user",
     role: "Student",
-    dept: "MS",
   },
   {
     id: "u020",
@@ -193,7 +173,6 @@ export const mockUsers: User[] = [
     studentId: "131001999",
     accessLevel: "organizer",
     role: "Teacher",
-    dept: "CS",
   },
 ];
 

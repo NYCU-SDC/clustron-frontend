@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/context/UserContext";
 import { useState } from "react";
 import { canArchiveGroup } from "@/lib/permission";
-import { useGetGroups } from "@/api/queries/useGetGroups";
+import { useGetGroups } from "@/hooks/useGetGroups";
 import { setToken } from "@/lib/token";
 import { mockUsers } from "@/lib/userMock";
 import type { JwtPayload } from "@/types/jwt";

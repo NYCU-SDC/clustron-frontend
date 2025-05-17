@@ -1,7 +1,7 @@
 // src/api/mutations/useArchiveGroup.ts
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { archiveGroup } from "@/api/groups/archiveGroup";
+import { archiveGroup } from "@/lib/request/archiveGroup";
 
 type ArchiveGroupOptions = {
   onSuccess?: () => void | Promise<void>;

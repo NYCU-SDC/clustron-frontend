@@ -1,6 +1,6 @@
 // src/api/login.ts
-import { mockUsers } from "../lib/userMock";
-import { signToken } from "../lib/auth";
+import { mockUsers } from "../userMock";
+import { signToken } from "../auth";
 
 export async function loginByStudentId(studentId: string): Promise<string> {
   const user = mockUsers.find((u) => u.studentId === studentId);
@@ -14,7 +14,6 @@ export async function loginByStudentId(studentId: string): Promise<string> {
     username: user.username,
     accessLevel: user.accessLevel,
     role: user.role,
-    dept: user.dept,
   });
 
   return token;

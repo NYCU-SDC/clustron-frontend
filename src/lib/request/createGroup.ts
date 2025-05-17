@@ -52,7 +52,6 @@ export async function createGroup(payload: CreateGroupInput) {
           | "Student"
           | "Auditor", // 根據使用者輸入的 role
         accessLevel, // 設定 accessLevel
-        dept: user.dept,
       };
 
       return member;

@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getMember } from "@/api/groups/getMember";
-import type { MemberResponse, Paginated } from "@/api/groups/getMember";
+import { getMember } from "@/lib/request/getMember";
+import type { MemberResponse, Paginated } from "@/lib/request/getMember";
 
 export type UseGetMembersResult = Paginated<MemberResponse>;
 

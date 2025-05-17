@@ -1,7 +1,7 @@
 // src/api/mutations/useUnarchiveGroup.ts
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { unarchiveGroup } from "@/api/groups/unarchiveGroup";
+import { unarchiveGroup } from "@/lib/request/unarchiveGroup";
 
 type UnarchiveGroupOptions = {
   onSuccess?: () => void | Promise<void>;

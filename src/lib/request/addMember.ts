@@ -22,7 +22,6 @@ type AddMemberResponse = {
 };
 
 function generateMember(input: string, role: string): Member {
-  // 查找 mockUsers 中是否有与 input（email 或 studentId）匹配的用户
   const user = mockUsers.find(
     (user) => user.studentId === input || user.email === input,
   );
@@ -43,7 +42,6 @@ function generateMember(input: string, role: string): Member {
     username: user.username,
     email: user.email,
     studentId: user.studentId,
-    dept: user.dept,
     role: role as Member["role"],
     accessLevel,
   };
@@ -53,7 +51,7 @@ export async function addMember(
   groupId: string,
   input: AddMemberRequest[],
 ): Promise<AddMemberResponse[]> {
-  await new Promise((r) => setTimeout(r, 300)); // 模擬延遲
+  await new Promise((r) => setTimeout(r, 300));
 
   const group = mockGroups.find((g) => g.id === groupId);
   if (!group) throw new Error("Group not found");

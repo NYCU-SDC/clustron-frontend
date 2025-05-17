@@ -5,7 +5,6 @@ type Props = {
   name: string;
   id: string;
   email: string;
-  dept: string;
   role: string;
   onDelete?: () => void;
   showActions?: boolean;
@@ -16,7 +15,6 @@ export default function GroupMemberRow({
   name,
   id,
   email,
-  dept,
   role,
   onDelete,
   showActions = false,
@@ -31,7 +29,6 @@ export default function GroupMemberRow({
           <span className="text-muted-foreground text-xs">{email}</span>
         </div>
       </TableCell>
-      <TableCell>{dept}</TableCell>
       <TableCell>{role}</TableCell>
 
       {showActions && (

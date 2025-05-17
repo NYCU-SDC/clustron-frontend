@@ -1,21 +1,23 @@
-// src/api/mutations/useRemoveMember.ts
+// src/api/mutations/useAddMember.ts
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { removeMember } from "@/api/groups/removeMember";
+import { addMember } from "@/lib/request/addMember";
 
-type RemoveMemberOptions = {
+type AddMemberRequest = {
+  member: string;
+  role: string;
+};
+
+type AddMemberOptions = {
   onSuccess?: () => void | Promise<void>;
   onError?: (err: unknown) => void;
 };
 
-export function useRemoveMember(
-  groupId: string,
-  options?: RemoveMemberOptions,
-) {
+export function useAddMember(groupId: string, options?: AddMemberOptions) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (memberId: string) => removeMember(groupId, memberId),
+    mutationFn: (members: AddMemberRequest[]) => addMember(groupId, members),
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["members", groupId] });

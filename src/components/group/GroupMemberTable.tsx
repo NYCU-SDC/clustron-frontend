@@ -1,9 +1,9 @@
-import { useInfiniteMembers } from "@/api/mutations/useGetMembers";
+import { useInfiniteMembers } from "@/hooks/useGetMembers";
 import { mockUsers } from "@/lib/userMock";
 import GroupMemberRow from "@/components/group/GroupMemberRow";
 import AddMemberButton from "@/components/group/AddMemberButton";
 import { Card, CardContent } from "@/components/ui/card";
-import type { MemberResponse } from "@/api/groups/getMember";
+import type { MemberResponse } from "@/lib/request/getMember";
 
 type Props = {
   showActions?: boolean;
@@ -44,14 +44,12 @@ export default function GroupMemberTable({
                 <tr className="text-gray-500">
                   <th className="py-2">Name</th>
                   <th className="py-2">Student ID or Email</th>
-                  <th className="py-2">Department</th>
                   <th className="py-2">Role</th>
                 </tr>
               </thead>
               <tbody>
                 {members.map((m) => {
                   const user = mockUsers.find((user) => user.id === m.id);
-                  const dept = user ? user.dept : "N/A";
                   const studentId = user ? user.studentId : "N/A";
                   const email = user ? user.email : "N/A";
                   return (
@@ -60,7 +58,6 @@ export default function GroupMemberTable({
                       name={m.title}
                       id={studentId}
                       email={email}
-                      dept={dept}
                       role={m.me.role.role}
                       showActions={showActions}
                       onDelete={onRemove ? () => onRemove(m.id) : undefined}

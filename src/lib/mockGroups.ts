@@ -5,7 +5,6 @@ export type Member = {
   username: string;
   email: string;
   studentId: string;
-  dept: string;
   role:
     | "Admin"
     | "Professor"
@@ -38,7 +37,6 @@ export const mockGroups: Group[] = [
         username: "王小明",
         email: "liam@gmail.com",
         studentId: "113999321",
-        dept: "CS",
         role: "Student",
         accessLevel: "user",
       },
@@ -47,7 +45,6 @@ export const mockGroups: Group[] = [
         username: "Olivia Smith",
         email: "olivia@gmail.com",
         studentId: "113000111",
-        dept: "CS",
         role: "Student",
         accessLevel: "user",
       },
@@ -58,7 +55,6 @@ export const mockGroups: Group[] = [
         studentId: "116000444",
         accessLevel: "organizer",
         role: "Teacher",
-        dept: "EE",
       },
     ],
     createdAt: "20250000",
@@ -75,7 +71,6 @@ export const mockGroups: Group[] = [
         username: "Emma Brown",
         email: "emma@gmail.com",
         studentId: "110000111",
-        dept: "CS",
         role: "Teacher",
         accessLevel: "organizer",
       },
@@ -84,7 +79,6 @@ export const mockGroups: Group[] = [
         username: "Olivia Smith",
         email: "olivia@gmail.com",
         studentId: "113000111",
-        dept: "CS",
         role: "Student",
         accessLevel: "user",
       },
@@ -95,7 +89,6 @@ export const mockGroups: Group[] = [
         studentId: "116000444",
         accessLevel: "user",
         role: "Student",
-        dept: "EE",
       },
     ],
     createdAt: "20250820",
@@ -112,7 +105,6 @@ export const mockGroups: Group[] = [
         username: "Emma Brown",
         email: "emma@gmail.com",
         studentId: "110000111",
-        dept: "CS",
         role: "Teacher",
         accessLevel: "organizer",
       },
@@ -123,7 +115,6 @@ export const mockGroups: Group[] = [
         studentId: "116000444",
         accessLevel: "groupAdmin",
         role: "Teacher assistant",
-        dept: "EE",
       },
     ],
     createdAt: "20250820",

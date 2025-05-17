@@ -2,10 +2,10 @@ import { useOutletContext } from "react-router-dom";
 import GroupDescription from "@/components/group/GroupDes";
 import GroupMemberTable from "@/components/group/GroupMemberTable";
 import { useUserContext } from "@/context/UserContext";
-import { useGetGroupById } from "@/api/queries/useGetGroupById";
-import { useArchiveGroup } from "@/api/mutations/useArchiveGroup";
-import { useUnarchiveGroup } from "@/api/mutations/useUnarchiveGroup";
-import { useRemoveMember } from "@/api/mutations/useRemoveMember";
+import { useGetGroupById } from "@/hooks/useGetGroupById";
+import { useArchiveGroup } from "@/hooks/useArchiveGroup";
+import { useUnarchiveGroup } from "@/hooks/useUnarchiveGroup";
+import { useRemoveMember } from "@/hooks/useRemoveMember";
 import {
   // canAddMember,
   canRemoveMember,
