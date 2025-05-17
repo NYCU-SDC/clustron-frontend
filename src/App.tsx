@@ -1,20 +1,18 @@
 import { Routes, Route } from "react-router-dom";
-import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/ThemeProvider";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Callback from "@/pages/Callback";
 import Onboarding from "@/pages/Onboarding";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
-import GuestRoute from "./components/auth/GuestRoute";
+import GuestOnlyRoute from "./components/auth/GuestOnlyRoute";
 
 const App = () => {
   return (
-    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+    <>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route
-          path="/Onboarding"
+          path="/onboarding"
           element={
             <ProtectedRoute>
               <Onboarding />
@@ -24,15 +22,14 @@ const App = () => {
         <Route
           path="/login"
           element={
-            <GuestRoute>
+            <GuestOnlyRoute>
               <Login />
-            </GuestRoute>
+            </GuestOnlyRoute>
           }
         />
         <Route path="/callback" element={<Callback />} />
       </Routes>
-      <Toaster />
-    </ThemeProvider>
+    </>
   );
 };
 

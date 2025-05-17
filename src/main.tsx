@@ -1,8 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { CookiesProvider } from "react-cookie";
 import { AuthProvider } from "@/components/auth/AuthProvider";
+import { Toaster } from "@/components/ui/sonner";
 import "./index.css";
 import App from "./App.tsx";
 import "./i18n";
@@ -12,7 +14,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <CookiesProvider>
         <AuthProvider>
-          <App />
+          <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+            <App />
+            <Toaster />
+          </ThemeProvider>
         </AuthProvider>
       </CookiesProvider>
     </BrowserRouter>

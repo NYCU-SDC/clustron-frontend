@@ -4,7 +4,7 @@ import { authContext } from "@/lib/auth/authContext";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
-export default function GuestRoute({ children }: { children: ReactNode }) {
+export default function GuestOnlyRoute({ children }: { children: ReactNode }) {
   const { isLoggedIn } = useContext(authContext);
   const navigate = useNavigate();
   const location = useLocation();

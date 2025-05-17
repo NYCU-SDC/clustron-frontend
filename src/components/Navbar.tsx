@@ -6,6 +6,16 @@ import LanguageSwitcher from "@/components/LangSwitch";
 import { useContext } from "react";
 import { authContext } from "@/lib/auth/authContext";
 
+export function navLinkclass(isActive: boolean) {
+  return [
+    "text-base px-3 py-2 rounded-lg",
+    "hover:bg-gray-100 dark:hover:bg-gray-600",
+    isActive ? "" : "text-gray-500 dark:text-gray-400",
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
 export default function Navbar() {
   const navigate = useNavigate();
   const { logout, isLoggedIn } = useContext(authContext);
@@ -15,39 +25,18 @@ export default function Navbar() {
     <nav className="w-full border-b">
       <div className="flex items-center justify-between w-full px-6 py-4">
         <div className="flex items-center space-x-4">
-          <NavLink
-            to="#"
-            className="text-2xl font-bold px-3 py-2 !cursor-default"
-          >
-            Clustron
-          </NavLink>
+          <div className="text-2xl font-bold px-3 py-2">Clustron</div>
           {isLoggedIn() && (
             <>
               <NavLink
-                to="/Groups"
-                className={({ isActive }) =>
-                  [
-                    "text-base hover:bg-gray-100 dark:hover:bg-gray-600",
-                    "px-3 py-2 rounded-lg",
-                    !isActive && "text-gray-500 dark:text-gray-400",
-                  ]
-                    .filter(Boolean)
-                    .join(" ")
-                }
+                to="/groups"
+                className={({ isActive }) => navLinkclass(isActive)}
               >
                 {t("navbar.groupLink")}
               </NavLink>
               <NavLink
-                to="/Setting"
-                className={({ isActive }) =>
-                  [
-                    "text-base hover:bg-gray-100 dark:hover:bg-gray-600",
-                    "px-3 py-2 rounded-lg",
-                    !isActive && "text-gray-500 dark:text-gray-400",
-                  ]
-                    .filter(Boolean)
-                    .join(" ")
-                }
+                to="/setting"
+                className={({ isActive }) => navLinkclass(isActive)}
               >
                 {t("navbar.settingLink")}
               </NavLink>
