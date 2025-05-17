@@ -24,7 +24,7 @@ export default function Navbar() {
             Clustron
           </NavLink>
           <NavLink
-            to="/Groups"
+            to="/groups"
             className={({ isActive }) =>
               [
                 "text-base hover:bg-gray-100 dark:hover:bg-gray-600",
@@ -38,7 +38,7 @@ export default function Navbar() {
             Groups
           </NavLink>
           <NavLink
-            to="/Setting"
+            to="/setting"
             className={({ isActive }) =>
               [
                 "text-base hover:bg-gray-100 dark:hover:bg-gray-600",

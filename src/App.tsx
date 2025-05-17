@@ -4,7 +4,7 @@ import Onboarding from "@/pages/Onboarding";
 import SettingLayout from "./pages/SettingLayout";
 import SettingGeneral from "./pages/SettingGeneral";
 import SettingAddKey from "./pages/SettingAddKey";
-import SettingSsh from "./pages/SettingSsh";
+import SettingSSH from "./pages/SettingSSH";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
@@ -14,11 +14,11 @@ const App = () => {
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/Onboarding" element={<Onboarding />} />
-          <Route path="/Setting" element={<SettingLayout />}>
+          <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/setting" element={<SettingLayout />}>
             <Route index element={<Navigate to="general" replace />} />
             <Route path="general" element={<SettingGeneral />} />
-            <Route path="ssh" element={<SettingSsh />} />
+            <Route path="ssh" element={<SettingSSH />} />
             <Route path="addNewKey" element={<SettingAddKey />} />
           </Route>
         </Routes>
