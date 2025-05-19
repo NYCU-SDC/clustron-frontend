@@ -8,28 +8,26 @@ import GuestOnlyRoute from "./components/auth/GuestOnlyRoute";
 
 const App = () => {
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/onboarding"
-          element={
-            <ProtectedRoute>
-              <Onboarding />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <GuestOnlyRoute>
-              <Login />
-            </GuestOnlyRoute>
-          }
-        />
-        <Route path="/callback" element={<Callback />} />
-      </Routes>
-    </>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route
+        path="/onboarding"
+        element={
+          <ProtectedRoute>
+            <Onboarding />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/login"
+        element={
+          <GuestOnlyRoute>
+            <Login />
+          </GuestOnlyRoute>
+        }
+      />
+      <Route path="/callback" element={<Callback />} />
+    </Routes>
   );
 };
 

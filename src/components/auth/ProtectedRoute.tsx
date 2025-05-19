@@ -8,11 +8,8 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
   const { isLoggedIn } = useContext(authContext);
   const navigate = useNavigate();
   const { t } = useTranslation();
-  // const hasRun = useRef(false);
 
   useEffect(() => {
-    // if (hasRun.current) return;
-    // hasRun.current = true;
     if (!isLoggedIn()) {
       navigate("/login");
       toast.warning(t("protectedRoute.notLoggedInToast"));
