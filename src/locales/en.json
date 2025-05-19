@@ -12,5 +12,32 @@
     "submitButton": "Save",
     "toastSuccess": "Success save data",
     "nonEmpty": "Cannot be empty"
+  },
+  "login": {
+    "loginTitle": "Login",
+    "nycuLoginNote": "NYCU students log in via NYCU Portal",
+    "nycuLoginBtn": "Login with NYCU Portal",
+    "googleLoginNote": "Not an NYCU student? Log in via Google account",
+    "googleLoginBtn": "Login with Google"
+  },
+  "navbar": {
+    "logoutBtn": "Logout",
+    "loginBtn": "Login",
+    "groupLink": "Groups",
+    "settingLink": "Settings"
+  },
+  "callback": {
+    "loadingMessage": "Loading...",
+    "loginSuccessToast": "Login Successful",
+    "loginFailToast": "Login Failed"
+  },
+  "authProvider": {
+    "logoutToast": "Logged out"
+  },
+  "guestRoute": {
+    "alreadyLoggedInToast": "You are already logged in"
+  },
+  "protectedRoute": {
+    "notLoggedInToast": "Please log in first"
   }
 }

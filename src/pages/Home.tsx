@@ -1,20 +1,31 @@
 import { useNavigate } from "react-router-dom";
-import Navbar from "@/components/Navbar";
+import { authContext } from "@/lib/auth/authContext";
+import { useContext } from "react";
 
 export default function Home() {
   const navigate = useNavigate();
+  const { logout } = useContext(authContext);
 
   return (
-    <>
-      <Navbar />
-      <div className="p-6 space-y-4">
-        <button
-          onClick={() => navigate("/Onboarding")}
-          className="px-4 py-2 bg-black text-white hover:bg-gray-700 active:bg-gray-800 transition-colors"
-        >
-          前往填寫 Form
-        </button>
-      </div>
-    </>
+    <div className="p-6 space-x-4">
+      <button
+        onClick={() => navigate("/onboarding")}
+        className="px-4 py-2 bg-black text-white hover:bg-gray-700 active:bg-gray-800 transition-colors"
+      >
+        前往填寫 Form
+      </button>
+      <button
+        onClick={() => navigate("/login")}
+        className="px-4 py-2 bg-black text-white hover:bg-gray-700 active:bg-gray-800 transition-colors"
+      >
+        Login
+      </button>
+      <button
+        onClick={logout}
+        className="px-4 py-2 bg-black text-white hover:bg-gray-700 active:bg-gray-800 transition-colors"
+      >
+        Logout
+      </button>
+    </div>
   );
 }
