@@ -1,9 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { AccessTokenType } from "@/types/type";
 
 export default function Callback() {
@@ -13,14 +13,11 @@ export default function Callback() {
     "refreshToken",
   ]);
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
-  const hasRun = useRef(false);
 
   useEffect(() => {
-    if (hasRun.current) return;
-    hasRun.current = true;
-
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(location.search);
     const accessToken = params.get("token");
     const refreshToken = params.get("refreshToken");
     const error = params.get("error");
@@ -48,7 +45,7 @@ export default function Callback() {
 
     navigate(redirectTo);
     toast.success(t("callback.loginSuccessToast"));
-  }, [navigate, setCookie, t]);
+  }, [navigate, location, setCookie, t]);
 
   return <div className="min-h-screen">{t("callback.loadingMessage")}</div>;
 }

@@ -32,7 +32,7 @@
     "loginFailToast": "登入失敗"
   },
   "authProvider": {
-    "logoutToast": "登出成功"
+    "logoutToast": "已登出"
   },
   "guestRoute": {
     "alreadyLoggedInToast": "已登入"
