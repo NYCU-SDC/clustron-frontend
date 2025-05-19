@@ -1,4 +1,4 @@
-import React from "react";
+import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -10,7 +10,7 @@ import "./i18n";
 import { Toaster } from "@/components/ui/sonner";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  <StrictMode>
     <BrowserRouter>
       <CookiesProvider>
         <AuthProvider>
@@ -21,5 +21,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </AuthProvider>
       </CookiesProvider>
     </BrowserRouter>
-  </React.StrictMode>,
+  </StrictMode>,
 );
