@@ -58,7 +58,11 @@ export default function SettingKeyTable() {
             {keys.map((key) => (
               <TableRow key={key.id}>
                 <TableCell>{key.title}</TableCell>
-                <TableCell>{key.publicKey}</TableCell>
+                <TableCell>
+                  {key.publicKey && key.publicKey.length > 10
+                    ? `${key.publicKey.slice(0, 10)}...`
+                    : key.publicKey}
+                </TableCell>
                 <TableCell className="text-right">
                   <Button
                     variant="ghost"

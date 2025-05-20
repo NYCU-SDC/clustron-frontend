@@ -31,7 +31,14 @@ const App = () => {
         }
       />
       <Route path="/callback" element={<Callback />} />
-      <Route path="/setting" element={<SettingLayout />}>
+      <Route
+        path="/setting"
+        element={
+          <ProtectedRoute>
+            <SettingLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<Navigate to="general" replace />} />
         <Route path="general" element={<SettingGeneral />} />
         <Route path="ssh" element={<SettingSSH />} />

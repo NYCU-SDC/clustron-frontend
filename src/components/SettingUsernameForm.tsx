@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { getSettings } from "@/lib/request/getSettings";
 import { saveSettings } from "@/lib/request/saveSettings";
+import { Separator } from "./ui/separator";
 
 export default function SettingUsernameForm({
   className,
@@ -49,6 +50,7 @@ export default function SettingUsernameForm({
                 value={linuxUsername}
                 onChange={(e) => setLinuxUsername(e.target.value)}
               />
+              <Separator></Separator>
               <Button
                 type="submit"
                 className="w-full"

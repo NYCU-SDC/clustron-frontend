@@ -9,7 +9,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@radix-ui/react-dropdown-menu";
+import { Separator as CardSeperator } from "@radix-ui/react-dropdown-menu";
+import { Separator } from "./ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router";
 import { savePublicKey } from "@/lib/request/savePublicKey";
@@ -51,7 +52,7 @@ export default function SettingAddKeyForm({
             onChange={(e) => setTitle(e.target.value)}
           />
         </CardContent>
-        <Separator />
+        <CardSeperator />
         <CardHeader>
           <CardTitle className="text-2xl">Key</CardTitle>
           <CardDescription>
@@ -64,10 +65,21 @@ export default function SettingAddKeyForm({
             <Textarea
               placeholder="Begins with 'ssh-rsa', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'ssh-ed25519', 'sk-ecdsa-sha2-nistp256@openssh.com', or 'sk-ssh-ed25519@openssh.com'"
               onChange={(e) => setPublicKey(e.target.value)}
+              className="h-32"
             />
-            <Button type="submit" className="w-full" onClick={handleSave}>
-              Save
-            </Button>
+            <Separator />
+            <div className="flex justify-center">
+              <Button
+                variant="destructive"
+                className="w-2/5 m-5"
+                onClick={() => navigate(-1)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" className="w-2/5 m-5" onClick={handleSave}>
+                Save
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
