@@ -1,4 +1,6 @@
-export default async function savePublicKey(payload: {
+import { getAccessTokenFromCookies } from "@/lib/getAccessTokenFromCookies";
+
+export async function savePublicKey(payload: {
   title: string;
   publicKey: string;
 }): Promise<{
@@ -6,10 +8,14 @@ export default async function savePublicKey(payload: {
   title: string;
   publicKey: string;
 } | null> {
+  const token = getAccessTokenFromCookies();
+  if (!token) return null;
+
   const res = await fetch(`/api/publickey`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(payload),
   });

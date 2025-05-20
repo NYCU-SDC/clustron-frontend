@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,11 +9,27 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { getSettings } from "@/lib/request/getSettings";
+import { saveSettings } from "@/lib/request/saveSettings";
 
 export default function SettingUsernameForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const [username, setUsername] = useState("");
+  const [linuxUsername, setLinuxUsername] = useState("");
+
+  useEffect(() => {
+    async function fetchName() {
+      const settings = await getSettings();
+      if (settings) {
+        setUsername(settings.username);
+        setLinuxUsername(settings.linuxUsername);
+      }
+    }
+    fetchName();
+  }, []);
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -25,8 +42,18 @@ export default function SettingUsernameForm({
         <CardContent>
           <form>
             <div className="flex flex-col gap-6">
-              <Input id="name" type="name" placeholder="XiaoMing" required />
-              <Button type="submit" className="w-full">
+              <Input
+                id="linuxUsername"
+                type="name"
+                placeholder="e.g., Jammy"
+                value={linuxUsername}
+                onChange={(e) => setLinuxUsername(e.target.value)}
+              />
+              <Button
+                type="submit"
+                className="w-full"
+                onClick={() => saveSettings(username, linuxUsername)}
+              >
                 Save
               </Button>
             </div>

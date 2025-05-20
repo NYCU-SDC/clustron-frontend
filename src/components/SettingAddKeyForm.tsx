@@ -11,7 +11,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { Textarea } from "@/components/ui/textarea";
-import savePublicKey from "@/lib/reuest/SavePublicKey";
+import { useNavigate } from "react-router";
+import { savePublicKey } from "@/lib/request/savePublicKey";
 
 export default function SettingAddKeyForm({
   className,
@@ -19,15 +20,17 @@ export default function SettingAddKeyForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const [title, setTitle] = useState("");
   const [publicKey, setPublicKey] = useState("");
+  const navigate = useNavigate();
 
   const handleSave = async () => {
     if (!title || !publicKey) {
       alert("pls input tile and publicKey");
       return;
     }
-    const result = await savePublicKey({ title, publicKey });
-    if (result) {
-      alert("saved!");
+    const res = await savePublicKey({ title, publicKey });
+    console.log(res);
+    if (res) {
+      navigate("/setting/ssh");
     } else {
       alert("fail");
     }
@@ -46,7 +49,6 @@ export default function SettingAddKeyForm({
             placeholder="My Laptop"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            required
           />
         </CardContent>
         <Separator />
@@ -62,7 +64,6 @@ export default function SettingAddKeyForm({
             <Textarea
               placeholder="Begins with 'ssh-rsa', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'ssh-ed25519', 'sk-ecdsa-sha2-nistp256@openssh.com', or 'sk-ssh-ed25519@openssh.com'"
               onChange={(e) => setPublicKey(e.target.value)}
-              required
             />
             <Button type="submit" className="w-full" onClick={handleSave}>
               Save

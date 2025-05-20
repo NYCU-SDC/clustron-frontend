@@ -9,7 +9,6 @@ import SettingAddKey from "./pages/SettingAddKey";
 import SettingSSH from "./pages/SettingSSH";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import GuestOnlyRoute from "./components/auth/GuestOnlyRoute";
-import { ThemeProvider } from "@/components/ThemeProvider";
 
 const App = () => {
   return (
