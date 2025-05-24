@@ -3,13 +3,12 @@ import { getAccessTokenFromCookies } from "@/lib/getAccessTokenFromCookies";
 export async function savePublicKey(payload: {
   title: string;
   publicKey: string;
-}): Promise<{
-  id: string;
-  title: string;
-  publicKey: string;
-} | null> {
+}) {
   const token = getAccessTokenFromCookies();
-  if (!token) return null;
+  if (!token) {
+    console.error("No token but no logout");
+    throw new Error();
+  }
 
   const res = await fetch(`/api/publickey`, {
     method: "POST",
@@ -21,14 +20,12 @@ export async function savePublicKey(payload: {
   });
 
   if (!res.ok) {
+    if (res.status === 400) {
+      const err = new Error();
+      err.name = "BadKeyError";
+      throw err;
+    }
     console.error("Failed to save public key");
-    return null;
+    throw new Error();
   }
-
-  const data = await res.json();
-  return {
-    id: data.id,
-    title: data.title,
-    publicKey: data.publicKey,
-  };
 }

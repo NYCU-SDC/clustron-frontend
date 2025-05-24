@@ -1,5 +1,5 @@
 import { useContext, useEffect, ReactNode } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { authContext } from "@/lib/auth/authContext";
@@ -7,14 +7,15 @@ import { authContext } from "@/lib/auth/authContext";
 export default function ProtectedRoute({ children }: { children: ReactNode }) {
   const { isLoggedIn } = useContext(authContext);
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (!isLoggedIn()) {
+    if (!isLoggedIn() && window.location.pathname !== "/login") {
       navigate("/login");
       toast.warning(t("protectedRoute.notLoggedInToast"));
     }
-  }, [isLoggedIn, navigate, t]);
+  }, [isLoggedIn, navigate, location, t]);
 
   if (!isLoggedIn()) return null;
 

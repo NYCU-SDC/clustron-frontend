@@ -1,8 +1,11 @@
 import { getAccessTokenFromCookies } from "@/lib/getAccessTokenFromCookies";
 
-export async function deletePublicKey(id: string): Promise<string | null> {
+export async function deletePublicKey(id: string) {
   const token = getAccessTokenFromCookies();
-  if (!token) return null;
+  if (!token) {
+    console.error("No token but no logout");
+    throw new Error();
+  }
 
   const res = await fetch(`/api/publickey`, {
     method: "DELETE",
@@ -15,8 +18,6 @@ export async function deletePublicKey(id: string): Promise<string | null> {
 
   if (!res.ok) {
     console.error("Failed to delete public key");
+    throw new Error();
   }
-
-  const data = await res.text();
-  return data;
 }

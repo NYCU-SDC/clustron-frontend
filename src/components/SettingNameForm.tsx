@@ -9,9 +9,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getSettings } from "@/lib/request/getSettings";
 import { saveSettings } from "@/lib/request/saveSettings";
 import { Separator } from "./ui/separator";
+import { toast } from "sonner";
+
+const PROFILE_QUERY_KEY = ["username"];
 
 export default function SettingNameForm({
   className,
@@ -19,17 +23,38 @@ export default function SettingNameForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const [username, setUsername] = useState("");
   const [linuxUsername, setLinuxUsername] = useState("");
+  const queryClient = useQueryClient();
+
+  const {
+    data = { username: "", linuxUsername: "" },
+    isSuccess,
+    isError,
+  } = useQuery({
+    queryKey: PROFILE_QUERY_KEY,
+    queryFn: getSettings,
+    staleTime: 1000 * 60 * 30,
+  });
+  const addMutation = useMutation({
+    mutationFn: (payload: { username: string; linuxUsername: string }) =>
+      saveSettings(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
+      toast("Save name successfully");
+    },
+    onError: () => {
+      toast.error("Failed to save username");
+    },
+  });
 
   useEffect(() => {
-    async function fetchName() {
-      const settings = await getSettings();
-      if (settings) {
-        setUsername(settings.username);
-        setLinuxUsername(settings.linuxUsername);
-      }
+    if (isSuccess) {
+      setUsername(data.username);
+      setLinuxUsername(data.linuxUsername);
     }
-    fetchName();
-  }, []);
+    if (isError) {
+      toast.error("Failed to get your name");
+    }
+  }, [isSuccess, isError, data]);
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -41,25 +66,22 @@ export default function SettingNameForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
-            <div className="flex flex-col gap-6">
-              <Input
-                id="username"
-                type="name"
-                placeholder="e.g., Wang Jammy"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-              <Separator></Separator>
-              <Button
-                type="submit"
-                className="w-full"
-                onClick={() => saveSettings(username, linuxUsername)}
-              >
-                Save
-              </Button>
-            </div>
-          </form>
+          <div className="flex flex-col gap-6">
+            <Input
+              id="username"
+              type="name"
+              placeholder="e.g., Wang Jammy"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <Separator></Separator>
+            <Button
+              className="w-full cursor-pointer"
+              onClick={() => addMutation.mutate({ username, linuxUsername })}
+            >
+              Save
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>

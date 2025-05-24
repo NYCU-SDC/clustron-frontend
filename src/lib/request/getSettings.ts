@@ -3,10 +3,12 @@ import { getAccessTokenFromCookies } from "@/lib/getAccessTokenFromCookies";
 export async function getSettings(): Promise<{
   username: string;
   linuxUsername: string;
-} | null> {
+}> {
   const token = getAccessTokenFromCookies();
-  if (!token) return null;
-
+  if (!token) {
+    console.error("No token but no logout");
+    throw new Error();
+  }
   const res = await fetch(`/api/settings`, {
     method: "GET",
     headers: {
@@ -17,12 +19,9 @@ export async function getSettings(): Promise<{
 
   if (!res.ok) {
     console.error("Failed to get name");
-    return null;
+    throw new Error();
   }
 
   const data = await res.json();
-  return {
-    username: data.username,
-    linuxUsername: data.linuxUsername,
-  };
+  return data;
 }

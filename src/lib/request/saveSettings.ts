@@ -1,11 +1,14 @@
 import { getAccessTokenFromCookies } from "@/lib/getAccessTokenFromCookies";
 
-export async function saveSettings(
-  username: string,
-  linuxUsername: string,
-): Promise<{ username: string; linuxUsername: string } | null> {
+export async function saveSettings(payload: {
+  username: string;
+  linuxUsername: string;
+}) {
   const token = getAccessTokenFromCookies();
-  if (!token) return null;
+  if (!token) {
+    console.error("No token but no logout");
+    throw new Error();
+  }
 
   const res = await fetch(`/api/settings`, {
     method: "PUT",
@@ -13,17 +16,11 @@ export async function saveSettings(
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ username, linuxUsername }),
+    body: JSON.stringify(payload),
   });
 
   if (!res.ok) {
-    console.error("failed to save name");
-    return null;
+    console.error("Failed to save name");
+    throw new Error();
   }
-
-  const data = await res.json();
-  return {
-    username: data.username,
-    linuxUsername: data.linuxUsername,
-  };
 }
