@@ -14,35 +14,45 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { GroupMemberRoleName } from "@/types/group";
+import { cn } from "@/lib/utils";
 
 type Props = {
   index: number;
   id: string;
   role: GroupMemberRoleName;
   isLast: boolean;
-  currentUserRole: GlobalRole;
   isDuplicate?: boolean;
   disabled?: boolean;
   onAddBatch: (newMembers: { id: string; role: GroupMemberRoleName }[]) => void;
   onChange: (index: number, key: "id" | "role", value: string) => void;
   onRemove: (index: number) => void;
   onAdd: () => void;
+
+  accessLevel?: GroupRoleAccessLevel;
+  globalRole?: GlobalRole;
 };
+
 export default function AddMemberRow({
   index,
   id,
   role,
   isLast,
-  currentUserRole,
   isDuplicate,
   disabled = false,
   onAddBatch,
   onChange,
   onRemove,
   onAdd,
+  accessLevel = "USER",
+  globalRole,
 }: Props) {
-  const assignableRoles =
-    assignableRolesMap[currentUserRole as GroupRoleAccessLevel] ?? [];
+  const isAdmin = globalRole === "admin";
+
+  const resolvedAccessLevel: GroupRoleAccessLevel = isAdmin
+    ? "GROUP_OWNER"
+    : accessLevel;
+
+  const assignableRoles = assignableRolesMap[resolvedAccessLevel] ?? [];
 
   return (
     <tr className="hover:bg-muted">
@@ -51,7 +61,10 @@ export default function AddMemberRow({
           value={id}
           disabled={disabled}
           placeholder="Enter StudentID or Email"
-          className={isDuplicate ? "border-red-500 bg-red-50" : ""}
+          className={cn(
+            "h-10 w-full text-sm",
+            isDuplicate && "border-red-500 bg-red-50",
+          )}
           onChange={(e) => onChange(index, "id", e.target.value)}
           title={isDuplicate ? "Duplicate entry" : ""}
           onPaste={(e) => {
@@ -64,7 +77,7 @@ export default function AddMemberRow({
               e.preventDefault();
               const newMembers = rows.map((r) => ({
                 id: r,
-                role: "U" as GroupMemberRoleName,
+                role: "Student" as GroupMemberRoleName,
               }));
               onAddBatch(newMembers);
             }
@@ -76,12 +89,10 @@ export default function AddMemberRow({
         <Select
           value={role}
           disabled={disabled}
-          onValueChange={(value) =>
-            onChange(index, "role", value as GroupRoleAccessLevel)
-          }
+          onValueChange={(value) => onChange(index, "role", value)}
         >
-          <SelectTrigger>
-            <SelectValue placeholder="Select role" />
+          <SelectTrigger className="h-10 w-full text-sm">
+            <SelectValue placeholder="Select Role" />
           </SelectTrigger>
           <SelectContent>
             {assignableRoles.map((r) => (

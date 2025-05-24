@@ -16,7 +16,7 @@ export function useCreateGroup(options?: UseCreateGroupOptions) {
     },
     onSuccess: async (data) => {
       await options?.onSuccess?.(data);
-      queryClient.invalidateQueries({ queryKey: ["groups"] }); // 更新列表
+      queryClient.invalidateQueries({ queryKey: ["groups"] });
     },
     onError: (error) => {
       console.error("❌ Failed to create group:", error);

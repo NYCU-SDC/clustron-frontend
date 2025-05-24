@@ -85,7 +85,11 @@ export default function GroupListPage() {
       ) : (
         <div className="space-y-4">
           {data.items.map((group) => {
-            const path = `/groups/${group.id}/settings`;
+            const accessLevel = "GROUP_OWNER"; //待改，可顯示settings，等api出來再改
+            const isManager =
+              accessLevel === "GROUP_OWNER" || accessLevel === "GROUP_ADMIN";
+            const path = `/groups/${group.id}/${isManager ? "" : "info"}`;
+
             return (
               <div
                 key={group.id}

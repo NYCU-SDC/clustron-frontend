@@ -1,12 +1,23 @@
-import MemberDeleteMenu from "./MemberActionMenu";
+// import { useState } from "react";
 import { TableRow, TableCell } from "@/components/ui/table";
+import MemberDeleteMenu from "./MemberDeleteButton";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { assignableRolesMap } from "@/lib/permission";
+import type { GroupMemberRoleName, GroupRoleAccessLevel } from "@/types/group";
 
 type Props = {
   name: string;
   id: string;
   email: string;
-  role: string;
+  role: GroupMemberRoleName;
+  accessLevel?: GroupRoleAccessLevel;
   onDelete?: () => void;
+  onUpdateRole?: (newRole: GroupMemberRoleName) => void;
   showActions?: boolean;
   isArchived?: boolean;
 };
@@ -16,20 +27,47 @@ export default function GroupMemberRow({
   id,
   email,
   role,
+  accessLevel = "USER",
   onDelete,
+  onUpdateRole,
   showActions = false,
   isArchived = false,
 }: Props) {
+  const assignableRoles = assignableRolesMap[accessLevel] ?? [];
+
   return (
     <TableRow className="hover:bg-muted">
       <TableCell>{name}</TableCell>
+
       <TableCell>
         <div className="flex flex-col">
           <span className="font-medium">{id}</span>
           <span className="text-muted-foreground text-xs">{email}</span>
         </div>
       </TableCell>
-      <TableCell>{role}</TableCell>
+
+      <TableCell>
+        {showActions && assignableRoles.length > 0 && !isArchived ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <span className="cursor-pointer">{role}</span>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {assignableRoles.map((r) => (
+                <DropdownMenuItem
+                  key={r}
+                  onClick={() => onUpdateRole?.(r)}
+                  disabled={r === role}
+                >
+                  {r}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <span>{role}</span>
+        )}
+      </TableCell>
 
       {showActions && (
         <TableCell className="text-right pr-4">

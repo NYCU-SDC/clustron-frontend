@@ -16,7 +16,6 @@ export type GroupRole = {
   role: GroupMemberRoleName;
   accessLevel: GroupRoleAccessLevel;
 };
-
 // 群組成員
 export type GroupMember = {
   id: string;
@@ -54,6 +53,7 @@ export type GetGroupsResponse = {
 
 export type GroupDetail = GroupSummary & {
   me: {
+    type: string;
     role: GroupRole;
   };
 };

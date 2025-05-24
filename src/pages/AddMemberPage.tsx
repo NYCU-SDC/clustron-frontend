@@ -4,7 +4,6 @@ import AddMemberRow from "@/components/group/AddMemberRow";
 import { useAddMember } from "@/hooks/useAddMember";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
-import type { GlobalRole } from "@/lib/permission";
 import type { GroupMemberRoleName } from "@/types/group";
 
 export default function AddMemberPage() {
@@ -12,8 +11,6 @@ export default function AddMemberPage() {
   const navigate = useNavigate();
   const { data: group, isLoading } = useGetGroupById(groupId!);
   const payload = useJwtPayload();
-
-  const currentUserRole = payload?.role as GlobalRole;
 
   const [members, setMembers] = useState<
     { id: string; role: GroupMemberRoleName }[]
@@ -26,9 +23,11 @@ export default function AddMemberPage() {
   if (isLoading) return <div className="p-6">Loading...</div>;
   if (!group) return <div className="p-6">Course not found.</div>;
 
+  const accessLevel = group.me.role.accessLevel ?? "USER";
+
   const updateRow = (index: number, key: "id" | "role", value: string) => {
     const next = [...members];
-    next[index][key] = value as GroupMemberRoleName; //
+    next[index][key] = value as GroupMemberRoleName;
     setMembers(next);
   };
 
@@ -52,7 +51,6 @@ export default function AddMemberPage() {
       members.findIndex((other) => other.id.trim() === m.id.trim()) !== i,
   );
 
-  // ✅ 同樣修正這裡的型別
   const handleAddBatch = (
     newMembers: { id: string; role: GroupMemberRoleName }[],
   ) => {
@@ -82,11 +80,12 @@ export default function AddMemberPage() {
                   index={i}
                   id={m.id}
                   role={m.role}
+                  accessLevel={accessLevel}
+                  globalRole={payload?.role}
                   onChange={updateRow}
                   onAdd={addRow}
                   onRemove={removeRow}
                   isLast={i === members.length - 1}
-                  currentUserRole={currentUserRole}
                   isDuplicate={isDuplicate}
                   onAddBatch={handleAddBatch}
                 />

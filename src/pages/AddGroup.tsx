@@ -62,8 +62,7 @@ export default function AddGroupPage() {
       return;
     }
 
-    // 加入自己為 Group Owner
-    const payloadId = payload?.username ?? ""; // 假設 username 是唯一標識
+    const payloadId = payload?.username ?? "";
     const selfIncluded = members.some((m) => m.id.trim() === payloadId);
     const finalMembers = [
       ...(selfIncluded
@@ -130,7 +129,8 @@ export default function AddGroupPage() {
                   onRemove={removeRow}
                   isLast={i === members.length - 1}
                   onAddBatch={addBatchRows}
-                  currentUserRole="organizer" // 或依你要控制欄位用權限 hook 再拆
+                  globalRole={payload?.role} // 傳入 globalRole，admin 可 override
+                  accessLevel="GROUP_OWNER" // 預設 group owner 權限
                   isDuplicate={isDuplicate}
                 />
               );

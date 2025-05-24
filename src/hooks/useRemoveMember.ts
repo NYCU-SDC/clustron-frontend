@@ -19,7 +19,7 @@ export function useRemoveMember(
       queryClient.invalidateQueries({ queryKey: ["group-members", groupId] });
     },
     onError: (err) => {
-      console.error("❌ Failed to remove member:", err);
+      console.error(" Failed to remove member:", err);
       options?.onError?.(err);
     },
   });

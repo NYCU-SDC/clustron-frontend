@@ -1,6 +1,6 @@
 import { getToken } from "@/lib/token";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 export async function api<T>(
   path: string,
@@ -17,8 +17,8 @@ export async function api<T>(
     headers.Authorization = `Bearer ${token}`;
   }
 
-  console.log("📡 [api] Fetch:", BASE_URL + path);
-  console.log("🔐 [api] JWT Token:", token ?? "(無)");
+  // console.log("📡 [api] Fetch:", BASE_URL + path);
+  // console.log("🔐 [api] JWT Token:", token ?? "(無)");
 
   const res = await fetch(`${BASE_URL}${path}`, {
     ...options,

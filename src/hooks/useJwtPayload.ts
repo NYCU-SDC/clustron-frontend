@@ -8,7 +8,7 @@ export function useJwtPayload(): { username: string; role: GlobalRole } | null {
   try {
     const payload = JSON.parse(atob(token.split(".")[1]));
     return {
-      username: payload.Username ?? "(未知)",
+      username: payload.Username,
       role: payload.Role as GlobalRole,
     };
   } catch {

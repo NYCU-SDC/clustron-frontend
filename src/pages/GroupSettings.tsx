@@ -1,4 +1,3 @@
-//帶改，沒用到update
 import { useOutletContext } from "react-router-dom";
 import GroupDescription from "@/components/group/GroupDes";
 import GroupMemberTable from "@/components/group/GroupMemberTable";
@@ -17,17 +16,22 @@ export default function GroupSettings() {
   const { groupId } = useOutletContext<GroupContextType>();
   const { data: group, isLoading } = useGetGroupById(groupId);
   const user = useJwtPayload(); // 👈 用 JWT hook 拿使用者資料
-
+  // console.log("setting acs: ",groupId," | ", group.me.role.accessLevel);
+  // console.log("SHO : ",group)
   const archiveMutation = useArchiveGroup(groupId);
   const unarchiveMutation = useUnarchiveGroup(groupId);
   const removeMutation = useRemoveMember(groupId, {
-    onSuccess: () => console.log("✅ 成員已刪除"),
+    onSuccess: () => console.log("成員已刪除"),
     onError: (err) =>
-      alert("❌ 刪除失敗：" + (err instanceof Error ? err.message : "")),
+      alert(" 刪除失敗：" + (err instanceof Error ? err.message : "")),
   });
 
-  const accessLevel = group?.me?.role.accessLevel;
-  const { canEditMembers, canArchive } = useGroupPermissions(accessLevel);
+  const isAdmin = group?.me?.type === "adminOverride";
+  const accessLevel = group?.me.role.accessLevel;
+  const baseCanArchive = useGroupPermissions(accessLevel).canArchive;
+  const canArchive = isAdmin || baseCanArchive;
+
+  // console.log("ACC", isAdmin, "\\", baseCanArchive, "\\", canArchive);
 
   const handleRemove = (memberId: string) => {
     removeMutation.mutate(memberId);
@@ -52,34 +56,42 @@ export default function GroupSettings() {
 
       <GroupMemberTable
         groupId={group.id}
+        // accessLevel={group.me.role.accessLevel}
+        accessLevel="GROUP_OWNER" //待改， 先預設
         isArchived={group.isArchived}
-        onRemove={
-          canEditMembers && !group.isArchived ? handleRemove : undefined
-        }
-        showActions={canEditMembers}
+        onRemove={handleRemove}
       />
 
       {canArchive && (
         <div className="mt-10 p-4 border rounded bg-gray-50">
-          <h2 className="font-bold text-lg mb-2">
-            {group.isArchived ? "Unarchive This Group" : "Archive This Group"}
-          </h2>
-          <p className="text-sm text-gray-600 mb-4">
-            {group.isArchived
-              ? "This will reactivate the group and allow updates again."
-              : "This will turn the group into archive state, no update can be made before it is activated again."}
-          </p>
-          <button
-            onClick={toggleArchive}
-            className="bg-gray-900 text-white px-4 py-2 rounded"
-            disabled={archiveMutation.isPending || unarchiveMutation.isPending}
-          >
-            {archiveMutation.isPending || unarchiveMutation.isPending
-              ? "Saving..."
-              : group.isArchived
-                ? "Unarchive"
-                : "Archive"}
-          </button>
+          <div className="flex justify-between items-center gap-4">
+            <div>
+              <h2 className="font-bold text-lg">
+                {group.isArchived
+                  ? "Unarchive This Group"
+                  : "Archive This Group"}
+              </h2>
+              <p className="text-sm text-gray-600">
+                {group.isArchived
+                  ? "This will reactivate the group and allow updates again."
+                  : "This will turn the group into archive state, no update can be made before it is activated again."}
+              </p>
+            </div>
+
+            <button
+              onClick={toggleArchive}
+              className="bg-gray-900 text-white px-4 py-2 rounded whitespace-nowrap"
+              disabled={
+                archiveMutation.isPending || unarchiveMutation.isPending
+              }
+            >
+              {archiveMutation.isPending || unarchiveMutation.isPending
+                ? "Saving..."
+                : group.isArchived
+                  ? "Unarchive"
+                  : "Archive"}
+            </button>
+          </div>
         </div>
       )}
     </>
