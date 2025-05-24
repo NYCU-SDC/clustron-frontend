@@ -1,4 +1,4 @@
-import SettingAddKeyForm from "@/components/SettingAddKeyForm";
+import SettingAddKeyForm from "@/components/setting/SettingAddKeyForm";
 
 export default function SettingAddKey() {
   return (

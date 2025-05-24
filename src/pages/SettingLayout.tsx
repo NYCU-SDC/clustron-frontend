@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import SettingSidebar from "@/components/SettingSidebar";
+import SettingSidebar from "@/components/setting/SettingSidebar";
 import Navbar from "@/components/Navbar";
 
 export default function SettingLayout() {

@@ -1,5 +1,5 @@
-import SettingUsernameForm from "@/components/SettingUsernameForm";
-import SettingKeyTable from "@/components/SettingKeyTable";
+import SettingUsernameForm from "@/components/setting/SettingUsernameForm";
+import SettingKeyTable from "@/components/setting/SettingKeyTable";
 
 export default function SettingSSH() {
   return (

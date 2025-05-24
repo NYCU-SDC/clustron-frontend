@@ -1,4 +1,4 @@
-import SettingNameForm from "@/components/SettingNameForm";
+import SettingNameForm from "@/components/setting/SettingNameForm";
 
 export default function SettingGeneral() {
   return (
