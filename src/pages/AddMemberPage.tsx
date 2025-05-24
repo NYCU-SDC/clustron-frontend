@@ -1,30 +1,34 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AddMemberRow from "@/components/group/AddMemberRow";
-import { useAddMember } from "@/hooks/useAddMember"; // 引入 useAddMember
-import { useUserContext } from "@/context/UserContext";
-import { useGroupContext } from "@/context/GroupContext";
+import { useAddMember } from "@/hooks/useAddMember";
+import { useGetGroupById } from "@/hooks/useGetGroupById";
+import { useJwtPayload } from "@/hooks/useJwtPayload";
+import type { GlobalRole } from "@/lib/permission";
+import type { GroupMemberRoleName } from "@/types/group";
 
 export default function AddMemberPage() {
   const { id: groupId } = useParams();
   const navigate = useNavigate();
-  const { groups } = useGroupContext();
-  const { user } = useUserContext();
-  const currentUserRole = user?.role || "Student";
-  const group = groups.find((g) => g.id === groupId);
-  const [members, setMembers] = useState([{ id: "", role: "Student" }]);
+  const { data: group, isLoading } = useGetGroupById(groupId!);
+  const payload = useJwtPayload();
+
+  const currentUserRole = payload?.role as GlobalRole;
+
+  const [members, setMembers] = useState<
+    { id: string; role: GroupMemberRoleName }[]
+  >([{ id: "", role: "Student" }]);
 
   const { mutate: addMember } = useAddMember(groupId!, {
-    onSuccess: () => {
-      navigate(`/groups/${groupId}/settings`);
-    },
+    onSuccess: () => navigate(`/groups/${groupId}/settings`),
   });
 
+  if (isLoading) return <div className="p-6">Loading...</div>;
   if (!group) return <div className="p-6">Course not found.</div>;
 
   const updateRow = (index: number, key: "id" | "role", value: string) => {
     const next = [...members];
-    next[index][key] = value;
+    next[index][key] = value as GroupMemberRoleName; //
     setMembers(next);
   };
 
@@ -37,11 +41,10 @@ export default function AddMemberPage() {
 
   const handleSave = () => {
     const newMembers = members.map((m) => ({
-      member: m.id,
+      member: m.id.trim(),
       role: m.role,
     }));
-
-    addMember(newMembers); // 使用 useAddMember mutation 來新增成員
+    addMember(newMembers);
   };
 
   const hasDuplicate = members.some(
@@ -49,7 +52,10 @@ export default function AddMemberPage() {
       members.findIndex((other) => other.id.trim() === m.id.trim()) !== i,
   );
 
-  const handleAddBatch = (newMembers: { id: string; role: string }[]) => {
+  // ✅ 同樣修正這裡的型別
+  const handleAddBatch = (
+    newMembers: { id: string; role: GroupMemberRoleName }[],
+  ) => {
     setMembers((prev) => [...prev, ...newMembers]);
   };
 

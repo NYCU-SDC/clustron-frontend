@@ -5,14 +5,8 @@ export type Member = {
   username: string;
   email: string;
   studentId: string;
-  role:
-    | "Admin"
-    | "Professor"
-    | "Teacher"
-    | "Teacher assistant"
-    | "Student"
-    | "Auditor";
-  accessLevel: "admin" | "organizer" | "groupAdmin" | "user";
+  role: "Admin" | "Group Owner" | "Teacher assistant" | "Student" | "Auditor";
+  accessLevel: "Admin" | "Organizer" | "User";
 };
 
 export type Group = {
@@ -21,7 +15,7 @@ export type Group = {
   description: string;
   isArchived: boolean;
   members: Member[];
-  createdAt: string; // ✅ 新增
+  createdAt: string;
   updatedAt: string;
 };
 
@@ -38,7 +32,7 @@ export const mockGroups: Group[] = [
         email: "liam@gmail.com",
         studentId: "113999321",
         role: "Student",
-        accessLevel: "user",
+        accessLevel: "User",
       },
       {
         id: "u002",
@@ -46,15 +40,15 @@ export const mockGroups: Group[] = [
         email: "olivia@gmail.com",
         studentId: "113000111",
         role: "Student",
-        accessLevel: "user",
+        accessLevel: "User",
       },
       {
         id: "u005",
         username: "John Chen",
         email: "john.chen@gmail.com",
         studentId: "116000444",
-        accessLevel: "organizer",
-        role: "Teacher",
+        accessLevel: "Organizer",
+        role: "Group Owner",
       },
     ],
     createdAt: "20250000",
@@ -71,8 +65,8 @@ export const mockGroups: Group[] = [
         username: "Emma Brown",
         email: "emma@gmail.com",
         studentId: "110000111",
-        role: "Teacher",
-        accessLevel: "organizer",
+        role: "Group Owner",
+        accessLevel: "Organizer",
       },
       {
         id: "u002",
@@ -80,14 +74,14 @@ export const mockGroups: Group[] = [
         email: "olivia@gmail.com",
         studentId: "113000111",
         role: "Student",
-        accessLevel: "user",
+        accessLevel: "User",
       },
       {
         id: "u005",
         username: "John Chen",
         email: "john.chen@gmail.com",
         studentId: "116000444",
-        accessLevel: "user",
+        accessLevel: "User",
         role: "Student",
       },
     ],
@@ -105,16 +99,24 @@ export const mockGroups: Group[] = [
         username: "Emma Brown",
         email: "emma@gmail.com",
         studentId: "110000111",
-        role: "Teacher",
-        accessLevel: "organizer",
+        role: "Group Owner",
+        accessLevel: "Organizer",
       },
       {
         id: "u005",
         username: "John Chen",
         email: "john.chen@gmail.com",
         studentId: "116000444",
-        accessLevel: "groupAdmin",
+        accessLevel: "Organizer",
         role: "Teacher assistant",
+      },
+      {
+        id: "84f834c8-3388-4411-992c-b7b9a472d377",
+        username: "何思儀",
+        accessLevel: "User",
+        studentId: "110700036",
+        role: "Student",
+        email: "annie10731303.mg10@nycu.edu.tw",
       },
     ],
     createdAt: "20250820",

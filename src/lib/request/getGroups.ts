@@ -1,51 +1,30 @@
-import type { GroupSummary, PaginatedResponse } from "@/types/group";
-import { mockGroups } from "@/lib/mockGroups";
+import { api } from "@/lib/api";
+import type { GetGroupsResponse } from "@/types/group";
 
-export async function getGroups(
-  page = 1,
-  size = 10,
-  sort: "asc" | "desc" = "asc",
-  sortBy: keyof GroupSummary = "title",
-  accessLevel: "admin" | "organizer" | "groupAdmin" | "user" = "user",
-): Promise<PaginatedResponse<GroupSummary>> {
-  await new Promise((r) => setTimeout(r, 500));
-
-  const all: GroupSummary[] = mockGroups.map((g) => ({
-    id: g.id,
-    title: g.title,
-    description: g.description,
-    isArchived: g.isArchived,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    me: {
-      role: {
-        id: "mock-role-id",
-        role: "creator",
-        accessLevel, // ✅ 根據傳入的 user 權限
-      },
-    },
-  }));
-
-  // 排序、分頁同原本
-  all.sort((a, b) => {
-    const aVal = a[sortBy] ?? "";
-    const bVal = b[sortBy] ?? "";
-    return sort === "asc"
-      ? String(aVal).localeCompare(String(bVal))
-      : String(bVal).localeCompare(String(aVal));
-  });
-
-  const totalItems = all.length;
-  const totalPages = Math.ceil(totalItems / size);
-  const start = (page - 1) * size;
-  const items = all.slice(start, start + size);
-
-  return {
-    items,
-    totalPages,
-    totalItems,
-    currentPage: page,
-    pageSize: size,
-    hasNextPage: page < totalPages,
-  };
+export async function getGroups(): Promise<GetGroupsResponse> {
+  return api("/api/groups");
 }
+
+// import { api } from "@/lib/api";
+// import type { GroupSummary, PaginatedResponse } from "@/types/group";
+
+// /**
+//  * 呼叫後端 API `/api/groups`，支援分頁、排序
+//  */
+// export async function getGroups(options?: {
+//   page?: number;
+//   size?: number;
+//   sort?: "asc" | "desc";
+//   sortBy?: keyof GroupSummary;
+// }): Promise<PaginatedResponse<GroupSummary>> {
+//   const query = new URLSearchParams();
+
+//   if (options?.page) query.set("page", options.page.toString());
+//   if (options?.size) query.set("size", options.size.toString());
+//   if (options?.sort) query.set("sort", options.sort);
+//   if (options?.sortBy) query.set("sortBy", options.sortBy);
+
+//   const path = query.toString() ? `/api/groups?${query}` : "/api/groups";
+
+//   return api<PaginatedResponse<GroupSummary>>(path);
+// }

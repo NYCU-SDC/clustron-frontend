@@ -1,9 +1,7 @@
 import { useInfiniteMembers } from "@/hooks/useGetMembers";
-import { mockUsers } from "@/lib/userMock";
 import GroupMemberRow from "@/components/group/GroupMemberRow";
 import AddMemberButton from "@/components/group/AddMemberButton";
 import { Card, CardContent } from "@/components/ui/card";
-import type { MemberResponse } from "@/lib/request/getMember";
 
 type Props = {
   showActions?: boolean;
@@ -19,12 +17,16 @@ export default function GroupMemberTable({
   onRemove,
   isArchived = false,
 }: Props) {
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteMembers(groupId);
+  const {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isError,
+  } = useInfiniteMembers(groupId);
 
-  const members: MemberResponse[] =
-    data?.pages.flatMap((page) => page.items) ?? [];
-
+  const members = data?.pages.flatMap((page) => page.items) ?? [];
   return (
     <Card>
       <CardContent className="p-6">
@@ -37,6 +39,10 @@ export default function GroupMemberTable({
 
         {isLoading ? (
           <p className="text-sm text-gray-500">Loading members...</p>
+        ) : isError ? (
+          <p className="text-sm text-red-500">Failed to load members.</p>
+        ) : members.length === 0 ? (
+          <p className="text-sm text-gray-500">No members found.</p>
         ) : (
           <>
             <table className="w-full text-left text-sm border-t border-gray-200">
@@ -45,26 +51,22 @@ export default function GroupMemberTable({
                   <th className="py-2">Name</th>
                   <th className="py-2">Student ID or Email</th>
                   <th className="py-2">Role</th>
+                  {showActions && <th className="py-2">Actions</th>}
                 </tr>
               </thead>
               <tbody>
-                {members.map((m) => {
-                  const user = mockUsers.find((user) => user.id === m.id);
-                  const studentId = user ? user.studentId : "N/A";
-                  const email = user ? user.email : "N/A";
-                  return (
-                    <GroupMemberRow
-                      key={m.id}
-                      name={m.title}
-                      id={studentId}
-                      email={email}
-                      role={m.me.role.role}
-                      showActions={showActions}
-                      onDelete={onRemove ? () => onRemove(m.id) : undefined}
-                      isArchived={isArchived}
-                    />
-                  );
-                })}
+                {members.map((m) => (
+                  <GroupMemberRow
+                    key={m.id}
+                    name={m.username || "-"}
+                    id={m.studentId || m.email || "-"}
+                    email={m.email || "-"}
+                    role={m.role.role}
+                    showActions={showActions}
+                    onDelete={onRemove ? () => onRemove(m.id) : undefined}
+                    isArchived={isArchived}
+                  />
+                ))}
               </tbody>
             </table>
 

@@ -1,16 +1,13 @@
+//帶改，沒用到update
 import { useOutletContext } from "react-router-dom";
 import GroupDescription from "@/components/group/GroupDes";
 import GroupMemberTable from "@/components/group/GroupMemberTable";
-import { useUserContext } from "@/context/UserContext";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import { useArchiveGroup } from "@/hooks/useArchiveGroup";
 import { useUnarchiveGroup } from "@/hooks/useUnarchiveGroup";
 import { useRemoveMember } from "@/hooks/useRemoveMember";
-import {
-  // canAddMember,
-  canRemoveMember,
-  canArchiveGroup,
-} from "@/lib/permission";
+import { useJwtPayload } from "@/hooks/useJwtPayload";
+import { useGroupPermissions } from "@/hooks/useGroupPermissions";
 
 export type GroupContextType = {
   groupId: string;
@@ -18,38 +15,36 @@ export type GroupContextType = {
 
 export default function GroupSettings() {
   const { groupId } = useOutletContext<GroupContextType>();
-  const { user } = useUserContext();
   const { data: group, isLoading } = useGetGroupById(groupId);
+  const user = useJwtPayload(); // 👈 用 JWT hook 拿使用者資料
 
-  const archiveMutation = useArchiveGroup();
-  const unarchiveMutation = useUnarchiveGroup();
+  const archiveMutation = useArchiveGroup(groupId);
+  const unarchiveMutation = useUnarchiveGroup(groupId);
   const removeMutation = useRemoveMember(groupId, {
-    onSuccess: () => console.log("Success Remove"),
+    onSuccess: () => console.log("✅ 成員已刪除"),
     onError: (err) =>
-      alert("刪除失敗：" + (err instanceof Error ? err.message : "")),
+      alert("❌ 刪除失敗：" + (err instanceof Error ? err.message : "")),
   });
 
-  if (isLoading || !user || !group) {
-    return <div className="p-4">Loading or user not found.</div>;
-  }
-
-  const accessLevel = group.me.role.accessLevel;
-  const isAdmin = user.accessLevel === "admin";
-  const canEdit = isAdmin || canRemoveMember(accessLevel);
-  const canToggleArchive = isAdmin || canArchiveGroup(accessLevel);
-  // const canAdd = isAdmin || canAddMember(accessLevel);
+  const accessLevel = group?.me?.role.accessLevel;
+  const { canEditMembers, canArchive } = useGroupPermissions(accessLevel);
 
   const handleRemove = (memberId: string) => {
     removeMutation.mutate(memberId);
   };
 
   const toggleArchive = () => {
+    if (!group) return;
     if (group.isArchived) {
-      unarchiveMutation.mutate(group.id);
+      unarchiveMutation.mutate();
     } else {
-      archiveMutation.mutate(group.id);
+      archiveMutation.mutate();
     }
   };
+
+  if (isLoading || !user || !group) {
+    return <div className="p-4 text-gray-600">Loading group info...</div>;
+  }
 
   return (
     <>
@@ -58,12 +53,13 @@ export default function GroupSettings() {
       <GroupMemberTable
         groupId={group.id}
         isArchived={group.isArchived}
-        onRemove={canEdit && !group.isArchived ? handleRemove : undefined}
-        // showAddButton={canAdd}
-        showActions={canEdit}
+        onRemove={
+          canEditMembers && !group.isArchived ? handleRemove : undefined
+        }
+        showActions={canEditMembers}
       />
 
-      {canToggleArchive && (
+      {canArchive && (
         <div className="mt-10 p-4 border rounded bg-gray-50">
           <h2 className="font-bold text-lg mb-2">
             {group.isArchived ? "Unarchive This Group" : "Archive This Group"}

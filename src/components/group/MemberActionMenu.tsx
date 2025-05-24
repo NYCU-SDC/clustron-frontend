@@ -19,7 +19,7 @@ import { useState } from "react";
 
 type Props = {
   onConfirm: () => void;
-  isArchived?: boolean;
+  isArchived?: boolean; // 改為更彈性的名稱
 };
 
 export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
@@ -37,7 +37,10 @@ export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
           <DropdownMenuContent align="end">
             <DropdownMenuItem
               className="text-red-600"
-              onClick={() => setOpen(true)}
+              onClick={() => {
+                setOpen(false); // 先關閉 Dialog
+                onConfirm(); // 然後刪除
+              }}
             >
               Remove User
             </DropdownMenuItem>

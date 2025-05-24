@@ -1,48 +1,26 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createGroup } from "@/lib/request/createGroup";
-import type { CreateGroupInput, GroupSummary } from "@/types/group";
+import type { CreateGroupInput, CreateGroupResponse } from "@/types/group";
 
-type CreateGroupOptions = {
-  onSuccess?: () => void | Promise<void>;
-  onError?: (err: unknown) => void;
+type UseCreateGroupOptions = {
+  onSuccess?: (data: CreateGroupResponse) => void | Promise<void>;
+  onError?: (error: unknown) => void;
 };
 
-export function useCreateGroup(options?: CreateGroupOptions) {
+export function useCreateGroup(options?: UseCreateGroupOptions) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (payload: CreateGroupInput): Promise<GroupSummary> => {
-      const newGroup = await createGroup(payload);
-
-      const groupSummary: GroupSummary = {
-        id: newGroup.id,
-        title: newGroup.title,
-        description: newGroup.description,
-        isArchived: newGroup.isArchived,
-        createdAt: newGroup.createdAt,
-        updatedAt: newGroup.updatedAt,
-        me: {
-          role: {
-            id: newGroup.me.role.id,
-            role: newGroup.me.role.role,
-            accessLevel: newGroup.me.role.accessLevel,
-          },
-        },
-      };
-
-      return groupSummary;
+    mutationFn: async (input: CreateGroupInput) => {
+      return await createGroup(input);
     },
-
     onSuccess: async (data) => {
-      await options?.onSuccess?.();
-
-      queryClient.invalidateQueries({ queryKey: ["groups"] });
-
-      console.log("Group created successfully:", data);
+      await options?.onSuccess?.(data);
+      queryClient.invalidateQueries({ queryKey: ["groups"] }); // 更新列表
     },
-
-    onError: (err) => {
-      options?.onError?.(err);
+    onError: (error) => {
+      console.error("❌ Failed to create group:", error);
+      options?.onError?.(error);
     },
   });
 }

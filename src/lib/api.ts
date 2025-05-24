@@ -8,18 +8,34 @@ export async function api<T>(
 ): Promise<T> {
   const token = getToken();
 
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    ...(options.headers as Record<string, string>),
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  console.log("📡 [api] Fetch:", BASE_URL + path);
+  console.log("🔐 [api] JWT Token:", token ?? "(無)");
+
   const res = await fetch(`${BASE_URL}${path}`, {
     ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` }),
-      ...(options.headers || {}),
-    },
+    headers,
   });
 
   if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.message || "API Error");
+    let errorMessage = `API Error (${res.status})`;
+    try {
+      const error = await res.json();
+      errorMessage = error.message || errorMessage;
+    } catch {
+      // ignore
+    }
+
+    console.error("❌ [api] Error:", errorMessage);
+    throw new Error(errorMessage);
   }
 
   return res.json();

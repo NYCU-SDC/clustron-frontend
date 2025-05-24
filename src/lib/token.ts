@@ -1,11 +1,10 @@
 export function getToken(): string | null {
-  return localStorage.getItem("jwtToken");
+  return localStorage.getItem("token");
 }
 
 export function setToken(token: string): void {
-  localStorage.setItem("jwtToken", token);
+  localStorage.setItem("token", token);
 }
-
-export function clearToken(): void {
-  localStorage.removeItem("jwtToken");
-}
+export const removeToken = () => {
+  localStorage.removeItem("token"); // 或根據你實際儲存的 key
+};

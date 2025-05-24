@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AddMemberRow from "@/components/group/AddMemberRow";
-import { useUserContext } from "@/context/UserContext";
 import { useCreateGroup } from "@/hooks/useCreateGroup";
+import { useJwtPayload } from "@/hooks/useJwtPayload";
+import { GroupMemberRoleName } from "@/types/group";
 
 export default function AddGroupPage() {
   const navigate = useNavigate();
-  const { user } = useUserContext();
-  const currentUserRole = user?.role || "Student";
+  const payload = useJwtPayload();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [members, setMembers] = useState([{ id: "", role: "Student" }]);
@@ -15,7 +15,6 @@ export default function AddGroupPage() {
 
   const { mutate: createGroup, isPending } = useCreateGroup({
     onSuccess: () => navigate("/groups"),
-
     onError: (err: unknown) => {
       const message =
         err instanceof Error ? err.message : "建立失敗，請稍後再試";
@@ -63,13 +62,23 @@ export default function AddGroupPage() {
       return;
     }
 
+    // 加入自己為 Group Owner
+    const payloadId = payload?.username ?? ""; // 假設 username 是唯一標識
+    const selfIncluded = members.some((m) => m.id.trim() === payloadId);
+    const finalMembers = [
+      ...(selfIncluded
+        ? []
+        : [{ member: payloadId, role: "Group-Owner" as GroupMemberRoleName }]),
+      ...members.map((m) => ({
+        member: m.id.trim(),
+        role: m.role as GroupMemberRoleName,
+      })),
+    ];
+
     createGroup({
       title,
       description,
-      members: members.map((m) => ({
-        member: m.id.trim(),
-        role: m.role,
-      })),
+      members: finalMembers,
     });
   };
 
@@ -115,13 +124,13 @@ export default function AddGroupPage() {
                   key={i}
                   index={i}
                   id={m.id}
-                  role={m.role}
+                  role={m.role as GroupMemberRoleName}
                   onChange={updateRow}
                   onAdd={addRow}
                   onRemove={removeRow}
                   isLast={i === members.length - 1}
                   onAddBatch={addBatchRows}
-                  currentUserRole={currentUserRole}
+                  currentUserRole="organizer" // 或依你要控制欄位用權限 hook 再拆
                   isDuplicate={isDuplicate}
                 />
               );

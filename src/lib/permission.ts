@@ -1,43 +1,33 @@
-export type AccessLevel = "admin" | "organizer" | "groupAdmin" | "user";
-
-export function canAddMember(level: AccessLevel): boolean {
-  return ["admin", "organizer", "groupAdmin"].includes(level);
+export type GlobalRole = "admin" | "organizer" | "user";
+export type GroupRoleAccessLevel = "GROUP_OWNER" | "GROUP_ADMIN" | "USER";
+export function isGlobalAdmin(role: GlobalRole): boolean {
+  return role === "admin" || role === "organizer";
 }
 
-export function canRemoveMember(level: AccessLevel): boolean {
-  return ["admin", "organizer", "groupAdmin"].includes(level);
+export function canCreateGroup(role: GlobalRole): boolean {
+  return isGlobalAdmin(role);
 }
 
-export function canArchiveGroup(level: AccessLevel): boolean {
-  return level === "admin" || level === "organizer";
+export function canEditMembers(accessLevel: GroupRoleAccessLevel): boolean {
+  return accessLevel === "GROUP_OWNER" || accessLevel === "GROUP_ADMIN";
 }
 
-export function canAssignAccessLevel(
-  fromLevel: AccessLevel,
-  toLevel: AccessLevel,
-): boolean {
-  const hierarchy: AccessLevel[] = ["user", "groupAdmin", "organizer", "admin"];
-  const fromRank = hierarchy.indexOf(fromLevel);
-  const toRank = hierarchy.indexOf(toLevel);
-
-  return fromRank > toRank; // 只能給比自己低的
+export function canViewMembers(accessLevel: GroupRoleAccessLevel): boolean {
+  return canEditMembers(accessLevel);
 }
 
-export function canShowRemoveButton(
-  currentUserLevel: AccessLevel,
-  targetLevel: AccessLevel,
-): boolean {
-  return (
-    canRemoveMember(currentUserLevel) &&
-    canAssignAccessLevel(currentUserLevel, targetLevel)
-  );
+export function canArchiveGroup(accessLevel: GroupRoleAccessLevel): boolean {
+  return accessLevel === "GROUP_OWNER";
+}
+export function isReadonlyMember(accessLevel: GroupRoleAccessLevel): boolean {
+  return accessLevel === "USER";
 }
 
-export const roleAssignableMap: Record<string, string[]> = {
-  Admin: ["Professor", "Teacher", "Teacher assistant", "Student", "Auditor"],
-  Professor: ["Teacher assistant", "Student", "Auditor"],
-  Teacher: ["Teacher assistant", "Student", "Auditor"],
-  "Teacher assistant": ["Student", "Auditor"],
-  Student: [],
-  Auditor: [],
+export const assignableRolesMap: Record<
+  GroupRoleAccessLevel,
+  GroupRoleAccessLevel[]
+> = {
+  GROUP_OWNER: ["GROUP_ADMIN", "USER"],
+  GROUP_ADMIN: ["USER"],
+  USER: [],
 };

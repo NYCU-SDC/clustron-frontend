@@ -1,15 +1,16 @@
 // src/pages/CourseDescriptionPage.tsx
 import { useParams } from "react-router-dom";
-import { useGroupContext } from "@/context/GroupContext";
 import GroupDescription from "@/components/group/GroupDes";
+import { useGetGroupById } from "@/hooks/useGetGroupById";
 
 export default function CourseDescriptionPage() {
-  const { groups } = useGroupContext();
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
-  const group = groups.find((g) => g.id === id);
+  const { data: group, isLoading, isError } = useGetGroupById(id ?? "");
 
-  if (!group) return <div className="p-6">找不到課程</div>;
+  if (!id) return <div className="p-6">請提供課程 ID</div>;
+  if (isLoading) return <div className="p-6">載入中...</div>;
+  if (isError || !group) return <div className="p-6">找不到課程</div>;
 
   return (
     <div className="max-w-3xl mx-auto p-6">

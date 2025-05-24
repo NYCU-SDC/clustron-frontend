@@ -8,7 +8,7 @@ export function transformGroupsToSummaries(
 ): GroupSummary[] {
   if (!user) return [];
 
-  const isAdmin = user.accessLevel === "admin";
+  const isAdmin = user.accessLevel === "Admin";
 
   return groups
     .filter(
@@ -36,7 +36,7 @@ export function transformGroupsToSummaries(
             : {
                 id: user.id,
                 role: user.role,
-                accessLevel: "admin", // ✅ fallback for admin
+                accessLevel: "Admin", // ✅ fallback for admin
               },
         },
       };

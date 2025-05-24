@@ -1,10 +1,8 @@
 export type JwtPayload = {
-  id: string;
-  username: string;
-  email: string;
-  studentId: string;
-  accessLevel: string;
-  role: string;
+  ID: string;
+  Username: string;
+  Email: string;
+  Role: string;
   iat?: number;
   exp?: number;
 };

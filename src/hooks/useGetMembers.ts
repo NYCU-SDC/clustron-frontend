@@ -1,21 +1,28 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getMember } from "@/lib/request/getMember";
-import type { MemberResponse, Paginated } from "@/lib/request/getMember";
+import { getMembers } from "@/lib/request/getMembers";
+// import type { GetGroupMembersResponse } from "@/types/group";
 
-export type UseGetMembersResult = Paginated<MemberResponse>;
+const PAGE_SIZE = 100;
 
-export function useInfiniteMembers(
-  groupId: string | undefined,
-  size: number = 10,
-) {
+export function useInfiniteMembers(groupId: string) {
   return useInfiniteQuery({
     queryKey: ["members", groupId],
-    queryFn: async ({ pageParam = 1 }) => {
-      return await getMember(groupId!, pageParam, size);
-    },
+    queryFn: ({ pageParam = 1 }) => getMembers(groupId, pageParam, PAGE_SIZE),
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.hasNextPage ? allPages.length + 1 : undefined,
     initialPageParam: 1,
-    getNextPageParam: (lastPage) =>
-      lastPage.hasNextPage ? lastPage.currentPage + 1 : undefined,
     enabled: !!groupId,
   });
 }
+
+// import { useQuery } from "@tanstack/react-query";
+// import { getMembers } from "@/lib/request/getMembers";
+// import type { GetGroupMembersResponse } from "@/types/group";
+
+// export function useGetMembers(groupId: string, enabled = true) {
+//   return useQuery<GetGroupMembersResponse>({
+//     queryKey: ["group-members", groupId],
+//     queryFn: () => getMembers(groupId),
+//     enabled: !!groupId && enabled,
+//   });
+// }
