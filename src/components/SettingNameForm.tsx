@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getSettings } from "@/lib/request/getSettings";
 import { saveSettings } from "@/lib/request/saveSettings";
-import { Separator } from "./ui/separator";
+import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 
 const PROFILE_QUERY_KEY = ["username"];
