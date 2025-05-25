@@ -140,7 +140,7 @@ export default function AddGroupPage() {
         {errorMsg && <p className="text-red-600 text-sm mt-2">{errorMsg}</p>}
       </div>
 
-      <div className="text-right">
+      <div className="text-left">
         <button
           onClick={handleSubmit}
           disabled={isPending}

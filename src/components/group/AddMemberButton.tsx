@@ -20,7 +20,7 @@ export default function AddMemberButton({ groupId, isArchived }: Props) {
       onClick={handleClick}
       disabled={isArchived}
       variant="default"
-      className="flex items-center gap-1"
+      className="flex items-right gap-1"
     >
       <Plus className="w-4 h-4" />
       New Members

@@ -75,7 +75,6 @@ export default function GroupMemberTable({
                   <th className="py-2">Name</th>
                   <th className="py-2">Student ID or Email</th>
                   <th className="py-2">Role</th>
-                  {editable && <th className="py-2">Actions</th>}
                 </tr>
               </thead>
               <tbody>

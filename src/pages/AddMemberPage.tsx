@@ -58,14 +58,15 @@ export default function AddMemberPage() {
   };
 
   return (
-    <div className="flex">
-      <main className="flex-1 p-6">
+    <div className="flex justify-center">
+      <main className="w-full max-w-5xl p-6">
         <h1 className="text-2xl font-bold mb-6">Add New Members</h1>
         <table className="w-full text-left text-sm border-t border-gray-200">
           <thead>
             <tr className="text-gray-500">
-              <th className="py-2">Student ID or Email</th>
-              <th className="py-2">Role</th>
+              <th className="py-2 w-2/3">Student ID or Email</th>
+              <th className="py-2 w-1/3">Role</th>
+              <th className="py-2 w-10"></th>
             </tr>
           </thead>
           <tbody>
@@ -94,7 +95,8 @@ export default function AddMemberPage() {
           </tbody>
         </table>
 
-        <div className="mt-6 flex gap-3">
+        {/* 對齊右邊的按鈕列 */}
+        <div className="mt-6 flex justify-end gap-3">
           <button
             onClick={() => navigate(`/groups/${group.id}/settings`)}
             className="px-4 py-2 border rounded"

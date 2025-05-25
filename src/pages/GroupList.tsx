@@ -35,7 +35,7 @@ export default function GroupListPage() {
 
   if (!getToken()) {
     return (
-      <div className="p-10 space-y-4">
+      <div className="p-10 space-y-4 w-1/2 mx-auto">
         <h1 className="text-2xl font-bold mb-4">請先登入</h1>
         <div className="flex gap-2 flex-col sm:flex-row">
           <input
@@ -51,7 +51,7 @@ export default function GroupListPage() {
   }
 
   return (
-    <div className="p-10 space-y-4">
+    <div className="p-10 space-y-4 w-1/2 mx-auto">
       <div className="flex justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold">Courses</h1>
