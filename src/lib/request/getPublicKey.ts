@@ -30,6 +30,5 @@ export async function getPublicKey(length?: number): Promise<
   }
 
   const data = await res.json();
-  console.log(data);
   return data;
 }
