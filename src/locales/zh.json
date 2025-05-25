@@ -39,5 +39,21 @@
   },
   "protectedRoute": {
     "notLoggedInToast": "請先登入"
+  },
+  "settingSideBar": {
+    "title": "設定",
+    "GeneralNavLink": "一般",
+    "SSHNavLink": "安全殼層協定"
+  },
+  "settingAddKeyForm": {
+    "cardTitleForTitle": "標題",
+    "cardDescriptionForTitle": "命名您的公鑰",
+    "placeHolderForInputTitle": "我的筆電",
+    "cardTitleForKey": "公鑰",
+    "cardDescriptionForKey": "在此貼上您的公鑰(不是私鑰)，公鑰副檔名一般以 .pub 結尾",
+    "placeHolderForInputKey": "開頭應為：ssh-rsa、ecdsa-sha2-nistp256、ecdsa-sha2-nistp384、ecdsa-sha2-nistp521、ssh-ed25519、sk-ecdsa-sha2-nistp256@openssh.com 或 sk-ssh-ed25519@openssh.com",
+    "saveBtn": "儲存",
+    "cancelBtn": "取消",
+    "saveBtnToolTip": "請先填寫標題跟公鑰"
   }
 }

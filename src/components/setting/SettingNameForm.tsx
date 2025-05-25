@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +24,7 @@ export default function SettingNameForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const [username, setUsername] = useState("");
   const [linuxUsername, setLinuxUsername] = useState("");
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
 
   const {

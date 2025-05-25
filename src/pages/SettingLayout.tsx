@@ -8,7 +8,7 @@ export default function SettingLayout() {
       <Navbar />
       <div className="flex">
         <SettingSidebar />
-        <main className="flex-1 flex items-center justify-center pt-20 pr-20">
+        <main className="flex-1 flex justify-center pt-20">
           <Outlet />
         </main>
       </div>

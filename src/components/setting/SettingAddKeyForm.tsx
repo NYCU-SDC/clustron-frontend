@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,6 +34,7 @@ export default function SettingAddKeyForm({
   const [publicKey, setPublicKey] = useState("");
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const addMutation = useMutation({
     mutationFn: (payload: { title: string; publicKey: string }) =>
@@ -56,29 +58,34 @@ export default function SettingAddKeyForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Title</CardTitle>
-          <CardDescription>Give your public key a name</CardDescription>
+          <CardTitle className="text-2xl">
+            {t("settingAddKeyForm.cardTitleForTitle")}
+          </CardTitle>
+          <CardDescription>
+            {t("settingAddKeyForm.cardDescriptionForTitle")}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Input
             type="text"
-            placeholder="My Laptop"
+            placeholder={t("settingAddKeyForm.placeHolderForInputTitle")}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
         </CardContent>
         <CardSeperator />
         <CardHeader>
-          <CardTitle className="text-2xl">Key</CardTitle>
+          <CardTitle className="text-2xl">
+            {t("settingAddKeyForm.cardTitleForKey")}
+          </CardTitle>
           <CardDescription>
-            Paste your public key here NOT private key. The file name should end
-            with <code>.pub</code>
+            {t("settingAddKeyForm.cardDescriptionForKey")}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-6">
             <Textarea
-              placeholder="Begins with 'ssh-rsa', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'ssh-ed25519', 'sk-ecdsa-sha2-nistp256@openssh.com', or 'sk-ssh-ed25519@openssh.com'"
+              placeholder={t("settingAddKeyForm.placeHolderForInputKey")}
               onChange={(e) => setPublicKey(e.target.value)}
               className="h-32"
             />
@@ -89,7 +96,7 @@ export default function SettingAddKeyForm({
                 className="w-2/5 m-5 cursor-pointer"
                 onClick={() => navigate(-1)}
               >
-                Cancel
+                {t("settingAddKeyForm.cancelBtn")}
               </Button>
               <TooltipProvider>
                 {SaveBtnIsDisabled ? (
@@ -99,15 +106,11 @@ export default function SettingAddKeyForm({
                         disabled
                         className="w-2/5 m-5 disabled:cursor-not-allowed disabled:pointer-events-auto"
                       >
-                        Save
+                        {t("settingAddKeyForm.saveBtn")}
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent
-                      side="top"
-                      align="center"
-                      className="max-w-xs break-all whitespace-normal"
-                    >
-                      Please fill in both Title and Public Key
+                    <TooltipContent side="top" align="center">
+                      {t("settingAddKeyForm.saveBtnToolTip")}
                     </TooltipContent>
                   </Tooltip>
                 ) : (
@@ -115,7 +118,7 @@ export default function SettingAddKeyForm({
                     className="w-2/5 m-5 cursor-pointer"
                     onClick={() => addMutation.mutate({ title, publicKey })}
                   >
-                    Save
+                    {t("settingAddKeyForm.saveBtn")}
                   </Button>
                 )}
               </TooltipProvider>

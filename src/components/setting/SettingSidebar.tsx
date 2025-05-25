@@ -1,4 +1,5 @@
 import { NavLink } from "react-router";
+import { useTranslation } from "react-i18next";
 
 export function navLinkClass(isActive: boolean) {
   return [
@@ -11,16 +12,19 @@ export function navLinkClass(isActive: boolean) {
 }
 
 export default function SettingSideBar() {
+  const { t } = useTranslation();
   return (
-    <aside className="sticky top-[7rem] self-start mx-15 my-8">
-      <div className="text-4xl font-semibold mb-8">Settings</div>
+    <aside className="sticky top-[7rem] self-start min-w-36 ml-15 my-8">
+      <div className="text-4xl font-semibold mb-8">
+        {t("settingSideBar.title")}
+      </div>
       <ul className="space-y-4">
         <li>
           <NavLink
             to={`/Setting/general`}
             className={({ isActive }) => navLinkClass(isActive)}
           >
-            General
+            {t("settingSideBar.GeneralNavLink")}
           </NavLink>
         </li>
         <li>
@@ -28,7 +32,7 @@ export default function SettingSideBar() {
             to={`/Setting/ssh`}
             className={({ isActive }) => navLinkClass(isActive)}
           >
-            SSH
+            {t("settingSideBar.SSHNavLink")}
           </NavLink>
         </li>
       </ul>

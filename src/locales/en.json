@@ -39,5 +39,21 @@
   },
   "protectedRoute": {
     "notLoggedInToast": "Please log in first"
+  },
+  "settingSideBar": {
+    "title": "Settings",
+    "GeneralNavLink": "General",
+    "SSHNavLink": "SSH"
+  },
+  "settingAddKeyForm": {
+    "cardTitleForTitle": "title",
+    "cardDescriptionForTitle": "Give your public key a name",
+    "placeHolderForInputTitle": "My Laptop",
+    "cardTitleForKey": "Key",
+    "cardDescriptionForKey": "Paste the content of your public key here (not your private key). The content usually comes from a file ending with .pub",
+    "placeHolderForInputKey": "Begins with 'ssh-rsa', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'ssh-ed25519', 'sk-ecdsa-sha2-nistp256@openssh.com', or 'sk-ssh-ed25519@openssh.com'",
+    "saveBtn": "Save",
+    "cancelBtn": "Cancel",
+    "saveBtnToolTip": "Please fill in both Title and Public Key"
   }
 }
