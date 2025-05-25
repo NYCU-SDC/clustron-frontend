@@ -36,11 +36,11 @@ export default function SettingKeyTable() {
   const deleteMutation = useMutation({
     mutationFn: (id: string) => deletePublicKey(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [PUBLIC_KEYS_QUERY_KEY] });
-      toast(t("settingKeyTable.successToast"));
+      queryClient.invalidateQueries({ queryKey: PUBLIC_KEYS_QUERY_KEY });
+      toast.success(t("settingKeyTable.successToast"));
     },
     onError: () => {
-      toast(t("settingKeyTable.deleteFailToast"));
+      toast.error(t("settingKeyTable.deleteFailToast"));
     },
   });
 
@@ -58,7 +58,7 @@ export default function SettingKeyTable() {
         </CardTitle>
         <Button
           className="cursor-pointer"
-          onClick={() => navigate("/Setting/addNewKey")}
+          onClick={() => navigate("/setting/addNewKey")}
         >
           {t("settingKeyTable.addNewKeyBtn")}
         </Button>
