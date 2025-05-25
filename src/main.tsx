@@ -9,15 +9,22 @@ import App from "./App.tsx";
 import "./i18n";
 import { Toaster } from "@/components/ui/sonner";
 
+// React Query
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <CookiesProvider>
         <AuthProvider>
-          <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-            <Toaster />
-            <App />
-          </ThemeProvider>
+          <QueryClientProvider client={queryClient}>
+            <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+              <Toaster />
+              <App />
+            </ThemeProvider>
+          </QueryClientProvider>
         </AuthProvider>
       </CookiesProvider>
     </BrowserRouter>

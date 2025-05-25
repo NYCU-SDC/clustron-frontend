@@ -52,7 +52,7 @@ export function OnboardingForm({ defaultData }: Props) {
     console.log("sendData", data);
     setTimeout(() => {
       toast.success(t("onboarding.toastSuccess"));
-      navigate("/");
+      navigate("/groups");
     }, 500);
   };
 
