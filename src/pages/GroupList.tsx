@@ -19,6 +19,7 @@ export default function GroupListPage() {
     const token = inputToken.trim();
     try {
       const decoded = JSON.parse(atob(token.split(".")[1]));
+      console.log("HI : ", decoded);
       if (!decoded.Role) throw new Error("缺少角色資訊");
       setToken(token);
       window.location.reload(); // 重新掛載以取得角色

@@ -12,7 +12,8 @@ export function useCreateGroup(options?: UseCreateGroupOptions) {
 
   return useMutation({
     mutationFn: async (input: CreateGroupInput) => {
-      return await createGroup(input);
+      console.log(input);
+      return createGroup(input);
     },
     onSuccess: async (data) => {
       await options?.onSuccess?.(data);

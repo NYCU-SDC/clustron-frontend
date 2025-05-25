@@ -13,7 +13,7 @@ export default function GroupPage() {
   const accessLevel = group?.me?.role.accessLevel;
   const isGlobalAdmin =
     payload?.role === "admin" || payload?.role === "organizer";
-
+  console.log(group);
   const canView =
     isLoading || (payload && (accessLevel !== "USER" || isGlobalAdmin));
 
