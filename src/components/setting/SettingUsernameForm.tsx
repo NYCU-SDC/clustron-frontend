@@ -16,8 +16,6 @@ import { saveSettings } from "@/lib/request/saveSettings";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 
-const PROFILE_QUERY_KEY = ["username"];
-
 export default function SettingUsernameForm({
   className,
   ...props
@@ -26,6 +24,7 @@ export default function SettingUsernameForm({
   const [linuxUsername, setLinuxUsername] = useState("");
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const PROFILE_QUERY_KEY = ["username"];
 
   const {
     data = { username: "", linuxUsername: "" },
@@ -42,10 +41,10 @@ export default function SettingUsernameForm({
       saveSettings(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
-      toast("Save username successfully");
+      toast(t("settingUsernameForm.successToast"));
     },
     onError: () => {
-      toast.error("Failed to save linux username");
+      toast.error(t("settingUsernameForm.saveFailToast"));
     },
   });
 
@@ -56,17 +55,19 @@ export default function SettingUsernameForm({
     }
 
     if (isError) {
-      toast.error("Failed to get your username");
+      toast.error(t("settingUsernameForm.getFailToast"));
     }
-  }, [isSuccess, isError, data]);
+  }, [isSuccess, isError, data, t]);
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Linux Username</CardTitle>
+          <CardTitle className="text-2xl">
+            {t("settingUsernameForm.cardTitleForUsername")}
+          </CardTitle>
           <CardDescription>
-            The username to login to the remote server
+            {t("settingUsernameForm.cardDescriptionForUsername")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -74,16 +75,18 @@ export default function SettingUsernameForm({
             <Input
               id="linuxUsername"
               type="name"
-              placeholder="e.g., Jammy"
+              placeholder={t("settingUsernameForm.placeHolderForInputUsername")}
               value={linuxUsername}
               onChange={(e) => setLinuxUsername(e.target.value)}
             />
             <Separator></Separator>
             <Button
               className="w-full cursor-pointer"
-              onClick={() => addMutation.mutate({ username, linuxUsername })}
+              onClick={() => {
+                addMutation.mutate({ username, linuxUsername });
+              }}
             >
-              Save
+              {t("settingUsernameForm.savaBtn")}
             </Button>
           </div>
         </CardContent>

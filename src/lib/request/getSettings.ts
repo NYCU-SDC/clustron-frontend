@@ -18,7 +18,7 @@ export async function getSettings(): Promise<{
   });
 
   if (!res.ok) {
-    console.error("Failed to get name");
+    console.error("Failed to save name");
     throw new Error();
   }
 

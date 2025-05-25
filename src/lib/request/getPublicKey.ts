@@ -1,6 +1,6 @@
 import { getAccessTokenFromCookies } from "@/lib/getAccessTokenFromCookies";
 
-export async function getPublicKey(): Promise<
+export async function getPublicKey(length?: number): Promise<
   {
     id: string;
     title: string;
@@ -13,13 +13,16 @@ export async function getPublicKey(): Promise<
     throw new Error();
   }
 
-  const res = await fetch(`/api/publickey`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+  const res = await fetch(
+    length ? `/api/publickey?length=${length}` : `/api/publickey`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     },
-  });
+  );
 
   if (!res.ok) {
     console.error("Failed to get public key");
@@ -27,5 +30,6 @@ export async function getPublicKey(): Promise<
   }
 
   const data = await res.json();
+  console.log(data);
   return data;
 }

@@ -20,6 +20,11 @@ export async function saveSettings(payload: {
   });
 
   if (!res.ok) {
+    if (res.status === 400) {
+      const err = new Error();
+      err.name = "BadKeyError";
+      throw err;
+    }
     console.error("Failed to save name");
     throw new Error();
   }

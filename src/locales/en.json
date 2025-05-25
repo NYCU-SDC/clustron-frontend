@@ -54,6 +54,38 @@
     "placeHolderForInputKey": "Begins with 'ssh-rsa', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'ssh-ed25519', 'sk-ecdsa-sha2-nistp256@openssh.com', or 'sk-ssh-ed25519@openssh.com'",
     "saveBtn": "Save",
     "cancelBtn": "Cancel",
-    "saveBtnToolTip": "Please fill in both Title and Public Key"
+    "saveBtnToolTip": "Please fill in both Title and Public Key",
+    "successToast": "Key saved successfully",
+    "formatErrorToast": "Public key format error",
+    "saveFailToast": "Failed to save your public key"
+  },
+  "settingNameForm": {
+    "cardTitleForName": "Name",
+    "cardDescriptionForName": "Your real name to let the group administrator recognize you",
+    "savaBtn": "Save",
+    "placeHolderForInputName": "Jammy Wang",
+    "successToast": "Name saved successfully",
+    "emptyErrorToast": "Please enter your name",
+    "saveFailToast": "Failed to save your name",
+    "getFailToast": "Failed to get your name"
+  },
+  "settingUsernameForm": {
+    "cardTitleForUsername": "Linux Username",
+    "cardDescriptionForUsername": "The username to login to the remote server",
+    "savaBtn": "Save",
+    "placeHolderForInputUsername": "beastie",
+    "successToast": "Linux username saved successfully",
+    "emptyErrorToast": "Please enter your Linux username",
+    "saveFailToast": "Failed to save Linux username",
+    "getFailToast": "Failed to get Linux username"
+  },
+  "settingKeyTable": {
+    "cardTitleForKeyTable": "SSH Keys",
+    "addNewKeyBtn": "＋ New SSH Keys",
+    "tableHeadForTitle": "Title",
+    "tableHeadForKey": "Key",
+    "successToast": "Key deleted successfully",
+    "deleteFailToast": "Failed to delete public key",
+    "getFailToast": "Failed to get public key list"
   }
 }

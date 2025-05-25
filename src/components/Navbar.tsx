@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router";
+import { NavLink } from "react-router";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { useContext } from "react";
@@ -17,12 +17,11 @@ export function navLinkclass(isActive: boolean) {
 }
 
 export default function Navbar() {
-  const navigate = useNavigate();
   const { logout, isLoggedIn } = useContext(authContext);
   const { t } = useTranslation();
 
   return (
-    <nav className="w-full border-b">
+    <nav className="sticky top-0 w-full border-b bg-white dark:bg-black">
       <div className="flex items-center justify-between w-full px-6 py-4">
         <div className="flex items-center space-x-4">
           <div className="text-2xl font-bold px-3 py-2">Clustron</div>
@@ -54,15 +53,7 @@ export default function Navbar() {
             >
               {t("navbar.logoutBtn")}
             </Button>
-          ) : (
-            <Button
-              variant="secondary"
-              className="cursor-pointer"
-              onClick={() => navigate("/login")}
-            >
-              {t("navbar.loginBtn")}
-            </Button>
-          )}
+          ) : null}
         </div>
       </div>
     </nav>

@@ -16,8 +16,6 @@ import { saveSettings } from "@/lib/request/saveSettings";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 
-const PROFILE_QUERY_KEY = ["username"];
-
 export default function SettingNameForm({
   className,
   ...props
@@ -26,6 +24,7 @@ export default function SettingNameForm({
   const [linuxUsername, setLinuxUsername] = useState("");
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const PROFILE_QUERY_KEY = ["username"];
 
   const {
     data = { username: "", linuxUsername: "" },
@@ -36,15 +35,20 @@ export default function SettingNameForm({
     queryFn: getSettings,
     staleTime: 1000 * 60 * 30,
   });
+
   const addMutation = useMutation({
     mutationFn: (payload: { username: string; linuxUsername: string }) =>
       saveSettings(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
-      toast("Save name successfully");
+      toast.success(t("settingNameForm.successToast"));
     },
-    onError: () => {
-      toast.error("Failed to save username");
+    onError: (error: Error) => {
+      if (error.name === "BadKeyError") {
+        toast.error(t("settingNameForm.emptyErrorToast"));
+      } else {
+        toast.error(t("settingNameForm.saveFailToast"));
+      }
     },
   });
 
@@ -54,17 +58,19 @@ export default function SettingNameForm({
       setLinuxUsername(data.linuxUsername);
     }
     if (isError) {
-      toast.error("Failed to get your name");
+      toast.error(t("settingNameForm.getFailToast"));
     }
-  }, [isSuccess, isError, data]);
+  }, [isSuccess, isError, data, t]);
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Name</CardTitle>
+          <CardTitle className="text-2xl">
+            {t("settingNameForm.cardTitleForName")}
+          </CardTitle>
           <CardDescription>
-            Your real name to let the group administrator recognize you
+            {t("settingNameForm.cardDescriptionForName")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -72,16 +78,18 @@ export default function SettingNameForm({
             <Input
               id="username"
               type="name"
-              placeholder="e.g., Wang Jammy"
+              placeholder={t("settingNameForm.placeHolderForInputName")}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
             <Separator></Separator>
             <Button
               className="w-full cursor-pointer"
-              onClick={() => addMutation.mutate({ username, linuxUsername })}
+              onClick={() => {
+                addMutation.mutate({ username, linuxUsername });
+              }}
             >
-              Save
+              {t("settingNameForm.savaBtn")}
             </Button>
           </div>
         </CardContent>

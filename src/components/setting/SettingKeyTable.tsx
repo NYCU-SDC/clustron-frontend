@@ -17,45 +17,50 @@ import { getPublicKey } from "@/lib/request/getPublicKey";
 import { deletePublicKey } from "@/lib/request/deletePublicKey";
 import { toast } from "sonner";
 
-const PUBLIC_KEYS_QUERY_KEY = ["publicKeys"];
-
 export default function SettingKeyTable() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const length = 30;
+  const PUBLIC_KEYS_QUERY_KEY = ["publicKeys", length] as const;
 
   const { data: keys = [], isError } = useQuery({
     queryKey: PUBLIC_KEYS_QUERY_KEY,
-    queryFn: getPublicKey,
+    queryFn: ({ queryKey }) => {
+      const [, length] = queryKey;
+      return getPublicKey(length);
+    },
     staleTime: 1000 * 60 * 30,
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => deletePublicKey(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: PUBLIC_KEYS_QUERY_KEY });
-      toast("Delete key successful");
+      queryClient.invalidateQueries({ queryKey: [PUBLIC_KEYS_QUERY_KEY] });
+      toast(t("settingKeyTable.successToast"));
     },
     onError: () => {
-      toast("Failed to delete public key");
+      toast(t("settingKeyTable.deleteFailToast"));
     },
   });
 
   useEffect(() => {
     if (isError) {
-      toast.error("Failed to get public key list");
+      toast.error(t("settingKeyTable.getFailToast"));
     }
-  }, [isError]);
+  }, [isError, t]);
 
   return (
     <Card>
       <CardHeader className="py-5 flex justify-between">
-        <CardTitle className="text-2xl">SSH Keys</CardTitle>
+        <CardTitle className="text-2xl">
+          {t("settingKeyTable.cardTitleForKeyTable")}
+        </CardTitle>
         <Button
           className="cursor-pointer"
           onClick={() => navigate("/Setting/addNewKey")}
         >
-          ＋ New SSH Keys
+          {t("settingKeyTable.addNewKeyBtn")}
         </Button>
       </CardHeader>
       <CardContent>
@@ -63,10 +68,10 @@ export default function SettingKeyTable() {
           <TableHeader>
             <TableRow>
               <TableHead className="w-2/5 text-gray-500 dark:text-white">
-                Title
+                {t("settingKeyTable.tableHeadForTitle")}
               </TableHead>
               <TableHead className="w-3/5 text-gray-500 dark:text-white">
-                Key
+                {t("settingKeyTable.tableHeadForKey")}
               </TableHead>
               <TableHead />
             </TableRow>
@@ -76,9 +81,9 @@ export default function SettingKeyTable() {
               <TableRow key={key.id}>
                 <TableCell>{key.title}</TableCell>
                 <TableCell>
-                  {key.publicKey.length >= 10
-                    ? `${key.publicKey.slice(0, 10)}...`
-                    : key.publicKey}
+                  {key.publicKey.length < length
+                    ? key.publicKey
+                    : `${key.publicKey.slice(0, length)}...`}
                 </TableCell>
                 <TableCell className="text-right">
                   <Button

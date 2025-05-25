@@ -24,8 +24,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { savePublicKey } from "@/lib/request/savePublicKey";
 import { toast } from "sonner";
 
-const PUBLIC_KEYS_QUERY_KEY = ["publicKeys"];
-
 export default function SettingAddKeyForm({
   className,
   ...props
@@ -33,6 +31,7 @@ export default function SettingAddKeyForm({
   const [title, setTitle] = useState("");
   const [publicKey, setPublicKey] = useState("");
   const queryClient = useQueryClient();
+  const PUBLIC_KEYS_QUERY_KEY = ["publicKeys"];
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -41,14 +40,14 @@ export default function SettingAddKeyForm({
       savePublicKey(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: PUBLIC_KEYS_QUERY_KEY });
-      toast.success("Save successful");
+      toast.success(t("settingAddKeyForm.successToast"));
       navigate("/setting/ssh");
     },
     onError: (error: Error) => {
       if (error.name === "BadKeyError") {
-        toast.error("Public key format error");
+        toast.error(t("settingAddKeyForm.formatErrorToast"));
       } else {
-        toast.error("Failed to save public key");
+        toast.error(t("settingAddKeyForm.saveFailToast"));
       }
     },
   });
