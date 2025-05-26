@@ -21,7 +21,7 @@ export default function SettingSideBar() {
       <ul className="space-y-4">
         <li>
           <NavLink
-            to={`/Setting/general`}
+            to={`/setting/general`}
             className={({ isActive }) => navLinkClass(isActive)}
           >
             {t("settingSideBar.GeneralNavLink")}
@@ -29,7 +29,7 @@ export default function SettingSideBar() {
         </li>
         <li>
           <NavLink
-            to={`/Setting/ssh`}
+            to={`/setting/ssh`}
             className={({ isActive }) => navLinkClass(isActive)}
           >
             {t("settingSideBar.SSHNavLink")}

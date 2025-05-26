@@ -3,7 +3,7 @@ import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Callback from "@/pages/Callback";
 import Onboarding from "@/pages/Onboarding";
-import SettingLayout from "./pages/SettingLayout";
+import SettingLayout from "@/pages/SettingLayout";
 import SettingGeneral from "./pages/SettingGeneral";
 import SettingAddKey from "./pages/SettingAddKey";
 import SettingSSH from "./pages/SettingSSH";
@@ -42,7 +42,7 @@ const App = () => {
         <Route index element={<Navigate to="general" replace />} />
         <Route path="general" element={<SettingGeneral />} />
         <Route path="ssh" element={<SettingSSH />} />
-        <Route path="addNewKey" element={<SettingAddKey />} />
+        <Route path="add-new-key" element={<SettingAddKey />} />
       </Route>
     </Routes>
   );

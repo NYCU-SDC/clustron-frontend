@@ -60,7 +60,7 @@
     "saveFailToast": "公鑰儲存失敗"
   },
   "settingNameForm": {
-    "cardTitleForName": "名字",
+    "cardTitleForName": "姓名",
     "cardDescriptionForName": "你的真實姓名以讓群組管理員辨識你",
     "savaBtn": "儲存",
     "placeHolderForInputName": "陳曉明",

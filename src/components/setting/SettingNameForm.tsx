@@ -33,7 +33,6 @@ export default function SettingNameForm({
   } = useQuery({
     queryKey: PROFILE_QUERY_KEY,
     queryFn: getSettings,
-    staleTime: 1000 * 60 * 30,
   });
 
   const addMutation = useMutation({
@@ -83,14 +82,16 @@ export default function SettingNameForm({
               onChange={(e) => setUsername(e.target.value)}
             />
             <Separator></Separator>
-            <Button
-              className="w-full cursor-pointer"
-              onClick={() => {
-                addMutation.mutate({ username, linuxUsername });
-              }}
-            >
-              {t("settingNameForm.savaBtn")}
-            </Button>
+            <div className="flex">
+              <Button
+                className="px-7 py-6 cursor-pointer"
+                onClick={() => {
+                  addMutation.mutate({ username, linuxUsername });
+                }}
+              >
+                {t("settingNameForm.savaBtn")}
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>

@@ -30,7 +30,6 @@ export default function SettingKeyTable() {
       const [, length] = queryKey;
       return getPublicKey(length);
     },
-    staleTime: 1000 * 60 * 30,
   });
 
   const deleteMutation = useMutation({
@@ -57,8 +56,8 @@ export default function SettingKeyTable() {
           {t("settingKeyTable.cardTitleForKeyTable")}
         </CardTitle>
         <Button
-          className="cursor-pointer"
-          onClick={() => navigate("/setting/addNewKey")}
+          className="px-7 py-6 cursor-pointer"
+          onClick={() => navigate("/setting/add-new-key")}
         >
           {t("settingKeyTable.addNewKeyBtn")}
         </Button>
