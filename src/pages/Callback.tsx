@@ -1,19 +1,15 @@
-import { useEffect } from "react";
-import { useCookies } from "react-cookie";
+import { useContext, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useNavigate, useLocation } from "react-router";
 import { AccessTokenType } from "@/types/type";
+import { authContext } from "@/lib/auth/authContext";
 
 export default function Callback() {
-  const [, setCookie] = useCookies([
-    "accessToken",
-    "refreshTokenExpirationTime",
-    "refreshToken",
-  ]);
   const navigate = useNavigate();
   const location = useLocation();
+  const { setCookiesForAuthToken } = useContext(authContext);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -28,13 +24,7 @@ export default function Callback() {
       return;
     }
 
-    setCookie("accessToken", accessToken, { path: "/" });
-    setCookie("refreshToken", refreshToken, { path: "/" });
-    setCookie(
-      "refreshTokenExpirationTime",
-      Math.floor(Date.now() / 1000) + 1 * 24 * 60 * 60,
-      { path: "/" },
-    );
+    setCookiesForAuthToken(accessToken, refreshToken);
 
     let redirectTo;
     if (jwtDecode<AccessTokenType>(accessToken).Role === "ROLE_NOT_SETUP") {
@@ -45,7 +35,7 @@ export default function Callback() {
 
     navigate(redirectTo);
     toast.success(t("callback.loginSuccessToast"));
-  }, [navigate, location, setCookie, t]);
+  }, [navigate, setCookiesForAuthToken, location, t]);
 
   return <div className="min-h-screen">{t("callback.loadingMessage")}</div>;
 }
