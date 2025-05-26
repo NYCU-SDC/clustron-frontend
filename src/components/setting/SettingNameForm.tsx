@@ -43,7 +43,7 @@ export default function SettingNameForm({
       toast.success(t("settingNameForm.successToast"));
     },
     onError: (error: Error) => {
-      if (error.name === "BadKeyError") {
+      if (error.name === "Bad Request") {
         toast.error(t("settingNameForm.emptyErrorToast"));
       } else {
         toast.error(t("settingNameForm.saveFailToast"));
