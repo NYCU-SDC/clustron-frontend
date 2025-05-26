@@ -1,12 +1,7 @@
 import { getAccessTokenFromCookies } from "@/lib/getAccessTokenFromCookies";
+import { PublicKey } from "@/types/type";
 
-export async function getPublicKey(length?: number): Promise<
-  {
-    id: string;
-    title: string;
-    publicKey: string;
-  }[]
-> {
+export async function getPublicKey(length?: number): Promise<PublicKey[]> {
   const token = getAccessTokenFromCookies();
   if (!token) {
     console.error("No token but no logout");

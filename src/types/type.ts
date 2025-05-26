@@ -10,3 +10,9 @@ export type AccessTokenType = {
   iat: number;
   jti: string;
 };
+
+export type PublicKey = {
+  id: string;
+  title: string;
+  publicKey: string;
+};
