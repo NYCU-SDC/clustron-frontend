@@ -85,6 +85,10 @@
     "tableHeadForKey": "公鑰",
     "successToast": "公鑰刪除成功",
     "deleteFailToast": "公鑰刪除失敗",
-    "getFailToast": "無法取得公鑰列表"
+    "getFailToast": "無法取得公鑰列表",
+    "confirmTitle": "確定要刪除這把公鑰嗎？",
+    "confirmDescription": "刪除後將無法復原，請謹慎操作。",
+    "cancelBtn": "取消",
+    "confirmBtn": "刪除"
   }
 }

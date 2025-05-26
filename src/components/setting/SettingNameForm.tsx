@@ -92,7 +92,7 @@ export default function SettingNameForm({
             <Separator></Separator>
             <div className="flex">
               <Button
-                className="px-7 py-6 cursor-pointer"
+                className="px-7 py-5 cursor-pointer"
                 onClick={() => {
                   addMutation.mutate({ username, linuxUsername });
                 }}

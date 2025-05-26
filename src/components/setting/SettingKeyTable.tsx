@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trash2 } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Table,
@@ -11,12 +10,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
 import { getPublicKey } from "@/lib/request/getPublicKey";
 import { deletePublicKey } from "@/lib/request/deletePublicKey";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Trash2, TriangleAlert } from "lucide-react";
 
 export default function SettingKeyTable() {
   const navigate = useNavigate();
@@ -61,7 +72,7 @@ export default function SettingKeyTable() {
           {t("settingKeyTable.cardTitleForKeyTable")}
         </CardTitle>
         <Button
-          className="px-7 py-6 cursor-pointer"
+          className="px-7 py-5 cursor-pointer"
           onClick={() => navigate("/setting/add-new-key")}
         >
           {t("settingKeyTable.addNewKeyBtn")}
@@ -100,13 +111,37 @@ export default function SettingKeyTable() {
                       : `${key.publicKey.slice(0, length)}...`}
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      onClick={() => deleteMutation.mutate(key.id)}
-                      disabled={deleteMutation.isPending}
-                    >
-                      <Trash2 className="!w-5 !h-5" />
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="ghost" className="cursor-pointer">
+                          <Trash2 className="!w-5 !h-5" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            <div className="flex items-center gap-2">
+                              <TriangleAlert className="w-5 h-5" />
+                              {t("settingKeyTable.confirmTitle")}
+                            </div>
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            {t("settingKeyTable.confirmDescription")}
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel className="cursor-pointer mx-2">
+                            {t("settingKeyTable.cancelBtn")}
+                          </AlertDialogCancel>
+                          <AlertDialogAction
+                            className="cursor-pointer mx-2 bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
+                            onClick={() => deleteMutation.mutate(key.id)}
+                          >
+                            {t("settingKeyTable.confirmBtn")}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </TableCell>
                 </TableRow>
               ))

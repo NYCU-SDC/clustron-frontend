@@ -46,7 +46,7 @@
     "SSHNavLink": "SSH"
   },
   "settingAddKeyForm": {
-    "cardTitleForTitle": "title",
+    "cardTitleForTitle": "Title",
     "cardDescriptionForTitle": "Give your public key a name",
     "placeHolderForInputTitle": "My Laptop",
     "cardTitleForKey": "Key",
@@ -86,6 +86,10 @@
     "tableHeadForKey": "Key",
     "successToast": "Key deleted successfully",
     "deleteFailToast": "Failed to delete public key",
-    "getFailToast": "Failed to get public key list"
+    "getFailToast": "Failed to get public key list",
+    "confirmTitle": "Delete this public key?",
+    "confirmDescription": "This action cannot be undone. Please proceed with caution.",
+    "cancelBtn": "Cancel",
+    "confirmBtn": "Delete"
   }
 }

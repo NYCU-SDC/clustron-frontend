@@ -55,7 +55,7 @@ export default function SettingAddKeyForm({
   const SaveBtnIsDisabled = addMutation.isPending || !title || !publicKey;
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+      <Card className="pt-10 px-2">
         <CardHeader>
           <CardTitle className="text-2xl">
             {t("settingAddKeyForm.cardTitleForTitle")}
@@ -91,7 +91,7 @@ export default function SettingAddKeyForm({
             <Separator />
             <div className="flex justify-center">
               <Button
-                variant="destructive"
+                variant="secondary"
                 className="w-2/5 m-5 cursor-pointer"
                 onClick={() => navigate(-1)}
               >
