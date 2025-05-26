@@ -78,6 +78,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       );
       setAutoRefresh(data.refreshToken);
     },
+    onError: logout,
   });
 
   const setAutoRefresh = useCallback(
