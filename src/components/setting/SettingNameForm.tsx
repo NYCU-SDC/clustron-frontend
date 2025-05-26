@@ -15,6 +15,7 @@ import { getSettings } from "@/lib/request/getSettings";
 import { saveSettings } from "@/lib/request/saveSettings";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function SettingNameForm({
   className,
@@ -29,6 +30,7 @@ export default function SettingNameForm({
   const {
     data = { username: "", linuxUsername: "" },
     isSuccess,
+    isLoading,
     isError,
   } = useQuery({
     queryKey: PROFILE_QUERY_KEY,
@@ -74,13 +76,19 @@ export default function SettingNameForm({
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-6">
-            <Input
-              id="username"
-              type="name"
-              placeholder={t("settingNameForm.placeHolderForInputName")}
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
+            {isLoading ? (
+              <Skeleton className="h-9 w-full border rounded-md " />
+            ) : (
+              <Input
+                id="username"
+                type="name"
+                placeholder={t("settingNameForm.placeHolderForInputName")}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                disabled={isLoading}
+              />
+            )}
+
             <Separator></Separator>
             <div className="flex">
               <Button

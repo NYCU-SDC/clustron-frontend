@@ -16,6 +16,7 @@ import { useNavigate } from "react-router";
 import { getPublicKey } from "@/lib/request/getPublicKey";
 import { deletePublicKey } from "@/lib/request/deletePublicKey";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function SettingKeyTable() {
   const navigate = useNavigate();
@@ -24,7 +25,11 @@ export default function SettingKeyTable() {
   const length = 30;
   const PUBLIC_KEYS_QUERY_KEY = ["publicKeys", length] as const;
 
-  const { data: keys = [], isError } = useQuery({
+  const {
+    data: keys = [],
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: PUBLIC_KEYS_QUERY_KEY,
     queryFn: ({ queryKey }) => {
       const [, length] = queryKey;
@@ -76,26 +81,36 @@ export default function SettingKeyTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {keys.map((key) => (
-              <TableRow key={key.id}>
-                <TableCell>{key.title}</TableCell>
+            {isLoading ? (
+              <TableRow>
                 <TableCell>
-                  {key.publicKey.length < length
-                    ? key.publicKey
-                    : `${key.publicKey.slice(0, length)}...`}
+                  <Skeleton className="h-6 w-full" />
                 </TableCell>
-                <TableCell className="text-right">
-                  <Button
-                    variant="ghost"
-                    className="cursor-pointer"
-                    onClick={() => deleteMutation.mutate(key.id)}
-                    disabled={deleteMutation.isPending}
-                  >
-                    <Trash2 className="!w-5 !h-5" />
-                  </Button>
+                <TableCell>
+                  <Skeleton className="h-6 w-full" />
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              keys.map((key) => (
+                <TableRow key={key.id}>
+                  <TableCell>{key.title}</TableCell>
+                  <TableCell>
+                    {key.publicKey.length < length
+                      ? key.publicKey
+                      : `${key.publicKey.slice(0, length)}...`}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      variant="ghost"
+                      onClick={() => deleteMutation.mutate(key.id)}
+                      disabled={deleteMutation.isPending}
+                    >
+                      <Trash2 className="!w-5 !h-5" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </CardContent>

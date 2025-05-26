@@ -15,6 +15,7 @@ import { getSettings } from "@/lib/request/getSettings";
 import { saveSettings } from "@/lib/request/saveSettings";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function SettingUsernameForm({
   className,
@@ -29,6 +30,7 @@ export default function SettingUsernameForm({
   const {
     data = { username: "", linuxUsername: "" },
     isSuccess,
+    isLoading,
     isError,
   } = useQuery({
     queryKey: PROFILE_QUERY_KEY,
@@ -71,13 +73,20 @@ export default function SettingUsernameForm({
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-6">
-            <Input
-              id="linuxUsername"
-              type="name"
-              placeholder={t("settingUsernameForm.placeHolderForInputUsername")}
-              value={linuxUsername}
-              onChange={(e) => setLinuxUsername(e.target.value)}
-            />
+            {isLoading ? (
+              <Skeleton className="h-9 w-full border rounded-md " />
+            ) : (
+              <Input
+                id="linuxUsername"
+                type="name"
+                placeholder={t(
+                  "settingUsernameForm.placeHolderForInputUsername",
+                )}
+                value={linuxUsername}
+                onChange={(e) => setLinuxUsername(e.target.value)}
+              />
+            )}
+
             <Separator></Separator>
             <div>
               <Button
@@ -85,6 +94,7 @@ export default function SettingUsernameForm({
                 onClick={() => {
                   addMutation.mutate({ username, linuxUsername });
                 }}
+                disabled={isLoading}
               >
                 {t("settingUsernameForm.savaBtn")}
               </Button>
