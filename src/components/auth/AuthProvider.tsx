@@ -5,7 +5,7 @@ import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { AccessTokenType } from "@/types/type";
+import { AccessToken } from "@/types/type";
 import { refreshAuthToken } from "@/lib/request/refreshAuthToken";
 import { authContext } from "@/lib/auth/authContext";
 
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     ) => {
       setCookie("accessToken", accessToken, {
         path: "/",
-        expires: new Date(jwtDecode<AccessTokenType>(accessToken).exp * 1000),
+        expires: new Date(jwtDecode<AccessToken>(accessToken).exp * 1000),
       });
       setCookie("refreshToken", refreshToken, {
         path: "/",
@@ -88,7 +88,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       // calculate how long to update accessToken
       const timeUntilAccessTokenExpire = cookies.accessToken
         ? Math.min(
-            jwtDecode<AccessTokenType>(cookies.accessToken).exp * 1000 -
+            jwtDecode<AccessToken>(cookies.accessToken).exp * 1000 -
               Date.now() -
               60 * 1000,
             2147483647,

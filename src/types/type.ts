@@ -1,4 +1,4 @@
-export type AccessTokenType = {
+export type AccessToken = {
   ID: string;
   Username: string;
   Email: string;

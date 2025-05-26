@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useNavigate, useLocation } from "react-router";
-import { AccessTokenType } from "@/types/type";
+import { AccessToken } from "@/types/type";
 import { authContext } from "@/lib/auth/authContext";
 
 export default function Callback() {
@@ -27,7 +27,7 @@ export default function Callback() {
     setCookiesForAuthToken(accessToken, refreshToken);
 
     let redirectTo;
-    if (jwtDecode<AccessTokenType>(accessToken).Role === "ROLE_NOT_SETUP") {
+    if (jwtDecode<AccessToken>(accessToken).Role === "ROLE_NOT_SETUP") {
       redirectTo = "/onboading";
     } else {
       redirectTo = "/";
