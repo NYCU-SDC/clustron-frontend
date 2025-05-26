@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     removeCookie("accessToken", { path: "/" });
     removeCookie("refreshToken", { path: "/" });
     navigate("/login");
-    toast(t("authProvider.logoutToast"));
+    toast.info(t("authProvider.logoutToast"));
     clearTimers();
   }, [clearTimers, navigate, removeCookie, t]);
 
