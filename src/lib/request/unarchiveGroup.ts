@@ -1,4 +1,4 @@
-import { api } from "@/lib/api";
+import { api } from "@/lib/request/api";
 
 export async function unarchiveGroup(groupId: string): Promise<void> {
   return api(`/api/groups/${groupId}/unarchive`, {

@@ -1,4 +1,4 @@
-import { api } from "@/lib/api";
+import { api } from "@/lib/request/api";
 import type { CreateGroupInput, CreateGroupResponse } from "@/types/group";
 
 export async function createGroup(

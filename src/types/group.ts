@@ -1,4 +1,4 @@
-// 共用型別
+// common role type
 export type GroupRoleAccessLevel = "GROUP_OWNER" | "GROUP_ADMIN" | "USER";
 export type AccessLevelOwner = "GROUP_OWNER";
 export type AccessLevelAdmin = "GROUP_ADMIN";
@@ -10,13 +10,13 @@ export type GroupMemberRoleName =
   | "Student"
   | "Auditor";
 
-// 群組成員中的角色資訊
+// group role
 export type GroupRole = {
   id: string;
   role: GroupMemberRoleName;
   accessLevel: GroupRoleAccessLevel;
 };
-// 群組成員
+// group member
 export type GroupMember = {
   id: string;
   username: string;

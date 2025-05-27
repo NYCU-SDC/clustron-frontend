@@ -5,6 +5,13 @@ import { useAddMember } from "@/hooks/useAddMember";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import type { GroupMemberRoleName } from "@/types/group";
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+} from "@/components/ui/table";
 
 export default function AddMemberPage() {
   const { id: groupId } = useParams();
@@ -61,15 +68,14 @@ export default function AddMemberPage() {
     <div className="flex justify-center">
       <main className="w-full max-w-5xl p-6">
         <h1 className="text-2xl font-bold mb-6">Add New Members</h1>
-        <table className="w-full text-left text-sm border-t border-gray-200">
-          <thead>
-            <tr className="text-gray-500">
-              <th className="py-2 w-2/3">Student ID or Email</th>
-              <th className="py-2 w-1/3">Role</th>
-              <th className="py-2 w-10"></th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Student ID or Email</TableHead>
+              <TableHead>Role</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {members.map((m, i) => {
               const isDuplicate = members
                 .filter((_, idx) => idx !== i)
@@ -92,8 +98,8 @@ export default function AddMemberPage() {
                 />
               );
             })}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
 
         {/* 對齊右邊的按鈕列 */}
         <div className="mt-6 flex justify-end gap-3">

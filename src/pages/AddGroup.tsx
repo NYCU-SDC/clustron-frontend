@@ -4,6 +4,14 @@ import AddMemberRow from "@/components/group/AddMemberRow";
 import { useCreateGroup } from "@/hooks/useCreateGroup";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { GroupMemberRoleName } from "@/types/group";
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@/components/ui/table";
 
 export default function AddGroupPage() {
   const navigate = useNavigate();
@@ -105,14 +113,14 @@ export default function AddGroupPage() {
 
       <div>
         <h2 className="text-lg font-semibold mb-2">Add New Members</h2>
-        <table className="w-full text-left text-sm border-t border-gray-200">
-          <thead className="text-gray-500">
-            <tr>
-              <th className="py-2">Student ID or Email</th>
-              <th className="py-2">Role</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Student ID or Email</TableHead>
+              <TableHead>Role</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {members.map((m, i) => {
               const isDuplicate = members
                 .filter((_, idx) => idx !== i)
@@ -129,14 +137,15 @@ export default function AddGroupPage() {
                   onRemove={removeRow}
                   isLast={i === members.length - 1}
                   onAddBatch={addBatchRows}
-                  globalRole={payload?.role} // 傳入 globalRole，admin 可 override
-                  accessLevel="GROUP_OWNER" // 預設 group owner 權限
+                  globalRole={payload?.role}
+                  accessLevel="GROUP_OWNER"
                   isDuplicate={isDuplicate}
                 />
               );
             })}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
+
         {errorMsg && <p className="text-red-600 text-sm mt-2">{errorMsg}</p>}
       </div>
 

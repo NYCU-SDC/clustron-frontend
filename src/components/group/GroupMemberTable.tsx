@@ -6,6 +6,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { canEditMembers } from "@/lib/permission";
 import type { GlobalRole, GroupRoleAccessLevel } from "@/lib/permission";
 import type { GroupMemberRoleName } from "@/types/group";
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+} from "@/components/ui/table";
 
 type Props = {
   groupId: string;
@@ -69,15 +76,15 @@ export default function GroupMemberTable({
           <p className="text-sm text-gray-500">No members found.</p>
         ) : (
           <>
-            <table className="w-full text-left text-sm border-t border-gray-200">
-              <thead>
-                <tr className="text-gray-500">
-                  <th className="py-2">Name</th>
-                  <th className="py-2">Student ID or Email</th>
-                  <th className="py-2">Role</th>
-                </tr>
-              </thead>
-              <tbody>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Student ID or Email</TableHead>
+                  <TableHead>Role</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {members.map((m) => (
                   <GroupMemberRow
                     key={m.id}
@@ -92,8 +99,8 @@ export default function GroupMemberTable({
                     onUpdateRole={(newRole) => updateMemberRole(m.id, newRole)}
                   />
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
 
             {hasNextPage && (
               <div className="mt-4 flex justify-center">

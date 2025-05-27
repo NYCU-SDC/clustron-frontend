@@ -14,15 +14,3 @@ export function useInfiniteMembers(groupId: string) {
     enabled: !!groupId,
   });
 }
-
-// import { useQuery } from "@tanstack/react-query";
-// import { getMembers } from "@/lib/request/getMembers";
-// import type { GetGroupMembersResponse } from "@/types/group";
-
-// export function useGetMembers(groupId: string, enabled = true) {
-//   return useQuery<GetGroupMembersResponse>({
-//     queryKey: ["group-members", groupId],
-//     queryFn: () => getMembers(groupId),
-//     enabled: !!groupId && enabled,
-//   });
-// }

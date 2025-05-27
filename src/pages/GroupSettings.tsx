@@ -15,9 +15,7 @@ export type GroupContextType = {
 export default function GroupSettings() {
   const { groupId } = useOutletContext<GroupContextType>();
   const { data: group, isLoading } = useGetGroupById(groupId);
-  const user = useJwtPayload(); // 👈 用 JWT hook 拿使用者資料
-  // console.log("setting acs: ",groupId," | ", group.me.role.accessLevel);
-  // console.log("SHO : ",group)
+  const user = useJwtPayload(); // use JWT hook to get user information
   const archiveMutation = useArchiveGroup(groupId);
   const unarchiveMutation = useUnarchiveGroup(groupId);
   const removeMutation = useRemoveMember(groupId, {
@@ -57,7 +55,7 @@ export default function GroupSettings() {
       <GroupMemberTable
         groupId={group.id}
         // accessLevel={group.me.role.accessLevel}
-        accessLevel="GROUP_OWNER" //待改， 先預設
+        accessLevel="GROUP_OWNER" //TODO wait backend
         isArchived={group.isArchived}
         onRemove={handleRemove}
       />

@@ -43,7 +43,7 @@ export default function AddMemberRow({
   onChange,
   onRemove,
   onAdd,
-  accessLevel = "USER",
+  accessLevel = "USER", //TODO
   globalRole,
 }: Props) {
   const isAdmin = globalRole === "admin";

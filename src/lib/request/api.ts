@@ -17,9 +17,6 @@ export async function api<T>(
     headers.Authorization = `Bearer ${token}`;
   }
 
-  // console.log("📡 [api] Fetch:", BASE_URL + path);
-  // console.log("🔐 [api] JWT Token:", token ?? "(無)");
-
   const res = await fetch(`${BASE_URL}${path}`, {
     ...options,
     headers,
