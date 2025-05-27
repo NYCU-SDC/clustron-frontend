@@ -11,8 +11,7 @@ export default function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  // "!: Non-null Assertion"
-  const { login } = useContext(authContext)!;
+  const { login } = useContext(authContext);
   const { t } = useTranslation();
 
   return (
