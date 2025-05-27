@@ -6,7 +6,7 @@ import { authContext } from "@/lib/auth/authContext";
 import ModeToggle from "@/components/ModeToggle";
 import LangSwitcher from "@/components/LangSwitcher";
 
-export function navLinkclass(isActive: boolean) {
+function navLinkclass(isActive: boolean) {
   return [
     "text-base px-3 py-2 rounded-lg",
     "hover:bg-gray-100 dark:hover:bg-gray-600",

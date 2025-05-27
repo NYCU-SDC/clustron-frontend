@@ -1,7 +1,7 @@
 import { NavLink } from "react-router";
 import { useTranslation } from "react-i18next";
 
-export function navLinkClass(isActive: boolean) {
+function navLinkClass(isActive: boolean) {
   return [
     "text-base",
     "pl-1 py-2 rounded-lg",
