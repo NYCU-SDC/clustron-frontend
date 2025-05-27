@@ -12,6 +12,7 @@ import {
   TableHead,
   TableBody,
 } from "@/components/ui/table";
+import { GlobalRole } from "@/lib/permission";
 
 export default function AddMemberPage() {
   const { id: groupId } = useParams();
@@ -88,7 +89,7 @@ export default function AddMemberPage() {
                   id={m.id}
                   role={m.role}
                   accessLevel={accessLevel}
-                  globalRole={payload?.role}
+                  globalRole={payload?.Role as GlobalRole}
                   onChange={updateRow}
                   onAdd={addRow}
                   onRemove={removeRow}

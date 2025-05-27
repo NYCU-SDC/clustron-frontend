@@ -1,10 +1,14 @@
-export function getToken(): string | null {
-  return localStorage.getItem("token");
+// src/lib/token.ts
+import { Cookies } from "react-cookie";
+
+const cookies = new Cookies();
+
+export function getAccessToken(): string | null {
+  return cookies.get("accessToken") ?? null;
 }
 
-export function setToken(token: string): void {
-  localStorage.setItem("token", token);
+export function getRefreshToken(): string | null {
+  return cookies.get("refreshToken") ?? null;
 }
-export const removeToken = () => {
-  localStorage.removeItem("token"); // 或根據你實際儲存的 key
-};
+
+//TODO

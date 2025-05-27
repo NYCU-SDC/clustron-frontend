@@ -1,16 +1,15 @@
-import { getToken } from "@/lib/token";
-import type { GlobalRole } from "@/lib/permission";
+import { useCookies } from "react-cookie";
+import { jwtDecode } from "jwt-decode";
+import type { AccessTokenType } from "@/types/type";
 
-export function useJwtPayload(): { username: string; role: GlobalRole } | null {
-  const token = getToken();
+export function useJwtPayload(): AccessTokenType | null {
+  const [cookies] = useCookies(["accessToken"]);
+  const token = cookies.accessToken;
+
   if (!token) return null;
 
   try {
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    return {
-      username: payload.Username,
-      role: payload.Role as GlobalRole,
-    };
+    return jwtDecode<AccessTokenType>(token);
   } catch {
     return null;
   }

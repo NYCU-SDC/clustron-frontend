@@ -4,13 +4,13 @@ import AddMemberRow from "@/components/group/AddMemberRow";
 import { useCreateGroup } from "@/hooks/useCreateGroup";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { GroupMemberRoleName } from "@/types/group";
+import { GlobalRole } from "@/lib/permission";
 import {
   Table,
   TableHeader,
   TableRow,
   TableHead,
   TableBody,
-  TableCell,
 } from "@/components/ui/table";
 
 export default function AddGroupPage() {
@@ -70,7 +70,7 @@ export default function AddGroupPage() {
       return;
     }
 
-    const payloadId = payload?.username ?? "";
+    const payloadId = payload?.Username ?? "";
     const selfIncluded = members.some((m) => m.id.trim() === payloadId);
     const finalMembers = [
       ...(selfIncluded
@@ -137,7 +137,7 @@ export default function AddGroupPage() {
                   onRemove={removeRow}
                   isLast={i === members.length - 1}
                   onAddBatch={addBatchRows}
-                  globalRole={payload?.role}
+                  globalRole={payload?.Role as GlobalRole}
                   accessLevel="GROUP_OWNER"
                   isDuplicate={isDuplicate}
                 />

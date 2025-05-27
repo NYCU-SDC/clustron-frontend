@@ -1,53 +1,22 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import GroupDescription from "@/components/group/GroupDes";
 import { useGetGroups } from "@/hooks/useGetGroups";
 import { useGlobalPermissions } from "@/hooks/useGlobalPermissions";
-import { setToken, getToken, removeToken } from "@/lib/token";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
+import { useContext } from "react";
+import { authContext } from "@/lib/auth/authContext";
 
 export default function GroupListPage() {
   const navigate = useNavigate();
-  const [inputToken, setInputToken] = useState("");
-
   const { data, isLoading, isError } = useGetGroups();
   const { canCreateGroup } = useGlobalPermissions();
   const payload = useJwtPayload();
+  const { logout, isLoggedIn } = useContext(authContext);
 
-  const handleLogin = () => {
-    const token = inputToken.trim();
-    try {
-      const decoded = JSON.parse(atob(token.split(".")[1]));
-      console.log("HI : ", decoded);
-      if (!decoded.Role) throw new Error("缺少角色資訊");
-      setToken(token);
-      window.location.reload(); // 重新掛載以取得角色
-    } catch {
-      alert("無效 JWT token");
-    }
-  };
-
-  const handleLogout = () => {
-    removeToken();
-    window.location.reload();
-  };
-
-  if (!getToken()) {
-    return (
-      <div className="p-10 space-y-4 w-1/2 mx-auto">
-        <h1 className="text-2xl font-bold mb-4">請先登入</h1>
-        <div className="flex gap-2 flex-col sm:flex-row">
-          <input
-            value={inputToken}
-            onChange={(e) => setInputToken(e.target.value)}
-            className="border px-3 py-1 rounded w-full"
-            placeholder="請貼上 JWT Token"
-          />
-          <Button onClick={handleLogin}>登入</Button>
-        </div>
-      </div>
-    );
+  if (!isLoggedIn()) {
+    navigate("/login");
+    return null;
   }
 
   return (
@@ -58,9 +27,9 @@ export default function GroupListPage() {
           {payload && (
             <div className="flex items-center gap-4 mt-1">
               <p className="text-sm text-muted-foreground">
-                👋 歡迎，{payload.username}（{payload.role}）
+                👋 歡迎，{payload.Username}（{payload.Role}）
               </p>
-              <Button variant="outline" size="sm" onClick={handleLogout}>
+              <Button variant="outline" size="sm" onClick={logout}>
                 登出
               </Button>
             </div>
@@ -86,7 +55,7 @@ export default function GroupListPage() {
       ) : (
         <div className="space-y-4">
           {data.items.map((group) => {
-            const accessLevel = "GROUP_OWNER"; //待改，可顯示settings，等api出來再改
+            const accessLevel = "GROUP_OWNER"; // TODO: 等 API 提供實際 accessLevel 後替換此值
             const isManager =
               accessLevel === "GROUP_OWNER" || accessLevel === "GROUP_ADMIN";
             const path = `/groups/${group.id}/${isManager ? "" : "info"}`;

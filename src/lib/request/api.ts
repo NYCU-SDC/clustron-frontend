@@ -1,4 +1,4 @@
-import { getToken } from "@/lib/token";
+import { getAccessToken } from "@/lib/token";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
 
@@ -6,7 +6,7 @@ export async function api<T>(
   path: string,
   options: RequestInit = {},
 ): Promise<T> {
-  const token = getToken();
+  const token = getAccessToken();
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
