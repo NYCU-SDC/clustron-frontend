@@ -65,11 +65,12 @@
     "cardDescriptionForName": "你的真實姓名以讓群組管理員辨識你",
     "savaBtn": "儲存",
     "placeHolderForInputName": "陳曉明",
-    "successToast": "名字儲存成功",
-    "emptyErrorToast": "請輸入名字",
-    "saveFailToast": "無法儲存名字",
-    "getFailToast": "無法取得名字",
-    "loadingBtn": "載入中..."
+    "successToast": "姓名儲存成功",
+    "emptyErrorToast": "請輸入姓名",
+    "saveFailToast": "無法儲存姓名",
+    "getFailToast": "無法取得姓名",
+    "loadingBtn": "載入中...",
+    "saveBtnToolTip": "請填入你的姓名"
   },
   "settingUsernameForm": {
     "cardTitleForUsername": "Linux 使用者名稱",
@@ -78,7 +79,8 @@
     "successToast": "Linux 使用者名稱儲存成功",
     "saveFailToast": "無法儲存 Linux 使用者名稱",
     "getFailToast": "無法取得 Linux 使用者名稱",
-    "loadingBtn": "載入中..."
+    "loadingBtn": "載入中...",
+    "saveBtnToolTip": "請填入你的 Linux 使用者名稱"
   },
   "settingKeyTable": {
     "cardTitleForKeyTable": "SSH 金鑰",

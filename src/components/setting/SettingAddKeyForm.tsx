@@ -89,40 +89,38 @@ export default function SettingAddKeyForm({
               className="h-32"
             />
             <Separator />
-            <div className="flex">
-              <TooltipProvider>
-                {!title || !publicKey ? (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        disabled
-                        className="px-7 py-5 disabled:cursor-not-allowed disabled:pointer-events-auto"
-                      >
-                        {t("settingAddKeyForm.saveBtn")}
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent side="top" align="center">
-                      {t("settingAddKeyForm.saveBtnToolTip")}
-                    </TooltipContent>
-                  </Tooltip>
-                ) : addMutation.isPending ? (
-                  <Button
-                    className="px-7 py-5 disabled:cursor-not-allowed disabled:pointer-events-auto"
-                    disabled
-                  >
-                    <Loader2Icon className="animate-spin" />
-                    {t("settingAddKeyForm.loadingBtn")}
-                  </Button>
-                ) : (
-                  <Button
-                    className="px-7 py-5 cursor-pointer"
-                    onClick={() => addMutation.mutate({ title, publicKey })}
-                  >
-                    {t("settingAddKeyForm.saveBtn")}
-                  </Button>
-                )}
-              </TooltipProvider>
-            </div>
+            <TooltipProvider>
+              {!title || !publicKey ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      disabled
+                      className="px-7 py-5 w-32 disabled:cursor-not-allowed disabled:pointer-events-auto"
+                    >
+                      {t("settingAddKeyForm.saveBtn")}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" align="center">
+                    {t("settingAddKeyForm.saveBtnToolTip")}
+                  </TooltipContent>
+                </Tooltip>
+              ) : addMutation.isPending ? (
+                <Button
+                  className="px-7 py-5 w-32 disabled:cursor-not-allowed disabled:pointer-events-auto"
+                  disabled
+                >
+                  <Loader2Icon className="animate-spin" />
+                  {t("settingAddKeyForm.loadingBtn")}
+                </Button>
+              ) : (
+                <Button
+                  className="px-7 py-5 w-32 cursor-pointer"
+                  onClick={() => addMutation.mutate({ title, publicKey })}
+                >
+                  {t("settingAddKeyForm.saveBtn")}
+                </Button>
+              )}
+            </TooltipProvider>
           </div>
         </CardContent>
       </Card>

@@ -53,7 +53,7 @@
     "cardDescriptionForKey": "Paste the content of your public key here (not your private key). The content usually comes from a file ending with .pub",
     "placeHolderForInputKey": "Begins with 'ssh-rsa', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'ssh-ed25519', 'sk-ecdsa-sha2-nistp256@openssh.com', or 'sk-ssh-ed25519@openssh.com'",
     "saveBtn": "Add SSH Key",
-    "saveBtnToolTip": "Please fill in both Title and Key",
+    "saveBtnToolTip": "Please fill in both Title and Key fields",
     "successToast": "Key saved successfully",
     "formatErrorToast": "Public key format error",
     "saveFailToast": "Failed to save your public key",
@@ -65,10 +65,11 @@
     "savaBtn": "Save",
     "placeHolderForInputName": "Jammy Wang",
     "successToast": "Name saved successfully",
-    "emptyErrorToast": "Please enter your name",
-    "saveFailToast": "Failed to save your name",
-    "getFailToast": "Failed to get your name",
-    "loadingBtn": "Loading..."
+    "emptyErrorToast": "Please enter your full name",
+    "saveFailToast": "Failed to save your full name",
+    "getFailToast": "Failed to get your full name",
+    "loadingBtn": "Loading...",
+    "saveBtnToolTip": "Please fill in your full name"
   },
   "settingUsernameForm": {
     "cardTitleForUsername": "Linux Username",
@@ -78,7 +79,8 @@
     "emptyErrorToast": "Please enter your Linux username",
     "saveFailToast": "Failed to save Linux username",
     "getFailToast": "Failed to get Linux username",
-    "loadingBtn": "Loading..."
+    "loadingBtn": "Loading...",
+    "saveBtnToolTip": "Please fill in your Linux username"
   },
   "settingKeyTable": {
     "cardTitleForKeyTable": "SSH Keys",

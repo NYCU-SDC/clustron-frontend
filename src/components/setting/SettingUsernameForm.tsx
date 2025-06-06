@@ -9,6 +9,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getSettings } from "@/lib/request/getSettings";
@@ -85,25 +91,38 @@ export default function SettingUsernameForm({
                 onChange={(e) => setLinuxUsername(e.target.value)}
               />
             )}
-            <Separator></Separator>
-            <div className="flex">
+            <Separator />
+            <TooltipProvider>
               {addMutation.isPending ? (
-                <Button className="px-7 py-5 cursor-pointer" disabled>
+                <Button className="px-7 py-5 w-24 cursor-pointer" disabled>
                   <Loader2Icon className="animate-spin" />
                   {t("settingUsernameForm.loadingBtn")}
                 </Button>
-              ) : (
+              ) : linuxUsername ? (
                 <Button
-                  className="px-7 py-5 cursor-pointer"
+                  className="px-7 py-5 w-24 cursor-pointer"
                   onClick={() => {
                     addMutation.mutate({ username, linuxUsername });
                   }}
-                  disabled={isLoading}
                 >
                   {t("settingUsernameForm.savaBtn")}
                 </Button>
+              ) : (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      disabled
+                      className="px-7 py-5 w-24 disabled:cursor-not-allowed disabled:pointer-events-auto"
+                    >
+                      {t("settingUsernameForm.savaBtn")}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" align="center">
+                    {t("settingUsernameForm.saveBtnToolTip")}
+                  </TooltipContent>
+                </Tooltip>
               )}
-            </div>
+            </TooltipProvider>
           </div>
         </CardContent>
       </Card>
