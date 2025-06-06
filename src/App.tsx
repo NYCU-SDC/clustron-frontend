@@ -19,6 +19,7 @@ const App = () => {
       </Route>
 
       <Route path="/callback" element={<Callback />} />
+      <Route path="/health" element={<div>Health Check</div>} />
 
       <Route element={<ProtectedRoute />}>
         <Route path="/onboarding" element={<Onboarding />} />
