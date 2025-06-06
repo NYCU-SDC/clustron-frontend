@@ -5,7 +5,7 @@ import AddMemberButton from "@/components/group/AddMemberButton";
 import { Card, CardContent } from "@/components/ui/card";
 import { canEditMembers } from "@/lib/permission";
 import type { GlobalRole, GroupRoleAccessLevel } from "@/lib/permission";
-import type { GroupMemberRoleName } from "@/types/group";
+import { AccessLevelUser, type GroupMemberRoleName } from "@/types/group";
 import {
   Table,
   TableHeader,
@@ -24,7 +24,7 @@ type Props = {
 
 export default function GroupMemberTable({
   groupId,
-  accessLevel = "USER",
+  accessLevel = AccessLevelUser,
   globalRole,
   onRemove,
   isArchived = false,

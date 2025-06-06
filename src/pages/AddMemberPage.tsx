@@ -4,7 +4,7 @@ import AddMemberRow from "@/components/group/AddMemberRow";
 import { useAddMember } from "@/hooks/useAddMember";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
-import type { GroupMemberRoleName } from "@/types/group";
+import { AccessLevelUser, type GroupMemberRoleName } from "@/types/group";
 import {
   Table,
   TableHeader,
@@ -31,7 +31,7 @@ export default function AddMemberPage() {
   if (isLoading) return <div className="p-6">Loading...</div>;
   if (!group) return <div className="p-6">Course not found.</div>;
 
-  const accessLevel = group.me.role.accessLevel ?? "USER";
+  const accessLevel = group.me.role.accessLevel ?? AccessLevelUser;
 
   const updateRow = (index: number, key: "id" | "role", value: string) => {
     const next = [...members];

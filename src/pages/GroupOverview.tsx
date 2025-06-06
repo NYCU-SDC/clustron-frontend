@@ -1,4 +1,3 @@
-// src/pages/GroupOverviewPage.tsx
 import { useParams } from "react-router-dom";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import GroupDescription from "@/components/group/GroupDes";

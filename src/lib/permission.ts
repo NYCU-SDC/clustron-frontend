@@ -1,7 +1,12 @@
-import { GroupMemberRoleName } from "@/types/group";
+import {
+  AccessLevelAdmin,
+  AccessLevelOwner,
+  AccessLevelUser,
+  GroupMemberRoleName,
+  GroupRoleAccessLevel,
+} from "@/types/group";
 
 export type GlobalRole = "admin" | "organizer" | "user";
-export type GroupRoleAccessLevel = "GROUP_OWNER" | "GROUP_ADMIN" | "USER";
 export function isGlobalAdmin(role: GlobalRole): boolean {
   return role === "admin" || role === "organizer";
 }
@@ -11,14 +16,14 @@ export function canCreateGroup(role: GlobalRole): boolean {
 }
 
 export function canEditMembers(accessLevel: GroupRoleAccessLevel): boolean {
-  return accessLevel === "GROUP_OWNER" || accessLevel === "GROUP_ADMIN";
+  return accessLevel === AccessLevelOwner || accessLevel === AccessLevelAdmin;
 }
 
 export function canArchiveGroup(accessLevel: GroupRoleAccessLevel): boolean {
-  return accessLevel === "GROUP_OWNER";
+  return accessLevel === AccessLevelOwner;
 }
 export function isReadonlyMember(accessLevel: GroupRoleAccessLevel): boolean {
-  return accessLevel === "USER";
+  return accessLevel === AccessLevelUser;
 }
 
 export const assignableRolesMap: Record<
@@ -28,4 +33,6 @@ export const assignableRolesMap: Record<
   GROUP_OWNER: ["Teacher assistant", "Student", "Auditor"],
   GROUP_ADMIN: ["Student", "Auditor"],
   USER: [],
-};
+}; //TODO
+
+export type { GroupRoleAccessLevel };

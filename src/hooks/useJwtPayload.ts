@@ -7,7 +7,6 @@ export function useJwtPayload(): AccessTokenType | null {
   const token = cookies.accessToken;
 
   if (!token) return null;
-
   try {
     return jwtDecode<AccessTokenType>(token);
   } catch {

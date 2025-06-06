@@ -1,4 +1,8 @@
-import type { GetGroupMembersResponse } from "@/types/group";
+import {
+  AccessLevelAdmin,
+  AccessLevelUser,
+  type GetGroupMembersResponse,
+} from "@/types/group";
 
 export async function getMembers(
   groupId: string,
@@ -17,7 +21,7 @@ export async function getMembers(
             role: {
               id: "1",
               role: "Group Owner",
-              accessLevel: "GROUP_ADMIN",
+              accessLevel: AccessLevelAdmin,
             },
           },
           {
@@ -28,7 +32,7 @@ export async function getMembers(
             role: {
               id: "2",
               role: "Student",
-              accessLevel: "USER",
+              accessLevel: AccessLevelUser,
             },
           },
         ],

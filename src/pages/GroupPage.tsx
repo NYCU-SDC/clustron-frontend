@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import GroupSideBar from "@/components/group/GroupSideBar";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
+import { AccessLevelUser } from "@/types/group";
 export default function GroupPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -12,10 +13,11 @@ export default function GroupPage() {
 
   const accessLevel = group?.me?.role.accessLevel;
   const isGlobalAdmin =
-    payload?.role === "admin" || payload?.role === "organizer";
-  console.log(group);
+    payload?.Role === "admin" || payload?.Role === "organizer";
+
   const canView =
-    isLoading || (payload && (accessLevel !== "USER" || isGlobalAdmin));
+    isLoading ||
+    (payload && (accessLevel !== AccessLevelUser || isGlobalAdmin));
 
   useEffect(() => {
     if (!canView) navigate("/groups");

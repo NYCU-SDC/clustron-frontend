@@ -8,7 +8,11 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { assignableRolesMap } from "@/lib/permission";
-import type { GroupMemberRoleName, GroupRoleAccessLevel } from "@/types/group";
+import {
+  AccessLevelUser,
+  type GroupMemberRoleName,
+  type GroupRoleAccessLevel,
+} from "@/types/group";
 
 type Props = {
   name: string;
@@ -27,7 +31,7 @@ export default function GroupMemberRow({
   id,
   email,
   role,
-  accessLevel = "USER",
+  accessLevel = AccessLevelUser, //TODO
   onDelete,
   onUpdateRole,
   showActions = false,

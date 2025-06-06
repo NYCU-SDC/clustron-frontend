@@ -13,9 +13,13 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { GroupMemberRoleName } from "@/types/group";
+import {
+  AccessLevelAdmin,
+  AccessLevelOwner,
+  GroupMemberRoleName,
+} from "@/types/group";
 import { cn } from "@/lib/utils";
-
+import { AccessLevelUser } from "@/types/group";
 type Props = {
   index: number;
   id: string;
@@ -43,16 +47,19 @@ export default function AddMemberRow({
   onChange,
   onRemove,
   onAdd,
-  accessLevel = "USER", //TODO
-  globalRole,
+  accessLevel = AccessLevelUser, //TODO
+  // globalRole,
 }: Props) {
-  const isAdmin = globalRole === "admin";
+  // const isAdmin =  AccessLevelAdmin; //TODO
 
-  const resolvedAccessLevel: GroupRoleAccessLevel = isAdmin
-    ? "GROUP_OWNER"
+  const resolvedAccessLevel: GroupRoleAccessLevel = AccessLevelAdmin //TODO
+    ? AccessLevelOwner
     : accessLevel;
 
-  const assignableRoles = assignableRolesMap[resolvedAccessLevel] ?? [];
+  const assignableRoles =
+    assignableRolesMap[
+      resolvedAccessLevel as keyof typeof assignableRolesMap
+    ] ?? [];
 
   return (
     <tr className="hover:bg-muted">

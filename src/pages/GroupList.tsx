@@ -6,6 +6,7 @@ import { useGlobalPermissions } from "@/hooks/useGlobalPermissions";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useContext } from "react";
 import { authContext } from "@/lib/auth/authContext";
+import { AccessLevelAdmin, AccessLevelOwner } from "@/types/group";
 
 export default function GroupListPage() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ export default function GroupListPage() {
           {payload && (
             <div className="flex items-center gap-4 mt-1">
               <p className="text-sm text-muted-foreground">
-                👋 歡迎，{payload.Username}（{payload.Role}）
+                👋 歡迎，{payload.Email}（{payload.Role}）
               </p>
               <Button variant="outline" size="sm" onClick={logout}>
                 登出
@@ -55,9 +56,10 @@ export default function GroupListPage() {
       ) : (
         <div className="space-y-4">
           {data.items.map((group) => {
-            const accessLevel = "GROUP_OWNER"; // TODO: 等 API 提供實際 accessLevel 後替換此值
+            const accessLevel = AccessLevelOwner; // TODO: wait API for providing real accessLevel
             const isManager =
-              accessLevel === "GROUP_OWNER" || accessLevel === "GROUP_ADMIN";
+              accessLevel === AccessLevelOwner ||
+              accessLevel === AccessLevelAdmin;
             const path = `/groups/${group.id}/${isManager ? "" : "info"}`;
 
             return (

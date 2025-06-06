@@ -1,8 +1,16 @@
 // common role type
-export type GroupRoleAccessLevel = "GROUP_OWNER" | "GROUP_ADMIN" | "USER";
-export type AccessLevelOwner = "GROUP_OWNER";
-export type AccessLevelAdmin = "GROUP_ADMIN";
-export type AccessLevelUser = "USER";
+// export type GroupRoleAccessLevel = "GROUP_OWNER" | "GROUP_ADMIN" | "USER";
+export const AccessLevelUser = "USER" as const;
+export const AccessLevelAdmin = "GROUP_ADMIN" as const;
+export const AccessLevelOwner = "GROUP_OWNER" as const;
+
+export const AccessLevels = [
+  AccessLevelUser,
+  AccessLevelAdmin,
+  AccessLevelOwner,
+] as const;
+
+export type GroupRoleAccessLevel = (typeof AccessLevels)[number];
 
 export type GroupMemberRoleName =
   | "Group Owner"

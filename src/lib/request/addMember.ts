@@ -1,6 +1,8 @@
-import type {
-  AddGroupMemberInput,
-  AddGroupMemberResponse,
+import {
+  AccessLevelOwner,
+  AccessLevelUser,
+  type AddGroupMemberInput,
+  type AddGroupMemberResponse,
 } from "@/types/group";
 
 export async function addMember(
@@ -19,7 +21,7 @@ export async function addMember(
           role: {
             id: "001",
             role: "Student",
-            accessLevel: "USER",
+            accessLevel: AccessLevelUser,
           },
         },
         {
@@ -30,7 +32,7 @@ export async function addMember(
           role: {
             id: "002",
             role: "Teacher assistant",
-            accessLevel: "GROUP_ADMIN",
+            accessLevel: AccessLevelOwner,
           },
         },
         {
@@ -41,7 +43,7 @@ export async function addMember(
           role: {
             id: "003",
             role: "Auditor",
-            accessLevel: "USER",
+            accessLevel: AccessLevelUser,
           },
         },
       ];
