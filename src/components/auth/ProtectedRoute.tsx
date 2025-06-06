@@ -1,10 +1,10 @@
-import { useContext, useEffect, ReactNode } from "react";
-import { useNavigate, useLocation } from "react-router";
+import { useContext, useEffect } from "react";
+import { useNavigate, useLocation, Outlet } from "react-router";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { authContext } from "@/lib/auth/authContext";
 
-export default function ProtectedRoute({ children }: { children: ReactNode }) {
+export default function ProtectedRoute() {
   const { isLoggedIn } = useContext(authContext);
   const navigate = useNavigate();
   const location = useLocation();
@@ -19,5 +19,5 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
 
   if (!isLoggedIn()) return null;
 
-  return children;
+  return <Outlet />;
 }

@@ -15,42 +15,23 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-
-      <Route
-        path="/onboarding"
-        element={
-          <ProtectedRoute>
-            <Onboarding />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route element={<DefaultLayout />}>
-        <Route
-          path="/login"
-          element={
-            <GuestOnlyRoute>
-              <Login />
-            </GuestOnlyRoute>
-          }
-        />
-      </Route>
-
       <Route path="/callback" element={<Callback />} />
 
-      <Route element={<DefaultLayout />}>
-        <Route
-          path="/setting"
-          element={
-            <ProtectedRoute>
-              <SettingLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<Navigate to="general" replace />} />
-          <Route path="general" element={<SettingGeneral />} />
-          <Route path="ssh" element={<SettingSSH />} />
-          <Route path="add-new-key" element={<SettingAddKey />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/onboarding" element={<Onboarding />} />
+        <Route element={<DefaultLayout />}>
+          <Route path="/setting" element={<SettingLayout />}>
+            <Route index element={<Navigate to="general" replace />} />
+            <Route path="general" element={<SettingGeneral />} />
+            <Route path="ssh" element={<SettingSSH />} />
+            <Route path="add-new-key" element={<SettingAddKey />} />
+          </Route>
+        </Route>
+      </Route>
+
+      <Route element={<GuestOnlyRoute />}>
+        <Route element={<DefaultLayout />}>
+          <Route path="/login" element={<Login />} />
         </Route>
       </Route>
     </Routes>

@@ -1,10 +1,10 @@
-import { useContext, useEffect, ReactNode } from "react";
-import { useNavigate } from "react-router";
+import { useContext, useEffect } from "react";
+import { useNavigate, Outlet } from "react-router";
 import { authContext } from "@/lib/auth/authContext";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
-export default function GuestOnlyRoute({ children }: { children: ReactNode }) {
+export default function GuestOnlyRoute() {
   const { isLoggedIn } = useContext(authContext);
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -18,5 +18,5 @@ export default function GuestOnlyRoute({ children }: { children: ReactNode }) {
 
   if (isLoggedIn()) return null;
 
-  return children;
+  return <Outlet />;
 }
