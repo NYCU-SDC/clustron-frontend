@@ -27,8 +27,8 @@ export default function Callback() {
     setCookiesForAuthToken(accessToken, refreshToken);
 
     let redirectTo;
-    if (jwtDecode<AccessToken>(accessToken).Role === "ROLE_NOT_SETUP") {
-      redirectTo = "/onboading";
+    if (jwtDecode<AccessToken>(accessToken).Role === "role_not_setup") {
+      redirectTo = "/onboarding";
     } else {
       redirectTo = "/";
     }
