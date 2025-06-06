@@ -5,9 +5,9 @@ import Login from "@/pages/Login";
 import Callback from "@/pages/Callback";
 import Onboarding from "@/pages/Onboarding";
 import SettingLayout from "@/pages/layouts/SettingLayout";
-import SettingGeneral from "./pages/SettingGeneral";
-import SettingAddKey from "./pages/SettingAddKey";
-import SettingSSH from "./pages/SettingSSH";
+import SettingGeneral from "./pages/setting/SettingGeneral";
+import SettingAddKey from "./pages/setting/SettingAddKey";
+import SettingSSH from "./pages/setting/SettingSSH";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import GuestOnlyRoute from "./components/auth/GuestOnlyRoute";
 
