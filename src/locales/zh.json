@@ -75,7 +75,6 @@
     "cardTitleForUsername": "Linux 使用者名稱",
     "cardDescriptionForUsername": "用於登入到遠端伺服器的名稱",
     "savaBtn": "儲存",
-    "placeHolderForInputUsername": "beastie",
     "successToast": "Linux 使用者名稱儲存成功",
     "saveFailToast": "無法儲存 Linux 使用者名稱",
     "getFailToast": "無法取得 Linux 使用者名稱",

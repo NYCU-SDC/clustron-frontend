@@ -74,7 +74,6 @@
     "cardTitleForUsername": "Linux Username",
     "cardDescriptionForUsername": "The username to login to the remote server",
     "savaBtn": "Save",
-    "placeHolderForInputUsername": "beastie",
     "successToast": "Linux username saved successfully",
     "emptyErrorToast": "Please enter your Linux username",
     "saveFailToast": "Failed to save Linux username",

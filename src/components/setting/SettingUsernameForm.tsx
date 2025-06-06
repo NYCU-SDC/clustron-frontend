@@ -80,9 +80,7 @@ export default function SettingUsernameForm({
               <Input
                 id="linuxUsername"
                 type="name"
-                placeholder={t(
-                  "settingUsernameForm.placeHolderForInputUsername",
-                )}
+                placeholder="alice"
                 value={linuxUsername}
                 onChange={(e) => setLinuxUsername(e.target.value)}
               />
