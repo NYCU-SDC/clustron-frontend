@@ -39,5 +39,61 @@
   },
   "protectedRoute": {
     "notLoggedInToast": "請先登入"
+  },
+  "settingSideBar": {
+    "title": "設定",
+    "GeneralNavLink": "一般",
+    "SSHNavLink": "SSH"
+  },
+  "settingAddKeyForm": {
+    "cardTitleForTitle": "標題",
+    "cardDescriptionForTitle": "為公鑰命名一個標題",
+    "placeHolderForInputTitle": "我的筆電",
+    "cardTitleForKey": "公鑰",
+    "cardDescriptionForKey": "在此貼上公鑰內容(不是私鑰)，公鑰副檔名一般以 .pub 結尾",
+    "placeHolderForInputKey": "開頭應為：ssh-rsa、ecdsa-sha2-nistp256、ecdsa-sha2-nistp384、ecdsa-sha2-nistp521、ssh-ed25519、sk-ecdsa-sha2-nistp256@openssh.com 或 sk-ssh-ed25519@openssh.com",
+    "saveBtn": "新增公鑰",
+    "cancelBtn": "取消",
+    "saveBtnToolTip": "請先填寫標題跟公鑰",
+    "successToast": "公鑰儲存成功",
+    "formatErrorToast": "公鑰格式錯誤",
+    "saveFailToast": "公鑰儲存失敗",
+    "loadingBtn": "載入中..."
+  },
+  "settingNameForm": {
+    "cardTitleForName": "姓名",
+    "cardDescriptionForName": "你的真實姓名以讓群組管理員辨識你",
+    "savaBtn": "儲存",
+    "placeHolderForInputName": "陳曉明",
+    "successToast": "姓名儲存成功",
+    "emptyErrorToast": "請輸入姓名",
+    "saveFailToast": "無法儲存姓名",
+    "getFailToast": "無法取得姓名",
+    "loadingBtn": "載入中...",
+    "saveBtnToolTip": "請填入你的姓名"
+  },
+  "settingUsernameForm": {
+    "cardTitleForUsername": "Linux 使用者名稱",
+    "cardDescriptionForUsername": "用於登入到遠端伺服器的名稱",
+    "savaBtn": "儲存",
+    "successToast": "Linux 使用者名稱儲存成功",
+    "saveFailToast": "無法儲存 Linux 使用者名稱",
+    "getFailToast": "無法取得 Linux 使用者名稱",
+    "loadingBtn": "載入中...",
+    "saveBtnToolTip": "請填入你的 Linux 使用者名稱"
+  },
+  "settingKeyTable": {
+    "cardTitleForKeyTable": "SSH 金鑰",
+    "addNewKeyBtn": "＋ 新增 SSH 公鑰",
+    "tableHeadForTitle": "標題",
+    "tableHeadForKey": "公鑰",
+    "successToast": "公鑰刪除成功",
+    "deleteFailToast": "公鑰刪除失敗",
+    "getFailToast": "無法取得公鑰列表",
+    "confirmTitle": "確定要刪除這把公鑰嗎？",
+    "confirmDescription": "刪除後將無法復原，請謹慎操作。",
+    "cancelBtn": "取消",
+    "confirmBtn": "刪除",
+    "loadingBtn": "載入中..."
   }
 }

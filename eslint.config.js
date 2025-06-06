@@ -23,7 +23,7 @@ export default defineConfig([
   },
   tseslint.configs.recommended,
   {
-    files: ["**/*.{jsx,tx,js,tsx}"],
+    files: ["**/*.{jsx,ts,js,tsx}"],
     plugins: { react: pluginReact },
     rules: {
       "react/react-in-jsx-scope": "off",
@@ -45,7 +45,6 @@ export default defineConfig([
   {
     files: ["**/*.{ts,tsx}"],
     plugins: { "react-hooks": reactHooks },
-    // ...
     rules: {
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
