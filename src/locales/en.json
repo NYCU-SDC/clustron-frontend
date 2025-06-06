@@ -56,7 +56,8 @@
     "saveBtnToolTip": "Please fill in both Title and Key",
     "successToast": "Key saved successfully",
     "formatErrorToast": "Public key format error",
-    "saveFailToast": "Failed to save your public key"
+    "saveFailToast": "Failed to save your public key",
+    "loadingBtn": "Loading..."
   },
   "settingNameForm": {
     "cardTitleForName": "Name",
@@ -66,7 +67,8 @@
     "successToast": "Name saved successfully",
     "emptyErrorToast": "Please enter your name",
     "saveFailToast": "Failed to save your name",
-    "getFailToast": "Failed to get your name"
+    "getFailToast": "Failed to get your name",
+    "loadingBtn": "Loading..."
   },
   "settingUsernameForm": {
     "cardTitleForUsername": "Linux Username",
@@ -76,7 +78,8 @@
     "successToast": "Linux username saved successfully",
     "emptyErrorToast": "Please enter your Linux username",
     "saveFailToast": "Failed to save Linux username",
-    "getFailToast": "Failed to get Linux username"
+    "getFailToast": "Failed to get Linux username",
+    "loadingBtn": "Loading..."
   },
   "settingKeyTable": {
     "cardTitleForKeyTable": "SSH Keys",
@@ -89,6 +92,7 @@
     "confirmTitle": "Delete this public key?",
     "confirmDescription": "This action cannot be undone. Please proceed with caution.",
     "cancelBtn": "Cancel",
-    "confirmBtn": "Delete"
+    "confirmBtn": "Delete",
+    "loadingBtn": "Loading..."
   }
 }

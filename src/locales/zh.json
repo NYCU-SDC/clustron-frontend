@@ -57,7 +57,8 @@
     "saveBtnToolTip": "請先填寫標題跟公鑰",
     "successToast": "公鑰儲存成功",
     "formatErrorToast": "公鑰格式錯誤",
-    "saveFailToast": "公鑰儲存失敗"
+    "saveFailToast": "公鑰儲存失敗",
+    "loadingBtn": "載入中..."
   },
   "settingNameForm": {
     "cardTitleForName": "姓名",
@@ -67,7 +68,8 @@
     "successToast": "名字儲存成功",
     "emptyErrorToast": "請輸入名字",
     "saveFailToast": "無法儲存名字",
-    "getFailToast": "無法取得名字"
+    "getFailToast": "無法取得名字",
+    "loadingBtn": "載入中..."
   },
   "settingUsernameForm": {
     "cardTitleForUsername": "Linux 使用者名稱",
@@ -76,7 +78,8 @@
     "placeHolderForInputUsername": "beastie",
     "successToast": "Linux 使用者名稱儲存成功",
     "saveFailToast": "無法儲存 Linux 使用者名稱",
-    "getFailToast": "無法取得 Linux 使用者名稱"
+    "getFailToast": "無法取得 Linux 使用者名稱",
+    "loadingBtn": "載入中..."
   },
   "settingKeyTable": {
     "cardTitleForKeyTable": "SSH 金鑰",
@@ -89,6 +92,7 @@
     "confirmTitle": "確定要刪除這把公鑰嗎？",
     "confirmDescription": "刪除後將無法復原，請謹慎操作。",
     "cancelBtn": "取消",
-    "confirmBtn": "刪除"
+    "confirmBtn": "刪除",
+    "loadingBtn": "載入中..."
   }
 }

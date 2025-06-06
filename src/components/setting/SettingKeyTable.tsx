@@ -27,7 +27,7 @@ import { getPublicKey } from "@/lib/request/getPublicKey";
 import { deletePublicKey } from "@/lib/request/deletePublicKey";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Trash2, TriangleAlert } from "lucide-react";
+import { Trash2, TriangleAlert, Loader2Icon } from "lucide-react";
 
 export default function SettingKeyTable() {
   const navigate = useNavigate();
@@ -133,12 +133,22 @@ export default function SettingKeyTable() {
                           <AlertDialogCancel className="cursor-pointer mx-2">
                             {t("settingKeyTable.cancelBtn")}
                           </AlertDialogCancel>
-                          <AlertDialogAction
-                            className="cursor-pointer mx-2 bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
-                            onClick={() => deleteMutation.mutate(key.id)}
-                          >
-                            {t("settingKeyTable.confirmBtn")}
-                          </AlertDialogAction>
+                          {deleteMutation.isPending ? (
+                            <AlertDialogAction
+                              className="mx-2 bg-destructive text-white shadow-xs disabled:cursor-not-allowed disabled:pointer-events-auto dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
+                              disabled
+                            >
+                              <Loader2Icon className="animate-spin" />
+                              {t("settingKeyTable.loadingBtn")}
+                            </AlertDialogAction>
+                          ) : (
+                            <AlertDialogAction
+                              className="cursor-pointer mx-2 bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
+                              onClick={() => deleteMutation.mutate(key.id)}
+                            >
+                              {t("settingKeyTable.confirmBtn")}
+                            </AlertDialogAction>
+                          )}
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>

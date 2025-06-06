@@ -23,6 +23,7 @@ import { useNavigate } from "react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { savePublicKey } from "@/lib/request/savePublicKey";
 import { toast } from "sonner";
+import { Loader2Icon } from "lucide-react";
 
 export default function SettingAddKeyForm({
   className,
@@ -52,7 +53,6 @@ export default function SettingAddKeyForm({
     },
   });
 
-  const SaveBtnIsDisabled = addMutation.isPending || !title || !publicKey;
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="pt-10 px-2">
@@ -90,15 +90,8 @@ export default function SettingAddKeyForm({
             />
             <Separator />
             <div className="flex">
-              {/* <Button
-                variant="secondary"
-                className="w-2/5 m-5 cursor-pointer"
-                onClick={() => navigate(-1)}
-              >
-                {t("settingAddKeyForm.cancelBtn")}
-              </Button> */}
               <TooltipProvider>
-                {SaveBtnIsDisabled ? (
+                {!title || !publicKey ? (
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
@@ -112,9 +105,17 @@ export default function SettingAddKeyForm({
                       {t("settingAddKeyForm.saveBtnToolTip")}
                     </TooltipContent>
                   </Tooltip>
+                ) : addMutation.isPending ? (
+                  <Button
+                    className="px-7 py-5 disabled:cursor-not-allowed disabled:pointer-events-auto"
+                    disabled
+                  >
+                    <Loader2Icon className="animate-spin" />
+                    {t("settingAddKeyForm.loadingBtn")}
+                  </Button>
                 ) : (
                   <Button
-                    className="w-2/5 m-5 cursor-pointer"
+                    className="px-7 py-5 cursor-pointer"
                     onClick={() => addMutation.mutate({ title, publicKey })}
                   >
                     {t("settingAddKeyForm.saveBtn")}

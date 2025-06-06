@@ -16,6 +16,7 @@ import { saveSettings } from "@/lib/request/saveSettings";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Loader2Icon } from "lucide-react";
 
 export default function SettingNameForm({
   className,
@@ -91,14 +92,22 @@ export default function SettingNameForm({
 
             <Separator></Separator>
             <div className="flex">
-              <Button
-                className="px-7 py-5 cursor-pointer"
-                onClick={() => {
-                  addMutation.mutate({ username, linuxUsername });
-                }}
-              >
-                {t("settingNameForm.savaBtn")}
-              </Button>
+              {addMutation.isPending ? (
+                <Button className="px-7 py-5 cursor-pointer" disabled>
+                  <Loader2Icon className="animate-spin" />
+                  {t("settingNameForm.loadingBtn")}
+                </Button>
+              ) : (
+                <Button
+                  className="px-7 py-5 cursor-pointer"
+                  onClick={() => {
+                    addMutation.mutate({ username, linuxUsername });
+                  }}
+                  disabled={isLoading}
+                >
+                  {t("settingNameForm.savaBtn")}
+                </Button>
+              )}
             </div>
           </div>
         </CardContent>
