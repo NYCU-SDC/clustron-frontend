@@ -52,7 +52,7 @@
     "cardTitleForKey": "公鑰",
     "cardDescriptionForKey": "在此貼上公鑰內容(不是私鑰)，公鑰副檔名一般以 .pub 結尾",
     "placeHolderForInputKey": "開頭應為：ssh-rsa、ecdsa-sha2-nistp256、ecdsa-sha2-nistp384、ecdsa-sha2-nistp521、ssh-ed25519、sk-ecdsa-sha2-nistp256@openssh.com 或 sk-ssh-ed25519@openssh.com",
-    "saveBtn": "儲存",
+    "saveBtn": "新增公鑰",
     "cancelBtn": "取消",
     "saveBtnToolTip": "請先填寫標題跟公鑰",
     "successToast": "公鑰儲存成功",

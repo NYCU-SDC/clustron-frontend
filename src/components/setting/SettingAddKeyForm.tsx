@@ -89,21 +89,21 @@ export default function SettingAddKeyForm({
               className="h-32"
             />
             <Separator />
-            <div className="flex justify-center">
-              <Button
+            <div className="flex">
+              {/* <Button
                 variant="secondary"
                 className="w-2/5 m-5 cursor-pointer"
                 onClick={() => navigate(-1)}
               >
                 {t("settingAddKeyForm.cancelBtn")}
-              </Button>
+              </Button> */}
               <TooltipProvider>
                 {SaveBtnIsDisabled ? (
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
                         disabled
-                        className="w-2/5 m-5 disabled:cursor-not-allowed disabled:pointer-events-auto"
+                        className="px-7 py-5 disabled:cursor-not-allowed disabled:pointer-events-auto"
                       >
                         {t("settingAddKeyForm.saveBtn")}
                       </Button>
