@@ -1,10 +1,11 @@
 export async function refreshAuthToken(refreshToken: string): Promise<{
   accessToken: string;
-  expirationTime: number;
   refreshToken: string;
-} | null> {
+  refreshTokenExpirationTime: number;
+}> {
   if (!refreshToken) {
-    return null;
+    console.error("Failed to refresh auth token due to no refreshtoken");
+    throw new Error();
   }
 
   const res = await fetch(`/api/refreshToken/${refreshToken}`, {
@@ -15,12 +16,14 @@ export async function refreshAuthToken(refreshToken: string): Promise<{
   });
 
   if (!res.ok) {
-    return null;
+    console.error("Failed to refresh auth token due to response error");
+    throw new Error();
   }
+
   const data = await res.json();
   return {
     accessToken: data.accessToken,
-    expirationTime: data.expirationTime,
     refreshToken: data.refreshToken,
+    refreshTokenExpirationTime: data.expirationTime,
   };
 }

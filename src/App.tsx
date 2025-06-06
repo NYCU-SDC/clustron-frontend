@@ -14,7 +14,10 @@ import GuestOnlyRoute from "./components/auth/GuestOnlyRoute";
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route element={<ProtectedRoute showNotLoggedInToast={false} />}>
+        <Route path="/" element={<Home />} />
+      </Route>
+
       <Route path="/callback" element={<Callback />} />
 
       <Route element={<ProtectedRoute />}>
