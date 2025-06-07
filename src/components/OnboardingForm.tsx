@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -10,31 +11,32 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
+import { Label } from "@radix-ui/react-dropdown-menu";
 import { useMutation } from "@tanstack/react-query";
-import { saveSettings } from "@/lib/request/saveSettings";
+import { saveOnboarding } from "@/lib/request/saveOnboarding";
+import { useContext } from "react";
+import { authContext } from "@/lib/auth/authContext";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
-import { Label } from "@radix-ui/react-dropdown-menu";
 
 export default function OnboardingForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   const [username, setUsername] = useState("");
+  const navigate = useNavigate();
+  const { refreshAction } = useContext(authContext);
   const { t } = useTranslation();
 
   const addMutation = useMutation({
-    mutationFn: (payload: { username: string; linuxUsername: string }) =>
-      saveSettings(payload),
+    mutationFn: (username: string) => saveOnboarding(username),
     onSuccess: () => {
+      refreshAction();
+      navigate("/");
       toast.success(t("settingNameForm.successToast"));
     },
-    onError: (error: Error) => {
-      if (error.name === "Bad Request") {
-        toast.error(t("settingNameForm.emptyErrorToast"));
-      } else {
-        toast.error(t("settingNameForm.saveFailToast"));
-      }
+    onError: () => {
+      toast.error(t("settingNameForm.saveFailToast"));
     },
   });
 
@@ -50,7 +52,7 @@ export default function OnboardingForm({
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label className="ml-2 font-medium">
-                Name<p className="inline text-red-400">*</p>
+                Full Name<span className="text-red-400">*</span>
               </Label>
               <Input
                 className="mx-2 w-auto"
@@ -64,16 +66,16 @@ export default function OnboardingForm({
             <TooltipProvider>
               <div className="flex justify-end">
                 {addMutation.isPending ? (
-                  <Button className="px-7 py-5 w-16 cursor-pointer" disabled>
+                  <Button className="px-7 py-5 w-28 cursor-pointer" disabled>
                     <Loader2Icon className="animate-spin" />
                     {t("settingNameForm.loadingBtn")}
                   </Button>
                 ) : username ? (
                   <Button
                     className="px-7 py-5 w-16 cursor-pointer"
-                    // onClick={() => {
-                    //   addMutation.mutate({ username, "" });
-                    // }}
+                    onClick={() => {
+                      addMutation.mutate(username);
+                    }}
                   >
                     {t("settingNameForm.savaBtn")}
                   </Button>

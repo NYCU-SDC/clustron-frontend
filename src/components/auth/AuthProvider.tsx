@@ -69,52 +69,59 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [cookies.refreshToken]);
 
   const refreshMutation = useMutation({
-    mutationFn: (refreshToken: string) => refreshAuthToken(refreshToken),
+    mutationFn: () => refreshAuthToken(cookies.refreshToken),
     onSuccess: (data) => {
       setCookiesForAuthToken(
         data.accessToken,
         data.refreshToken,
         data.refreshTokenExpirationTime * 1000,
       );
-      setAutoRefresh(data.refreshToken);
+      setAutoRefresh();
     },
     onError: logout,
   });
 
-  const setAutoRefresh = useCallback(
-    (refreshToken: string) => {
-      clearTimers();
+  const refreshAction = () => {
+    refreshMutation.mutate();
+  };
 
-      // calculate how long to update accessToken
-      const timeUntilAccessTokenExpire = cookies.accessToken
-        ? Math.min(
-            jwtDecode<AccessToken>(cookies.accessToken).exp * 1000 -
-              Date.now() -
-              60 * 1000,
-            2147483647,
-          )
-        : 0;
+  const setAutoRefresh = useCallback(() => {
+    clearTimers();
 
-      // set a timer to update both token
-      refreshTimer = window.setTimeout(async () => {
-        if (!refreshMutation.isPending) {
-          refreshMutation.mutate(refreshToken);
-        }
-      }, timeUntilAccessTokenExpire);
-    },
-    [clearTimers, cookies.accessToken, refreshMutation],
-  );
+    // calculate how long to update accessToken
+    const timeUntilAccessTokenExpire = cookies.accessToken
+      ? Math.min(
+          jwtDecode<AccessToken>(cookies.accessToken).exp * 1000 -
+            Date.now() -
+            60 * 1000,
+          2147483647,
+        )
+      : 0;
+
+    // set a timer to update both token
+    refreshTimer = window.setTimeout(async () => {
+      if (!refreshMutation.isPending) {
+        refreshMutation.mutate();
+      }
+    }, timeUntilAccessTokenExpire);
+  }, [clearTimers, cookies.accessToken, refreshMutation]);
 
   useEffect(() => {
     if (cookies.refreshToken) {
-      setAutoRefresh(cookies.refreshToken);
+      setAutoRefresh();
     }
     return () => clearTimers();
   }, [cookies.refreshToken, setAutoRefresh, clearTimers]);
 
   return (
     <authContext.Provider
-      value={{ login, setCookiesForAuthToken, logout, isLoggedIn }}
+      value={{
+        login,
+        setCookiesForAuthToken,
+        logout,
+        isLoggedIn,
+        refreshAction,
+      }}
     >
       {children}
     </authContext.Provider>
