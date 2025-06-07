@@ -30,9 +30,16 @@ export const assignableRolesMap: Record<
   GroupRoleAccessLevel,
   GroupMemberRoleName[]
 > = {
-  GROUP_OWNER: ["Teacher assistant", "Student", "Auditor"],
-  GROUP_ADMIN: ["Student", "Auditor"],
+  GROUP_OWNER: ["teacher_assistant", "student", "auditor"],
+  GROUP_ADMIN: ["student", "auditor"],
   USER: [],
-}; //TODO
+};
+//TODO
+export const roleLabelMap: Record<GroupMemberRoleName, string> = {
+  group_owner: "Group Owner",
+  teacher_assistant: "TA",
+  student: "Student",
+  auditor: "Auditor",
+};
 
 export type { GroupRoleAccessLevel };

@@ -12,6 +12,7 @@ import {
   TableHead,
   TableBody,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button.tsx";
 
 export default function AddGroupPage() {
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ export default function AddGroupPage() {
     const finalMembers = [
       ...(selfIncluded
         ? []
-        : [{ member: payloadId, role: "Group-Owner" as GroupMemberRoleName }]),
+        : [{ member: payloadId, role: "group_owner" as GroupMemberRoleName }]), //TODO role should be dynamic
       ...members.map((m) => ({
         member: m.id.trim(),
         role: m.role as GroupMemberRoleName,
@@ -150,7 +151,7 @@ export default function AddGroupPage() {
       </div>
 
       <div className="text-left">
-        <button
+        <Button
           onClick={handleSubmit}
           disabled={isPending}
           className={`bg-gray-900 text-white px-4 py-2 rounded ${
@@ -158,7 +159,7 @@ export default function AddGroupPage() {
           }`}
         >
           {isPending ? "Saving..." : "Create Group"}
-        </button>
+        </Button>
       </div>
     </div>
   );

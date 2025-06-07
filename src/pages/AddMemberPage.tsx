@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import AddMemberRow from "@/components/group/AddMemberRow";
 import { useAddMember } from "@/hooks/useAddMember";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
+// import { useGroupRoles } from "@/hooks/useGroupRoles";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { AccessLevelUser, type GroupMemberRoleName } from "@/types/group";
 import {
@@ -13,16 +14,18 @@ import {
   TableBody,
 } from "@/components/ui/table";
 import { GlobalRole } from "@/lib/permission";
+import { useRoleMapper } from "@/hooks/useRoleMapper";
 
 export default function AddMemberPage() {
   const { id: groupId } = useParams();
   const navigate = useNavigate();
   const { data: group, isLoading } = useGetGroupById(groupId!);
+  const { roleNameToId } = useRoleMapper();
   const payload = useJwtPayload();
 
   const [members, setMembers] = useState<
     { id: string; role: GroupMemberRoleName }[]
-  >([{ id: "", role: "Student" }]);
+  >([{ id: "", role: "student" }]);
 
   const { mutate: addMember } = useAddMember(groupId!, {
     onSuccess: () => navigate(`/groups/${groupId}/settings`),
@@ -39,18 +42,23 @@ export default function AddMemberPage() {
     setMembers(next);
   };
 
-  const addRow = () => setMembers([...members, { id: "", role: "Student" }]);
+  const addRow = () => setMembers([...members, { id: "", role: "student" }]);
 
   const removeRow = (index: number) => {
     const next = members.filter((_, i) => i !== index);
-    setMembers(next.length === 0 ? [{ id: "", role: "Student" }] : next);
+    setMembers(next.length === 0 ? [{ id: "", role: "student" }] : next);
   };
 
   const handleSave = () => {
-    const newMembers = members.map((m) => ({
-      member: m.id.trim(),
-      role: m.role,
-    }));
+    const newMembers = members.map((m) => {
+      const roleId = roleNameToId(m.role);
+      console.log("roleId", m, roleId);
+      if (!roleId) throw new Error(`Invalid role: ${m.role}`);
+      return {
+        member: m.id.trim(),
+        roleId,
+      };
+    });
     addMember(newMembers);
   };
 
@@ -102,7 +110,6 @@ export default function AddMemberPage() {
           </TableBody>
         </Table>
 
-        {/* 對齊右邊的按鈕列 */}
         <div className="mt-6 flex justify-end gap-3">
           <button
             onClick={() => navigate(`/groups/${group.id}/settings`)}

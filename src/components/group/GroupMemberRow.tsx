@@ -7,7 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { assignableRolesMap } from "@/lib/permission";
+import { assignableRolesMap, roleLabelMap } from "@/lib/permission";
 import {
   AccessLevelUser,
   type GroupMemberRoleName,
@@ -38,7 +38,7 @@ export default function GroupMemberRow({
   isArchived = false,
 }: Props) {
   const assignableRoles = assignableRolesMap[accessLevel] ?? [];
-
+  // console.log("👀 member role:", role);
   return (
     <TableRow className="hover:bg-muted">
       <TableCell>{name}</TableCell>
@@ -54,7 +54,9 @@ export default function GroupMemberRow({
         {showActions && assignableRoles.length > 0 && !isArchived ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <span className="cursor-pointer">{role}</span>
+              <span className="cursor-pointer font-medium text-sm">
+                {roleLabelMap[role] ?? role}
+              </span>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {assignableRoles.map((r) => (
@@ -63,13 +65,13 @@ export default function GroupMemberRow({
                   onClick={() => onUpdateRole?.(r)}
                   disabled={r === role}
                 >
-                  {r}
+                  {roleLabelMap[r] ?? r}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-          <span>{role}</span>
+          <span>{roleLabelMap[role] ?? role}</span>
         )}
       </TableCell>
 

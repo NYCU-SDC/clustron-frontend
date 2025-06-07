@@ -89,9 +89,9 @@ export default function GroupMemberTable({
                   <GroupMemberRow
                     key={m.id}
                     name={m.username}
-                    id={m.studentId || m.email}
+                    id={m.studentId}
                     email={m.email}
-                    role={m.role.role}
+                    role={m.role.Role as GroupMemberRoleName}
                     accessLevel={accessLevel}
                     showActions={editable}
                     isArchived={isArchived}

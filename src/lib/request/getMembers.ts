@@ -1,47 +1,23 @@
-import {
-  AccessLevelAdmin,
-  AccessLevelUser,
-  type GetGroupMembersResponse,
-} from "@/types/group";
+// import { api } from "@/lib/request/api";
+// import { type GetGroupMembersResponse } from "@/types/group";
+//
+// export async function getMembers(groupId: string): Promise<GetGroupMembersResponse> {
+//   return api<GetGroupMembersResponse>(`/api/groups/${groupId}/members`);
+// }
+import { api } from "@/lib/request/api";
+import type { GetGroupMembersResponse } from "@/types/group";
 
 export async function getMembers(
   groupId: string,
   page = 1,
-  pageSize = 100,
+  pageSize = 10,
 ): Promise<GetGroupMembersResponse> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        items: [
-          {
-            id: "1",
-            username: "john_doe",
-            email: "jone@gmail.com",
-            studentId: "123456",
-            role: {
-              id: "1",
-              role: "Group Owner",
-              accessLevel: AccessLevelAdmin,
-            },
-          },
-          {
-            id: "2",
-            username: "john_doe222",
-            email: "",
-            studentId: "000111",
-            role: {
-              id: "2",
-              role: "Student",
-              accessLevel: AccessLevelUser,
-            },
-          },
-        ],
-        totalPages: 1,
-        totalItems: 0,
-        currentPage: page,
-        pageSize,
-        hasNextPage: false,
-      });
-    }, 300);
-  });
+  const query = new URLSearchParams({
+    page: page.toString(),
+    size: pageSize.toString(),
+  }).toString();
+
+  return api<GetGroupMembersResponse>(
+    `/api/groups/${groupId}/members?${query}`,
+  );
 }

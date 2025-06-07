@@ -1,25 +1,26 @@
 // common role type
 // export type GroupRoleAccessLevel = "GROUP_OWNER" | "GROUP_ADMIN" | "USER";
-export const AccessLevelUser = "USER" as const;
-export const AccessLevelAdmin = "GROUP_ADMIN" as const;
-export const AccessLevelOwner = "GROUP_OWNER" as const;
+export const AccessLevelUser = "USER";
+export const AccessLevelAdmin = "GROUP_ADMIN";
+export const AccessLevelOwner = "GROUP_OWNER";
 
 export const AccessLevels = [
   AccessLevelUser,
   AccessLevelAdmin,
   AccessLevelOwner,
-] as const;
+];
 
 export type GroupRoleAccessLevel = (typeof AccessLevels)[number];
 
 export type GroupMemberRoleName =
-  | "Group Owner"
-  | "Teacher assistant"
-  | "Student"
-  | "Auditor";
+  | "group_owner"
+  | "teacher_assistant"
+  | "student"
+  | "auditor";
 
 // group role
 export type GroupRole = {
+  Role: GroupMemberRoleName;
   id: string;
   role: GroupMemberRoleName;
   accessLevel: GroupRoleAccessLevel;
@@ -75,7 +76,7 @@ export type CreateGroupInput = {
   description: string;
   members: {
     member: string; // email or user id
-    role: GroupMemberRoleName;
+    role: string;
   }[];
 };
 
@@ -100,7 +101,7 @@ export type GetGroupMembersResponse = {
 
 export type AddGroupMemberInput = {
   member: string;
-  role: GroupMemberRoleName;
+  roleId: string;
 };
 
 export type AddGroupMemberResponse = GroupMember;

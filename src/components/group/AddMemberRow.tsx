@@ -1,6 +1,7 @@
 import { CircleMinus, CirclePlus } from "lucide-react";
 import {
   assignableRolesMap,
+  roleLabelMap,
   type GlobalRole,
   type GroupRoleAccessLevel,
 } from "@/lib/permission";
@@ -20,6 +21,7 @@ import {
 } from "@/types/group";
 import { cn } from "@/lib/utils";
 import { AccessLevelUser } from "@/types/group";
+
 type Props = {
   index: number;
   id: string;
@@ -31,7 +33,6 @@ type Props = {
   onChange: (index: number, key: "id" | "role", value: string) => void;
   onRemove: (index: number) => void;
   onAdd: () => void;
-
   accessLevel?: GroupRoleAccessLevel;
   globalRole?: GlobalRole;
 };
@@ -47,12 +48,9 @@ export default function AddMemberRow({
   onChange,
   onRemove,
   onAdd,
-  accessLevel = AccessLevelUser, //TODO
-  // globalRole,
+  accessLevel = AccessLevelUser,
 }: Props) {
-  // const isAdmin =  AccessLevelAdmin; //TODO
-
-  const resolvedAccessLevel: GroupRoleAccessLevel = AccessLevelAdmin //TODO
+  const resolvedAccessLevel: GroupRoleAccessLevel = AccessLevelAdmin
     ? AccessLevelOwner
     : accessLevel;
 
@@ -84,7 +82,7 @@ export default function AddMemberRow({
               e.preventDefault();
               const newMembers = rows.map((r) => ({
                 id: r,
-                role: "Student" as GroupMemberRoleName,
+                role: assignableRoles[0] ?? "student", // 預設為第一個可選角色或 student
               }));
               onAddBatch(newMembers);
             }
@@ -96,15 +94,17 @@ export default function AddMemberRow({
         <Select
           value={role}
           disabled={disabled}
-          onValueChange={(value) => onChange(index, "role", value)}
+          onValueChange={(value) =>
+            onChange(index, "role", value as GroupMemberRoleName)
+          }
         >
           <SelectTrigger className="h-10 w-full text-sm">
-            <SelectValue placeholder="Select Role" />
+            <SelectValue>{roleLabelMap[role] ?? "Select Role"}</SelectValue>
           </SelectTrigger>
           <SelectContent>
             {assignableRoles.map((r) => (
               <SelectItem key={r} value={r}>
-                {r}
+                {roleLabelMap[r] ?? r}
               </SelectItem>
             ))}
           </SelectContent>
