@@ -7,14 +7,17 @@ export async function deletePublicKey(id: string) {
     throw new Error();
   }
 
-  const res = await fetch(`/api/publickey`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+  const res = await fetch(
+    `${import.meta.env.VITE_BACKEND_BASE_URL}/api/publickey`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ id }),
     },
-    body: JSON.stringify({ id }),
-  });
+  );
 
   if (!res.ok) {
     console.error("Failed to delete public key");

@@ -10,14 +10,17 @@ export async function saveSettings(payload: {
     throw new Error();
   }
 
-  const res = await fetch(`/api/settings`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+  const res = await fetch(
+    `${import.meta.env.VITE_BACKEND_BASE_URL}/api/settings`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
     },
-    body: JSON.stringify(payload),
-  });
+  );
 
   if (!res.ok) {
     if (res.status === 400) {
