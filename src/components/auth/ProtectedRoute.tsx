@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, Outlet } from "react-router";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -12,13 +12,19 @@ export default function ProtectedRoute({
 }: {
   showLoginRequiredToast?: boolean;
 }) {
-  const token = getAccessTokenFromCookies();
-  const role = token ? jwtDecode<AccessToken>(token).Role : undefined;
   const { isLoggedIn } = useContext(authContext);
+  const [token, setToken] = useState<string | null>(
+    getAccessTokenFromCookies(),
+  );
+  const [role, setRole] = useState<string | undefined>(
+    token ? jwtDecode<AccessToken>(token).Role : undefined,
+  );
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   useEffect(() => {
+    setToken(getAccessTokenFromCookies());
+    setRole(token ? jwtDecode<AccessToken>(token).Role : undefined);
     if (!isLoggedIn() && window.location.pathname !== "/login") {
       navigate("/login");
       if (showLoginRequiredToast) {
