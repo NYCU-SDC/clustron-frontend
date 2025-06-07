@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { useContext } from "react";
 import { authContext } from "@/lib/auth/authContext";
+import { jwtDecode } from "jwt-decode";
+import { AccessToken } from "@/types/type";
+import { getAccessTokenFromCookies } from "@/lib/getAccessTokenFromCookies";
 import ColorModeToggle from "@/components/ColorModeToggle";
 import LangSwitcher from "@/components/LangSwitcher";
 
@@ -18,6 +21,8 @@ function navLinkclass(isActive: boolean) {
 
 export default function Navbar() {
   const { logout, isLoggedIn } = useContext(authContext);
+  const token = getAccessTokenFromCookies();
+  const role = token ? jwtDecode<AccessToken>(token).Role : undefined;
   const { t } = useTranslation();
 
   return (
@@ -25,7 +30,7 @@ export default function Navbar() {
       <div className="flex items-center justify-between w-full px-6 py-4">
         <div className="flex items-center space-x-4">
           <div className="text-2xl font-bold px-3 py-2">Clustron</div>
-          {isLoggedIn() && (
+          {isLoggedIn() && role != "role_not_setup" && (
             <>
               <NavLink
                 to="/groups"

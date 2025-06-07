@@ -8,9 +8,9 @@ import { AccessToken } from "@/types/type";
 import { getAccessTokenFromCookies } from "@/lib/getAccessTokenFromCookies";
 
 export default function ProtectedRoute({
-  showNoLoggedInToast = true,
+  showLoginRequiredToast = true,
 }: {
-  showNoLoggedInToast?: boolean;
+  showLoginRequiredToast?: boolean;
 }) {
   const token = getAccessTokenFromCookies();
   const role = token ? jwtDecode<AccessToken>(token).Role : undefined;
@@ -21,7 +21,7 @@ export default function ProtectedRoute({
   useEffect(() => {
     if (!isLoggedIn() && window.location.pathname !== "/login") {
       navigate("/login");
-      if (showNoLoggedInToast) {
+      if (showLoginRequiredToast) {
         toast.warning(t("protectedRoute.notLoggedInToast"));
       }
       return;
@@ -33,10 +33,10 @@ export default function ProtectedRoute({
       window.location.pathname != "/onboarding"
     ) {
       navigate("/onboarding");
-      toast.warning(t("Please finish onboarding form"));
+      toast.warning(t("protectedRoute.roleNotSetupToast"));
       return;
     }
-  }, [showNoLoggedInToast, isLoggedIn, navigate, role, token, t]);
+  }, [showLoginRequiredToast, isLoggedIn, navigate, role, token, t]);
 
   if (
     !isLoggedIn() ||
