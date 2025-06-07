@@ -26,14 +26,14 @@ export default function OnboardingForm({
   const [username, setUsername] = useState("");
   const [linuxUsername, setLinuxUsername] = useState("");
   const navigate = useNavigate();
-  const { refreshAction } = useContext(authContext);
+  const { refreshAccessToken } = useContext(authContext);
   const { t } = useTranslation();
 
   const addMutation = useMutation({
     mutationFn: (payload: { username: string; linuxUsername: string }) =>
       saveOnboardingInfo(payload),
     onSuccess: () => {
-      refreshAction();
+      refreshAccessToken();
       navigate("/");
       toast.success(t("onboardingForm.successToast"));
     },

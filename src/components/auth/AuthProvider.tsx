@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     onError: logout,
   });
 
-  const refreshAction = () => {
+  const refreshAccessToken = () => {
     refreshMutation.mutate();
   };
 
@@ -120,7 +120,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setCookiesForAuthToken,
         logout,
         isLoggedIn,
-        refreshAction,
+        refreshAccessToken,
       }}
     >
       {children}
