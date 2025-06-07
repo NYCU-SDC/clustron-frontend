@@ -9,6 +9,7 @@ type AuthContextType = {
   ) => void;
   logout: () => void;
   isLoggedIn: () => boolean;
+  refreshAccessToken: () => void;
 };
 
 export const authContext = createContext<AuthContextType>({
@@ -25,7 +26,11 @@ export const authContext = createContext<AuthContextType>({
   },
 
   isLoggedIn: () => {
-    console.warn("isLoggedIn() called without AuthProvider.");
+    console.warn("isLoggedIn() called without AuthProvider");
     return false;
+  },
+
+  refreshAccessToken: () => {
+    console.warn("refreshMuatation called withput AuthProvider");
   },
 });

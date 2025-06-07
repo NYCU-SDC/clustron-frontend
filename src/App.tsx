@@ -21,8 +21,8 @@ const App = () => {
       <Route path="/callback" element={<Callback />} />
 
       <Route element={<ProtectedRoute />}>
-        <Route path="/onboarding" element={<Onboarding />} />
         <Route element={<DefaultLayout />}>
+          <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/setting" element={<SettingLayout />}>
             <Route index element={<Navigate to="general" replace />} />
             <Route path="general" element={<SettingGeneral />} />

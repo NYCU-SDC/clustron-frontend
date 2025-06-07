@@ -1,16 +1,9 @@
-import { OnboardingForm } from "@/components/OnboardingForm";
-import LanguageSwitcher from "@/components/LangSwitcher";
+import OnboardingForm from "@/components/OnboardingForm";
 
 export default function Onboarding() {
   return (
-    <div className="h-screen flex flex-col p-6 space-y-4">
-      <div className="flex justify-end">
-        <LanguageSwitcher />
-      </div>
-
-      <div className="flex flex-1 items-center justify-center">
-        <OnboardingForm defaultData={{}} />
-      </div>
+    <div className="mx-auto my-50 w-full min-w-xs max-w-md">
+      <OnboardingForm />
     </div>
   );
 }
