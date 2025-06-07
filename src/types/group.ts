@@ -9,7 +9,7 @@ export const AccessLevels = [
   AccessLevelAdmin,
   AccessLevelOwner,
 ];
-
+export type GlobalRole = "admin" | "organizer" | "user";
 export type GroupRoleAccessLevel = (typeof AccessLevels)[number];
 
 export type GroupMemberRoleName =

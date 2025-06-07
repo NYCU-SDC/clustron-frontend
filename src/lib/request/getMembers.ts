@@ -9,15 +9,14 @@ import type { GetGroupMembersResponse } from "@/types/group";
 
 export async function getMembers(
   groupId: string,
-  page = 1,
-  pageSize = 10,
+  page?: number,
+  pageSize?: number,
 ): Promise<GetGroupMembersResponse> {
-  const query = new URLSearchParams({
-    page: page.toString(),
-    size: pageSize.toString(),
-  }).toString();
+  const params = new URLSearchParams();
+  if (page !== undefined) params.append("page", page.toString());
+  if (pageSize !== undefined) params.append("size", pageSize.toString());
 
   return api<GetGroupMembersResponse>(
-    `/api/groups/${groupId}/members?${query}`,
+    `/api/groups/${groupId}/members${params.toString() ? "?" + params : ""}`,
   );
 }

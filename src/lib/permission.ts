@@ -1,5 +1,4 @@
 import {
-  AccessLevelAdmin,
   AccessLevelOwner,
   AccessLevelUser,
   GroupMemberRoleName,
@@ -15,15 +14,22 @@ export function canCreateGroup(role: GlobalRole): boolean {
   return isGlobalAdmin(role);
 }
 
-export function canEditMembers(accessLevel: GroupRoleAccessLevel): boolean {
-  return accessLevel === AccessLevelOwner || accessLevel === AccessLevelAdmin;
+export function canEditMembers(
+  accessLevel?: GroupRoleAccessLevel,
+  globalRole?: GlobalRole,
+) {
+  return globalRole === "admin" || accessLevel == AccessLevelOwner;
 }
 
-export function canArchiveGroup(accessLevel: GroupRoleAccessLevel): boolean {
-  return accessLevel === AccessLevelOwner;
+export function canArchiveGroup(
+  accessLevel?: GroupRoleAccessLevel,
+  globalRole?: GlobalRole,
+) {
+  return globalRole === "admin" || accessLevel == AccessLevelOwner;
 }
-export function isReadonlyMember(accessLevel: GroupRoleAccessLevel): boolean {
-  return accessLevel === AccessLevelUser;
+
+export function isReadonlyMember(accessLevel?: GroupRoleAccessLevel) {
+  return accessLevel == AccessLevelUser;
 }
 
 export const assignableRolesMap: Record<

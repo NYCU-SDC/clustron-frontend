@@ -14,6 +14,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import { GlobalRole } from "@/types/group.ts";
 export type GroupContextType = {
   groupId: string;
 };
@@ -29,10 +30,14 @@ export default function GroupSettings() {
     onError: (err) =>
       alert(" 刪除失敗：" + (err instanceof Error ? err.message : "")),
   });
-
+  const payload = useJwtPayload();
+  const globalRole = payload?.Role as GlobalRole;
   const isAdmin = group?.me?.type === "adminOverride";
   const accessLevel = group?.me.role.accessLevel;
-  const baseCanArchive = useGroupPermissions(accessLevel).canArchive;
+  const baseCanArchive = useGroupPermissions(
+    accessLevel,
+    globalRole,
+  ).canArchive;
   const canArchive = isAdmin || baseCanArchive;
 
   // console.log("ACC", isAdmin, "\\", baseCanArchive, "\\", canArchive);

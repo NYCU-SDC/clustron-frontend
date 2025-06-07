@@ -28,7 +28,7 @@ export default function AddGroupPage() {
   >([{ id: "", role: "student" }]);
 
   const { mutate: createGroup } = useCreateGroup({
-    onSuccess: (group) => navigate(`/groups`),
+    onSuccess: () => navigate(`/groups`),
   });
 
   const updateRow = (index: number, key: "id" | "role", value: string) => {

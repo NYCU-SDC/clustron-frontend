@@ -3,10 +3,11 @@ import { useUpdateMember } from "@/hooks/useUpdateMember";
 import GroupMemberRow from "@/components/group/GroupMemberRow";
 import AddMemberButton from "@/components/group/AddMemberButton";
 import { Card, CardContent } from "@/components/ui/card";
-import { canEditMembers } from "@/lib/permission";
-import type { GlobalRole, GroupRoleAccessLevel } from "@/lib/permission";
+import { useGroupPermissions } from "@/hooks/useGroupPermissions";
+import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
 
+import type { GlobalRole, GroupRoleAccessLevel } from "@/lib/permission";
 import { AccessLevelUser, type GroupMemberRoleName } from "@/types/group";
 import {
   Table,
@@ -31,6 +32,20 @@ export default function GroupMemberTable({
   onRemove,
   isArchived = false,
 }: Props) {
+  const payload = useJwtPayload();
+  const effectiveGlobalRole = globalRole ?? (payload?.Role as GlobalRole);
+  const { canEditMembers } = useGroupPermissions(
+    accessLevel,
+    effectiveGlobalRole,
+  );
+  console.log(
+    "al",
+    accessLevel,
+    "gbrole",
+    effectiveGlobalRole,
+    "edit",
+    canEditMembers,
+  );
   const {
     data,
     isLoading,
@@ -39,16 +54,15 @@ export default function GroupMemberTable({
     isFetchingNextPage,
     isError,
   } = useInfiniteMembers(groupId);
-  console.log("getmember", data);
-  const members = data?.pages.flatMap((page) => page.items) ?? [];
 
-  const editable = canEditMembers(accessLevel) || globalRole === "admin";
+  const members = data?.pages.flatMap((page) => page.items) ?? [];
 
   const { mutate: updateMember } = useUpdateMember(groupId, {
     onSuccess: () => {
       console.log("Member role updated");
     },
   });
+
   const { roleNameToId } = useRoleMapper();
   const updateMemberRole = (memberId: string, newRole: GroupMemberRoleName) => {
     const roleId = roleNameToId(newRole);
@@ -68,7 +82,7 @@ export default function GroupMemberTable({
       <CardContent className="p-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-bold text-lg">Members</h3>
-          {editable && (
+          {canEditMembers && (
             <AddMemberButton groupId={groupId} isArchived={isArchived} />
           )}
         </div>
@@ -98,7 +112,7 @@ export default function GroupMemberTable({
                     email={m.email}
                     role={m.role.Role as GroupMemberRoleName}
                     accessLevel={accessLevel}
-                    showActions={editable}
+                    showActions={canEditMembers}
                     isArchived={isArchived}
                     onDelete={onRemove ? () => onRemove(m.id) : undefined}
                     onUpdateRole={(newRole) => updateMemberRole(m.id, newRole)}

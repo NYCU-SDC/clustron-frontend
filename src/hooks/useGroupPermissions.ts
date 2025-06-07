@@ -1,16 +1,17 @@
-import type { GroupRoleAccessLevel } from "@/types/group";
 import {
   canEditMembers,
   canArchiveGroup,
   isReadonlyMember,
 } from "@/lib/permission";
+import type { GroupRoleAccessLevel, GlobalRole } from "@/types/group";
 
 export function useGroupPermissions(
   accessLevel: GroupRoleAccessLevel | undefined,
+  globalRole: GlobalRole | undefined,
 ) {
   return {
-    canEditMembers: !!accessLevel && canEditMembers(accessLevel),
-    canArchive: !!accessLevel && canArchiveGroup(accessLevel),
-    isReadonly: !!accessLevel && isReadonlyMember(accessLevel),
+    canEditMembers: canEditMembers(accessLevel, globalRole),
+    canArchive: canArchiveGroup(accessLevel, globalRole),
+    isReadonly: isReadonlyMember(accessLevel),
   };
 }
