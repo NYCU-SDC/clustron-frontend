@@ -22,7 +22,7 @@ export default function ProtectedRoute({
     if (!isLoggedIn() && window.location.pathname !== "/login") {
       navigate("/login");
       if (showLoginRequiredToast) {
-        toast.warning(t("protectedRoute.notLoggedInToast"));
+        toast.warning(t("protectedRoute.loginRequiredToast"));
       }
       return;
     }
