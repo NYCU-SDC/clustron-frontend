@@ -1,147 +1,126 @@
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormDescription,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Input } from "@/components/ui/input";
+import { Label } from "@radix-ui/react-dropdown-menu";
+import { useMutation } from "@tanstack/react-query";
+import { saveOnboardingInfo } from "@/lib/request/saveOnboardingInfo";
+import { useContext } from "react";
+import { authContext } from "@/lib/auth/authContext";
+import { toast } from "sonner";
+import { Loader2Icon } from "lucide-react";
 
-type Props = {
-  defaultData: {
-    User?: string;
-    PublicKeyName?: string;
-    PublicKey?: string;
-  };
-};
-
-export function OnboardingForm({ defaultData }: Props) {
-  const { t } = useTranslation();
+export default function OnboardingForm({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<"div">) {
+  const [username, setUsername] = useState("");
+  const [linuxUsername, setLinuxUsername] = useState("");
   const navigate = useNavigate();
+  const { refreshAccessToken } = useContext(authContext);
+  const { t } = useTranslation();
 
-  const formSchema = z.object({
-    User: z.string().nonempty(t("onboarding.nonEmpty")),
-    PublicKeyName: z.string(),
-    PublicKey: z.string(),
-  });
-
-  type FormValues = z.infer<typeof formSchema>;
-
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      User: defaultData.User || "",
-      PublicKeyName: defaultData.PublicKeyName || "",
-      PublicKey: defaultData.PublicKey || "",
+  const addMutation = useMutation({
+    mutationFn: (payload: { username: string; linuxUsername: string }) =>
+      saveOnboardingInfo(payload),
+    onSuccess: () => {
+      refreshAccessToken();
+      navigate("/");
+      toast.success(t("onboardingForm.successToast"));
+    },
+    onError: () => {
+      toast.error(t("onboardingForm.saveFailToast"));
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log("sendData", data);
-    setTimeout(() => {
-      toast.success(t("onboarding.toastSuccess"));
-      navigate("/");
-    }, 500);
-  };
-
   return (
-    <Card className="w-full max-w-md">
-      <CardContent className="p-6 space-y-8">
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl whitespace-nowrap font-bold">
-            {t("onboarding.title")}
-          </h1>
-        </div>
-
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="User"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold">
-                    {t("onboarding.nameLabel")} *
-                  </FormLabel>
-                  <FormControl className="text-sm">
-                    <Input
-                      {...field}
-                      placeholder={t("onboarding.namePlaceholder")}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="PublicKeyName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold">
-                    {t("onboarding.usernameLabel")}
-                  </FormLabel>
-                  <FormControl className="text-sm">
-                    <Input
-                      {...field}
-                      placeholder={t("onboarding.usernamePlaceholder")}
-                    />
-                  </FormControl>
-                  <FormDescription className="text-xs">
-                    {t("onboarding.usernameDescription")}
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="PublicKey"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold">
-                    {t("onboarding.publicKeyLabel")}
-                  </FormLabel>
-                  <FormControl className="text-sm">
-                    <Textarea
-                      {...field}
-                      placeholder={t("onboarding.publicKeyPlaceholder")}
-                      className="w-full h-24 resize-none"
-                    />
-                  </FormControl>
-                  <FormDescription className="text-xs">
-                    {t("onboarding.publicKeyDescription")}
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="flex gap-4">
-              <Button
-                type="submit"
-                className="inline-flex w-24 ml-auto bg-black text-white hover:bg-gray-700 active:bg-gray-800 transition-colors"
-              >
-                {t("onboarding.submitButton")}
-              </Button>
+    <div className={cn("flex flex-col gap-6", className)} {...props}>
+      <Card className="rounded-sm">
+        <CardHeader>
+          <CardTitle className="mx-auto text-2xl">
+            {t("onboardingForm.cardTitleForName")}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col gap-6">
+            <div className="grid gap-2">
+              <Label className="ml-2 font-medium">
+                {t("onboardingForm.labelForInputName")}
+                <span className="text-red-400">*</span>
+              </Label>
+              <Input
+                className="mx-2 w-auto"
+                id="username"
+                type="name"
+                placeholder={t("onboardingForm.placeHolderForInputName")}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
             </div>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+            <div className="grid gap-2">
+              <Label className="ml-2 font-medium">
+                {t("onboardingForm.labelForInputUsername")}
+                <span className="text-red-400">*</span>
+              </Label>
+              <Input
+                className="mx-2 w-auto"
+                id="linuxUsername"
+                type="name"
+                placeholder="alice"
+                value={linuxUsername}
+                onChange={(e) => setLinuxUsername(e.target.value)}
+              />
+            </div>
+            <TooltipProvider>
+              <div className="flex justify-end">
+                {addMutation.isPending ? (
+                  <Button className="px-7 py-5 w-28 cursor-pointer" disabled>
+                    <Loader2Icon className="animate-spin" />
+                    {t("onboardingForm.loadingBtn")}
+                  </Button>
+                ) : username && linuxUsername ? (
+                  <Button
+                    className="px-7 py-5 w-16 cursor-pointer"
+                    onClick={() => {
+                      // TODO: Replace with Zod + React Hook Form for more comprehensive validation
+                      if (linuxUsername.includes(" ")) {
+                        toast.error(t("onboardingForm.EmptyUsernameToast"));
+                        return;
+                      }
+                      addMutation.mutate({ username, linuxUsername });
+                    }}
+                  >
+                    {t("onboardingForm.saveBtn")}
+                  </Button>
+                ) : (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        disabled
+                        className="px-7 py-5 w-16 disabled:cursor-not-allowed disabled:pointer-events-auto"
+                      >
+                        {t("onboardingForm.saveBtn")}
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" align="center">
+                      {t("onboardingForm.saveBtnToolTip")}
+                    </TooltipContent>
+                  </Tooltip>
+                )}
+              </div>
+            </TooltipProvider>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

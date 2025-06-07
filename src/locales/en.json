@@ -1,17 +1,15 @@
 {
-  "onboarding": {
-    "title": "Enter Your Basic Information",
-    "nameLabel": "Name",
-    "namePlaceholder": "Your Real Name",
-    "usernameLabel": "Linux Username",
-    "usernamePlaceholder": "Username",
-    "usernameDescription": "The username to login to the remote server",
-    "publicKeyLabel": "Public Key",
-    "publicKeyPlaceholder": "Key",
-    "publicKeyDescription": "The public key to access remote server",
-    "submitButton": "Save",
-    "toastSuccess": "Success save data",
-    "nonEmpty": "Cannot be empty"
+  "onboardingForm": {
+    "cardTitleForName": "Enter Your Basic Information",
+    "saveBtn": "Save",
+    "labelForInputName": "Full Name",
+    "placeHolderForInputName": "John Doe",
+    "labelForInputUsername": "Linux Username",
+    "successToast": "Informaion saved successfully",
+    "saveFailToast": "Failed to save your information",
+    "EmptyUsernameToast": "Linux username cannot contain spaces",
+    "loadingBtn": "Loading...",
+    "saveBtnToolTip": "Please fill in your full name and Linux username"
   },
   "login": {
     "loginTitle": "Login",
@@ -53,7 +51,7 @@
     "cardDescriptionForKey": "Paste the content of your public key here (not your private key). The content usually comes from a file ending with .pub",
     "placeHolderForInputKey": "Begins with 'ssh-rsa', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'ssh-ed25519', 'sk-ecdsa-sha2-nistp256@openssh.com', or 'sk-ssh-ed25519@openssh.com'",
     "saveBtn": "Add SSH Key",
-    "saveBtnToolTip": "Please fill in both Title and Key fields",
+    "saveBtnToolTip": "Please fill in title and key ",
     "successToast": "Key saved successfully",
     "formatErrorToast": "Public key format error",
     "saveFailToast": "Failed to save your public key",
