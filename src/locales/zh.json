@@ -3,11 +3,11 @@
     "cardTitleForName": "輸入您的基本資料",
     "saveBtn": "儲存",
     "labelForInputName": "姓名",
+    "labelForInputUsername": "Linux 使用者名稱",
     "successToast": "姓名儲存成功",
     "emptyErrorToast": "請輸入姓名",
-    "saveFailToast": "F無法儲存姓名",
     "loadingBtn": "載入中...",
-    "saveBtnToolTip": "請填入你的姓名"
+    "saveBtnToolTip": "請填入你的姓名和Linux使用者名稱"
   },
   "login": {
     "loginTitle": "登入",

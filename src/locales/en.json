@@ -3,11 +3,11 @@
     "cardTitleForName": "Enter Your Basic Information",
     "saveBtn": "Save",
     "labelForInputName": "Full Name",
-    "successToast": "Name saved successfully",
-    "emptyErrorToast": "Please enter your full name",
-    "saveFailToast": "Failed to save your full name",
+    "labelForInputUsername": "Linux Username",
+    "successToast": "Informaion saved successfully",
+    "saveFailToast": "Failed to save your information",
     "loadingBtn": "Loading...",
-    "saveBtnToolTip": "Please fill in your full name"
+    "saveBtnToolTip": "Please fill in your full name and Linux username"
   },
   "login": {
     "loginTitle": "Login",
@@ -49,7 +49,7 @@
     "cardDescriptionForKey": "Paste the content of your public key here (not your private key). The content usually comes from a file ending with .pub",
     "placeHolderForInputKey": "Begins with 'ssh-rsa', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'ssh-ed25519', 'sk-ecdsa-sha2-nistp256@openssh.com', or 'sk-ssh-ed25519@openssh.com'",
     "saveBtn": "Add SSH Key",
-    "saveBtnToolTip": "Please fill in both Title and Key fields",
+    "saveBtnToolTip": "Please fill in title and key ",
     "successToast": "Key saved successfully",
     "formatErrorToast": "Public key format error",
     "saveFailToast": "Failed to save your public key",

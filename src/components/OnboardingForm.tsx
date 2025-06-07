@@ -24,12 +24,14 @@ export default function OnboardingForm({
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   const [username, setUsername] = useState("");
+  const [linuxUsername, setLinuxUsername] = useState("");
   const navigate = useNavigate();
   const { refreshAction } = useContext(authContext);
   const { t } = useTranslation();
 
   const addMutation = useMutation({
-    mutationFn: (username: string) => saveOnboarding(username),
+    mutationFn: (payload: { username: string; linuxUsername: string }) =>
+      saveOnboarding(payload),
     onSuccess: () => {
       refreshAction();
       navigate("/");
@@ -64,6 +66,20 @@ export default function OnboardingForm({
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
+            <div className="grid gap-2">
+              <Label className="ml-2 font-medium">
+                {t("onboardingForm.labelForInputUsername")}
+                <span className="text-red-400">*</span>
+              </Label>
+              <Input
+                className="mx-2 w-auto"
+                id="linuxUsername"
+                type="name"
+                placeholder="alice"
+                value={linuxUsername}
+                onChange={(e) => setLinuxUsername(e.target.value)}
+              />
+            </div>
             <TooltipProvider>
               <div className="flex justify-end">
                 {addMutation.isPending ? (
@@ -71,11 +87,11 @@ export default function OnboardingForm({
                     <Loader2Icon className="animate-spin" />
                     {t("onboardingForm.loadingBtn")}
                   </Button>
-                ) : username ? (
+                ) : username && linuxUsername ? (
                   <Button
                     className="px-7 py-5 w-16 cursor-pointer"
                     onClick={() => {
-                      addMutation.mutate(username);
+                      addMutation.mutate({ username, linuxUsername });
                     }}
                   >
                     {t("onboardingForm.saveBtn")}

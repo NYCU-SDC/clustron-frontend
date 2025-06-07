@@ -1,6 +1,9 @@
 import { getAccessTokenFromCookies } from "../getAccessTokenFromCookies";
 
-export async function saveOnboarding(username: string) {
+export async function saveOnboarding(payload: {
+  username: string;
+  linuxUsername: string;
+}) {
   try {
     const token = getAccessTokenFromCookies();
     if (!token) {
@@ -14,7 +17,7 @@ export async function saveOnboarding(username: string) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ username }),
+      body: JSON.stringify(payload),
     });
 
     if (!res.ok) {
