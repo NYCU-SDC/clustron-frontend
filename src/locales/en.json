@@ -6,6 +6,7 @@
     "labelForInputUsername": "Linux Username",
     "successToast": "Informaion saved successfully",
     "saveFailToast": "Failed to save your information",
+    "EmptyUsernameToast": "Linux username cannot contain spaces",
     "loadingBtn": "Loading...",
     "saveBtnToolTip": "Please fill in your full name and Linux username"
   },

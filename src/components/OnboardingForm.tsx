@@ -91,6 +91,10 @@ export default function OnboardingForm({
                   <Button
                     className="px-7 py-5 w-16 cursor-pointer"
                     onClick={() => {
+                      if (linuxUsername.includes(" ")) {
+                        toast.error(t("onboardingForm.EmptyUsernameToast"));
+                        return;
+                      }
                       addMutation.mutate({ username, linuxUsername });
                     }}
                   >
