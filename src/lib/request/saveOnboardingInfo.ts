@@ -1,6 +1,6 @@
 import { getAccessTokenFromCookies } from "../getAccessTokenFromCookies";
 
-export async function saveOnboarding(payload: {
+export async function saveOnboardingInfo(payload: {
   username: string;
   linuxUsername: string;
 }) {

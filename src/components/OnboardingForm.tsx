@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { useMutation } from "@tanstack/react-query";
-import { saveOnboarding } from "@/lib/request/saveOnboarding";
+import { saveOnboardingInfo } from "@/lib/request/saveOnboardingInfo";
 import { useContext } from "react";
 import { authContext } from "@/lib/auth/authContext";
 import { toast } from "sonner";
@@ -31,7 +31,7 @@ export default function OnboardingForm({
 
   const addMutation = useMutation({
     mutationFn: (payload: { username: string; linuxUsername: string }) =>
-      saveOnboarding(payload),
+      saveOnboardingInfo(payload),
     onSuccess: () => {
       refreshAction();
       navigate("/");
@@ -91,6 +91,7 @@ export default function OnboardingForm({
                   <Button
                     className="px-7 py-5 w-16 cursor-pointer"
                     onClick={() => {
+                      // TODO: Replace with Zod + React Hook Form for more comprehensive validation
                       if (linuxUsername.includes(" ")) {
                         toast.error(t("onboardingForm.EmptyUsernameToast"));
                         return;
