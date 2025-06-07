@@ -76,7 +76,7 @@ export type CreateGroupInput = {
   description: string;
   members: {
     member: string; // email or user id
-    role: string;
+    roleId: string;
   }[];
 };
 

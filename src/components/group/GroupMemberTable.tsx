@@ -5,6 +5,8 @@ import AddMemberButton from "@/components/group/AddMemberButton";
 import { Card, CardContent } from "@/components/ui/card";
 import { canEditMembers } from "@/lib/permission";
 import type { GlobalRole, GroupRoleAccessLevel } from "@/lib/permission";
+import { useRoleMapper } from "@/hooks/useRoleMapper";
+
 import { AccessLevelUser, type GroupMemberRoleName } from "@/types/group";
 import {
   Table,
@@ -37,7 +39,7 @@ export default function GroupMemberTable({
     isFetchingNextPage,
     isError,
   } = useInfiniteMembers(groupId);
-
+  console.log("getmember", data);
   const members = data?.pages.flatMap((page) => page.items) ?? [];
 
   const editable = canEditMembers(accessLevel) || globalRole === "admin";
@@ -47,14 +49,17 @@ export default function GroupMemberTable({
       console.log("Member role updated");
     },
   });
-
+  const { roleNameToId } = useRoleMapper();
   const updateMemberRole = (memberId: string, newRole: GroupMemberRoleName) => {
+    const roleId = roleNameToId(newRole);
+    if (!roleId) {
+      console.error(`Invalid role name: ${newRole}`);
+      return;
+    }
+
     updateMember({
       memberId,
-      input: {
-        id: memberId,
-        role: newRole,
-      },
+      roleId,
     });
   };
 

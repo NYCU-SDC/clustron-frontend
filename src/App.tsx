@@ -12,7 +12,7 @@ import GroupList from "@/pages/GroupList";
 import GroupOverview from "@/pages/GroupOverview";
 import GroupSettings from "@/pages/GroupSettings";
 import AddMemberPage from "@/pages/AddMemberPage";
-import AddGroupPage from "@/pages/AddGroup";
+import AddGroupPage from "@/pages/CreateGroup.tsx";
 import CourseDescriptionPage from "@/pages/CourseDescriptionPage";
 
 const App = () => {
