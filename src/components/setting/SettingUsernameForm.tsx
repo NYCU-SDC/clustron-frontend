@@ -88,6 +88,7 @@ export default function SettingUsernameForm({
                 type="name"
                 placeholder="alice"
                 value={linuxUsername}
+                disabled // TODO: Enable this input when the backend is ready
                 onChange={(e) => setLinuxUsername(e.target.value)}
               />
             )}
@@ -100,6 +101,7 @@ export default function SettingUsernameForm({
                 </Button>
               ) : linuxUsername ? (
                 <Button
+                  disabled // TODO: Enable this button when the backend is ready
                   className="px-7 py-5 w-24 cursor-pointer"
                   onClick={() => {
                     addMutation.mutate({ username, linuxUsername });
