@@ -37,7 +37,7 @@
   },
   "protectedRoute": {
     "loginRequiredToast": "Please log in first",
-    "roleNotSetupToast": "Please complete your basic information first"
+    "roleNotSetupToast": "Please provide your basic information first"
   },
   "settingSideBar": {
     "title": "Settings",
