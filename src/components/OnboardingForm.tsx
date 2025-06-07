@@ -33,10 +33,10 @@ export default function OnboardingForm({
     onSuccess: () => {
       refreshAction();
       navigate("/");
-      toast.success(t("settingNameForm.successToast"));
+      toast.success(t("onboardingForm.successToast"));
     },
     onError: () => {
-      toast.error(t("settingNameForm.saveFailToast"));
+      toast.error(t("onboardingForm.saveFailToast"));
     },
   });
 
@@ -45,14 +45,15 @@ export default function OnboardingForm({
       <Card className="rounded-sm">
         <CardHeader>
           <CardTitle className="mx-auto text-2xl">
-            Enter Your Basic Information
+            {t("onboardingForm.cardTitleForName")}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label className="ml-2 font-medium">
-                Full Name<span className="text-red-400">*</span>
+                {t("onboardingForm.labelForInputName")}
+                <span className="text-red-400">*</span>
               </Label>
               <Input
                 className="mx-2 w-auto"
@@ -68,7 +69,7 @@ export default function OnboardingForm({
                 {addMutation.isPending ? (
                   <Button className="px-7 py-5 w-28 cursor-pointer" disabled>
                     <Loader2Icon className="animate-spin" />
-                    {t("settingNameForm.loadingBtn")}
+                    {t("onboardingForm.loadingBtn")}
                   </Button>
                 ) : username ? (
                   <Button
@@ -77,7 +78,7 @@ export default function OnboardingForm({
                       addMutation.mutate(username);
                     }}
                   >
-                    {t("settingNameForm.savaBtn")}
+                    {t("onboardingForm.saveBtn")}
                   </Button>
                 ) : (
                   <Tooltip>
@@ -86,11 +87,11 @@ export default function OnboardingForm({
                         disabled
                         className="px-7 py-5 w-16 disabled:cursor-not-allowed disabled:pointer-events-auto"
                       >
-                        Save
+                        {t("onboardingForm.saveBtn")}
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent side="top" align="center">
-                      {t("settingNameForm.saveBtnToolTip")}
+                      {t("onboardingForm.saveBtnToolTip")}
                     </TooltipContent>
                   </Tooltip>
                 )}

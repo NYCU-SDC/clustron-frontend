@@ -1,17 +1,13 @@
 {
-  "onboarding": {
-    "title": "Enter Your Basic Information",
-    "nameLabel": "Name",
-    "namePlaceholder": "Your Real Name",
-    "usernameLabel": "Linux Username",
-    "usernamePlaceholder": "Username",
-    "usernameDescription": "The username to login to the remote server",
-    "publicKeyLabel": "Public Key",
-    "publicKeyPlaceholder": "Key",
-    "publicKeyDescription": "The public key to access remote server",
-    "submitButton": "Save",
-    "toastSuccess": "Success save data",
-    "nonEmpty": "Cannot be empty"
+  "onboardingForm": {
+    "cardTitleForName": "Enter Your Basic Information",
+    "saveBtn": "Save",
+    "labelForInputName": "Full Name",
+    "successToast": "Name saved successfully",
+    "emptyErrorToast": "Please enter your full name",
+    "saveFailToast": "Failed to save your full name",
+    "loadingBtn": "Loading...",
+    "saveBtnToolTip": "Please fill in your full name"
   },
   "login": {
     "loginTitle": "Login",
