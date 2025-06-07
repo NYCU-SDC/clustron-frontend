@@ -11,14 +11,17 @@ export async function saveOnboardingInfo(payload: {
       throw new Error("No accesstoken in cookies");
     }
 
-    const res = await fetch(`/api/onboarding`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+    const res = await fetch(
+      `${import.meta.env.VITE_BACKEND_BASE_URL}/api/onboarding`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
       },
-      body: JSON.stringify(payload),
-    });
+    );
 
     if (!res.ok) {
       console.error("Failed to save onboarding information due to HTTP Error");
