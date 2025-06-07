@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import { UseMutationResult } from "@tanstack/react-query";
 
 type AuthContextType = {
   login: (provider: "google" | "nycu") => void;
@@ -9,7 +10,16 @@ type AuthContextType = {
   ) => void;
   logout: () => void;
   isLoggedIn: () => boolean;
-  refreshAccessToken: () => void;
+  refreshMutation: UseMutationResult<
+    {
+      accessToken: string;
+      refreshToken: string;
+      refreshTokenExpirationTime: number;
+    },
+    Error,
+    void,
+    unknown
+  >;
 };
 
 export const authContext = createContext<AuthContextType>({
@@ -30,7 +40,14 @@ export const authContext = createContext<AuthContextType>({
     return false;
   },
 
-  refreshAccessToken: () => {
-    console.warn("refreshMuatation called withput AuthProvider");
-  },
+  refreshMutation: {} as UseMutationResult<
+    {
+      accessToken: string;
+      refreshToken: string;
+      refreshTokenExpirationTime: number;
+    },
+    Error,
+    void,
+    unknown
+  >,
 });

@@ -81,10 +81,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     onError: logout,
   });
 
-  const refreshAccessToken = () => {
-    refreshMutation.mutate();
-  };
-
   const setAutoRefresh = useCallback(() => {
     clearTimers();
 
@@ -120,7 +116,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setCookiesForAuthToken,
         logout,
         isLoggedIn,
-        refreshAccessToken,
+        refreshMutation,
       }}
     >
       {children}

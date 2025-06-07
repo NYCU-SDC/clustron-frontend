@@ -36,7 +36,8 @@
     "alreadyLoggedInToast": "You are already logged in"
   },
   "protectedRoute": {
-    "notLoggedInToast": "Please log in first"
+    "loginRequiredToast": "Please log in first",
+    "roleNotSetupToast": "Please provide your basic information first"
   },
   "settingSideBar": {
     "title": "Settings",
@@ -58,9 +59,9 @@
     "loadingBtn": "Loading..."
   },
   "settingNameForm": {
-    "cardTitleForName": "Name",
-    "cardDescriptionForName": "Your real name to let the group administrator recognize you",
-    "savaBtn": "Save",
+    "cardTitleForName": "Full Name",
+    "cardDescriptionForName": "Your full name to let the group administrator recognize you",
+    "saveBtn": "Save",
     "placeHolderForInputName": "Jammy Wang",
     "successToast": "Name saved successfully",
     "emptyErrorToast": "Please enter your full name",
@@ -72,7 +73,7 @@
   "settingUsernameForm": {
     "cardTitleForUsername": "Linux Username",
     "cardDescriptionForUsername": "The username to login to the remote server",
-    "savaBtn": "Save",
+    "saveBtn": "Save",
     "successToast": "Linux username saved successfully",
     "emptyErrorToast": "Please enter your Linux username",
     "saveFailToast": "Failed to save Linux username",
