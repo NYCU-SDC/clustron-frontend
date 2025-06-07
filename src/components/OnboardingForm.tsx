@@ -61,7 +61,7 @@ export default function OnboardingForm({
                 className="mx-2 w-auto"
                 id="username"
                 type="name"
-                placeholder="John Doe"
+                placeholder={t("onboardingForm.placeHolderForInputName")}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />

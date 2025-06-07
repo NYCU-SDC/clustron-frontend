@@ -3,6 +3,7 @@
     "cardTitleForName": "Enter Your Basic Information",
     "saveBtn": "Save",
     "labelForInputName": "Full Name",
+    "placeHolderForInputName": "John Doe",
     "labelForInputUsername": "Linux Username",
     "successToast": "Informaion saved successfully",
     "saveFailToast": "Failed to save your information",
