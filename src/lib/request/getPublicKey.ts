@@ -9,7 +9,9 @@ export async function getPublicKey(length?: number): Promise<PublicKey[]> {
   }
 
   const res = await fetch(
-    length ? `/api/publickey?length=${length}` : `/api/publickey`,
+    length
+      ? `${import.meta.env.VITE_BACKEND_BASE_URL}/api/publickey?length=${length}`
+      : `${import.meta.env.VITE_BACKEND_BASE_URL}/api/publickey`,
     {
       method: "GET",
       headers: {
