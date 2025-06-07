@@ -10,8 +10,7 @@ export function useRoleMapper() {
   const roleNameToId = (name: GroupMemberRoleName): string | undefined => {
     // console.log("roleNameToId", name, roles);
     // console.log(r.role, name.role.id)
-    // @ts-ignore
-    return roles.find((r) => r.Role === name)?.ID;
+    return roles.find((r) => r.Role === name)?.id;
   };
 
   return {

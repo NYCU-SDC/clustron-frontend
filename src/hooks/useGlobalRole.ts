@@ -12,6 +12,7 @@ export function useGlobalRole(): AccessToken["Role"] | null {
 
     return payload.Role;
   } catch (e) {
+    console.error("Failed to decode access token:", e);
     return null;
   }
 }
