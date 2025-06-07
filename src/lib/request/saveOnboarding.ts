@@ -5,7 +5,7 @@ export async function saveOnboarding(username: string) {
     const token = getAccessTokenFromCookies();
     if (!token) {
       console.error("No token but no logout");
-      throw new Error("No access token in cookies");
+      throw new Error("No accesstoken in cookies");
     }
 
     const res = await fetch(`/api/onboarding`, {
