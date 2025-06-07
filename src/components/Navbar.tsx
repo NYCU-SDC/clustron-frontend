@@ -25,7 +25,7 @@ export default function Navbar() {
       <div className="flex items-center justify-between w-full px-6 py-4">
         <div className="flex items-center space-x-4">
           <div className="text-2xl font-bold px-3 py-2">Clustron</div>
-          {isLoggedIn() && (
+          {isLoggedIn() && window.location.pathname != "/onboarding" && (
             <>
               <NavLink
                 to="/groups"

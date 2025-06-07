@@ -36,7 +36,8 @@
     "alreadyLoggedInToast": "已登入"
   },
   "protectedRoute": {
-    "notLoggedInToast": "請先登入"
+    "loginRequiredToast": "請先登入",
+    "roleNotSetupToast": "請先填寫基本資料"
   },
   "settingSideBar": {
     "title": "設定",
