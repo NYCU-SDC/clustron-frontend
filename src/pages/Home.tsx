@@ -1,11 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { authContext } from "@/lib/auth/authContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 export default function Home() {
   const navigate = useNavigate();
   const { logout } = useContext(authContext);
 
+  useEffect(() => {
+    navigate("/groups");
+  }, [navigate]);
   return (
     <div className="p-6 space-x-4">
       <button
