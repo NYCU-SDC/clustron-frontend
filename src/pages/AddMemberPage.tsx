@@ -74,7 +74,7 @@ export default function AddMemberPage() {
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex w-2/3 justify-center">
       <main className="w-full max-w-5xl p-6">
         <h1 className="text-2xl font-bold mb-6">Add New Members</h1>
         <Table>

@@ -82,8 +82,8 @@ export default function AddGroupPage() {
   };
 
   return (
-    <div className="flex justify-center">
-      <main className="w-full max-w-5xl p-6">
+    <div className="flex w-full justify-center">
+      <main className="w-full max-w-3xl p-6">
         <h1 className="text-2xl font-bold mb-6">Create New Group</h1>
 
         <div className="mb-6 space-y-3">

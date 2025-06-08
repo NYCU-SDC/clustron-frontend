@@ -54,7 +54,7 @@ export default function GroupMemberTable({
   const queryClient = useQueryClient();
   const { mutate: updateMember } = useUpdateMember(groupId, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["members", groupId] }); // 🔁 自動重新抓資料
+      queryClient.invalidateQueries({ queryKey: ["members", groupId] });
     },
   });
 
@@ -118,7 +118,7 @@ export default function GroupMemberTable({
             </Table>
 
             {hasNextPage && (
-              <div className="mt-4 flex justify-center">
+              <div className="mt-4 w-full flex justify-center">
                 <button
                   onClick={() => fetchNextPage()}
                   disabled={isFetchingNextPage}

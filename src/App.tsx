@@ -41,12 +41,10 @@ const App = () => {
             <Route path="/groups/new" element={<AddGroupPage />} />
             <Route path="/groups/:id/add-member" element={<AddMemberPage />} />
             <Route path="/add-group" element={<AddGroupPage />} />
-            <Route element={<GroupLayout />}>
-              <Route path="/groups/:id" element={<GroupPage />}>
-                <Route index element={<GroupOverview />} />
-                <Route path="settings" element={<GroupSettings />} />
-                <Route path="add-member" element={<AddMemberPage />} />
-              </Route>
+            <Route path="/groups/:id" element={<GroupPage />}>
+              <Route index element={<GroupOverview />} />
+              <Route path="settings" element={<GroupSettings />} />
+              <Route path="add-member" element={<AddMemberPage />} />
             </Route>
           </Route>
           {/*  end*/}

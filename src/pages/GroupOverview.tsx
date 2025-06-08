@@ -12,7 +12,7 @@ export default function GroupOverviewPage() {
   if (isError || !group) return <div className="p-6">找不到課程</div>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
+    <div className="max-w-4xl w-full  p-6 space-y-6">
       <GroupDescription title={group.title} desc={group.description} />
 
       <GroupMemberTable groupId={group.id} isArchived={group.isArchived} />

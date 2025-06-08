@@ -94,7 +94,7 @@ export default function GroupSettings() {
               </div>
               <Button
                 onClick={toggleArchive}
-                className="min-w-[100px] px-4 py-2 whitespace-nowrap"
+                className="min-w-[100px] px-4 py-2 "
                 disabled={
                   archiveMutation.isPending || unarchiveMutation.isPending
                 }
