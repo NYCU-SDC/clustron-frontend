@@ -54,7 +54,6 @@ export default function GroupMemberTable({
   const queryClient = useQueryClient();
   const { mutate: updateMember } = useUpdateMember(groupId, {
     onSuccess: () => {
-      console.log("✅ Member role updated");
       queryClient.invalidateQueries({ queryKey: ["members", groupId] }); // 🔁 自動重新抓資料
     },
   });

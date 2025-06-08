@@ -13,7 +13,7 @@ export default function GroupListPage() {
   const { data, isLoading, isError } = useGetGroups();
   const { canCreateGroup } = useGlobalPermissions();
   const payload = useJwtPayload();
-  const { logout, isLoggedIn } = useContext(authContext);
+  const { isLoggedIn } = useContext(authContext);
   console.log(payload);
   if (!isLoggedIn()) {
     navigate("/login");
@@ -23,20 +23,6 @@ export default function GroupListPage() {
   return (
     <div className="p-10 space-y-4 w-1/2 mx-auto">
       <div className="flex justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold">Courses</h1>
-          {payload && (
-            <div className="flex items-center gap-4 mt-1">
-              <p className="text-sm text-muted-foreground">
-                👋 歡迎，{payload.Email}（{payload.Role}）
-              </p>
-              <Button variant="outline" size="sm" onClick={logout}>
-                登出
-              </Button>
-            </div>
-          )}
-        </div>
-
         {canCreateGroup && (
           <Button
             onClick={() => navigate("/groups/new")}

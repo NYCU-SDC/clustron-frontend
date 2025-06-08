@@ -31,7 +31,6 @@ export default function GroupSettings() {
   const queryClient = useQueryClient();
   const removeMutation = useRemoveMember(groupId, {
     onSuccess: () => {
-      console.log("✅ 成員已刪除");
       queryClient.invalidateQueries({ queryKey: ["members", groupId] }); // 正確地寫在 onSuccess 函數體內
     },
     onError: (err) =>
