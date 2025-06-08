@@ -1,4 +1,4 @@
-export type AccessTokenType = {
+export type AccessToken = {
   ID: string;
   Username: string;
   Email: string;
@@ -9,4 +9,10 @@ export type AccessTokenType = {
   nbf: number;
   iat: number;
   jti: string;
+};
+
+export type PublicKey = {
+  id: string;
+  title: string;
+  publicKey: string;
 };

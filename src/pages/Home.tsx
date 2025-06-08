@@ -32,6 +32,12 @@ export default function Home() {
       >
         Go to group setting
       </button>
+      <button
+        onClick={() => navigate("/setting")}
+        className="px-4 py-2 bg-black text-white hover:bg-gray-700 active:bg-gray-800 transition-colors"
+      >
+        Settings
+      </button>
     </div>
   );
 }

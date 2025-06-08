@@ -23,7 +23,7 @@ export default defineConfig([
   },
   tseslint.configs.recommended,
   {
-    files: ["**/*.{jsx,tx,js,tsx}"],
+    files: ["**/*.{jsx,ts,js,tsx}"],
     plugins: { react: pluginReact },
     rules: {
       "react/react-in-jsx-scope": "off",

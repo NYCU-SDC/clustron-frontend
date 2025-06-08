@@ -1,17 +1,15 @@
 {
-  "onboarding": {
-    "title": "Enter Your Basic Information",
-    "nameLabel": "Name",
-    "namePlaceholder": "Your Real Name",
-    "usernameLabel": "Linux Username",
-    "usernamePlaceholder": "Username",
-    "usernameDescription": "The username to login to the remote server",
-    "publicKeyLabel": "Public Key",
-    "publicKeyPlaceholder": "Key",
-    "publicKeyDescription": "The public key to access remote server",
-    "submitButton": "Save",
-    "toastSuccess": "Success save data",
-    "nonEmpty": "Cannot be empty"
+  "onboardingForm": {
+    "cardTitleForName": "Enter Your Basic Information",
+    "saveBtn": "Save",
+    "labelForInputName": "Full Name",
+    "placeHolderForInputName": "John Doe",
+    "labelForInputUsername": "Linux Username",
+    "successToast": "Informaion saved successfully",
+    "saveFailToast": "Failed to save your information",
+    "EmptyUsernameToast": "Linux username cannot contain spaces",
+    "loadingBtn": "Loading...",
+    "saveBtnToolTip": "Please fill in your full name and Linux username"
   },
   "login": {
     "loginTitle": "Login",
@@ -39,5 +37,61 @@
   },
   "protectedRoute": {
     "notLoggedInToast": "Please log in first"
+  },
+  "settingSideBar": {
+    "title": "Settings",
+    "GeneralNavLink": "General",
+    "SSHNavLink": "SSH"
+  },
+  "settingAddKeyForm": {
+    "cardTitleForTitle": "Title",
+    "cardDescriptionForTitle": "Give your public key a name",
+    "placeHolderForInputTitle": "My Laptop",
+    "cardTitleForKey": "Key",
+    "cardDescriptionForKey": "Paste the content of your public key here (not your private key). The content usually comes from a file ending with .pub",
+    "placeHolderForInputKey": "Begins with 'ssh-rsa', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'ssh-ed25519', 'sk-ecdsa-sha2-nistp256@openssh.com', or 'sk-ssh-ed25519@openssh.com'",
+    "saveBtn": "Add SSH Key",
+    "saveBtnToolTip": "Please fill in title and key ",
+    "successToast": "Key saved successfully",
+    "formatErrorToast": "Public key format error",
+    "saveFailToast": "Failed to save your public key",
+    "loadingBtn": "Loading..."
+  },
+  "settingNameForm": {
+    "cardTitleForName": "Name",
+    "cardDescriptionForName": "Your real name to let the group administrator recognize you",
+    "savaBtn": "Save",
+    "placeHolderForInputName": "Jammy Wang",
+    "successToast": "Name saved successfully",
+    "emptyErrorToast": "Please enter your full name",
+    "saveFailToast": "Failed to save your full name",
+    "getFailToast": "Failed to get your full name",
+    "loadingBtn": "Loading...",
+    "saveBtnToolTip": "Please fill in your full name"
+  },
+  "settingUsernameForm": {
+    "cardTitleForUsername": "Linux Username",
+    "cardDescriptionForUsername": "The username to login to the remote server",
+    "savaBtn": "Save",
+    "successToast": "Linux username saved successfully",
+    "emptyErrorToast": "Please enter your Linux username",
+    "saveFailToast": "Failed to save Linux username",
+    "getFailToast": "Failed to get Linux username",
+    "loadingBtn": "Loading...",
+    "saveBtnToolTip": "Please fill in your Linux username"
+  },
+  "settingKeyTable": {
+    "cardTitleForKeyTable": "SSH Keys",
+    "addNewKeyBtn": "＋ New SSH Keys",
+    "tableHeadForTitle": "Title",
+    "tableHeadForKey": "Key",
+    "successToast": "Key deleted successfully",
+    "deleteFailToast": "Failed to delete public key",
+    "getFailToast": "Failed to get public key list",
+    "confirmTitle": "Delete this public key?",
+    "confirmDescription": "This action cannot be undone. Please proceed with caution.",
+    "cancelBtn": "Cancel",
+    "confirmBtn": "Delete",
+    "loadingBtn": "Loading..."
   }
 }

@@ -1,30 +1,26 @@
 import { useEffect, useCallback, ReactNode } from "react";
 import { useNavigate } from "react-router";
+import { useMutation } from "@tanstack/react-query";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { AccessTokenType } from "@/types/type";
+import { AccessToken } from "@/types/type";
 import { refreshAuthToken } from "@/lib/request/refreshAuthToken";
 import { authContext } from "@/lib/auth/authContext";
-import { toast } from "sonner";
 
-let accessTimer: number;
+let refreshTimer: number;
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-
   const [cookies, setCookie, removeCookie] = useCookies([
     "accessToken",
-    "refreshTokenExpirationTime",
     "refreshToken",
   ]);
 
-  const accessToken = cookies.accessToken || null;
-  const refreshToken = cookies.refreshToken || null;
-
   const clearTimers = useCallback(() => {
-    clearTimeout(accessTimer);
+    clearTimeout(refreshTimer);
   }, []);
 
   const login = useCallback((provider: "google" | "nycu") => {
@@ -39,90 +35,94 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     window.location.href = urlMap[provider];
   }, []);
 
+  const setCookiesForAuthToken = useCallback(
+    (
+      accessToken: string,
+      refreshToken: string,
+      refreshTokenExpirationTime: number = Date.now() + 60 * 60 * 24 * 1000,
+    ) => {
+      setCookie("accessToken", accessToken, {
+        path: "/",
+        expires: new Date(jwtDecode<AccessToken>(accessToken).exp * 1000),
+      });
+      setCookie("refreshToken", refreshToken, {
+        path: "/",
+        expires: new Date(refreshTokenExpirationTime),
+      });
+    },
+    [setCookie],
+  );
+
   const logout = useCallback(() => {
     removeCookie("accessToken", { path: "/" });
-    removeCookie("refreshTokenExpirationTime", { path: "/" });
     removeCookie("refreshToken", { path: "/" });
+    navigate("/login");
+    toast.info(t("authProvider.logoutToast"));
     clearTimers();
-    navigate("login");
-    toast(t("authProvider.logoutToast"));
   }, [clearTimers, navigate, removeCookie, t]);
 
   const isLoggedIn = useCallback(() => {
-    if (cookies.accessToken) {
+    if (cookies.refreshToken) {
       return true;
     }
     return false;
-  }, [cookies.accessToken]);
+  }, [cookies.refreshToken]);
 
-  const setAutoRefresh = useCallback(
-    (accessToken: string, refreshToken: string) => {
-      clearTimers();
-      // get accessToken Expiration time
-      const accessExpirationTime =
-        jwtDecode<AccessTokenType>(accessToken).exp * 1000;
-
-      // calculate how long to update accessToken
-      const timeUntilAccessExpiration = Math.min(
-        accessExpirationTime - Date.now() - 60 * 1000,
-        2147483647,
+  const refreshMutation = useMutation({
+    mutationFn: () => refreshAuthToken(cookies.refreshToken),
+    onSuccess: (data) => {
+      setCookiesForAuthToken(
+        data.accessToken,
+        data.refreshToken,
+        data.refreshTokenExpirationTime * 1000,
       );
-
-      // set a timer to update both token
-      if (timeUntilAccessExpiration > 0) {
-        accessTimer = window.setTimeout(async () => {
-          const data = await refreshAuthToken(refreshToken);
-          if (!data) {
-            logout();
-            return;
-          }
-          setCookie("accessToken", data.accessToken, { path: "/" });
-          setCookie("refreshTokenExpirationTime", data.expirationTime, {
-            path: "/",
-          });
-          setCookie("refreshToken", data.refreshToken, { path: "/" });
-        }, timeUntilAccessExpiration);
-      } else {
-        // assume user haven't open the clustron website for a long time so timeUntilAccessExpiration < 0
-        // it need to update both token immediately
-        (async () => {
-          const data = await refreshAuthToken(refreshToken);
-          if (!data) {
-            logout();
-            return;
-          }
-          setCookie("accessToken", data.accessToken, { path: "/" });
-          setCookie("refreshTokenExpirationTime", data.expirationTime, {
-            path: "/",
-          });
-          setCookie("refreshToken", data.refreshToken, { path: "/" });
-        })();
-      }
-
-      // calculate how long does refreshToken expired
-      const refreshExpirationTime = cookies.refreshTokenExpirationTime;
-      if (refreshExpirationTime) {
-        const timeUntilRefreshExpiration = Math.min(
-          refreshExpirationTime * 1000 - Date.now(),
-          2147483647,
-        );
-        if (timeUntilRefreshExpiration < 0) {
-          logout();
-        }
-      }
+      setAutoRefresh();
     },
-    [clearTimers, cookies.refreshTokenExpirationTime, logout, setCookie],
-  );
+    onError: logout,
+  });
+
+  const refreshAccessToken = () => {
+    refreshMutation.mutate();
+  };
+
+  const setAutoRefresh = useCallback(() => {
+    clearTimers();
+
+    // calculate how long to update accessToken
+    const timeUntilAccessTokenExpire = cookies.accessToken
+      ? Math.min(
+          jwtDecode<AccessToken>(cookies.accessToken).exp * 1000 -
+            Date.now() -
+            60 * 1000,
+          2147483647,
+        )
+      : 0;
+
+    // set a timer to update both token
+    refreshTimer = window.setTimeout(async () => {
+      if (!refreshMutation.isPending) {
+        refreshMutation.mutate();
+      }
+    }, timeUntilAccessTokenExpire);
+  }, [clearTimers, cookies.accessToken, refreshMutation]);
 
   useEffect(() => {
-    if (accessToken && refreshToken) {
-      setAutoRefresh(accessToken, refreshToken);
+    if (cookies.refreshToken) {
+      setAutoRefresh();
     }
     return () => clearTimers();
-  }, [accessToken, refreshToken, setAutoRefresh, clearTimers]);
+  }, [cookies.refreshToken, setAutoRefresh, clearTimers]);
 
   return (
-    <authContext.Provider value={{ login, logout, isLoggedIn }}>
+    <authContext.Provider
+      value={{
+        login,
+        setCookiesForAuthToken,
+        logout,
+        isLoggedIn,
+        refreshAccessToken,
+      }}
+    >
       {children}
     </authContext.Provider>
   );
