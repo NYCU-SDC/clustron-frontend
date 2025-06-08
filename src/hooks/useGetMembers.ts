@@ -5,7 +5,7 @@ export function useInfiniteMembers(groupId: string) {
   return useInfiniteQuery({
     queryKey: ["members", groupId],
     queryFn: ({ pageParam = 1 }) => getMembers(groupId, pageParam),
-    initialPageParam: 1,
+    initialPageParam: 0,
     getNextPageParam: (lastPage) =>
       lastPage.hasNextPage ? lastPage.currentPage + 1 : undefined,
     enabled: !!groupId,

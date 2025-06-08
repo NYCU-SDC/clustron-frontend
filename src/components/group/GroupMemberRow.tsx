@@ -1,5 +1,6 @@
 // import { useState } from "react";
 import { TableRow, TableCell } from "@/components/ui/table";
+import { ChevronDown } from "lucide-react";
 import MemberDeleteMenu from "./MemberDeleteButton";
 import {
   DropdownMenu,
@@ -54,9 +55,10 @@ export default function GroupMemberRow({
         {showActions && assignableRoles.length > 0 && !isArchived ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <span className="cursor-pointer font-medium text-sm">
+              <button className="flex items-center gap-1 cursor-pointer font-medium text-sm">
                 {roleLabelMap[role] ?? role}
-              </span>
+                <ChevronDown className="w-4 h-4" />
+              </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {assignableRoles.map((r) => (
