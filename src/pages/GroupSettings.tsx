@@ -8,6 +8,7 @@ import { useRemoveMember } from "@/hooks/useRemoveMember";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useGroupPermissions } from "@/hooks/useGroupPermissions";
 import { Button } from "@/components/ui/button.tsx";
+
 import {
   Card,
   CardHeader,
@@ -15,6 +16,8 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { GlobalRole } from "@/types/group.ts";
+import { useQueryClient } from "@tanstack/react-query";
+
 export type GroupContextType = {
   groupId: string;
 };
@@ -25,10 +28,14 @@ export default function GroupSettings() {
   const user = useJwtPayload(); // use JWT hook to get user information
   const archiveMutation = useArchiveGroup(groupId);
   const unarchiveMutation = useUnarchiveGroup(groupId);
+  const queryClient = useQueryClient();
   const removeMutation = useRemoveMember(groupId, {
-    onSuccess: () => console.log("成員已刪除"),
+    onSuccess: () => {
+      console.log("✅ 成員已刪除");
+      queryClient.invalidateQueries({ queryKey: ["members", groupId] }); // 正確地寫在 onSuccess 函數體內
+    },
     onError: (err) =>
-      alert(" 刪除失敗：" + (err instanceof Error ? err.message : "")),
+      alert("❌ 刪除失敗：" + (err instanceof Error ? err.message : "")),
   });
   const payload = useJwtPayload();
   const globalRole = payload?.Role as GlobalRole;

@@ -52,7 +52,10 @@ export default function GroupMemberRow({
       </TableCell>
 
       <TableCell>
-        {showActions && assignableRoles.length > 0 && !isArchived ? (
+        {showActions &&
+        assignableRoles.length > 0 &&
+        !isArchived &&
+        role !== "group_owner" ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-1 cursor-pointer font-medium text-sm">

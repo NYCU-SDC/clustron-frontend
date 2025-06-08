@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useGroupPermissions } from "@/hooks/useGroupPermissions";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
+import { useQueryClient } from "@tanstack/react-query";
 
 import type { GlobalRole, GroupRoleAccessLevel } from "@/lib/permission";
 import { AccessLevelUser, type GroupMemberRoleName } from "@/types/group";
@@ -38,14 +39,7 @@ export default function GroupMemberTable({
     accessLevel,
     effectiveGlobalRole,
   );
-  console.log(
-    "al",
-    accessLevel,
-    "gbrole",
-    effectiveGlobalRole,
-    "edit",
-    canEditMembers,
-  );
+
   const {
     data,
     isLoading,
@@ -57,13 +51,16 @@ export default function GroupMemberTable({
 
   const members = data?.pages.flatMap((page) => page.items) ?? [];
 
+  const queryClient = useQueryClient();
   const { mutate: updateMember } = useUpdateMember(groupId, {
     onSuccess: () => {
-      console.log("Member role updated");
+      console.log("✅ Member role updated");
+      queryClient.invalidateQueries({ queryKey: ["members", groupId] }); // 🔁 自動重新抓資料
     },
   });
 
   const { roleNameToId } = useRoleMapper();
+
   const updateMemberRole = (memberId: string, newRole: GroupMemberRoleName) => {
     const roleId = roleNameToId(newRole);
     if (!roleId) {
