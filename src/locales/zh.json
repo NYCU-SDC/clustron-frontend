@@ -13,9 +13,9 @@
   },
   "login": {
     "loginTitle": "登入",
-    "nycuLoginNote": "陽明交通大學在學生 請透過單一入口登入",
-    "nycuLoginBtn": "使用陽明交通大學單一入口登入",
-    "googleLoginNote": "非陽明交通大學在學生 請使用 Google 帳號登入",
+    "nycuLoginNote": "國立陽明交通大學在學生 請透過單一入口登入",
+    "nycuLoginBtn": "使用國立陽明交通大學單一入口登入",
+    "googleLoginNote": "非國立陽明交通大學在學生 請使用 Google 帳號登入",
     "googleLoginBtn": "使用 Google 登入"
   },
   "navbar": {
@@ -62,7 +62,7 @@
   "settingNameForm": {
     "cardTitleForName": "姓名",
     "cardDescriptionForName": "你的真實姓名以讓群組管理員辨識你",
-    "savaBtn": "儲存",
+    "saveBtn": "儲存",
     "placeHolderForInputName": "王曉菲",
     "successToast": "姓名儲存成功",
     "emptyErrorToast": "請輸入姓名",
@@ -74,7 +74,7 @@
   "settingUsernameForm": {
     "cardTitleForUsername": "Linux 使用者名稱",
     "cardDescriptionForUsername": "用於登入到遠端伺服器的名稱",
-    "savaBtn": "儲存",
+    "saveBtn": "儲存",
     "successToast": "Linux 使用者名稱儲存成功",
     "saveFailToast": "無法儲存 Linux 使用者名稱",
     "getFailToast": "無法取得 Linux 使用者名稱",
