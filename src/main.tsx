@@ -18,7 +18,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <QueryClientProvider client={queryClient}>
         <CookiesProvider>
           <AuthProvider>
-            <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+            <ThemeProvider storageKey="vite-ui-theme">
               <Toaster />
               <App />
             </ThemeProvider>

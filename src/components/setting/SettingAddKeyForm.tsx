@@ -86,7 +86,7 @@ export default function SettingAddKeyForm({
             <Textarea
               placeholder={t("settingAddKeyForm.placeHolderForInputKey")}
               onChange={(e) => setPublicKey(e.target.value)}
-              className="h-32"
+              className="h-48 resize-none"
             />
             <Separator />
             <TooltipProvider>
