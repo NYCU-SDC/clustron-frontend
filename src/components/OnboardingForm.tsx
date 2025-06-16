@@ -40,8 +40,12 @@ export default function OnboardingForm({
         toast.success(t("onboardingForm.successToast"));
       }, 2000);
     },
-    onError: () => {
-      toast.error(t("onboardingForm.saveFailToast"));
+    onError: (err: Error) => {
+      if (err.name === "400") {
+        toast.error(t("onboardingForm.formatErrorToast"));
+      } else {
+        toast.error(t("onboardingForm.saveFailToast"));
+      }
     },
   });
 
@@ -94,11 +98,6 @@ export default function OnboardingForm({
                   <Button
                     className="px-7 py-5 w-16 cursor-pointer"
                     onClick={() => {
-                      // TODO: Replace with Zod + React Hook Form for more comprehensive validation
-                      if (linuxUsername.includes(" ")) {
-                        toast.error(t("onboardingForm.EmptyUsernameToast"));
-                        return;
-                      }
                       addMutation.mutate({ username, linuxUsername });
                     }}
                   >

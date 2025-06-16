@@ -45,7 +45,7 @@ export default function SettingAddKeyForm({
       navigate("/setting/ssh");
     },
     onError: (error: Error) => {
-      if (error.name === "Bad Request") {
+      if (error.name === "400") {
         toast.error(t("settingAddKeyForm.formatErrorToast"));
       } else {
         toast.error(t("settingAddKeyForm.saveFailToast"));

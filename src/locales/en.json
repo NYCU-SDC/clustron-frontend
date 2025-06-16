@@ -6,6 +6,7 @@
     "placeHolderForInputName": "John Doe",
     "labelForInputUsername": "Linux Username",
     "successToast": "Informaion saved successfully",
+    "formatErrorToast": "Linux Username must start with a lowercase letter or underscore, can include lowercase letters, numbers, underscores(_), or hyphens(-), may end with $, and must not contain spaces",
     "saveFailToast": "Failed to save your information",
     "EmptyUsernameToast": "Linux username cannot contain spaces",
     "loadingBtn": "Loading...",
