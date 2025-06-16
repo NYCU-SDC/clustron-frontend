@@ -30,15 +30,16 @@ export default function OnboardingForm({
   const { t } = useTranslation();
 
   const addMutation = useMutation({
-    mutationFn: (payload: { username: string; linuxUsername: string }) =>
-      saveOnboardingInfo(payload),
+    mutationFn: async (payload: {
+      username: string;
+      linuxUsername: string;
+    }) => {
+      await saveOnboardingInfo(payload);
+      await refreshMutation.mutateAsync();
+    },
     onSuccess: () => {
-      // TODO: Come up with a better way to handle navigate after refresh instead of setTimeout
-      refreshMutation.mutate();
-      setTimeout(() => {
-        navigate("/");
-        toast.success(t("onboardingForm.successToast"));
-      }, 2000);
+      navigate("/");
+      toast.success(t("onboardingForm.successToast"));
     },
     onError: () => {
       toast.error(t("onboardingForm.saveFailToast"));
