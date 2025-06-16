@@ -23,16 +23,20 @@ export async function api<T>(
   });
 
   if (!res.ok) {
+    let errorStatus = res.status;
     let errorMessage = `API Error (${res.status})`;
+
     try {
       const error = await res.json();
-      errorMessage = error.message || errorMessage;
+      errorStatus = error.status || errorStatus;
+      errorMessage = error.detail || errorMessage;
     } catch {
       // ignore
     }
-
     console.error("❌ [api] Error:", errorMessage);
-    throw new Error(errorMessage);
+    const err = new Error(errorMessage);
+    err.name = errorStatus.toString();
+    throw err;
   }
 
   return res.json();

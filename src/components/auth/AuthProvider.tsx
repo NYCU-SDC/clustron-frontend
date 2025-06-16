@@ -5,7 +5,7 @@ import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { AccessToken } from "@/types/type";
+import { AccessToken, AuthCookie } from "@/types/type";
 import { refreshAuthToken } from "@/lib/request/refreshAuthToken";
 import { authContext } from "@/lib/auth/authContext";
 
@@ -36,18 +36,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const setCookiesForAuthToken = useCallback(
-    (
-      accessToken: string,
-      refreshToken: string,
-      refreshTokenExpirationTime: number = Date.now() + 60 * 60 * 24 * 1000,
-    ) => {
-      setCookie("accessToken", accessToken, {
+    (data: AuthCookie) => {
+      setCookie("accessToken", data.accessToken, {
         path: "/",
-        expires: new Date(jwtDecode<AccessToken>(accessToken).exp * 1000),
+        expires: new Date(jwtDecode<AccessToken>(data.accessToken).exp * 1000),
       });
-      setCookie("refreshToken", refreshToken, {
+      setCookie("refreshToken", data.refreshToken, {
         path: "/",
-        expires: new Date(refreshTokenExpirationTime),
+        expires: new Date(data.expirationTime),
       });
     },
     [setCookie],
@@ -70,12 +66,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const refreshMutation = useMutation({
     mutationFn: () => refreshAuthToken(cookies.refreshToken),
-    onSuccess: (data) => {
-      setCookiesForAuthToken(
-        data.accessToken,
-        data.refreshToken,
-        data.refreshTokenExpirationTime * 1000,
-      );
+    onSuccess: (data: AuthCookie) => {
+      setCookiesForAuthToken({
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
+        expirationTime: data.expirationTime * 1000,
+      });
       setAutoRefresh();
     },
     onError: logout,
