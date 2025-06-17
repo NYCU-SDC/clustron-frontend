@@ -17,6 +17,7 @@ import {
   TableHead,
   TableBody,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button.tsx";
 
 type Props = {
   groupId: string;
@@ -39,7 +40,6 @@ export default function GroupMemberTable({
     accessLevel,
     effectiveGlobalRole,
   );
-
   const {
     data,
     isLoading,
@@ -119,13 +119,13 @@ export default function GroupMemberTable({
 
             {hasNextPage && (
               <div className="mt-4 w-full flex justify-center">
-                <button
+                <Button
                   onClick={() => fetchNextPage()}
                   disabled={isFetchingNextPage}
                   className="text-sm text-blue-600 hover:underline"
                 >
                   {isFetchingNextPage ? "Loading more..." : "Load more"}
-                </button>
+                </Button>
               </div>
             )}
           </>
