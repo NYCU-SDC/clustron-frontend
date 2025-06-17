@@ -25,6 +25,7 @@ type Props = {
   globalRole?: GlobalRole;
   onRemove?: (memberId: string) => void;
   isArchived?: boolean;
+  isOverview?: boolean;
 };
 
 export default function GroupMemberTable({
@@ -33,6 +34,7 @@ export default function GroupMemberTable({
   globalRole,
   onRemove,
   isArchived = false,
+  isOverview = false,
 }: Props) {
   const payload = useJwtPayload();
   const effectiveGlobalRole = globalRole ?? (payload?.Role as GlobalRole);
@@ -78,7 +80,7 @@ export default function GroupMemberTable({
       <CardContent className="p-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-bold text-lg">Members</h3>
-          {canEditMembers && (
+          {canEditMembers && !isOverview && (
             <AddMemberButton groupId={groupId} isArchived={isArchived} />
           )}
         </div>
@@ -108,7 +110,7 @@ export default function GroupMemberTable({
                     email={m.email}
                     role={m.role.Role as GroupMemberRoleName}
                     accessLevel={accessLevel}
-                    showActions={canEditMembers}
+                    showActions={canEditMembers && !isOverview}
                     isArchived={isArchived}
                     onDelete={onRemove ? () => onRemove(m.id) : undefined}
                     onUpdateRole={(newRole) => updateMemberRole(m.id, newRole)}
