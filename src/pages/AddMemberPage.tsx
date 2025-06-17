@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/table";
 import { GlobalRole } from "@/lib/permission";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
+import { Button } from "@/components/ui/button.tsx";
 
 export default function AddMemberPage() {
   const { id: groupId } = useParams();
@@ -111,13 +112,13 @@ export default function AddMemberPage() {
         </Table>
 
         <div className="mt-6 flex justify-end gap-3">
-          <button
+          <Button
             onClick={() => navigate(`/groups/${group.id}/settings`)}
             className="px-4 py-2 border rounded"
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleSave}
             disabled={hasDuplicate}
             className={`px-4 py-2 rounded text-white ${
@@ -125,7 +126,7 @@ export default function AddMemberPage() {
             }`}
           >
             Save
-          </button>
+          </Button>
         </div>
       </main>
     </div>

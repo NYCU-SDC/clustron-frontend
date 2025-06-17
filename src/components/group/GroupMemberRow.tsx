@@ -14,6 +14,7 @@ import {
   type GroupMemberRoleName,
   type GroupRoleAccessLevel,
 } from "@/types/group";
+import { Button } from "@/components/ui/button.tsx";
 
 type Props = {
   name: string;
@@ -58,10 +59,10 @@ export default function GroupMemberRow({
         role !== "group_owner" ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-1 cursor-pointer font-medium text-sm">
+              <Button className="flex items-center gap-1 cursor-pointer font-medium text-sm">
                 {roleLabelMap[role] ?? role}
                 <ChevronDown className="w-4 h-4" />
-              </button>
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {assignableRoles.map((r) => (
