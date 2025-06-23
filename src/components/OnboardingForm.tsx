@@ -18,6 +18,7 @@ import { useContext } from "react";
 import { authContext } from "@/lib/auth/authContext";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
+import { z } from "zod";
 
 export default function OnboardingForm({
   className,
@@ -29,11 +30,15 @@ export default function OnboardingForm({
   const { refreshMutation } = useContext(authContext);
   const { t } = useTranslation();
 
+  const linuxUsernameSchema = z
+    .string()
+    .min(1)
+    .regex(/^[a-z_][a-z0-9_-]*\$?$/);
+
   const addMutation = useMutation({
     mutationFn: (payload: { username: string; linuxUsername: string }) =>
       saveOnboardingInfo(payload),
     onSuccess: () => {
-      // TODO: Come up with a better way to handle navigate after refresh instead of setTimeout
       refreshMutation.mutate();
       setTimeout(() => {
         navigate("/");
@@ -98,6 +103,10 @@ export default function OnboardingForm({
                   <Button
                     className="px-7 py-5 w-16 cursor-pointer"
                     onClick={() => {
+                      if (linuxUsernameSchema.safeParse(linuxUsername)) {
+                        toast.error(t("onboardingForm.formatErrorToast"));
+                        return;
+                      }
                       addMutation.mutate({ username, linuxUsername });
                     }}
                   >
