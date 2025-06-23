@@ -23,8 +23,9 @@ import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2Icon } from "lucide-react";
+import type { Settings } from "@/types/type";
 
-export default function SettingNameForm({
+export default function SettingFullNameForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
@@ -35,7 +36,7 @@ export default function SettingNameForm({
   const PROFILE_QUERY_KEY = ["username"];
 
   const {
-    data = { username: "", linuxUsername: "" },
+    data = { fullName: "", linuxUsername: "" },
     isSuccess,
     isLoading,
     isError,
@@ -45,8 +46,7 @@ export default function SettingNameForm({
   });
 
   const addMutation = useMutation({
-    mutationFn: (payload: { username: string; linuxUsername: string }) =>
-      saveSettings(payload),
+    mutationFn: (payload: Settings) => saveSettings(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
       toast.success(t("settingNameForm.successToast"));
@@ -62,7 +62,7 @@ export default function SettingNameForm({
 
   useEffect(() => {
     if (isSuccess) {
-      setUsername(data.username);
+      setUsername(data.fullName);
       setLinuxUsername(data.linuxUsername);
     }
     if (isError) {
@@ -106,7 +106,7 @@ export default function SettingNameForm({
                 <Button
                   className="px-7 py-5 w-24 cursor-pointer"
                   onClick={() => {
-                    addMutation.mutate({ username, linuxUsername });
+                    addMutation.mutate({ fullName: username, linuxUsername });
                   }}
                 >
                   {t("settingNameForm.savaBtn")}

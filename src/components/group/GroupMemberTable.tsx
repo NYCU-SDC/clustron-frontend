@@ -94,7 +94,7 @@ export default function GroupMemberTable({
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
+                  <TableHead>Full Name</TableHead>
                   <TableHead>Student ID or Email</TableHead>
                   <TableHead>Role</TableHead>
                 </TableRow>
@@ -103,7 +103,7 @@ export default function GroupMemberTable({
                 {members.map((m) => (
                   <GroupMemberRow
                     key={m.id}
-                    name={m.username}
+                    name={m.fullName}
                     id={m.studentId}
                     email={m.email}
                     role={m.role.Role as GroupMemberRoleName}
