@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useNavigate, Outlet } from "react-router";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -13,18 +13,28 @@ export default function ProtectedRoute({
   showLoginRequiredToast?: boolean;
 }) {
   const { isLoggedIn } = useContext(authContext);
-  const [token, setToken] = useState<string | null>(
-    getAccessTokenFromCookies(),
-  );
-  const [role, setRole] = useState<string | undefined>(
-    token ? jwtDecode<AccessToken>(token).Role : undefined,
-  );
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  const token = useRef<string | null>(getAccessTokenFromCookies());
+  const role = useRef<string | undefined>(
+    token.current ? jwtDecode<AccessToken>(token.current).Role : undefined,
+  );
+
+  const updateTokenAndRole = () => {
+    const newToken = getAccessTokenFromCookies();
+
+    if (newToken !== token.current) {
+      token.current = newToken;
+      role.current = newToken
+        ? jwtDecode<AccessToken>(newToken).Role
+        : undefined;
+    }
+  };
+
   useEffect(() => {
-    setToken(getAccessTokenFromCookies());
-    setRole(token ? jwtDecode<AccessToken>(token).Role : undefined);
+    updateTokenAndRole();
+
     if (!isLoggedIn() && window.location.pathname !== "/login") {
       navigate("/login");
       if (showLoginRequiredToast) {
@@ -33,20 +43,23 @@ export default function ProtectedRoute({
       return;
     }
 
-    if (role == "role_not_setup" && window.location.pathname != "/onboarding") {
+    if (
+      role.current == "role_not_setup" &&
+      window.location.pathname != "/onboarding"
+    ) {
       navigate("/onboarding");
       toast.warning(t("protectedRoute.roleNotSetupToast"));
       return;
     }
-  }, [showLoginRequiredToast, isLoggedIn, navigate, role, token, t]);
+  }, [showLoginRequiredToast, isLoggedIn, navigate, t]);
 
   if (
     // no logged in but go to protected page, or
     !isLoggedIn() ||
     // logged in and role is not set up but go to protected page
-    (role == "role_not_setup" && window.location.pathname != "/onboarding")
+    (role.current == "role_not_setup" &&
+      window.location.pathname != "/onboarding")
   ) {
-    // early return so <Outlet> would not be rendered
     return null;
   }
 

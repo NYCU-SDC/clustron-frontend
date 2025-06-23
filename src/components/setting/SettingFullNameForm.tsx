@@ -109,7 +109,7 @@ export default function SettingFullNameForm({
                     addMutation.mutate({ fullName: username, linuxUsername });
                   }}
                 >
-                  {t("settingNameForm.savaBtn")}
+                  {t("settingNameForm.saveBtn")}
                 </Button>
               ) : (
                 <Tooltip>
@@ -118,7 +118,7 @@ export default function SettingFullNameForm({
                       disabled
                       className="px-7 py-5 w-24 disabled:cursor-not-allowed disabled:pointer-events-auto"
                     >
-                      {t("settingNameForm.savaBtn")}
+                      {t("settingNameForm.saveBtn")}
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent side="top" align="center">
