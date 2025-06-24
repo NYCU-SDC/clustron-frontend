@@ -3,18 +3,17 @@ import { Button } from "@/components/ui/button";
 import GroupDescription from "@/components/group/GroupDes";
 import { useGetGroups } from "@/hooks/useGetGroups";
 import { useGlobalPermissions } from "@/hooks/useGlobalPermissions";
-import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useContext } from "react";
 import { authContext } from "@/lib/auth/authContext";
 import { AccessLevelAdmin, AccessLevelOwner } from "@/types/group";
+import { Loader2 } from "lucide-react";
 
 export default function GroupListPage() {
   const navigate = useNavigate();
   const { data, isLoading, isError } = useGetGroups();
   const { canCreateGroup } = useGlobalPermissions();
-  const payload = useJwtPayload();
   const { isLoggedIn } = useContext(authContext);
-  console.log(payload);
+
   if (!isLoggedIn()) {
     navigate("/login");
     return null;
@@ -34,7 +33,10 @@ export default function GroupListPage() {
       </div>
 
       {isLoading ? (
-        <p className="text-gray-500">載入中...</p>
+        <div className="flex items-center gap-2 text-gray-500">
+          <Loader2 className="w-4 h-4 animate-spin" />
+          載入中...
+        </div>
       ) : isError ? (
         <p className="text-red-500">載入失敗</p>
       ) : !data || data.items.length === 0 ? (

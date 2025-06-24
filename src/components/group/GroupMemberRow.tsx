@@ -1,6 +1,5 @@
-// import { useState } from "react";
 import { TableRow, TableCell } from "@/components/ui/table";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Loader2 } from "lucide-react";
 import MemberDeleteMenu from "./MemberDeleteButton";
 import {
   DropdownMenu,
@@ -25,6 +24,7 @@ type Props = {
   onUpdateRole?: (newRole: GroupMemberRoleName) => void;
   showActions?: boolean;
   isArchived?: boolean;
+  isPending?: boolean;
 };
 
 export default function GroupMemberRow({
@@ -32,16 +32,21 @@ export default function GroupMemberRow({
   id,
   email,
   role,
-  accessLevel = AccessLevelUser, //TODO
+  accessLevel = AccessLevelUser,
   onDelete,
   onUpdateRole,
   showActions = false,
   isArchived = false,
+  isPending = false,
 }: Props) {
   const assignableRoles = assignableRolesMap[accessLevel] ?? [];
-  // console.log("👀 member role:", role);
+
   return (
-    <TableRow className="hover:bg-muted">
+    <TableRow
+      className={`hover:bg-muted transition-opacity ${
+        isPending ? "opacity-50 cursor-wait" : ""
+      }`}
+    >
       <TableCell>{name}</TableCell>
 
       <TableCell>
@@ -56,25 +61,32 @@ export default function GroupMemberRow({
         assignableRoles.length > 0 &&
         !isArchived &&
         role !== "group_owner" ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-1 cursor-pointer font-medium text-sm">
-                {roleLabelMap[role] ?? role}
-                <ChevronDown className="w-4 h-4" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {assignableRoles.map((r) => (
-                <DropdownMenuItem
-                  key={r}
-                  onClick={() => onUpdateRole?.(r)}
-                  disabled={r === role}
-                >
-                  {roleLabelMap[r] ?? r}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          isPending ? (
+            <div className="flex items-center text-sm text-muted-foreground gap-2">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Updating...
+            </div>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-1 cursor-pointer font-medium text-sm">
+                  {roleLabelMap[role] ?? role}
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {assignableRoles.map((r) => (
+                  <DropdownMenuItem
+                    key={r}
+                    onClick={() => onUpdateRole?.(r)}
+                    disabled={r === role}
+                  >
+                    {roleLabelMap[r] ?? r}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )
         ) : (
           <span>{roleLabelMap[role] ?? role}</span>
         )}
