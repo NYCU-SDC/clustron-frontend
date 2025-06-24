@@ -1,141 +1,39 @@
-import { CircleMinus, CirclePlus } from "lucide-react";
-import {
-  assignableRolesMap,
-  roleLabelMap,
-  type GlobalRole,
-  type GroupRoleAccessLevel,
-} from "@/lib/permission";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import {
-  AccessLevelAdmin,
-  AccessLevelOwner,
-  GroupMemberRoleName,
-} from "@/types/group";
-import { cn } from "@/lib/utils";
-import { AccessLevelUser } from "@/types/group";
+import { Outlet, useParams } from "react-router-dom";
+import GroupSideBar from "@/components/group/GroupSideBar";
+import GroupDescription from "@/components/group/GroupDes";
+import { useGetGroupById } from "@/hooks/useGetGroupById";
+import { useJwtPayload } from "@/hooks/useJwtPayload";
+import { useGroupPermissions } from "@/hooks/useGroupPermissions";
+import type { GlobalRole } from "@/lib/permission";
 
-type Props = {
-  index: number;
-  id: string;
-  roleName: GroupMemberRoleName;
-  isLast: boolean;
-  isDuplicate?: boolean;
-  disabled?: boolean;
-  onAddBatch: (
-    newMembers: { id: string; roleName: GroupMemberRoleName }[],
-  ) => void;
-  onChange: (index: number, key: "id" | "roleName", value: string) => void;
-  onRemove: (index: number) => void;
-  onAdd: () => void;
-  accessLevel?: GroupRoleAccessLevel;
-  globalRole?: GlobalRole;
-};
+export default function GroupPage() {
+  const { id } = useParams<{ id: string }>();
+  const payload = useJwtPayload();
+  const { data: group, isLoading } = useGetGroupById(id!);
 
-export default function AddMemberRow({
-  index,
-  id,
-  roleName,
-  isLast,
-  isDuplicate,
-  disabled = false,
-  onAddBatch,
-  onChange,
-  onRemove,
-  onAdd,
-  accessLevel = AccessLevelUser,
-}: Props) {
-  const resolvedAccessLevel: GroupRoleAccessLevel = AccessLevelAdmin
-    ? AccessLevelOwner
-    : accessLevel;
+  const accessLevel = group?.me?.role.accessLevel;
+  const globalRole = payload?.Role as GlobalRole;
 
-  const assignableRoles =
-    assignableRolesMap[
-      resolvedAccessLevel as keyof typeof assignableRolesMap
-    ] ?? [];
+  const { isReadonly } = useGroupPermissions(accessLevel, globalRole);
+
+  if (isLoading || !group) return <div className="p-6">載入中...</div>;
 
   return (
-    <tr className="hover:bg-muted">
-      <td className="py-2 px-2">
-        <Input
-          value={id}
-          disabled={disabled}
-          placeholder="Enter StudentID or Email"
-          className={cn(
-            "h-10 w-full text-sm",
-            isDuplicate && "border-red-500 bg-red-50",
-          )}
-          onChange={(e) => onChange(index, "id", e.target.value)}
-          title={isDuplicate ? "Duplicate entry" : ""}
-          onPaste={(e) => {
-            const pasted = e.clipboardData.getData("text");
-            const rows = pasted
-              .split("\n")
-              .map((r) => r.trim())
-              .filter(Boolean);
-            if (rows.length > 1) {
-              e.preventDefault();
-              const newMembers = rows.map((r) => ({
-                id: r,
-                roleName: assignableRoles[0] ?? "student",
-              }));
-              onAddBatch(newMembers);
-            }
-          }}
-        />
-      </td>
-
-      <td className="py-2 px-2">
-        <Select
-          value={roleName}
-          disabled={disabled}
-          onValueChange={(value) =>
-            onChange(index, "roleName", value as GroupMemberRoleName)
-          }
-        >
-          <SelectTrigger className="h-10 w-full text-sm">
-            <SelectValue>{roleLabelMap[roleName] ?? "Select Role"}</SelectValue>
-          </SelectTrigger>
-          <SelectContent>
-            {assignableRoles.map((r) => (
-              <SelectItem key={r} value={r}>
-                {roleLabelMap[r] ?? r}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </td>
-
-      <td className="py-2 px-2 text-center">
-        {isLast ? (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onAdd}
-            disabled={disabled}
-            className="text-gray-600 hover:text-black"
-          >
-            <CirclePlus size={16} />
-          </Button>
-        ) : (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onRemove(index)}
-            disabled={disabled}
-            className="text-red-600 hover:text-red-800"
-          >
-            <CircleMinus size={16} />
-          </Button>
-        )}
-      </td>
-    </tr>
+    <div className="flex w-full max-h-screen">
+      {isReadonly ? (
+        <div className="flex-1 w-full  items-center justify-center">
+          <main className=" max-w-2xl items-center justify-center p-6 space-y-6">
+            <GroupDescription title={group.title} desc={group.description} />
+          </main>
+        </div>
+      ) : (
+        <>
+          <GroupSideBar title={group.title} />
+          <main className="flex-1 w-full p-6 space-y-6">
+            <Outlet context={{ group, groupId: id }} />
+          </main>
+        </>
+      )}
+    </div>
   );
 }
