@@ -17,6 +17,7 @@ import {
   TableHead,
   TableBody,
 } from "@/components/ui/table";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   groupId: string;
@@ -52,11 +53,14 @@ export default function GroupMemberTable({
   const members = data?.pages.flatMap((page) => page.items) ?? [];
 
   const queryClient = useQueryClient();
-  const { mutate: updateMember } = useUpdateMember(groupId, {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["members", groupId] });
+  const { mutate: updateMember, isPending: isUpdatingMember } = useUpdateMember(
+    groupId,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["members", groupId] });
+      },
     },
-  });
+  );
 
   const { roleNameToId } = useRoleMapper();
 
@@ -84,7 +88,10 @@ export default function GroupMemberTable({
         </div>
 
         {isLoading ? (
-          <p className="text-sm text-gray-500">Loading members...</p>
+          <div className="text-sm text-gray-500 flex items-center gap-2">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            Loading members...
+          </div>
         ) : isError ? (
           <p className="text-sm text-red-500">Failed to load members.</p>
         ) : members.length === 0 ? (
@@ -110,6 +117,7 @@ export default function GroupMemberTable({
                     accessLevel={accessLevel}
                     showActions={canEditMembers}
                     isArchived={isArchived}
+                    isPending={isUpdatingMember}
                     onDelete={onRemove ? () => onRemove(m.id) : undefined}
                     onUpdateRole={(newRole) => updateMemberRole(m.id, newRole)}
                   />
