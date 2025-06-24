@@ -14,16 +14,28 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, Loader2 } from "lucide-react";
 import { useState } from "react";
 
 type Props = {
-  onConfirm: () => void;
+  onConfirm: () => Promise<void> | void;
   isArchived?: boolean;
 };
 
 export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
   const [open, setOpen] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+
+  const handleDelete = async () => {
+    if (isArchived) return;
+    setIsPending(true);
+    try {
+      await onConfirm();
+      setOpen(false);
+    } finally {
+      setIsPending(false);
+    }
+  };
 
   return (
     <>
@@ -37,10 +49,7 @@ export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
           <DropdownMenuContent align="end">
             <DropdownMenuItem
               className="text-red-600"
-              onClick={() => {
-                setOpen(false);
-                onConfirm();
-              }}
+              onClick={() => setOpen(true)}
             >
               Remove User
             </DropdownMenuItem>
@@ -59,19 +68,23 @@ export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex justify-end gap-2">
-            <DialogClose asChild>
+            <DialogClose asChild disabled={isPending}>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <DialogClose asChild>
-              <Button
-                variant="destructive"
-                onClick={() => {
-                  if (!isArchived) onConfirm();
-                }}
-              >
-                Delete
-              </Button>
-            </DialogClose>
+            <Button
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={isPending}
+            >
+              {isPending ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                "Delete"
+              )}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
