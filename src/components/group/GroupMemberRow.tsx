@@ -19,7 +19,7 @@ type Props = {
   name: string;
   id: string;
   email: string;
-  role: GroupMemberRoleName;
+  roleName: GroupMemberRoleName;
   accessLevel?: GroupRoleAccessLevel;
   onDelete?: () => void;
   onUpdateRole?: (newRole: GroupMemberRoleName) => void;
@@ -31,7 +31,7 @@ export default function GroupMemberRow({
   name,
   id,
   email,
-  role,
+  roleName,
   accessLevel = AccessLevelUser, //TODO
   onDelete,
   onUpdateRole,
@@ -39,7 +39,7 @@ export default function GroupMemberRow({
   isArchived = false,
 }: Props) {
   const assignableRoles = assignableRolesMap[accessLevel] ?? [];
-  // console.log("👀 member role:", role);
+  // console.log("👀 member roleName:", roleName);
   return (
     <TableRow className="hover:bg-muted">
       <TableCell>{name}</TableCell>
@@ -55,11 +55,11 @@ export default function GroupMemberRow({
         {showActions &&
         assignableRoles.length > 0 &&
         !isArchived &&
-        role !== "group_owner" ? (
+        roleName !== "group_owner" ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-1 cursor-pointer font-medium text-sm">
-                {roleLabelMap[role] ?? role}
+                {roleLabelMap[roleName] ?? roleName}
                 <ChevronDown className="w-4 h-4" />
               </button>
             </DropdownMenuTrigger>
@@ -68,7 +68,7 @@ export default function GroupMemberRow({
                 <DropdownMenuItem
                   key={r}
                   onClick={() => onUpdateRole?.(r)}
-                  disabled={r === role}
+                  disabled={r === roleName}
                 >
                   {roleLabelMap[r] ?? r}
                 </DropdownMenuItem>
@@ -76,7 +76,7 @@ export default function GroupMemberRow({
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-          <span>{roleLabelMap[role] ?? role}</span>
+          <span>{roleLabelMap[roleName] ?? roleName}</span>
         )}
       </TableCell>
 

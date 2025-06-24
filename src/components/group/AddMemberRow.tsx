@@ -25,12 +25,14 @@ import { AccessLevelUser } from "@/types/group";
 type Props = {
   index: number;
   id: string;
-  role: GroupMemberRoleName;
+  roleName: GroupMemberRoleName;
   isLast: boolean;
   isDuplicate?: boolean;
   disabled?: boolean;
-  onAddBatch: (newMembers: { id: string; role: GroupMemberRoleName }[]) => void;
-  onChange: (index: number, key: "id" | "role", value: string) => void;
+  onAddBatch: (
+    newMembers: { id: string; roleName: GroupMemberRoleName }[],
+  ) => void;
+  onChange: (index: number, key: "id" | "roleName", value: string) => void;
   onRemove: (index: number) => void;
   onAdd: () => void;
   accessLevel?: GroupRoleAccessLevel;
@@ -40,7 +42,7 @@ type Props = {
 export default function AddMemberRow({
   index,
   id,
-  role,
+  roleName,
   isLast,
   isDuplicate,
   disabled = false,
@@ -82,7 +84,7 @@ export default function AddMemberRow({
               e.preventDefault();
               const newMembers = rows.map((r) => ({
                 id: r,
-                role: assignableRoles[0] ?? "student", // 預設為第一個可選角色或 student
+                roleName: assignableRoles[0] ?? "student",
               }));
               onAddBatch(newMembers);
             }
@@ -92,14 +94,14 @@ export default function AddMemberRow({
 
       <td className="py-2 px-2">
         <Select
-          value={role}
+          value={roleName}
           disabled={disabled}
           onValueChange={(value) =>
-            onChange(index, "role", value as GroupMemberRoleName)
+            onChange(index, "roleName", value as GroupMemberRoleName)
           }
         >
           <SelectTrigger className="h-10 w-full text-sm">
-            <SelectValue>{roleLabelMap[role] ?? "Select Role"}</SelectValue>
+            <SelectValue>{roleLabelMap[roleName] ?? "Select Role"}</SelectValue>
           </SelectTrigger>
           <SelectContent>
             {assignableRoles.map((r) => (
