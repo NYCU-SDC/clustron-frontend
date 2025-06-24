@@ -7,8 +7,7 @@ export function useRoleMapper() {
   const roleNameToId = (name: GroupMemberRoleName): string | undefined => {
     // console.log("roleNameToId", name, roles);
     // console.log(r.role, name.role.roleName)
-    // @ts-expect-error the spec is different in frontend and backend
-    return roles.find((r) => r.roleName === name)?.ID;
+    return roles.find((r) => r.RoleName === name)?.ID;
   };
 
   return {
