@@ -23,19 +23,20 @@ import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2Icon } from "lucide-react";
+import type { Settings } from "@/types/type";
 
-export default function SettingUsernameForm({
+export default function SettingLinuxUsernameForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  const [username, setUsername] = useState("");
+  const [fullName, setFullName] = useState("");
   const [linuxUsername, setLinuxUsername] = useState("");
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const PROFILE_QUERY_KEY = ["username"];
 
   const {
-    data = { username: "", linuxUsername: "" },
+    data = { fullName: "", linuxUsername: "" },
     isSuccess,
     isLoading,
     isError,
@@ -45,25 +46,24 @@ export default function SettingUsernameForm({
   });
 
   const addMutation = useMutation({
-    mutationFn: (payload: { username: string; linuxUsername: string }) =>
-      saveSettings(payload),
+    mutationFn: (payload: Settings) => saveSettings(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
-      toast.success(t("settingUsernameForm.successToast"));
+      toast.success(t("settingLinuxUsernameForm.successToast"));
     },
     onError: () => {
-      toast.error(t("settingUsernameForm.saveFailToast"));
+      toast.error(t("settingLinuxUsernameForm.saveFailToast"));
     },
   });
 
   useEffect(() => {
     if (isSuccess) {
-      setUsername(data.username);
+      setFullName(data.fullName);
       setLinuxUsername(data.linuxUsername);
     }
 
     if (isError) {
-      toast.error(t("settingUsernameForm.getFailToast"));
+      toast.error(t("settingLinuxUsernameForm.getFailToast"));
     }
   }, [isSuccess, isError, data, t]);
 
@@ -72,10 +72,10 @@ export default function SettingUsernameForm({
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">
-            {t("settingUsernameForm.cardTitleForUsername")}
+            {t("settingLinuxUsernameForm.cardTitleForLinuxUsername")}
           </CardTitle>
           <CardDescription>
-            {t("settingUsernameForm.cardDescriptionForUsername")}
+            {t("settingLinuxUsernameForm.cardDescriptionForLinuxUsername")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -97,17 +97,17 @@ export default function SettingUsernameForm({
               {addMutation.isPending ? (
                 <Button className="px-7 py-5 w-24 cursor-pointer" disabled>
                   <Loader2Icon className="animate-spin" />
-                  {t("settingUsernameForm.loadingBtn")}
+                  {t("settingLinuxUsernameForm.loadingBtn")}
                 </Button>
               ) : linuxUsername ? (
                 <Button
                   disabled // TODO: Enable this button when the backend is ready
                   className="px-7 py-5 w-24 cursor-pointer"
                   onClick={() => {
-                    addMutation.mutate({ username, linuxUsername });
+                    addMutation.mutate({ fullName: fullName, linuxUsername });
                   }}
                 >
-                  {t("settingUsernameForm.saveBtn")}
+                  {t("settingLinuxUsernameForm.saveBtn")}
                 </Button>
               ) : (
                 <Tooltip>
@@ -116,11 +116,11 @@ export default function SettingUsernameForm({
                       disabled
                       className="px-7 py-5 w-24 disabled:cursor-not-allowed disabled:pointer-events-auto"
                     >
-                      {t("settingUsernameForm.saveBtn")}
+                      {t("settingLinuxUsernameForm.saveBtn")}
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent side="top" align="center">
-                    {t("settingUsernameForm.saveBtnToolTip")}
+                    {t("settingLinuxUsernameForm.saveBtnToolTip")}
                   </TooltipContent>
                 </Tooltip>
               )}
