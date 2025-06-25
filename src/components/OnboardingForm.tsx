@@ -36,14 +36,16 @@ export default function OnboardingForm({
     .regex(/^[a-z_][a-z0-9_-]*\$?$/);
 
   const addMutation = useMutation({
-    mutationFn: (payload: { username: string; linuxUsername: string }) =>
-      saveOnboardingInfo(payload),
+    mutationFn: async (payload: {
+      username: string;
+      linuxUsername: string;
+    }) => {
+      await saveOnboardingInfo(payload);
+      await refreshMutation.mutateAsync();
+    },
     onSuccess: () => {
-      refreshMutation.mutate();
-      setTimeout(() => {
-        navigate("/");
-        toast.success(t("onboardingForm.successToast"));
-      }, 2000);
+      navigate("/");
+      toast.success(t("onboardingForm.successToast"));
     },
     onError: (err: Error) => {
       if (err.name === "400") {
