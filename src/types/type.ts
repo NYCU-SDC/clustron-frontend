@@ -16,3 +16,14 @@ export type PublicKey = {
   title: string;
   publicKey: string;
 };
+
+export type AuthCookie = {
+  accessToken: string;
+  refreshToken: string;
+  expirationTime: number;
+};
+
+export type Settings = {
+  username: string;
+  linuxUsername: string;
+};

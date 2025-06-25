@@ -1,26 +1,8 @@
-import { getAccessTokenFromCookies } from "@/lib/getAccessTokenFromCookies";
+import { api } from "@/lib/request/api";
 
-export async function deletePublicKey(id: string) {
-  const token = getAccessTokenFromCookies();
-  if (!token) {
-    console.error("No token but no logout");
-    throw new Error();
-  }
-
-  const res = await fetch(
-    `${import.meta.env.VITE_BACKEND_BASE_URL}/api/publickey`,
-    {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ id }),
-    },
-  );
-
-  if (!res.ok) {
-    console.error("Failed to delete public key");
-    throw new Error();
-  }
+export async function deletePublicKey(id: string): Promise<void> {
+  return api("/api/publickey", {
+    method: "DELETE",
+    body: JSON.stringify({ id }),
+  });
 }
