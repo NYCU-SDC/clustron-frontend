@@ -103,7 +103,9 @@ export default function OnboardingForm({
                   <Button
                     className="px-7 py-5 w-16 cursor-pointer"
                     onClick={() => {
-                      if (linuxUsernameSchema.safeParse(linuxUsername)) {
+                      if (
+                        !linuxUsernameSchema.safeParse(linuxUsername).success
+                      ) {
                         toast.error(t("onboardingForm.formatErrorToast"));
                         return;
                       }
