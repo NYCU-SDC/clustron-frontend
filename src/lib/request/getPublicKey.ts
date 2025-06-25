@@ -1,6 +1,6 @@
 import { api } from "@/lib/request/api";
-import type { PublicKey } from "@/types/type";
+import type { PublicKeyInfo } from "@/types/type";
 
-export async function getPublicKey(length?: number): Promise<PublicKey[]> {
+export async function getPublicKey(length?: number): Promise<PublicKeyInfo[]> {
   return api(length ? `/api/publickey?length=${length}` : "/api/publickey}");
 }

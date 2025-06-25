@@ -1,6 +1,6 @@
 export type AccessToken = {
   ID: string;
-  Username: string;
+  FullName: string;
   Email: string;
   Role: string;
   iss: string;
@@ -11,7 +11,7 @@ export type AccessToken = {
   jti: string;
 };
 
-export type PublicKey = {
+export type PublicKeyInfo = {
   id: string;
   title: string;
   publicKey: string;

@@ -2,7 +2,7 @@
 
 export type Member = {
   id: string;
-  username: string;
+  fullName: string;
   email: string;
   studentId: string;
   role: "Admin" | "Group Owner" | "Teacher assistant" | "Student" | "Auditor";
@@ -28,7 +28,7 @@ export const mockGroups: Group[] = [
     members: [
       {
         id: "u001",
-        username: "王小明",
+        fullName: "王小明",
         email: "liam@gmail.com",
         studentId: "113999321",
         role: "Student",
@@ -36,7 +36,7 @@ export const mockGroups: Group[] = [
       },
       {
         id: "u002",
-        username: "Olivia Smith",
+        fullName: "Olivia Smith",
         email: "olivia@gmail.com",
         studentId: "113000111",
         role: "Student",
@@ -44,7 +44,7 @@ export const mockGroups: Group[] = [
       },
       {
         id: "u005",
-        username: "John Chen",
+        fullName: "John Chen",
         email: "john.chen@gmail.com",
         studentId: "116000444",
         accessLevel: "Organizer",
@@ -62,7 +62,7 @@ export const mockGroups: Group[] = [
     members: [
       {
         id: "u003",
-        username: "Emma Brown",
+        fullName: "Emma Brown",
         email: "emma@gmail.com",
         studentId: "110000111",
         role: "Group Owner",
@@ -70,7 +70,7 @@ export const mockGroups: Group[] = [
       },
       {
         id: "u002",
-        username: "Olivia Smith",
+        fullName: "Olivia Smith",
         email: "olivia@gmail.com",
         studentId: "113000111",
         role: "Student",
@@ -78,7 +78,7 @@ export const mockGroups: Group[] = [
       },
       {
         id: "u005",
-        username: "John Chen",
+        fullName: "John Chen",
         email: "john.chen@gmail.com",
         studentId: "116000444",
         accessLevel: "User",
@@ -96,7 +96,7 @@ export const mockGroups: Group[] = [
     members: [
       {
         id: "u003",
-        username: "Emma Brown",
+        fullName: "Emma Brown",
         email: "emma@gmail.com",
         studentId: "110000111",
         role: "Group Owner",
@@ -104,7 +104,7 @@ export const mockGroups: Group[] = [
       },
       {
         id: "u005",
-        username: "John Chen",
+        fullName: "John Chen",
         email: "john.chen@gmail.com",
         studentId: "116000444",
         accessLevel: "Organizer",
@@ -112,7 +112,7 @@ export const mockGroups: Group[] = [
       },
       {
         id: "84f834c8-3388-4411-992c-b7b9a472d377",
-        username: "何思儀",
+        fullName: "何思儀",
         accessLevel: "User",
         studentId: "110700036",
         role: "Student",
