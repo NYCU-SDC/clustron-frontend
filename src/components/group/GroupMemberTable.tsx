@@ -143,7 +143,7 @@ export default function GroupMemberTable({
                   {isFetchingNextPage
                     ? t("groupComponents.groupMemberTable.loadingMore")
                     : t("groupComponents.groupMemberTable.loadMore")}
-                </button>
+                </Button>
               </div>
             )}
           </>
