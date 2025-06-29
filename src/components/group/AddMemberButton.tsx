@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router";
 import { Button } from "@/components/ui/button";
 
 type Props = {
@@ -9,12 +9,16 @@ type Props = {
 
 export default function AddMemberButton({ groupId, isArchived }: Props) {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isSettingsPage = location.pathname === `/groups/${groupId}/settings`;
 
   const handleClick = () => {
     if (isArchived) return;
     navigate(`/groups/${groupId}/add-member`);
   };
 
+  if (!isSettingsPage) return null;
   return (
     <Button
       onClick={handleClick}
