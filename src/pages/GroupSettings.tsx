@@ -84,6 +84,7 @@ export default function GroupSettings() {
           globalRole={isAdmin ? "admin" : undefined} //
           isArchived={group.isArchived}
           onRemove={handleRemove}
+          isOverview={false}
         />
 
         {canArchive && (
