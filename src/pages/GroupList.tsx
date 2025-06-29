@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import GroupDescription from "@/components/group/GroupDes";
 import { useGetGroups } from "@/hooks/useGetGroups";
@@ -10,6 +11,7 @@ import { AccessLevelAdmin, AccessLevelOwner } from "@/types/group";
 
 export default function GroupListPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { data, isLoading, isError } = useGetGroups();
   const { canCreateGroup } = useGlobalPermissions();
   const payload = useJwtPayload();
@@ -28,17 +30,19 @@ export default function GroupListPage() {
             onClick={() => navigate("/groups/new")}
             className="bg-gray-900 text-white"
           >
-            + New Course
+            {t("groupPages.groupList.newCourse")}
           </Button>
         )}
       </div>
 
       {isLoading ? (
-        <p className="text-gray-500">載入中...</p>
+        <p className="text-gray-500">{t("groupPages.groupList.loading")}</p>
       ) : isError ? (
-        <p className="text-red-500">載入失敗</p>
+        <p className="text-red-500">
+          {t("groupPages.groupList.loadingFailed")}
+        </p>
       ) : !data || data.items.length === 0 ? (
-        <p className="text-gray-500">你尚未加入任何課程。</p>
+        <p className="text-gray-500">{t("groupPages.groupList.noCourses")}</p>
       ) : (
         <div className="space-y-4">
           {data.items.map((group) => {

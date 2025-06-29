@@ -7,6 +7,7 @@ import { useGroupPermissions } from "@/hooks/useGroupPermissions";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 import type { GlobalRole, GroupRoleAccessLevel } from "@/lib/permission";
 import { AccessLevelUser, type GroupMemberRoleName } from "@/types/group";
@@ -36,6 +37,7 @@ export default function GroupMemberTable({
   isArchived = false,
   isOverview = false,
 }: Props) {
+  const { t } = useTranslation();
   const payload = useJwtPayload();
   const effectiveGlobalRole = globalRole ?? (payload?.Role as GlobalRole);
   const { canEditMembers } = useGroupPermissions(
@@ -79,26 +81,38 @@ export default function GroupMemberTable({
     <Card>
       <CardContent className="p-6">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="font-bold text-lg">Members</h3>
+          <h3 className="font-bold text-lg">{t("groupComponents.groupMemberTable.members")}</h3>
           {canEditMembers && !isOverview && (
             <AddMemberButton groupId={groupId} isArchived={isArchived} />
           )}
         </div>
 
         {isLoading ? (
-          <p className="text-sm text-gray-500">Loading members...</p>
+          <p className="text-sm text-gray-500">
+            {t("groupComponents.groupMemberTable.loadingMembers")}
+          </p>
         ) : isError ? (
-          <p className="text-sm text-red-500">Failed to load members.</p>
+          <p className="text-sm text-red-500">
+            {t("groupComponents.groupMemberTable.failedToLoadMembers")}
+          </p>
         ) : members.length === 0 ? (
-          <p className="text-sm text-gray-500">No members found.</p>
+          <p className="text-sm text-gray-500">
+            {t("groupComponents.groupMemberTable.noMembersFound")}
+          </p>
         ) : (
           <>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Student ID or Email</TableHead>
-                  <TableHead>Role</TableHead>
+                  <TableHead>
+                    {t("groupComponents.groupMemberTable.name")}
+                  </TableHead>
+                  <TableHead>
+                    {t("groupComponents.groupMemberTable.studentIdOrEmail")}
+                  </TableHead>
+                  <TableHead>
+                    {t("groupComponents.groupMemberTable.role")}
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -126,8 +140,10 @@ export default function GroupMemberTable({
                   disabled={isFetchingNextPage}
                   className="text-sm text-blue-600 hover:underline"
                 >
-                  {isFetchingNextPage ? "Loading more..." : "Load more"}
-                </Button>
+                  {isFetchingNextPage
+                    ? t("groupComponents.groupMemberTable.loadingMore")
+                    : t("groupComponents.groupMemberTable.loadMore")}
+                </button>
               </div>
             )}
           </>

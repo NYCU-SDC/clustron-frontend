@@ -1,6 +1,7 @@
 // import { useState } from "react";
 import { TableRow, TableCell } from "@/components/ui/table";
 import { ChevronDown } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import MemberDeleteMenu from "./MemberDeleteButton";
 import {
   DropdownMenu,
@@ -38,7 +39,18 @@ export default function GroupMemberRow({
   showActions = false,
   isArchived = false,
 }: Props) {
+  const { t } = useTranslation();
   const assignableRoles = assignableRolesMap[accessLevel] ?? [];
+
+  // for role i18n
+  const getRoleLabel = (roleName: GroupMemberRoleName) => {
+    return (
+      t(`groupComponents.roles.${roleName}`) ||
+      roleLabelMap[roleName] ||
+      roleName
+    );
+  };
+
   // console.log("👀 member role:", role);
   return (
     <TableRow className="hover:bg-muted">
@@ -59,7 +71,7 @@ export default function GroupMemberRow({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-1 cursor-pointer font-medium text-sm">
-                {roleLabelMap[role] ?? role}
+                {getRoleLabel(role)}
                 <ChevronDown className="w-4 h-4" />
               </button>
             </DropdownMenuTrigger>
@@ -70,13 +82,13 @@ export default function GroupMemberRow({
                   onClick={() => onUpdateRole?.(r)}
                   disabled={r === role}
                 >
-                  {roleLabelMap[r] ?? r}
+                  {getRoleLabel(r)}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-          <span>{roleLabelMap[role] ?? role}</span>
+          <span>{getRoleLabel(role)}</span>
         )}
       </TableCell>
 

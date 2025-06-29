@@ -21,6 +21,7 @@ import {
 } from "@/types/group";
 import { cn } from "@/lib/utils";
 import { AccessLevelUser } from "@/types/group";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   index: number;
@@ -50,6 +51,7 @@ export default function AddMemberRow({
   onAdd,
   accessLevel = AccessLevelUser,
 }: Props) {
+  const { t } = useTranslation();
   const resolvedAccessLevel: GroupRoleAccessLevel = AccessLevelAdmin
     ? AccessLevelOwner
     : accessLevel;
@@ -59,19 +61,30 @@ export default function AddMemberRow({
       resolvedAccessLevel as keyof typeof assignableRolesMap
     ] ?? [];
 
+  // for role i18n
+  const getRoleLabel = (roleName: GroupMemberRoleName) => {
+    return (
+      t(`groupComponents.roles.${roleName}`) ||
+      roleLabelMap[roleName] ||
+      roleName
+    );
+  };
+
   return (
     <tr className="hover:bg-muted">
       <td className="py-2 px-2">
         <Input
           value={id}
           disabled={disabled}
-          placeholder="Enter StudentID or Email"
+          placeholder={t("groupComponents.addMemberRow.enterStudentIdOrEmail")}
           className={cn(
             "h-10 w-full text-sm",
             isDuplicate && "border-red-500 bg-red-50",
           )}
           onChange={(e) => onChange(index, "id", e.target.value)}
-          title={isDuplicate ? "Duplicate entry" : ""}
+          title={
+            isDuplicate ? t("groupComponents.addMemberRow.duplicateEntry") : ""
+          }
           onPaste={(e) => {
             const pasted = e.clipboardData.getData("text");
             const rows = pasted
@@ -99,12 +112,15 @@ export default function AddMemberRow({
           }
         >
           <SelectTrigger className="h-10 w-full text-sm">
-            <SelectValue>{roleLabelMap[role] ?? "Select Role"}</SelectValue>
+            <SelectValue>
+              {getRoleLabel(role) ??
+                t("groupComponents.addMemberRow.selectRole")}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {assignableRoles.map((r) => (
               <SelectItem key={r} value={r}>
-                {roleLabelMap[r] ?? r}
+                {getRoleLabel(r)}
               </SelectItem>
             ))}
           </SelectContent>
