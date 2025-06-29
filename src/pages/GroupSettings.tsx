@@ -1,4 +1,5 @@
 import { useOutletContext } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import GroupDescription from "@/components/group/GroupDes";
 import GroupMemberTable from "@/components/group/GroupMemberTable";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
@@ -24,6 +25,7 @@ export type GroupContextType = {
 
 export default function GroupSettings() {
   const { groupId } = useOutletContext<GroupContextType>();
+  const { t } = useTranslation();
   const { data: group, isLoading } = useGetGroupById(groupId);
   const user = useJwtPayload(); // use JWT hook to get user information
   const archiveMutation = useArchiveGroup(groupId);
@@ -34,7 +36,10 @@ export default function GroupSettings() {
       queryClient.invalidateQueries({ queryKey: ["members", groupId] }); // 正確地寫在 onSuccess 函數體內
     },
     onError: (err) =>
-      alert("❌ 刪除失敗：" + (err instanceof Error ? err.message : "")),
+      alert(
+        t("groupPages.groupSettings.deleteFailed") +
+          (err instanceof Error ? err.message : ""),
+      ),
   });
   const payload = useJwtPayload();
   const globalRole = payload?.Role as GlobalRole;
@@ -62,7 +67,11 @@ export default function GroupSettings() {
   };
 
   if (isLoading || !user || !group) {
-    return <div className="p-4 text-gray-600">Loading group info...</div>;
+    return (
+      <div className="p-4 text-gray-600">
+        {t("groupPages.groupSettings.loadingGroupInfo")}
+      </div>
+    );
   }
 
   return (
@@ -75,6 +84,7 @@ export default function GroupSettings() {
           globalRole={isAdmin ? "admin" : undefined} //
           isArchived={group.isArchived}
           onRemove={handleRemove}
+          isOverview={false}
         />
 
         {canArchive && (
@@ -83,13 +93,13 @@ export default function GroupSettings() {
               <div>
                 <CardTitle>
                   {group.isArchived
-                    ? "Unarchive This Group"
-                    : "Archive This Group"}
+                    ? t("groupPages.groupSettings.unarchiveGroup")
+                    : t("groupPages.groupSettings.archiveGroup")}
                 </CardTitle>
                 <CardDescription>
                   {group.isArchived
-                    ? "This will reactivate the group and allow updates again."
-                    : "This will turn the group into archive state, no update can be made before it is activated again."}
+                    ? t("groupPages.groupSettings.unarchiveDescription")
+                    : t("groupPages.groupSettings.archiveDescription")}
                 </CardDescription>
               </div>
               <Button
@@ -100,10 +110,10 @@ export default function GroupSettings() {
                 }
               >
                 {archiveMutation.isPending || unarchiveMutation.isPending
-                  ? "Saving..."
+                  ? t("groupPages.groupSettings.saving")
                   : group.isArchived
-                    ? "Unarchive"
-                    : "Archive"}
+                    ? t("groupPages.groupSettings.unarchive")
+                    : t("groupPages.groupSettings.archive")}
               </Button>
             </CardHeader>
           </Card>

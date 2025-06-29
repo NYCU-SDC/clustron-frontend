@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import AddMemberRow from "@/components/group/AddMemberRow";
 import { useAddMember } from "@/hooks/useAddMember";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
@@ -20,6 +21,7 @@ import { Button } from "@/components/ui/button.tsx";
 export default function AddMemberPage() {
   const { id: groupId } = useParams();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { data: group, isLoading } = useGetGroupById(groupId!);
   const { roleNameToId } = useRoleMapper();
   const payload = useJwtPayload();
@@ -32,8 +34,12 @@ export default function AddMemberPage() {
     onSuccess: () => navigate(`/groups/${groupId}/settings`),
   });
 
-  if (isLoading) return <div className="p-6">Loading...</div>;
-  if (!group) return <div className="p-6">Course not found.</div>;
+  if (isLoading)
+    return <div className="p-6">{t("groupPages.addMemberPage.loading")}</div>;
+  if (!group)
+    return (
+      <div className="p-6">{t("groupPages.addMemberPage.courseNotFound")}</div>
+    );
 
   const accessLevel = group.me.role.accessLevel ?? AccessLevelUser;
 
@@ -77,12 +83,16 @@ export default function AddMemberPage() {
   return (
     <div className="flex w-2/3 justify-center">
       <main className="w-full max-w-5xl p-6">
-        <h1 className="text-2xl font-bold mb-6">Add New Members</h1>
+        <h1 className="text-2xl font-bold mb-6">
+          {t("groupPages.addMemberPage.title")}
+        </h1>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Student ID or Email</TableHead>
-              <TableHead>Role</TableHead>
+              <TableHead>
+                {t("groupPages.addMemberPage.studentIdOrEmail")}
+              </TableHead>
+              <TableHead>{t("groupPages.addMemberPage.role")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -116,7 +126,7 @@ export default function AddMemberPage() {
             onClick={() => navigate(`/groups/${group.id}/settings`)}
             className="px-4 py-2 border rounded"
           >
-            Cancel
+            {t("groupPages.addMemberPage.cancel")}
           </Button>
           <Button
             onClick={handleSave}
@@ -125,7 +135,7 @@ export default function AddMemberPage() {
               hasDuplicate ? "bg-gray-400 cursor-not-allowed" : "bg-gray-900"
             }`}
           >
-            Save
+            {t("groupPages.addMemberPage.save")}
           </Button>
         </div>
       </main>
