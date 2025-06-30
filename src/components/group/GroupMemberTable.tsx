@@ -81,7 +81,9 @@ export default function GroupMemberTable({
     <Card>
       <CardContent className="p-6">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="font-bold text-lg">{t("groupComponents.groupMemberTable.members")}</h3>
+          <h3 className="font-bold text-lg">
+            {t("groupComponents.groupMemberTable.members")}
+          </h3>
           {canEditMembers && !isOverview && (
             <AddMemberButton groupId={groupId} isArchived={isArchived} />
           )}
