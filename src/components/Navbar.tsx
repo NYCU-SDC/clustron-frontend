@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { useContext } from "react";
 import { authContext } from "@/lib/auth/authContext";
 import ColorModeToggle from "@/components/ColorModeToggle";
-import LangSwitcher from "@/components/LangSwitcher";
 
 function navLinkclass(isActive: boolean) {
   return [
@@ -44,7 +43,6 @@ export default function Navbar() {
         </div>
         <div className="flex items-center space-x-4">
           <ColorModeToggle />
-          <LangSwitcher />
           {isLoggedIn() ? (
             <Button
               variant="secondary"

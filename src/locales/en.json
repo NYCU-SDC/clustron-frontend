@@ -68,7 +68,9 @@
     "saveFailToast": "Failed to save your full name",
     "getFailToast": "Failed to get your full name",
     "loadingBtn": "Loading...",
-    "saveBtnToolTip": "Please fill in your full name"
+    "saveBtnToolTip": "Please fill in your full name",
+    "cardTitleForLanguage": "Language",
+    "cardDescriptionForLanguage": "Choose the display language in Clustron"
   },
   "settingUsernameForm": {
     "cardTitleForUsername": "Linux Username",
