@@ -82,7 +82,10 @@ export default function GroupMemberRow({
           ) : (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button className="flex items-center gap-1 cursor-pointer font-medium text-sm">
+                <Button
+                  variant="ghost"
+                  className="flex items-center gap-1 font-medium text-sm px-2 py-1 hover:bg-muted"
+                >
                   {getRoleLabel(role)}
                   <ChevronDown className="w-4 h-4" />
                 </Button>
