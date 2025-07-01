@@ -1,4 +1,3 @@
-// import { useState } from "react";
 import { TableRow, TableCell } from "@/components/ui/table";
 import { ChevronDown } from "lucide-react";
 import MemberDeleteMenu from "./MemberDeleteButton";
@@ -8,12 +7,12 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { assignableRolesMap, roleLabelMap } from "@/lib/permission";
 import {
   AccessLevelUser,
   type GroupMemberRoleName,
   type GroupRoleAccessLevel,
 } from "@/types/group";
+import { useRoleMapper } from "@/hooks/useRoleMapper"; //
 
 type Props = {
   name: string;
@@ -32,14 +31,20 @@ export default function GroupMemberRow({
   id,
   email,
   role,
-  accessLevel = AccessLevelUser, //TODO
+  accessLevel = AccessLevelUser,
   onDelete,
   onUpdateRole,
   showActions = false,
   isArchived = false,
 }: Props) {
+  const { assignableRolesMap, roleLabelMap, isLoading } = useRoleMapper();
+
   const assignableRoles = assignableRolesMap[accessLevel] ?? [];
-  // console.log("👀 member role:", role);
+  console.log("[useRoleMapper] accessLevel:", accessLevel);
+  console.log("[useRoleMapper] assignableRolesMap:", assignableRolesMap);
+  console.log("[useRoleMapper] assignableRoles for this row:", assignableRoles);
+  console.log("[useRoleMapper] roleLabelMap:", roleLabelMap);
+  console.log("[useRoleMapper] current role label:", roleLabelMap[role]);
   return (
     <TableRow className="hover:bg-muted">
       <TableCell>{name}</TableCell>
@@ -52,10 +57,12 @@ export default function GroupMemberRow({
       </TableCell>
 
       <TableCell>
-        {showActions &&
-        assignableRoles.length > 0 &&
-        !isArchived &&
-        role !== "group_owner" ? (
+        {isLoading ? (
+          <span className="text-xs text-muted-foreground">Loading...</span>
+        ) : showActions &&
+          assignableRoles.length > 0 &&
+          !isArchived &&
+          role !== "group_owner" ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-1 cursor-pointer font-medium text-sm">

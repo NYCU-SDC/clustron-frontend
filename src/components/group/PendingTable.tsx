@@ -1,7 +1,6 @@
 import { useInfiniteMembers } from "@/hooks/useGetMembers";
 import { useUpdateMember } from "@/hooks/useUpdateMember";
 import PendingRow from "@/components/group/PendingRow.tsx";
-import AddMemberButton from "@/components/group/AddMemberButton";
 import { Card, CardContent } from "@/components/ui/card";
 import { useGroupPermissions } from "@/hooks/useGroupPermissions";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
