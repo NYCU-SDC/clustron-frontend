@@ -4,58 +4,43 @@ import type { GroupMemberRoleName, GroupRoleAccessLevel } from "@/types/group";
 export function useRoleMapper() {
   const { data: roles = [], isLoading, isError } = useGroupRoles();
 
-  // 🔍 Log 原始 API 資料
-  console.log("[useRoleMapper] raw roles:", roles);
-
   const roleNameToId = (name: GroupMemberRoleName): string | undefined => {
-    return roles.find((r) => r.Role === name)?.id;
+    return roles.find((r) => r.Role === name)?.ID;
   };
 
-  // 🔁 access level → role map
-  const assignableRolesMap = roles.reduce<
-    Record<GroupRoleAccessLevel, GroupMemberRoleName[]>
-  >(
-    (map, r) => {
-      const level = r.accessLevel as GroupRoleAccessLevel;
-      const name = r.role as GroupMemberRoleName;
-      if (!map[level]) map[level] = [];
-      map[level].push(name);
-      return map;
-    },
-    {
-      GROUP_OWNER: [],
-      GROUP_ADMIN: [],
-      USER: [],
-    },
-  );
-
-  console.log("[useRoleMapper] assignableRolesMap:", assignableRolesMap);
-
-  //  role name → label map
-  const initialMap: Record<GroupMemberRoleName, string> = {
-    group_owner: "",
-    teacher_assistant: "",
-    student: "",
-    auditor: "",
+  // access level → role list
+  const assignableRolesMap: Record<
+    GroupRoleAccessLevel,
+    GroupMemberRoleName[]
+  > = {
+    GROUP_OWNER: [],
+    GROUP_ADMIN: [],
+    USER: [],
   };
 
-  const roleLabelMap = roles.reduce((map, r) => {
-    const name = r.Role as GroupMemberRoleName;
-    map[name] = capitalizeLabel(name);
-    return map;
-  }, initialMap);
+  roles.forEach((r) => {
+    const level = (r.accessLevel ?? r.AccessLevel) as GroupRoleAccessLevel;
+    const name = (r.role ?? r.Role) as GroupMemberRoleName;
 
-  console.log("[useRoleMapper] roleLabelMap:", roleLabelMap);
+    if (!level || !name) {
+      console.warn("[useRoleMapper] skipped invalid role:", r);
+      return;
+    }
+
+    if (level === "USER") {
+      assignableRolesMap.GROUP_ADMIN.push(name);
+      assignableRolesMap.GROUP_OWNER.push(name);
+    } else if (level === "GROUP_ADMIN") {
+      assignableRolesMap.GROUP_OWNER.push(name);
+    }
+  });
+
+  // console.log("[useRoleMapper] assignableRolesMap:", assignableRolesMap);
 
   return {
     isLoading,
     isError,
     roleNameToId,
     assignableRolesMap,
-    roleLabelMap,
   };
-}
-
-function capitalizeLabel(role: string) {
-  return role.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }

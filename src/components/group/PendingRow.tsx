@@ -12,7 +12,8 @@ import {
   type GroupMemberRoleName,
   type GroupRoleAccessLevel,
 } from "@/types/group";
-import { useRoleMapper } from "@/hooks/useRoleMapper"; // ✅ 改為動態 hook
+import { useRoleMapper } from "@/hooks/useRoleMapper"; //動態 hook
+import { roleLabelMap } from "@/lib/permission"; //靜態 label map
 
 type Props = {
   id: string;
@@ -25,7 +26,7 @@ type Props = {
   isArchived?: boolean;
 };
 
-export default function GroupMemberRow({
+export default function PendingRow({
   id,
   email,
   role,
@@ -35,7 +36,7 @@ export default function GroupMemberRow({
   showActions = false,
   isArchived = false,
 }: Props) {
-  const { assignableRolesMap, roleLabelMap, isLoading } = useRoleMapper();
+  const { assignableRolesMap, isLoading } = useRoleMapper();
   const assignableRoles = assignableRolesMap[accessLevel] ?? [];
 
   return (

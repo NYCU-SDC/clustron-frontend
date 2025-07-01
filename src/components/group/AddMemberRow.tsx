@@ -1,10 +1,10 @@
 import { CircleMinus, CirclePlus } from "lucide-react";
 import {
-  assignableRolesMap,
   roleLabelMap,
   type GlobalRole,
   type GroupRoleAccessLevel,
 } from "@/lib/permission";
+import { useRoleMapper } from "@/hooks/useRoleMapper";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -15,12 +15,12 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import {
-  AccessLevelAdmin,
-  AccessLevelOwner,
+  // AccessLevelAdmin,
+  // AccessLevelOwner,
   GroupMemberRoleName,
+  AccessLevelUser,
 } from "@/types/group";
 import { cn } from "@/lib/utils";
-import { AccessLevelUser } from "@/types/group";
 
 type Props = {
   index: number;
@@ -50,15 +50,13 @@ export default function AddMemberRow({
   onAdd,
   accessLevel = AccessLevelUser,
 }: Props) {
-  const resolvedAccessLevel: GroupRoleAccessLevel = AccessLevelAdmin
-    ? AccessLevelOwner
-    : accessLevel;
+  const resolvedAccessLevel: GroupRoleAccessLevel = accessLevel;
 
-  const assignableRoles =
-    assignableRolesMap[
-      resolvedAccessLevel as keyof typeof assignableRolesMap
-    ] ?? [];
+  const { assignableRolesMap } = useRoleMapper();
 
+  const assignableRoles = assignableRolesMap[resolvedAccessLevel] ?? [];
+  console.log("👉 resolvedAccessLevel:", resolvedAccessLevel);
+  console.log("👉 assignableRoles:", assignableRoles);
   return (
     <tr className="hover:bg-muted">
       <td className="py-2 px-2">
@@ -82,7 +80,7 @@ export default function AddMemberRow({
               e.preventDefault();
               const newMembers = rows.map((r) => ({
                 id: r,
-                role: assignableRoles[0] ?? "student", // 預設為第一個可選角色或 student
+                role: assignableRoles[0] ?? "student",
               }));
               onAddBatch(newMembers);
             }

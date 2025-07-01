@@ -13,7 +13,7 @@ import {
   type GroupRoleAccessLevel,
 } from "@/types/group";
 import { useRoleMapper } from "@/hooks/useRoleMapper"; //
-
+import { roleLabelMap } from "@/lib/permission";
 type Props = {
   name: string;
   id: string;
@@ -37,14 +37,9 @@ export default function GroupMemberRow({
   showActions = false,
   isArchived = false,
 }: Props) {
-  const { assignableRolesMap, roleLabelMap, isLoading } = useRoleMapper();
+  const { assignableRolesMap, isLoading } = useRoleMapper();
 
   const assignableRoles = assignableRolesMap[accessLevel] ?? [];
-  console.log("[useRoleMapper] accessLevel:", accessLevel);
-  console.log("[useRoleMapper] assignableRolesMap:", assignableRolesMap);
-  console.log("[useRoleMapper] assignableRoles for this row:", assignableRoles);
-  console.log("[useRoleMapper] roleLabelMap:", roleLabelMap);
-  console.log("[useRoleMapper] current role label:", roleLabelMap[role]);
   return (
     <TableRow className="hover:bg-muted">
       <TableCell>{name}</TableCell>

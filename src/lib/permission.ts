@@ -32,14 +32,14 @@ export function isReadonlyMember(accessLevel?: GroupRoleAccessLevel) {
   return accessLevel == AccessLevelUser;
 }
 
-export const assignableRolesMap: Record<
-  GroupRoleAccessLevel,
-  GroupMemberRoleName[]
-> = {
-  GROUP_OWNER: ["teacher_assistant", "student", "auditor"],
-  GROUP_ADMIN: ["student", "auditor"],
-  USER: [],
-};
+// export const assignableRolesMap: Record<
+//   GroupRoleAccessLevel,
+//   GroupMemberRoleName[]
+// > = {
+//   GROUP_OWNER: ["teacher_assistant", "student", "auditor"],
+//   GROUP_ADMIN: ["student", "auditor"],
+//   USER: [],
+// };
 //TODO
 export const roleLabelMap: Record<GroupMemberRoleName, string> = {
   group_owner: "Group Owner",
