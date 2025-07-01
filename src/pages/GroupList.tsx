@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import GroupDescription from "@/components/group/GroupDes";
 import { useGetGroups } from "@/hooks/useGetGroups";
 import { useGlobalPermissions } from "@/hooks/useGlobalPermissions";
-import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useContext } from "react";
 import { authContext } from "@/lib/auth/authContext";
 import { AccessLevelAdmin, AccessLevelOwner } from "@/types/group";
@@ -12,9 +11,8 @@ export default function GroupListPage() {
   const navigate = useNavigate();
   const { data, isLoading, isError } = useGetGroups();
   const { canCreateGroup } = useGlobalPermissions();
-  const payload = useJwtPayload();
+
   const { isLoggedIn } = useContext(authContext);
-  console.log(payload);
   if (!isLoggedIn()) {
     navigate("/login");
     return null;

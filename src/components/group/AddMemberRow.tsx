@@ -55,8 +55,6 @@ export default function AddMemberRow({
   const { assignableRolesMap } = useRoleMapper();
 
   const assignableRoles = assignableRolesMap[resolvedAccessLevel] ?? [];
-  console.log("👉 resolvedAccessLevel:", resolvedAccessLevel);
-  console.log("👉 assignableRoles:", assignableRoles);
   return (
     <tr className="hover:bg-muted">
       <td className="py-2 px-2">
