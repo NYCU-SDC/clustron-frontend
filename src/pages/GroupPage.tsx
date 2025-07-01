@@ -26,9 +26,9 @@ export default function GroupPage() {
   if (isLoading || !canView) return null;
 
   return (
-    <div className="flex w-full max-h-screen ">
+    <div className="flex w-full  ">
       <GroupSideBar title={group!.title} />
-      <main className="flex-1 w-full p-6 space-y-6">
+      <main className="flex-1 w-full p-6 ">
         <Outlet context={{ group, groupId: id }} />
       </main>
     </div>
