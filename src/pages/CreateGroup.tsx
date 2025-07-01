@@ -16,6 +16,7 @@ import {
   TableBody,
 } from "@/components/ui/table";
 import { GlobalRole } from "@/lib/permission";
+import { Loader2 } from "lucide-react";
 
 export default function AddGroupPage() {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function AddGroupPage() {
     { id: string; role: GroupMemberRoleName }[]
   >([{ id: "", role: "student" }]);
 
-  const { mutate: createGroup } = useCreateGroup({
+  const createGroup = useCreateGroup({
     onSuccess: () => navigate(`/groups`),
   });
 
@@ -60,12 +61,11 @@ export default function AddGroupPage() {
     const selfIncluded = members.some((m) => m.id.trim() === payloadId);
     if (!selfIncluded) {
       const ownerRoleId = roleNameToId("group_owner");
-      console.log("crategrp", payloadId, ownerRoleId);
       if (!ownerRoleId) throw new Error("Missing group_owner role");
       newMembers.unshift({ member: payloadId, roleId: ownerRoleId });
     }
 
-    createGroup({
+    createGroup.mutate({
       title,
       description,
       members: newMembers,
@@ -152,22 +152,11 @@ export default function AddGroupPage() {
           </Button>
           <Button
             onClick={handleSave}
-            disabled={hasDuplicate || !title.trim()}
-            className={`px-4 py-2 rounded text-white ${
-              hasDuplicate || !title.trim()
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-gray-900"
-            }`}
+            disabled={hasDuplicate || !title.trim() || createGroup.isPending}
           >
             {t("groupPages.createGroup.create")}
           </Button>
         </div>
-
-        {/*{error && (*/}
-        {/*  <p className="text-red-500 text-sm mt-2">*/}
-        {/*    Failed to create group: {(error as Error).message}*/}
-        {/*  </p>*/}
-        {/*)}*/}
       </main>
     </div>
   );

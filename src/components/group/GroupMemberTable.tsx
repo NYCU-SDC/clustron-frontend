@@ -18,6 +18,7 @@ import {
   TableHead,
   TableBody,
 } from "@/components/ui/table";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button.tsx";
 
 type Props = {
@@ -56,11 +57,14 @@ export default function GroupMemberTable({
   const members = data?.pages.flatMap((page) => page.items) ?? [];
 
   const queryClient = useQueryClient();
-  const { mutate: updateMember } = useUpdateMember(groupId, {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["members", groupId] });
+  const { mutate: updateMember, isPending: isUpdatingMember } = useUpdateMember(
+    groupId,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["members", groupId] });
+      },
     },
-  });
+  );
 
   const { roleNameToId } = useRoleMapper();
 
@@ -81,16 +85,19 @@ export default function GroupMemberTable({
     <Card>
       <CardContent className="p-6">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="font-bold text-lg">{t("groupComponents.groupMemberTable.members")}</h3>
+          <h3 className="font-bold text-lg">
+            {t("groupComponents.groupMemberTable.members")}
+          </h3>
           {canEditMembers && !isOverview && (
             <AddMemberButton groupId={groupId} isArchived={isArchived} />
           )}
         </div>
 
         {isLoading ? (
-          <p className="text-sm text-gray-500">
+          <div className="text-sm text-gray-500 flex items-center gap-2">
+            <Loader2 className="w-4 h-4 animate-spin" />
             {t("groupComponents.groupMemberTable.loadingMembers")}
-          </p>
+          </div>
         ) : isError ? (
           <p className="text-sm text-red-500">
             {t("groupComponents.groupMemberTable.failedToLoadMembers")}
@@ -126,6 +133,7 @@ export default function GroupMemberTable({
                     accessLevel={accessLevel}
                     showActions={canEditMembers && !isOverview}
                     isArchived={isArchived}
+                    isPending={isUpdatingMember}
                     onDelete={onRemove ? () => onRemove(m.id) : undefined}
                     onUpdateRole={(newRole) => updateMemberRole(m.id, newRole)}
                   />

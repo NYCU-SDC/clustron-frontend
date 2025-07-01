@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import GroupDescription from "@/components/group/GroupDes";
 import GroupMemberTable from "@/components/group/GroupMemberTable";
+import { Loader2 } from "lucide-react";
 
 export default function GroupOverviewPage() {
   const { id } = useParams<{ id: string }>();
@@ -14,7 +15,12 @@ export default function GroupOverviewPage() {
       <div className="p-6">{t("groupPages.groupOverview.provideCourseId")}</div>
     );
   if (isLoading)
-    return <div className="p-6">{t("groupPages.groupOverview.loading")}</div>;
+    return (
+      <div className="p-6">
+        <Loader2 className="w-4 h-4 animate-spin" />
+        {t("groupPages.groupOverview.loading")}
+      </div>
+    );
   if (isError || !group)
     return (
       <div className="p-6">{t("groupPages.groupOverview.courseNotFound")}</div>
