@@ -21,6 +21,7 @@ import {
 } from "@/types/group";
 import { cn } from "@/lib/utils";
 import { AccessLevelUser } from "@/types/group";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   index: number;
@@ -52,6 +53,7 @@ export default function AddMemberRow({
   onAdd,
   accessLevel = AccessLevelUser,
 }: Props) {
+  const { t } = useTranslation();
   const resolvedAccessLevel: GroupRoleAccessLevel = AccessLevelAdmin
     ? AccessLevelOwner
     : accessLevel;
@@ -63,19 +65,30 @@ export default function AddMemberRow({
 
   const isInputDisabled = disabled || isPending;
 
+  // for role i18n
+  const getRoleLabel = (roleName: GroupMemberRoleName) => {
+    return (
+      t(`groupComponents.roles.${roleName}`) ||
+      roleLabelMap[roleName] ||
+      roleName
+    );
+  };
+
   return (
     <tr className={`hover:bg-muted ${isPending ? "opacity-50" : ""}`}>
       <td className="py-2 px-2">
         <Input
           value={id}
           disabled={isInputDisabled}
-          placeholder="Enter StudentID or Email"
+          placeholder={t("groupComponents.addMemberRow.enterStudentIdOrEmail")}
           className={cn(
             "h-10 w-full text-sm",
             isDuplicate && "border-red-500 bg-red-50",
           )}
           onChange={(e) => onChange(index, "id", e.target.value)}
-          title={isDuplicate ? "Duplicate entry" : ""}
+          title={
+            isDuplicate ? t("groupComponents.addMemberRow.duplicateEntry") : ""
+          }
           onPaste={(e) => {
             const pasted = e.clipboardData.getData("text");
             const rows = pasted
@@ -103,12 +116,15 @@ export default function AddMemberRow({
           }
         >
           <SelectTrigger className="h-10 w-full text-sm">
-            <SelectValue>{roleLabelMap[role] ?? "Select Role"}</SelectValue>
+            <SelectValue>
+              {getRoleLabel(role) ??
+                t("groupComponents.addMemberRow.selectRole")}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {assignableRoles.map((r) => (
               <SelectItem key={r} value={r}>
-                {roleLabelMap[r] ?? r}
+                {getRoleLabel(r)}
               </SelectItem>
             ))}
           </SelectContent>
@@ -124,11 +140,7 @@ export default function AddMemberRow({
             disabled={isInputDisabled}
             className="text-gray-600 hover:text-black"
           >
-            {isPending ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <CirclePlus size={16} />
-            )}
+            <CirclePlus size={16} />
           </Button>
         ) : (
           <Button
@@ -138,11 +150,7 @@ export default function AddMemberRow({
             disabled={isInputDisabled}
             className="text-red-600 hover:text-red-800"
           >
-            {isPending ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <CircleMinus size={16} />
-            )}
+            <CircleMinus size={16} />
           </Button>
         )}
       </td>

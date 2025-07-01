@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   onConfirm: () => Promise<void> | void;
@@ -24,6 +25,7 @@ type Props = {
 
 export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
   const [isPending, setIsPending] = useState(false);
 
   const handleDelete = async () => {
@@ -51,7 +53,7 @@ export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
               className="text-red-600"
               onClick={() => setOpen(true)}
             >
-              Remove User
+              {t("groupComponents.memberDeleteButton.removeUser")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         )}
@@ -61,30 +63,30 @@ export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="text-red-600">
-              Delete User Confirm
+              {t("groupComponents.memberDeleteButton.deleteUserConfirm")}
             </DialogTitle>
             <DialogDescription>
-              Are you sure to delete this user? This action is not recoverable.
+              {t("groupComponents.memberDeleteButton.deleteConfirmation")}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex justify-end gap-2">
-            <DialogClose asChild disabled={isPending}>
-              <Button variant="outline">Cancel</Button>
+            <DialogClose asChild>
+              <Button variant="outline">
+                {t("groupComponents.memberDeleteButton.cancel")}
+              </Button>
             </DialogClose>
-            <Button
-              variant="destructive"
-              onClick={handleDelete}
-              disabled={isPending}
-            >
-              {isPending ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Deleting...
-                </>
-              ) : (
-                "Delete"
-              )}
-            </Button>
+            <DialogClose asChild>
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  if (!isArchived) onConfirm();
+                }}
+                //onClick={handleDelete}
+                disabled={isPending}
+              >
+                {t("groupComponents.memberDeleteButton.delete")}
+              </Button>
+            </DialogClose>
           </DialogFooter>
         </DialogContent>
       </Dialog>

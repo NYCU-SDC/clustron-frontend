@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AddMemberRow from "@/components/group/AddMemberRow";
@@ -19,6 +20,7 @@ import { Loader2 } from "lucide-react";
 
 export default function AddGroupPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const payload = useJwtPayload();
   const { roleNameToId } = useRoleMapper();
 
@@ -84,27 +86,35 @@ export default function AddGroupPage() {
   return (
     <div className="flex w-full justify-center">
       <main className="w-full max-w-3xl p-6">
-        <h1 className="text-2xl font-bold mb-6">Create New Group</h1>
+        <h1 className="text-2xl font-bold mb-6">
+          {t("groupPages.createGroup.title")}
+        </h1>
 
         <div className="mb-6 space-y-3">
           <Input
-            placeholder="Course Title"
+            placeholder={t("groupPages.createGroup.courseTitlePlaceholder")}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <Input
-            placeholder="Course Description"
+            placeholder={t(
+              "groupPages.createGroup.courseDescriptionPlaceholder",
+            )}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
 
-        <h2 className="text-lg font-semibold mb-2">Add Initial Members</h2>
+        <h2 className="text-lg font-semibold mb-2">
+          {t("groupPages.createGroup.addInitialMembers")}
+        </h2>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Student ID or Email</TableHead>
-              <TableHead>Role</TableHead>
+              <TableHead>
+                {t("groupPages.createGroup.studentIdOrEmail")}
+              </TableHead>
+              <TableHead>{t("groupPages.createGroup.role")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -134,21 +144,17 @@ export default function AddGroupPage() {
         </Table>
 
         <div className="mt-6 flex justify-end gap-3">
-          <Button variant="outline" onClick={() => navigate("/groups")}>
-            Cancel
+          <Button
+            onClick={() => navigate("/groups")}
+            className="px-4 py-2 border rounded"
+          >
+            {t("groupPages.createGroup.cancel")}
           </Button>
           <Button
             onClick={handleSave}
             disabled={hasDuplicate || !title.trim() || createGroup.isPending}
           >
-            {createGroup.isPending ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Creating...
-              </>
-            ) : (
-              "Create"
-            )}
+            {t("groupPages.createGroup.create")}
           </Button>
         </div>
       </main>
