@@ -1,10 +1,20 @@
 import { NavLink } from "react-router";
-import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { useContext } from "react";
 import { authContext } from "@/lib/auth/authContext";
+import {
+  DropdownMenu,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import ColorModeToggle from "@/components/ColorModeToggle";
-import LangSwitcher from "@/components/LangSwitcher";
+import { CircleUserRound } from "lucide-react";
+import { getAccessToken } from "@/lib/token";
+import type { AccessToken } from "@/types/type";
+import { jwtDecode } from "jwt-decode";
 
 function navLinkclass(isActive: boolean) {
   return [
@@ -44,15 +54,21 @@ export default function Navbar() {
         </div>
         <div className="flex items-center space-x-4">
           <ColorModeToggle />
-          <LangSwitcher />
           {isLoggedIn() ? (
-            <Button
-              variant="secondary"
-              className="cursor-pointer"
-              onClick={logout}
-            >
-              {t("navbar.logoutBtn")}
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <CircleUserRound />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel className="text-gray-600 dark:text-gray-400">
+                  {jwtDecode<AccessToken>(getAccessToken()!).Email}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={logout}>
+                  {t("navbar.logoutBtn")}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : null}
         </div>
       </div>
