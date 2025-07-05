@@ -23,6 +23,7 @@ import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2Icon } from "lucide-react";
+import LangSwitcher from "@/components/LangSwitcher";
 
 export default function SettingNameForm({
   className,
@@ -129,6 +130,21 @@ export default function SettingNameForm({
             </TooltipProvider>
           </div>
         </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between">
+            <div className="flex flex-col gap-1.5">
+              <CardTitle className="text-2xl">
+                {t("settingNameForm.cardTitleForLanguage")}
+              </CardTitle>
+              <CardDescription>
+                {t("settingNameForm.cardDescriptionForLanguage")}
+              </CardDescription>
+            </div>
+            <LangSwitcher />
+          </div>
+        </CardHeader>
       </Card>
     </div>
   );
