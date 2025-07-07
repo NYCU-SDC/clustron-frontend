@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { useInfiniteMembers } from "@/hooks/useGetMembers";
 import { useUpdateMember } from "@/hooks/useUpdateMember";
-import PendingRow from "@/components/group/PendingMemberRow.tsx";
+import PendingRow from "@/components/group/PendingMemberRow";
 import { Card, CardContent } from "@/components/ui/card";
 import { useGroupPermissions } from "@/hooks/useGroupPermissions";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
@@ -12,6 +12,8 @@ import {
   PaginationContent,
   PaginationItem,
   PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
 } from "@/components/ui/pagination";
 
 import type { GlobalRole, GroupRoleAccessLevel } from "@/lib/permission";
@@ -34,7 +36,7 @@ type Props = {
 
 export default function PendingMemberTable({
   groupId,
-  accessLevel = AccessLevelUser, // default access level
+  accessLevel = AccessLevelUser,
   globalRole,
   onRemove,
   isArchived = false,
@@ -65,14 +67,12 @@ export default function PendingMemberTable({
       console.error(`Invalid role name: ${newRole}`);
       return;
     }
-
     updateMember({ memberId, roleId });
   };
 
-  const pageSize = 10;
+  const pageSize = 10; // Number of members per page
+  const totalPages = Math.max(1, Math.ceil(members.length / pageSize));
   const [currentPage, setCurrentPage] = useState(1);
-
-  const totalPages = Math.ceil(members.length / pageSize);
 
   const pagedMembers = useMemo(() => {
     const start = (currentPage - 1) * pageSize;
@@ -118,34 +118,34 @@ export default function PendingMemberTable({
               </TableBody>
             </Table>
 
-            {/* ✅ Pagination */}
             <div className="mt-6 flex justify-center">
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>
-                    <PaginationLink
-                      onClick={() =>
-                        setCurrentPage((prev) => Math.max(prev - 1, 1))
-                      }
-                      isActive={false}
-                    >
-                      Previous
-                    </PaginationLink>
+                    <PaginationPrevious
+                      onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                    />
                   </PaginationItem>
 
-                  <PaginationItem>
-                    <PaginationLink isActive>{currentPage}</PaginationLink>
-                  </PaginationItem>
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                    (page) => (
+                      <PaginationItem key={page}>
+                        <PaginationLink
+                          isActive={page === currentPage}
+                          onClick={() => setCurrentPage(page)}
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ),
+                  )}
 
                   <PaginationItem>
-                    <PaginationLink
+                    <PaginationNext
                       onClick={() =>
-                        setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                        setCurrentPage((p) => Math.min(p + 1, totalPages))
                       }
-                      isActive={false}
-                    >
-                      Next
-                    </PaginationLink>
+                    />
                   </PaginationItem>
                 </PaginationContent>
               </Pagination>
