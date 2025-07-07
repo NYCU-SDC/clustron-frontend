@@ -24,7 +24,11 @@ export default function Callback() {
       return;
     }
 
-    setCookiesForAuthToken(accessToken, refreshToken);
+    setCookiesForAuthToken({
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+      expirationTime: Date.now() + 60 * 60 * 24 * 1000,
+    });
 
     let redirectTo;
     if (jwtDecode<AccessToken>(accessToken).Role === "role_not_setup") {

@@ -1,4 +1,4 @@
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet, useParams, useNavigate } from "react-router-dom";
 import GroupSideBar from "@/components/group/GroupSideBar";
 import GroupDescription from "@/components/group/GroupDes";
 import { useGetGroupById } from "@/hooks/useGetGroupById";

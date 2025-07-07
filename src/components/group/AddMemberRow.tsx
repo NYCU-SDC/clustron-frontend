@@ -1,4 +1,4 @@
-import { CircleMinus, CirclePlus } from "lucide-react";
+import { CircleMinus, CirclePlus, Loader2 } from "lucide-react";
 import {
   assignableRolesMap,
   roleLabelMap,
@@ -21,6 +21,7 @@ import {
 } from "@/types/group";
 import { cn } from "@/lib/utils";
 import { AccessLevelUser } from "@/types/group";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   index: number;
@@ -29,6 +30,7 @@ type Props = {
   isLast: boolean;
   isDuplicate?: boolean;
   disabled?: boolean;
+  isPending?: boolean;
   onAddBatch: (
     newMembers: { id: string; roleName: GroupMemberRoleName }[],
   ) => void;
@@ -46,12 +48,14 @@ export default function AddMemberRow({
   isLast,
   isDuplicate,
   disabled = false,
+  isPending = false,
   onAddBatch,
   onChange,
   onRemove,
   onAdd,
   accessLevel = AccessLevelUser,
 }: Props) {
+  const { t } = useTranslation();
   const resolvedAccessLevel: GroupRoleAccessLevel = AccessLevelAdmin
     ? AccessLevelOwner
     : accessLevel;
@@ -61,19 +65,32 @@ export default function AddMemberRow({
       resolvedAccessLevel as keyof typeof assignableRolesMap
     ] ?? [];
 
+  const isInputDisabled = disabled || isPending;
+
+  // for role i18n
+  const getRoleLabel = (roleName: GroupMemberRoleName) => {
+    const translated = t?.(`groupComponents.roles.${roleName}`);
+    if (translated && translated !== `groupComponents.roles.${roleName}`) {
+      return translated;
+    }
+
+    return roleLabelMap[roleName] ?? roleName;
+  };
   return (
-    <tr className="hover:bg-muted">
+    <tr className={`hover:bg-muted ${isPending ? "opacity-50" : ""}`}>
       <td className="py-2 px-2">
         <Input
           value={id}
-          disabled={disabled}
-          placeholder="Enter StudentID or Email"
+          disabled={isInputDisabled}
+          placeholder={t("groupComponents.addMemberRow.enterStudentIdOrEmail")}
           className={cn(
             "h-10 w-full text-sm",
             isDuplicate && "border-red-500 bg-red-50",
           )}
           onChange={(e) => onChange(index, "id", e.target.value)}
-          title={isDuplicate ? "Duplicate entry" : ""}
+          title={
+            isDuplicate ? t("groupComponents.addMemberRow.duplicateEntry") : ""
+          }
           onPaste={(e) => {
             const pasted = e.clipboardData.getData("text");
             const rows = pasted
@@ -95,18 +112,21 @@ export default function AddMemberRow({
       <td className="py-2 px-2">
         <Select
           value={roleName}
-          disabled={disabled}
+          disabled={isInputDisabled}
           onValueChange={(value) =>
             onChange(index, "roleName", value as GroupMemberRoleName)
           }
         >
           <SelectTrigger className="h-10 w-full text-sm">
-            <SelectValue>{roleLabelMap[roleName] ?? "Select Role"}</SelectValue>
+            <SelectValue>
+              {getRoleLabel(roleName) ??
+                t("groupComponents.addMemberRow.selectRole")}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {assignableRoles.map((r) => (
               <SelectItem key={r} value={r}>
-                {roleLabelMap[r] ?? r}
+                {getRoleLabel(r)}
               </SelectItem>
             ))}
           </SelectContent>
@@ -119,7 +139,7 @@ export default function AddMemberRow({
             variant="ghost"
             size="icon"
             onClick={onAdd}
-            disabled={disabled}
+            disabled={isInputDisabled}
             className="text-gray-600 hover:text-black"
           >
             <CirclePlus size={16} />
@@ -129,7 +149,7 @@ export default function AddMemberRow({
             variant="ghost"
             size="icon"
             onClick={() => onRemove(index)}
-            disabled={disabled}
+            disabled={isInputDisabled}
             className="text-red-600 hover:text-red-800"
           >
             <CircleMinus size={16} />
