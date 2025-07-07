@@ -1,12 +1,18 @@
+import { useState, useMemo } from "react";
 import { useInfiniteMembers } from "@/hooks/useGetMembers";
 import { useUpdateMember } from "@/hooks/useUpdateMember";
-import PendingRow from "@/components/group/PendingRow.tsx";
-import AddMemberButton from "@/components/group/AddMemberButton";
+import PendingRow from "@/components/group/PendingMemberRow.tsx";
 import { Card, CardContent } from "@/components/ui/card";
 import { useGroupPermissions } from "@/hooks/useGroupPermissions";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
 import { useQueryClient } from "@tanstack/react-query";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from "@/components/ui/pagination";
 
 import type { GlobalRole, GroupRoleAccessLevel } from "@/lib/permission";
 import { AccessLevelUser, type GroupMemberRoleName } from "@/types/group";
@@ -17,7 +23,6 @@ import {
   TableHead,
   TableBody,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button.tsx";
 
 type Props = {
   groupId: string;
@@ -27,9 +32,9 @@ type Props = {
   isArchived?: boolean;
 };
 
-export default function PendingTable({
+export default function PendingMemberTable({
   groupId,
-  accessLevel = AccessLevelUser,
+  accessLevel = AccessLevelUser, // default access level
   globalRole,
   onRemove,
   isArchived = false,
@@ -41,14 +46,7 @@ export default function PendingTable({
     effectiveGlobalRole,
   );
 
-  const {
-    data,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isError,
-  } = useInfiniteMembers(groupId);
+  const { data, isLoading, isError } = useInfiniteMembers(groupId);
 
   const members = data?.pages.flatMap((page) => page.items) ?? [];
 
@@ -68,15 +66,22 @@ export default function PendingTable({
       return;
     }
 
-    updateMember({
-      memberId,
-      roleId,
-    });
+    updateMember({ memberId, roleId });
   };
+
+  const pageSize = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(members.length / pageSize);
+
+  const pagedMembers = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    return members.slice(start, start + pageSize);
+  }, [members, currentPage]);
 
   return (
     <Card>
-      <CardContent className="p-6 ">
+      <CardContent className="p-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-bold text-lg">Pending Members</h3>
         </div>
@@ -86,7 +91,7 @@ export default function PendingTable({
         ) : isError ? (
           <p className="text-sm text-red-500">Failed to load members.</p>
         ) : members.length === 0 ? (
-          <p className="text-sm text-gray-500">No members found.</p>
+          <p className="text-sm text-gray-500">No pending members found.</p>
         ) : (
           <>
             <Table>
@@ -97,7 +102,7 @@ export default function PendingTable({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {members.map((m) => (
+                {pagedMembers.map((m) => (
                   <PendingRow
                     key={m.id}
                     id={m.studentId}
@@ -113,17 +118,38 @@ export default function PendingTable({
               </TableBody>
             </Table>
 
-            {hasNextPage && (
-              <div className="mt-4 w-full flex justify-center">
-                <Button
-                  onClick={() => fetchNextPage()}
-                  disabled={isFetchingNextPage}
-                  className="text-sm text-blue-600 hover:underline"
-                >
-                  {isFetchingNextPage ? "Loading more..." : "Load more"}
-                </Button>
-              </div>
-            )}
+            {/* ✅ Pagination */}
+            <div className="mt-6 flex justify-center">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationLink
+                      onClick={() =>
+                        setCurrentPage((prev) => Math.max(prev - 1, 1))
+                      }
+                      isActive={false}
+                    >
+                      Previous
+                    </PaginationLink>
+                  </PaginationItem>
+
+                  <PaginationItem>
+                    <PaginationLink isActive>{currentPage}</PaginationLink>
+                  </PaginationItem>
+
+                  <PaginationItem>
+                    <PaginationLink
+                      onClick={() =>
+                        setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                      }
+                      isActive={false}
+                    >
+                      Next
+                    </PaginationLink>
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
           </>
         )}
       </CardContent>
