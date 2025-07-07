@@ -134,3 +134,46 @@ export type UpdateGroupMemberResponse = GroupMember;
 export type ArchiveGroupParams = {
   id: string;
 };
+
+// =========================
+// 🔹 GET /api/groups/{id}/pendingMembers
+// =========================
+
+export type PendingMember = {
+  id: string;
+  userIdentifier: string; // email or student ID
+  role: GroupRole;
+  groupId: string;
+};
+
+export type GetPendingMembersResponse = {
+  pendingMembers: {
+    items: PendingMember[];
+    totalPages: number;
+    totalItems: number;
+    currentPage: number;
+    pageSize: number;
+    hasNextPage: boolean;
+  };
+};
+
+// =========================
+// 🔹 DELETE /api/groups/{id}/pendingMembers/{pendingId}
+// =========================
+
+export type RemovePendingMemberParams = {
+  id: string; // groupId
+  pendingId: string; // pending member id
+};
+
+// =========================
+// 🔹 PUT /api/groups/{id}/pendingMembers/{pendingId}
+// =========================
+
+export type UpdatePendingMemberInput = {
+  id: string; // groupId
+  pendingId: string; // pending member id
+  role: GroupMemberRoleName;
+};
+
+export type UpdatePendingMemberResponse = PendingMember;

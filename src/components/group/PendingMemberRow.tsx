@@ -1,4 +1,3 @@
-// import { useState } from "react";
 import { TableRow, TableCell } from "@/components/ui/table";
 import { ChevronDown } from "lucide-react";
 import MemberDeleteMenu from "./MemberDeleteButton";
@@ -14,6 +13,8 @@ import {
   type GroupMemberRoleName,
   type GroupRoleAccessLevel,
 } from "@/types/group";
+// import { useRoleMapper } from "@/hooks/useRoleMapper"; //動態 hook
+// import { roleLabelMap } from "@/lib/permission"; //靜態 label map
 
 type Props = {
   id: string;
@@ -26,7 +27,7 @@ type Props = {
   isArchived?: boolean;
 };
 
-export default function GroupMemberRow({
+export default function PendingMemberRow({
   id,
   email,
   role,
@@ -37,7 +38,7 @@ export default function GroupMemberRow({
   isArchived = false,
 }: Props) {
   const assignableRoles = assignableRolesMap[accessLevel] ?? [];
-  // console.log("👀 member role:", role);
+
   return (
     <TableRow className="hover:bg-muted">
       <TableCell>
