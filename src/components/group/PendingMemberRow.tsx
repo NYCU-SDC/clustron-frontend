@@ -30,7 +30,7 @@ export default function GroupMemberRow({
   id,
   email,
   role,
-  accessLevel = AccessLevelUser, //TODO
+  accessLevel = AccessLevelUser, //default to user access level
   onDelete,
   onUpdateRole,
   showActions = false,

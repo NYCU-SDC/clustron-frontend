@@ -2,7 +2,7 @@ import { useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import GroupDescription from "@/components/group/GroupDes";
 import GroupMemberTable from "@/components/group/GroupMemberTable";
-import PendingTable from "@/components/group/PendingTable.tsx";
+import PendingMemberTable from "@/components/group/PendingMemberTable.tsx";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import { useArchiveGroup } from "@/hooks/useArchiveGroup";
 import { useUnarchiveGroup } from "@/hooks/useUnarchiveGroup";
@@ -86,7 +86,7 @@ export default function GroupSettings() {
           onRemove={handleRemove}
           isOverview={false}
         />
-        <PendingTable
+        <PendingMemberTable
           groupId={group.id}
           accessLevel={group.me.role.accessLevel} //
           globalRole={isAdmin ? "admin" : undefined} //
