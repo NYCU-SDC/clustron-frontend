@@ -1,12 +1,12 @@
 import { useState, useMemo } from "react";
-import { useInfiniteMembers } from "@/hooks/useGetMembers";
-import { useUpdateMember } from "@/hooks/useUpdateMember";
-import PendingRow from "@/components/group/PendingMemberRow";
 import { Card, CardContent } from "@/components/ui/card";
-import { useGroupPermissions } from "@/hooks/useGroupPermissions";
-import { useJwtPayload } from "@/hooks/useJwtPayload";
-import { useRoleMapper } from "@/hooks/useRoleMapper";
-import { useQueryClient } from "@tanstack/react-query";
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+} from "@/components/ui/table";
 import {
   Pagination,
   PaginationContent,
@@ -15,31 +15,35 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import PendingRow from "@/components/group/PendingMemberRow";
+import { useGroupPermissions } from "@/hooks/useGroupPermissions";
+import { useJwtPayload } from "@/hooks/useJwtPayload";
+import { useRoleMapper } from "@/hooks/useRoleMapper";
+import { useGetPendingMembers } from "@/hooks/useGetPendingMembers";
+import { useUpdatePendingMember } from "@/hooks/useUpdatePendingMember";
+import { useRemovePendingMember } from "@/hooks/useRemovePendingMember";
 
-import type { GlobalRole, GroupRoleAccessLevel } from "@/lib/permission";
-import { AccessLevelUser, type GroupMemberRoleName } from "@/types/group";
-import {
-  Table,
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableBody,
-} from "@/components/ui/table";
+import type {
+  GlobalRole,
+  GroupRoleAccessLevel,
+  GroupMemberRoleName,
+} from "@/types/group";
+import { AccessLevelUser } from "@/types/group";
 
 type Props = {
   groupId: string;
   accessLevel?: GroupRoleAccessLevel;
   globalRole?: GlobalRole;
-  onRemove?: (memberId: string) => void;
   isArchived?: boolean;
+  onRemove?: (pendingId: string) => void;
 };
 
 export default function PendingMemberTable({
   groupId,
   accessLevel = AccessLevelUser,
   globalRole,
-  onRemove,
   isArchived = false,
+  onRemove,
 }: Props) {
   const payload = useJwtPayload();
   const effectiveGlobalRole = globalRole ?? (payload?.Role as GlobalRole);
@@ -47,37 +51,41 @@ export default function PendingMemberTable({
     accessLevel,
     effectiveGlobalRole,
   );
-
-  const { data, isLoading, isError } = useInfiniteMembers(groupId);
-
-  const members = data?.pages.flatMap((page) => page.items) ?? [];
-
-  const queryClient = useQueryClient();
-  const { mutate: updateMember } = useUpdateMember(groupId, {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["members", groupId] });
-    },
-  });
-
+  const { data, isLoading, isError } = useGetPendingMembers(groupId);
+  const { mutate: updatePendingMember } = useUpdatePendingMember(groupId);
+  const { mutate: removePendingMember } = useRemovePendingMember(groupId);
   const { roleNameToId } = useRoleMapper();
-
-  const updateMemberRole = (memberId: string, newRole: GroupMemberRoleName) => {
-    const roleId = roleNameToId(newRole);
-    if (!roleId) {
-      console.error(`Invalid role name: ${newRole}`);
-      return;
-    }
-    updateMember({ memberId, roleId });
-  };
-
-  const pageSize = 10; // Number of members per page
-  const totalPages = Math.max(1, Math.ceil(members.length / pageSize));
+  const members = data?.items ?? [];
+  const pageSize = 10;
   const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.max(1, Math.ceil(members.length / pageSize));
 
   const pagedMembers = useMemo(() => {
     const start = (currentPage - 1) * pageSize;
     return members.slice(start, start + pageSize);
   }, [members, currentPage]);
+
+  const handleUpdateRole = (
+    pendingId: string,
+    newRole: GroupMemberRoleName,
+  ) => {
+    const roleId = roleNameToId(newRole);
+    if (!roleId) {
+      console.error(" Invalid role name:", newRole);
+      return;
+    }
+
+    updatePendingMember({
+      id: groupId,
+      pendingId: pendingId,
+      role: roleId,
+    });
+  };
+
+  const handleRemove = (pendingId: string) => {
+    removePendingMember({ id: groupId, pendingId });
+    onRemove?.(pendingId);
+  };
 
   return (
     <Card>
@@ -105,14 +113,15 @@ export default function PendingMemberTable({
                 {pagedMembers.map((m) => (
                   <PendingRow
                     key={m.id}
-                    id={m.studentId}
-                    email={m.email}
+                    id={m.userIdentifier}
+                    email={m.userIdentifier}
                     role={m.role.Role as GroupMemberRoleName}
                     accessLevel={accessLevel}
                     showActions={canEditMembers}
                     isArchived={isArchived}
-                    onDelete={onRemove ? () => onRemove(m.id) : undefined}
-                    onUpdateRole={(newRole) => updateMemberRole(m.id, newRole)}
+                    onDelete={() => handleRemove(m.id)}
+                    onUpdateRole={(newRole) => handleUpdateRole(m.id, newRole)}
+                    roleId={""}
                   />
                 ))}
               </TableBody>

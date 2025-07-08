@@ -78,7 +78,7 @@ export default function GroupSettings() {
           onRemove={handleRemove}
         />
         <PendingMemberTable
-          groupId={group.id}
+          groupId={group.id} //
           accessLevel={group.me.role.accessLevel} //
           globalRole={isAdmin ? "admin" : undefined} //
           isArchived={group.isArchived}

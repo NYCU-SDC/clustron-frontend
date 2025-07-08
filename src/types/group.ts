@@ -136,44 +136,42 @@ export type ArchiveGroupParams = {
 };
 
 // =========================
-// 🔹 GET /api/groups/{id}/pendingMembers
+// 🔹 Pending Member Types
 // =========================
 
 export type PendingMember = {
   id: string;
-  userIdentifier: string; // email or student ID
-  role: GroupRole;
+  userIdentifier: string;
   groupId: string;
-};
-
-export type GetPendingMembersResponse = {
-  pendingMembers: {
-    items: PendingMember[];
-    totalPages: number;
-    totalItems: number;
-    currentPage: number;
-    pageSize: number;
-    hasNextPage: boolean;
+  role: {
+    ID: string;
+    Role: GroupMemberRoleName;
+    AccessLevel: GroupRoleAccessLevel;
   };
 };
 
-// =========================
-// 🔹 DELETE /api/groups/{id}/pendingMembers/{pendingId}
-// =========================
-
-export type RemovePendingMemberParams = {
-  id: string; // groupId
-  pendingId: string; // pending member id
+export type GetPendingMembersResponse = {
+  items: PendingMember[];
+  totalPages: number;
+  totalItems: number;
+  currentPage: number;
+  pageSize: number;
+  hasNextPage: boolean;
 };
 
-// =========================
-// 🔹 PUT /api/groups/{id}/pendingMembers/{pendingId}
-// =========================
-
+// PUT /api/groups/{id}/pendingMembers/{pendingId}
 export type UpdatePendingMemberInput = {
-  id: string; // groupId
+  id: string; // group id
   pendingId: string; // pending member id
-  role: GroupMemberRoleName;
+  role: string; // role id (e.g., 'student')
 };
 
-export type UpdatePendingMemberResponse = PendingMember;
+export type UpdatePendingMemberResponse = {
+  pendingMember: PendingMember;
+};
+
+// DELETE /api/groups/{id}/pendingMembers/{pendingId}
+export type RemovePendingMemberParams = {
+  id: string; // group id
+  pendingId: string; // pending member id
+};
