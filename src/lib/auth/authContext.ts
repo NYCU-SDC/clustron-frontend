@@ -7,17 +7,8 @@ type AuthContextType = {
   setCookiesForAuthToken: (data: AuthCookie) => void;
   logout: () => void;
   isLoggedIn: () => boolean;
-  email: () => string | null;
-  refreshMutation: UseMutationResult<
-    {
-      accessToken: string;
-      refreshToken: string;
-      refreshTokenExpirationTime: number;
-    },
-    Error,
-    void,
-    unknown
-  >;
+  getEmail: () => string | null;
+  refreshMutation: UseMutationResult<AuthCookie, Error, void, unknown>;
 };
 
 export const authContext = createContext<AuthContextType>({
@@ -38,19 +29,10 @@ export const authContext = createContext<AuthContextType>({
     return false;
   },
 
-  email: () => {
+  getEmail: () => {
     console.warn("email() called without AuthProvider");
     return null;
   },
 
-  refreshMutation: {} as UseMutationResult<
-    {
-      accessToken: string;
-      refreshToken: string;
-      refreshTokenExpirationTime: number;
-    },
-    Error,
-    void,
-    unknown
-  >,
+  refreshMutation: {} as UseMutationResult<AuthCookie, Error, void, unknown>,
 });

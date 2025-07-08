@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return false;
   }, [cookies.refreshToken]);
 
-  const email = useCallback(() => {
+  const getEmail = useCallback(() => {
     if (cookies.accessToken) {
       return jwtDecode<AccessToken>(cookies.accessToken).Email;
     }
@@ -119,7 +119,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setCookiesForAuthToken,
         logout,
         isLoggedIn,
-        email,
+        getEmail,
         refreshMutation,
       }}
     >

@@ -24,7 +24,7 @@ function navLinkclass(isActive: boolean) {
 }
 
 export default function Navbar() {
-  const { logout, isLoggedIn, email } = useContext(authContext);
+  const { logout, isLoggedIn, getEmail } = useContext(authContext);
   const { t } = useTranslation();
 
   return (
@@ -58,7 +58,7 @@ export default function Navbar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel className="text-gray-600 dark:text-gray-400">
-                  {email()}
+                  {getEmail()}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logout}>
