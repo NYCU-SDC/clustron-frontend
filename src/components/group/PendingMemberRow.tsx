@@ -20,6 +20,7 @@ type Props = {
   id: string;
   email: string;
   role: GroupMemberRoleName;
+  roleId: string;
   accessLevel?: GroupRoleAccessLevel;
   onDelete?: () => void;
   onUpdateRole?: (newRole: GroupMemberRoleName) => void;

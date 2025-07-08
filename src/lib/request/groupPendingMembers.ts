@@ -6,24 +6,14 @@ import type {
   UpdatePendingMemberResponse,
 } from "@/types/group";
 
-//  GET /api/groups/{id}/pendingMembers
+// GET
 export async function getPendingMembers(
   groupId: string,
 ): Promise<GetPendingMembersResponse> {
   return api(`/api/groups/${groupId}/pendingMembers`);
 }
 
-// DELETE /api/groups/{id}/pendingMembers/{pendingId}
-export async function removePendingMember({
-  id,
-  pendingId,
-}: RemovePendingMemberParams): Promise<void> {
-  return api(`/api/groups/${id}/pendingMembers/${pendingId}`, {
-    method: "DELETE",
-  });
-}
-
-// PUT /api/groups/{id}/pendingMembers/{pendingId}
+// PUT
 export async function updatePendingMember({
   id,
   pendingId,
@@ -32,5 +22,15 @@ export async function updatePendingMember({
   return api(`/api/groups/${id}/pendingMembers/${pendingId}`, {
     method: "PUT",
     body: JSON.stringify({ role }),
+  });
+}
+
+// DELETE
+export async function removePendingMember({
+  id,
+  pendingId,
+}: RemovePendingMemberParams): Promise<void> {
+  return api(`/api/groups/${id}/pendingMembers/${pendingId}`, {
+    method: "DELETE",
   });
 }
