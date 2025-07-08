@@ -7,21 +7,16 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import {
-  AccessLevelUser,
-  type GroupMemberRoleName,
-  type GroupRoleAccessLevel,
-} from "@/types/group";
-import { useRoleMapper } from "@/hooks/useRoleMapper"; //動態 hook
-import { roleLabelMap } from "@/lib/permission"; //靜態 label map
+import { AccessLevelUser, type GroupRoleAccessLevel } from "@/types/group";
+import { useRoleMapper } from "@/hooks/useRoleMapper";
 
 type Props = {
   id: string;
   email: string;
-  role: GroupMemberRoleName;
+  role: string; // ✅ dynamic role name
   accessLevel?: GroupRoleAccessLevel;
   onDelete?: () => void;
-  onUpdateRole?: (newRole: GroupMemberRoleName) => void;
+  onUpdateRole?: (newRole: string) => void;
   showActions?: boolean;
   isArchived?: boolean;
 };
@@ -36,8 +31,11 @@ export default function PendingRow({
   showActions = false,
   isArchived = false,
 }: Props) {
-  const { assignableRolesMap, isLoading } = useRoleMapper();
-  const assignableRoles = assignableRolesMap[accessLevel] ?? [];
+  const { getRolesByAccessLevel, roles, isLoading } = useRoleMapper();
+
+  const assignableRoles = getRolesByAccessLevel(accessLevel);
+  const currentRole = roles.find((r) => r.roleName === role);
+  const currentRoleLabel = currentRole?.roleName || role;
 
   return (
     <TableRow className="hover:bg-muted">
@@ -58,24 +56,24 @@ export default function PendingRow({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-1 cursor-pointer font-medium text-sm">
-                {roleLabelMap[role] ?? role}
+                {currentRoleLabel}
                 <ChevronDown className="w-4 h-4" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {assignableRoles.map((r) => (
                 <DropdownMenuItem
-                  key={r}
-                  onClick={() => onUpdateRole?.(r)}
-                  disabled={r === role}
+                  key={r.id}
+                  onClick={() => onUpdateRole?.(r.roleName)}
+                  disabled={r.roleName === role}
                 >
-                  {roleLabelMap[r] ?? r}
+                  {r.roleName}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-          <span>{roleLabelMap[role] ?? role}</span>
+          <span>{currentRoleLabel}</span>
         )}
       </TableCell>
 

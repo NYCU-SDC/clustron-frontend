@@ -11,18 +11,17 @@ export const AccessLevels = [
 ];
 export type GlobalRole = "admin" | "organizer" | "user";
 export type GroupRoleAccessLevel = (typeof AccessLevels)[number];
-
-export type GroupMemberRoleName =
-  | "group_owner"
-  | "teacher_assistant"
-  | "student"
-  | "auditor";
+export type GroupMemberRoleName = string;
+// export type GroupMemberRoleName =
+//   | "group_owner"
+//   | "teacher_assistant"
+//   | "student"
+//   | "auditor";
 
 // group role
 export type GroupRole = {
-  Role: GroupMemberRoleName;
+  roleName: string;
   id: string;
-  role: GroupMemberRoleName;
   accessLevel: GroupRoleAccessLevel;
 };
 // group member

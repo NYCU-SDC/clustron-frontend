@@ -52,7 +52,6 @@ export default function AddMemberPage() {
   const handleSave = () => {
     const newMembers = members.map((m) => {
       const roleId = roleNameToId(m.role);
-      // console.log("roleId", m, roleId);
       if (!roleId) throw new Error(`Invalid role: ${m.role}`);
       return {
         member: m.id.trim(),

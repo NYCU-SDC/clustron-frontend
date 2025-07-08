@@ -1,9 +1,5 @@
 import { CircleMinus, CirclePlus } from "lucide-react";
-import {
-  roleLabelMap,
-  type GlobalRole,
-  type GroupRoleAccessLevel,
-} from "@/lib/permission";
+import { type GlobalRole, type GroupRoleAccessLevel } from "@/lib/permission";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
 import { Input } from "@/components/ui/input";
 import {
@@ -25,7 +21,7 @@ import { cn } from "@/lib/utils";
 type Props = {
   index: number;
   id: string;
-  role: GroupMemberRoleName;
+  role: string;
   isLast: boolean;
   isDuplicate?: boolean;
   disabled?: boolean;
@@ -50,11 +46,10 @@ export default function AddMemberRow({
   onAdd,
   accessLevel = AccessLevelUser,
 }: Props) {
-  const resolvedAccessLevel: GroupRoleAccessLevel = accessLevel;
+  const { getRolesByAccessLevel } = useRoleMapper();
 
-  const { assignableRolesMap } = useRoleMapper();
-
-  const assignableRoles = assignableRolesMap[resolvedAccessLevel] ?? [];
+  const assignableRoles = getRolesByAccessLevel(accessLevel);
+  console.log(assignableRoles);
   return (
     <tr className="hover:bg-muted">
       <td className="py-2 px-2">
@@ -78,7 +73,7 @@ export default function AddMemberRow({
               e.preventDefault();
               const newMembers = rows.map((r) => ({
                 id: r,
-                role: assignableRoles[0] ?? "student",
+                role: assignableRoles[0]?.roleName ?? "",
               }));
               onAddBatch(newMembers);
             }
@@ -95,12 +90,14 @@ export default function AddMemberRow({
           }
         >
           <SelectTrigger className="h-10 w-full text-sm">
-            <SelectValue>{roleLabelMap[role] ?? "Select Role"}</SelectValue>
+            <SelectValue>
+              {assignableRoles[0]?.roleName ?? "Select Role"}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {assignableRoles.map((r) => (
-              <SelectItem key={r} value={r}>
-                {roleLabelMap[r] ?? r}
+              <SelectItem key={r.id} value={r.roleName}>
+                {r.roleName}
               </SelectItem>
             ))}
           </SelectContent>
