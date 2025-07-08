@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/table";
 import { GlobalRole } from "@/lib/permission";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
-import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function AddMemberPage() {
@@ -27,8 +26,8 @@ export default function AddMemberPage() {
   const payload = useJwtPayload();
 
   const [members, setMembers] = useState<
-    { id: string; role: GroupMemberRoleName }[]
-  >([{ id: "", role: "student" }]);
+    { id: string; roleName: GroupMemberRoleName }[]
+  >([{ id: "", roleName: "student" }]);
 
   const addMember = useAddMember(groupId!, {
     onSuccess: () => navigate(`/groups/${groupId}/settings`),
@@ -43,23 +42,24 @@ export default function AddMemberPage() {
 
   const accessLevel = group.me.role.accessLevel ?? AccessLevelUser;
 
-  const updateRow = (index: number, key: "id" | "role", value: string) => {
+  const updateRow = (index: number, key: "id" | "roleName", value: string) => {
     const next = [...members];
     next[index][key] = value as GroupMemberRoleName;
     setMembers(next);
   };
 
-  const addRow = () => setMembers([...members, { id: "", role: "student" }]);
+  const addRow = () =>
+    setMembers([...members, { id: "", roleName: "student" }]);
 
   const removeRow = (index: number) => {
     const next = members.filter((_, i) => i !== index);
-    setMembers(next.length === 0 ? [{ id: "", role: "student" }] : next);
+    setMembers(next.length === 0 ? [{ id: "", roleName: "student" }] : next);
   };
 
   const handleSave = () => {
     const newMembers = members.map((m) => {
-      const roleId = roleNameToId(m.role);
-      if (!roleId) throw new Error(`Invalid role: ${m.role}`);
+      const roleId = roleNameToId(m.roleName);
+      if (!roleId) throw new Error(`Invalid roleName: ${m.roleName}`);
       return {
         member: m.id.trim(),
         roleId,
@@ -74,7 +74,7 @@ export default function AddMemberPage() {
   );
 
   const handleAddBatch = (
-    newMembers: { id: string; role: GroupMemberRoleName }[],
+    newMembers: { id: string; roleName: GroupMemberRoleName }[],
   ) => {
     setMembers((prev) => [...prev, ...newMembers]);
   };
@@ -105,7 +105,7 @@ export default function AddMemberPage() {
                   key={i}
                   index={i}
                   id={m.id}
-                  role={m.role}
+                  roleName={m.roleName}
                   accessLevel={accessLevel}
                   globalRole={payload?.Role as GlobalRole}
                   onChange={updateRow}

@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/card";
 import { GlobalRole } from "@/types/group";
 import { useQueryClient } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
 
 export type GroupContextType = {
   groupId: string;
@@ -65,7 +64,7 @@ export default function GroupSettings() {
   };
 
   const isToggling = archiveMutation.isPending || unarchiveMutation.isPending;
-
+  console.log(isToggling);
   if (isLoading || !user || !group) {
     return (
       <div className="p-4 text-gray-600">

@@ -20,7 +20,7 @@ type Props = {
   name: string;
   id: string;
   email: string;
-  role: GroupMemberRoleName;
+  roleName: GroupMemberRoleName;
   accessLevel?: GroupRoleAccessLevel;
   onDelete?: () => void;
   onUpdateRole?: (newRole: GroupMemberRoleName) => void;
@@ -33,7 +33,7 @@ export default function GroupMemberRow({
   name,
   id,
   email,
-  role,
+  roleName,
   accessLevel = AccessLevelUser,
   onDelete,
   onUpdateRole,
@@ -43,17 +43,14 @@ export default function GroupMemberRow({
 }: Props) {
   const { t } = useTranslation();
   const assignableRoles = assignableRolesMap[accessLevel] ?? [];
-
-  // for role i18n
   const getRoleLabel = (roleName: GroupMemberRoleName) => {
-    return (
-      t(`groupComponents.roles.${roleName}`) ||
-      roleLabelMap[roleName] ||
-      roleName
-    );
-  };
+    const translated = t?.(`groupComponents.roles.${roleName}`);
+    if (translated && translated !== `groupComponents.roles.${roleName}`) {
+      return translated;
+    }
 
-  // console.log("👀 member role:", role);
+    return roleLabelMap[roleName] ?? roleName;
+  };
   return (
     <TableRow
       className={`hover:bg-muted transition-opacity ${
@@ -73,7 +70,7 @@ export default function GroupMemberRow({
         {showActions &&
         assignableRoles.length > 0 &&
         !isArchived &&
-        role !== "group_owner" ? (
+        roleName !== "group_owner" ? (
           isPending ? (
             <div className="flex items-center text-sm text-muted-foreground gap-2">
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -86,7 +83,7 @@ export default function GroupMemberRow({
                   variant="ghost"
                   className="flex items-center gap-1 font-medium text-sm px-2 py-1 hover:bg-muted"
                 >
-                  {getRoleLabel(role)}
+                  {getRoleLabel(roleName)}
                   <ChevronDown className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
@@ -95,7 +92,7 @@ export default function GroupMemberRow({
                   <DropdownMenuItem
                     key={r}
                     onClick={() => onUpdateRole?.(r)}
-                    disabled={r === role}
+                    disabled={r === roleName}
                   >
                     {getRoleLabel(r)}
                   </DropdownMenuItem>
@@ -104,7 +101,7 @@ export default function GroupMemberRow({
             </DropdownMenu>
           )
         ) : (
-          <span>{getRoleLabel(role)}</span>
+          <span>{getRoleLabel(roleName)}</span>
         )}
       </TableCell>
 

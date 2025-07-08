@@ -16,7 +16,6 @@ import {
   TableBody,
 } from "@/components/ui/table";
 import { GlobalRole } from "@/lib/permission";
-import { Loader2 } from "lucide-react";
 
 export default function AddGroupPage() {
   const navigate = useNavigate();
@@ -27,30 +26,31 @@ export default function AddGroupPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [members, setMembers] = useState<
-    { id: string; role: GroupMemberRoleName }[]
-  >([{ id: "", role: "student" }]);
+    { id: string; roleName: GroupMemberRoleName }[]
+  >([{ id: "", roleName: "student" }]);
 
   const createGroup = useCreateGroup({
     onSuccess: () => navigate(`/groups`),
   });
 
-  const updateRow = (index: number, key: "id" | "role", value: string) => {
+  const updateRow = (index: number, key: "id" | "roleName", value: string) => {
     const next = [...members];
     next[index][key] = value as GroupMemberRoleName;
     setMembers(next);
   };
 
-  const addRow = () => setMembers([...members, { id: "", role: "student" }]);
+  const addRow = () =>
+    setMembers([...members, { id: "", roleName: "student" }]);
 
   const removeRow = (index: number) => {
     const next = members.filter((_, i) => i !== index);
-    setMembers(next.length === 0 ? [{ id: "", role: "student" }] : next);
+    setMembers(next.length === 0 ? [{ id: "", roleName: "student" }] : next);
   };
 
   const handleSave = () => {
     const newMembers = members.map((m) => {
-      const roleId = roleNameToId(m.role);
-      if (!roleId) throw new Error(`Invalid role: ${m.role}`);
+      const roleId = roleNameToId(m.roleName);
+      if (!roleId) throw new Error(`Invalid role: ${m.roleName}`);
       return {
         member: m.id.trim(),
         roleId,
@@ -78,7 +78,7 @@ export default function AddGroupPage() {
   );
 
   const handleAddBatch = (
-    newMembers: { id: string; role: GroupMemberRoleName }[],
+    newMembers: { id: string; roleName: GroupMemberRoleName }[],
   ) => {
     setMembers((prev) => [...prev, ...newMembers]);
   };
@@ -128,7 +128,7 @@ export default function AddGroupPage() {
                   key={i}
                   index={i}
                   id={m.id}
-                  role={m.role}
+                  roleName={m.roleName}
                   onChange={updateRow}
                   onAdd={addRow}
                   onRemove={removeRow}

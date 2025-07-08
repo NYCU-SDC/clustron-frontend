@@ -1,4 +1,4 @@
-import { CircleMinus, CirclePlus, Loader2 } from "lucide-react";
+import { CircleMinus, CirclePlus } from "lucide-react";
 import {
   assignableRolesMap,
   roleLabelMap,
@@ -26,13 +26,15 @@ import { useTranslation } from "react-i18next";
 type Props = {
   index: number;
   id: string;
-  role: GroupMemberRoleName;
+  roleName: GroupMemberRoleName;
   isLast: boolean;
   isDuplicate?: boolean;
   disabled?: boolean;
   isPending?: boolean;
-  onAddBatch: (newMembers: { id: string; role: GroupMemberRoleName }[]) => void;
-  onChange: (index: number, key: "id" | "role", value: string) => void;
+  onAddBatch: (
+    newMembers: { id: string; roleName: GroupMemberRoleName }[],
+  ) => void;
+  onChange: (index: number, key: "id" | "roleName", value: string) => void;
   onRemove: (index: number) => void;
   onAdd: () => void;
   accessLevel?: GroupRoleAccessLevel;
@@ -42,7 +44,7 @@ type Props = {
 export default function AddMemberRow({
   index,
   id,
-  role,
+  roleName,
   isLast,
   isDuplicate,
   disabled = false,
@@ -67,13 +69,13 @@ export default function AddMemberRow({
 
   // for role i18n
   const getRoleLabel = (roleName: GroupMemberRoleName) => {
-    return (
-      t(`groupComponents.roles.${roleName}`) ||
-      roleLabelMap[roleName] ||
-      roleName
-    );
-  };
+    const translated = t?.(`groupComponents.roles.${roleName}`);
+    if (translated && translated !== `groupComponents.roles.${roleName}`) {
+      return translated;
+    }
 
+    return roleLabelMap[roleName] ?? roleName;
+  };
   return (
     <tr className={`hover:bg-muted ${isPending ? "opacity-50" : ""}`}>
       <td className="py-2 px-2">
@@ -99,7 +101,7 @@ export default function AddMemberRow({
               e.preventDefault();
               const newMembers = rows.map((r) => ({
                 id: r,
-                role: assignableRoles[0] ?? "student",
+                roleName: assignableRoles[0] ?? "student",
               }));
               onAddBatch(newMembers);
             }
@@ -109,15 +111,15 @@ export default function AddMemberRow({
 
       <td className="py-2 px-2">
         <Select
-          value={role}
+          value={roleName}
           disabled={isInputDisabled}
           onValueChange={(value) =>
-            onChange(index, "role", value as GroupMemberRoleName)
+            onChange(index, "roleName", value as GroupMemberRoleName)
           }
         >
           <SelectTrigger className="h-10 w-full text-sm">
             <SelectValue>
-              {getRoleLabel(role) ??
+              {getRoleLabel(roleName) ??
                 t("groupComponents.addMemberRow.selectRole")}
             </SelectValue>
           </SelectTrigger>
