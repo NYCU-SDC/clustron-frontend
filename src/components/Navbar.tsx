@@ -1,6 +1,6 @@
 import { NavLink } from "react-router";
 import { useTranslation } from "react-i18next";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { authContext } from "@/lib/auth/authContext";
 import {
   DropdownMenu,
@@ -12,6 +12,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import ColorModeToggle from "@/components/ColorModeToggle";
 import { CircleUserRound } from "lucide-react";
+import { getAccessToken } from "@/lib/token";
+import { jwtDecode } from "jwt-decode";
+import { AccessToken } from "@/types/type";
 
 function navLinkclass(isActive: boolean) {
   return [
@@ -24,8 +27,15 @@ function navLinkclass(isActive: boolean) {
 }
 
 export default function Navbar() {
-  const { logout, isLoggedIn, getEmail } = useContext(authContext);
+  const { logout, isLoggedIn } = useContext(authContext);
   const { t } = useTranslation();
+  const accessToken = getAccessToken();
+  const email = useMemo(() => {
+    if (accessToken) {
+      return jwtDecode<AccessToken>(accessToken).Email;
+    }
+    return null;
+  }, [accessToken]);
 
   return (
     <nav className="sticky top-0 w-full border-b bg-white dark:bg-black">
@@ -58,7 +68,7 @@ export default function Navbar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel className="text-gray-600 dark:text-gray-400">
-                  {getEmail()}
+                  {email}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logout}>
