@@ -79,7 +79,7 @@ export default function OnboardingForm({
             </div>
             <div className="grid gap-2">
               <Label className="ml-2 font-medium">
-                {t("onboardingForm.labelForInputUsername")}
+                {t("onboardingForm.labelForInputLinuxUsername")}
                 <span className="text-red-400">*</span>
               </Label>
               <Input
