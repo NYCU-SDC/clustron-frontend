@@ -58,7 +58,7 @@ export default function AddGroupPage() {
     const selfIncluded = members.some((m) => m.id.trim() === payloadId);
     if (!selfIncluded) {
       const ownerRoleId = roleNameToId("group_owner");
-      console.log("crategrp", payloadId, ownerRoleId);
+
       if (!ownerRoleId) throw new Error("Missing group_owner role");
       newMembers.unshift({ member: payloadId, roleId: ownerRoleId });
     }

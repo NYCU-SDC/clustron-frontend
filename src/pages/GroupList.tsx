@@ -14,7 +14,6 @@ export default function GroupListPage() {
   const { canCreateGroup } = useGlobalPermissions();
   const payload = useJwtPayload();
   const { isLoggedIn } = useContext(authContext);
-  console.log(payload);
   if (!isLoggedIn()) {
     navigate("/login");
     return null;
