@@ -18,6 +18,7 @@ import { useContext } from "react";
 import { authContext } from "@/lib/auth/authContext";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
+import { z } from "zod";
 
 export default function OnboardingForm({
   className,
@@ -28,6 +29,11 @@ export default function OnboardingForm({
   const navigate = useNavigate();
   const { refreshMutation } = useContext(authContext);
   const { t } = useTranslation();
+
+  const linuxUsernameSchema = z
+    .string()
+    .min(1)
+    .regex(/^[a-z_][a-z0-9_-]*\$?$/);
 
   const addMutation = useMutation({
     mutationFn: async (payload: {
@@ -41,8 +47,12 @@ export default function OnboardingForm({
       navigate("/");
       toast.success(t("onboardingForm.successToast"));
     },
-    onError: () => {
-      toast.error(t("onboardingForm.saveFailToast"));
+    onError: (err: Error) => {
+      if (err.name === "400") {
+        toast.error(t("onboardingForm.formatErrorToast"));
+      } else {
+        toast.error(t("onboardingForm.saveFailToast"));
+      }
     },
   });
 
@@ -95,9 +105,10 @@ export default function OnboardingForm({
                   <Button
                     className="px-7 py-5 w-16 cursor-pointer"
                     onClick={() => {
-                      // TODO: Replace with Zod + React Hook Form for more comprehensive validation
-                      if (linuxUsername.includes(" ")) {
-                        toast.error(t("onboardingForm.EmptyUsernameToast"));
+                      if (
+                        !linuxUsernameSchema.safeParse(linuxUsername).success
+                      ) {
+                        toast.error(t("onboardingForm.formatErrorToast"));
                         return;
                       }
                       addMutation.mutate({ username, linuxUsername });

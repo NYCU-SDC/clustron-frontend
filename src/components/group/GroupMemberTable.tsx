@@ -7,6 +7,7 @@ import { useGroupPermissions } from "@/hooks/useGroupPermissions";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 import type { GlobalRole, GroupRoleAccessLevel } from "@/lib/permission";
 import { AccessLevelUser, type GroupMemberRoleName } from "@/types/group";
@@ -17,6 +18,8 @@ import {
   TableHead,
   TableBody,
 } from "@/components/ui/table";
+import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button.tsx";
 
 type Props = {
   groupId: string;
@@ -24,6 +27,7 @@ type Props = {
   globalRole?: GlobalRole;
   onRemove?: (memberId: string) => void;
   isArchived?: boolean;
+  isOverview?: boolean;
 };
 
 export default function GroupMemberTable({
@@ -32,14 +36,15 @@ export default function GroupMemberTable({
   globalRole,
   onRemove,
   isArchived = false,
+  isOverview = false,
 }: Props) {
+  const { t } = useTranslation();
   const payload = useJwtPayload();
   const effectiveGlobalRole = globalRole ?? (payload?.Role as GlobalRole);
   const { canEditMembers } = useGroupPermissions(
     accessLevel,
     effectiveGlobalRole,
   );
-
   const {
     data,
     isLoading,
@@ -52,11 +57,14 @@ export default function GroupMemberTable({
   const members = data?.pages.flatMap((page) => page.items) ?? [];
 
   const queryClient = useQueryClient();
-  const { mutate: updateMember } = useUpdateMember(groupId, {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["members", groupId] });
+  const { mutate: updateMember, isPending: isUpdatingMember } = useUpdateMember(
+    groupId,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["members", groupId] });
+      },
     },
-  });
+  );
 
   const { roleNameToId } = useRoleMapper();
 
@@ -77,26 +85,41 @@ export default function GroupMemberTable({
     <Card>
       <CardContent className="p-6">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="font-bold text-lg">Members</h3>
-          {canEditMembers && (
+          <h3 className="font-bold text-lg">
+            {t("groupComponents.groupMemberTable.members")}
+          </h3>
+          {canEditMembers && !isOverview && (
             <AddMemberButton groupId={groupId} isArchived={isArchived} />
           )}
         </div>
 
         {isLoading ? (
-          <p className="text-sm text-gray-500">Loading members...</p>
+          <div className="text-sm text-gray-500 flex items-center gap-2">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            {t("groupComponents.groupMemberTable.loadingMembers")}
+          </div>
         ) : isError ? (
-          <p className="text-sm text-red-500">Failed to load members.</p>
+          <p className="text-sm text-red-500">
+            {t("groupComponents.groupMemberTable.failedToLoadMembers")}
+          </p>
         ) : members.length === 0 ? (
-          <p className="text-sm text-gray-500">No members found.</p>
+          <p className="text-sm text-gray-500">
+            {t("groupComponents.groupMemberTable.noMembersFound")}
+          </p>
         ) : (
           <>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Student ID or Email</TableHead>
-                  <TableHead>Role</TableHead>
+                  <TableHead>
+                    {t("groupComponents.groupMemberTable.name")}
+                  </TableHead>
+                  <TableHead>
+                    {t("groupComponents.groupMemberTable.studentIdOrEmail")}
+                  </TableHead>
+                  <TableHead>
+                    {t("groupComponents.groupMemberTable.role")}
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -106,10 +129,11 @@ export default function GroupMemberTable({
                     name={m.username}
                     id={m.studentId}
                     email={m.email}
-                    role={m.role.Role as GroupMemberRoleName}
+                    roleName={m.role.Role as GroupMemberRoleName}
                     accessLevel={accessLevel}
-                    showActions={canEditMembers}
+                    showActions={canEditMembers && !isOverview}
                     isArchived={isArchived}
+                    isPending={isUpdatingMember}
                     onDelete={onRemove ? () => onRemove(m.id) : undefined}
                     onUpdateRole={(newRole) => updateMemberRole(m.id, newRole)}
                   />
@@ -119,13 +143,15 @@ export default function GroupMemberTable({
 
             {hasNextPage && (
               <div className="mt-4 w-full flex justify-center">
-                <button
+                <Button
                   onClick={() => fetchNextPage()}
                   disabled={isFetchingNextPage}
                   className="text-sm text-blue-600 hover:underline"
                 >
-                  {isFetchingNextPage ? "Loading more..." : "Load more"}
-                </button>
+                  {isFetchingNextPage
+                    ? t("groupComponents.groupMemberTable.loadingMore")
+                    : t("groupComponents.groupMemberTable.loadMore")}
+                </Button>
               </div>
             )}
           </>

@@ -1,4 +1,5 @@
 import { useOutletContext } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import GroupDescription from "@/components/group/GroupDes";
 import GroupMemberTable from "@/components/group/GroupMemberTable";
 import PendingMemberTable from "@/components/group/PendingMemberTable.tsx";
@@ -8,15 +9,14 @@ import { useUnarchiveGroup } from "@/hooks/useUnarchiveGroup";
 import { useRemoveMember } from "@/hooks/useRemoveMember";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useGroupPermissions } from "@/hooks/useGroupPermissions";
-import { Button } from "@/components/ui/button.tsx";
-
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { GlobalRole } from "@/types/group.ts";
+import { GlobalRole } from "@/types/group";
 import { useQueryClient } from "@tanstack/react-query";
 
 export type GroupContextType = {
@@ -25,17 +25,21 @@ export type GroupContextType = {
 
 export default function GroupSettings() {
   const { groupId } = useOutletContext<GroupContextType>();
+  const { t } = useTranslation();
   const { data: group, isLoading } = useGetGroupById(groupId);
-  const user = useJwtPayload(); // use JWT hook to get user information
+  const user = useJwtPayload();
   const archiveMutation = useArchiveGroup(groupId);
   const unarchiveMutation = useUnarchiveGroup(groupId);
   const queryClient = useQueryClient();
   const removeMutation = useRemoveMember(groupId, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["members", groupId] }); // 正確地寫在 onSuccess 函數體內
+      queryClient.invalidateQueries({ queryKey: ["members", groupId] });
     },
     onError: (err) =>
-      alert("❌ 刪除失敗：" + (err instanceof Error ? err.message : "")),
+      alert(
+        t("groupPages.groupSettings.deleteFailed") +
+          (err instanceof Error ? err.message : ""),
+      ),
   });
   const payload = useJwtPayload();
   const globalRole = payload?.Role as GlobalRole;
@@ -46,8 +50,6 @@ export default function GroupSettings() {
     globalRole,
   ).canArchive;
   const canArchive = isAdmin || baseCanArchive;
-
-  // console.log("ACC", isAdmin, "\\", baseCanArchive, "\\", canArchive);
 
   const handleRemove = (memberId: string) => {
     removeMutation.mutate(memberId);
@@ -62,8 +64,14 @@ export default function GroupSettings() {
     }
   };
 
+  const isToggling = archiveMutation.isPending || unarchiveMutation.isPending;
+  console.log(isToggling);
   if (isLoading || !user || !group) {
-    return <div className="p-4 text-gray-600">Loading group info...</div>;
+    return (
+      <div className="p-4 text-gray-600">
+        {t("groupPages.groupSettings.loadingGroupInfo")}
+      </div>
+    );
   }
 
   return (
@@ -76,6 +84,7 @@ export default function GroupSettings() {
           globalRole={isAdmin ? "admin" : undefined} //
           isArchived={group.isArchived}
           onRemove={handleRemove}
+          isOverview={false}
         />
         <PendingMemberTable
           groupId={group.id} //
@@ -90,27 +99,25 @@ export default function GroupSettings() {
               <div>
                 <CardTitle>
                   {group.isArchived
-                    ? "Unarchive This Group"
-                    : "Archive This Group"}
+                    ? t("groupPages.groupSettings.unarchiveGroup")
+                    : t("groupPages.groupSettings.archiveGroup")}
                 </CardTitle>
                 <CardDescription>
                   {group.isArchived
-                    ? "This will reactivate the group and allow updates again."
-                    : "This will turn the group into archive state, no update can be made before it is activated again."}
+                    ? t("groupPages.groupSettings.unarchiveDescription")
+                    : t("groupPages.groupSettings.archiveDescription")}
                 </CardDescription>
               </div>
               <Button
                 onClick={toggleArchive}
                 className="min-w-[100px] px-4 py-2 "
-                disabled={
-                  archiveMutation.isPending || unarchiveMutation.isPending
-                }
+                disabled={isToggling}
               >
-                {archiveMutation.isPending || unarchiveMutation.isPending
-                  ? "Saving..."
+                {isToggling
+                  ? t("groupPages.groupSettings.saving")
                   : group.isArchived
-                    ? "Unarchive"
-                    : "Archive"}
+                    ? t("groupPages.groupSettings.unarchive")
+                    : t("groupPages.groupSettings.archive")}
               </Button>
             </CardHeader>
           </Card>

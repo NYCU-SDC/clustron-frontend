@@ -1,8 +1,10 @@
 import { NavLink, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 
 export default function GroupSideBar({ title }: { title: string }) {
   const { id } = useParams();
+  const { t } = useTranslation();
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `w-full justify-start px-2 py-1 rounded text-sm ${
@@ -17,7 +19,7 @@ export default function GroupSideBar({ title }: { title: string }) {
           <NavLink to={`/groups/${id}`} end className={linkClass}>
             {({ isActive }) => (
               <Button variant="ghost" className={linkClass({ isActive })}>
-                Overview
+                {t("groupComponents.groupSideBar.overview")}
               </Button>
             )}
           </NavLink>
@@ -26,7 +28,7 @@ export default function GroupSideBar({ title }: { title: string }) {
           <NavLink to={`/groups/${id}/settings`} className={linkClass}>
             {({ isActive }) => (
               <Button variant="ghost" className={linkClass({ isActive })}>
-                Group Settings
+                {t("groupComponents.groupSideBar.groupSettings")}
               </Button>
             )}
           </NavLink>

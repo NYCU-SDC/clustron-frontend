@@ -1,5 +1,6 @@
 import { Plus } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 
 type Props = {
@@ -9,12 +10,17 @@ type Props = {
 
 export default function AddMemberButton({ groupId, isArchived }: Props) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { t } = useTranslation();
+
+  const isSettingsPage = location.pathname === `/groups/${groupId}/settings`;
 
   const handleClick = () => {
     if (isArchived) return;
     navigate(`/groups/${groupId}/add-member`);
   };
 
+  if (!isSettingsPage) return null;
   return (
     <Button
       onClick={handleClick}
@@ -23,7 +29,7 @@ export default function AddMemberButton({ groupId, isArchived }: Props) {
       className="flex items-right gap-1"
     >
       <Plus className="w-4 h-4" />
-      New Members
+      {t("groupComponents.addMemberButton.newMembers")}
     </Button>
   );
 }

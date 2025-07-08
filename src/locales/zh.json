@@ -6,6 +6,7 @@
     "placeHolderForInputName": "王曉菲",
     "labelForInputUsername": "Linux 使用者名稱",
     "successToast": "基本資訊儲存成功",
+    "formatErrorToast": "Linux 使用者名稱須以小寫字母或底線開頭，可含小寫字母、數字、底線、連字號(-)，結尾可為 $，不可含空白",
     "saveFailToast": "基本資訊儲存失敗",
     "EmptyUsernameToast": "Linux 使用者名稱不可包含空白字元",
     "loadingBtn": "載入中...",
@@ -94,5 +95,86 @@
     "cancelBtn": "取消",
     "confirmBtn": "刪除",
     "loadingBtn": "載入中..."
+  },
+  "groupComponents": {
+    "addMemberButton": {
+      "newMembers": "新增成員"
+    },
+    "groupMemberTable": {
+      "members": "成員",
+      "loadingMembers": "正在載入成員...",
+      "failedToLoadMembers": "載入成員失敗。",
+      "noMembersFound": "找不到成員。",
+      "name": "姓名",
+      "studentIdOrEmail": "學號或電子信箱",
+      "role": "角色",
+      "loadingMore": "載入更多中...",
+      "loadMore": "載入更多"
+    },
+    "groupSideBar": {
+      "overview": "總覽",
+      "groupSettings": "群組設定"
+    },
+    "memberDeleteButton": {
+      "removeUser": "移除使用者",
+      "deleteUserConfirm": "確認刪除使用者",
+      "deleteConfirmation": "您確定要刪除這個使用者嗎？此操作無法復原。",
+      "cancel": "取消",
+      "delete": "刪除"
+    },
+    "addMemberRow": {
+      "enterStudentIdOrEmail": "輸入學號或電子信箱",
+      "selectRole": "選擇角色",
+      "duplicateEntry": "重複項目"
+    },
+    "roles": {
+      "group_owner": "群組擁有者",
+      "teacher_assistant": "助教",
+      "student": "學生",
+      "auditor": "旁聽生"
+    }
+  },
+  "groupPages": {
+    "addMemberPage": {
+      "title": "新增成員",
+      "studentIdOrEmail": "學號或電子信箱",
+      "role": "角色",
+      "loading": "載入中...",
+      "courseNotFound": "找不到課程。",
+      "cancel": "取消",
+      "save": "儲存"
+    },
+    "createGroup": {
+      "title": "建立新群組",
+      "courseTitlePlaceholder": "課程標題",
+      "courseDescriptionPlaceholder": "課程描述",
+      "addInitialMembers": "新增初始成員",
+      "studentIdOrEmail": "學號或電子信箱",
+      "role": "角色",
+      "cancel": "取消",
+      "create": "建立"
+    },
+    "groupList": {
+      "newCourse": "+ 新課程",
+      "loading": "載入中...",
+      "loadingFailed": "載入失敗",
+      "noCourses": "你尚未加入任何課程。"
+    },
+    "groupOverview": {
+      "provideCourseId": "請提供課程 ID",
+      "loading": "載入中...",
+      "courseNotFound": "找不到課程"
+    },
+    "groupSettings": {
+      "loadingGroupInfo": "載入群組資訊中...",
+      "deleteFailed": "刪除失敗：",
+      "unarchiveGroup": "解除封存此群組",
+      "archiveGroup": "封存此群組",
+      "unarchiveDescription": "這將重新啟用群組並允許再次更新。",
+      "archiveDescription": "這將把群組轉為封存狀態，在重新啟用前無法進行更動。",
+      "saving": "儲存中...",
+      "unarchive": "解除封存",
+      "archive": "封存"
+    }
   }
 }
