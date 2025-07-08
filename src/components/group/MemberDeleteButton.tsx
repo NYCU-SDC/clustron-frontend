@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Loader2 } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -78,10 +78,7 @@ export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
             <DialogClose asChild>
               <Button
                 variant="destructive"
-                onClick={() => {
-                  if (!isArchived) onConfirm();
-                }}
-                //onClick={handleDelete}
+                onClick={handleDelete}
                 disabled={isPending}
               >
                 {t("groupComponents.memberDeleteButton.delete")}

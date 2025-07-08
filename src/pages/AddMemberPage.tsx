@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/table";
 import { GlobalRole } from "@/lib/permission";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
-import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function AddMemberPage() {

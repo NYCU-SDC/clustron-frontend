@@ -1,4 +1,4 @@
-import { CircleMinus, CirclePlus, Loader2 } from "lucide-react";
+import { CircleMinus, CirclePlus } from "lucide-react";
 import {
   assignableRolesMap,
   roleLabelMap,
