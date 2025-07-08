@@ -12,9 +12,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import ColorModeToggle from "@/components/ColorModeToggle";
 import { CircleUserRound } from "lucide-react";
-import { getAccessToken } from "@/lib/token";
-import type { AccessToken } from "@/types/type";
-import { jwtDecode } from "jwt-decode";
 
 function navLinkclass(isActive: boolean) {
   return [
@@ -27,7 +24,7 @@ function navLinkclass(isActive: boolean) {
 }
 
 export default function Navbar() {
-  const { logout, isLoggedIn } = useContext(authContext);
+  const { logout, isLoggedIn, email } = useContext(authContext);
   const { t } = useTranslation();
 
   return (
@@ -61,7 +58,7 @@ export default function Navbar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel className="text-gray-600 dark:text-gray-400">
-                  {jwtDecode<AccessToken>(getAccessToken()!).Email}
+                  {email()}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logout}>

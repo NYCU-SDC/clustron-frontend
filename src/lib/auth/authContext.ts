@@ -10,6 +10,7 @@ type AuthContextType = {
   ) => void;
   logout: () => void;
   isLoggedIn: () => boolean;
+  email: () => string | null;
   refreshMutation: UseMutationResult<
     {
       accessToken: string;
@@ -38,6 +39,11 @@ export const authContext = createContext<AuthContextType>({
   isLoggedIn: () => {
     console.warn("isLoggedIn() called without AuthProvider");
     return false;
+  },
+
+  email: () => {
+    console.warn("email() called without AuthProvider");
+    return null;
   },
 
   refreshMutation: {} as UseMutationResult<

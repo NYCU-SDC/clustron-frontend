@@ -68,6 +68,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return false;
   }, [cookies.refreshToken]);
 
+  const email = useCallback(() => {
+    if (cookies.accessToken) {
+      return jwtDecode<AccessToken>(cookies.accessToken).Email;
+    }
+    return null;
+  }, [cookies.accessToken]);
+
   const refreshMutation = useMutation({
     mutationFn: () => refreshAuthToken(cookies.refreshToken),
     onSuccess: (data) => {
@@ -116,6 +123,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setCookiesForAuthToken,
         logout,
         isLoggedIn,
+        email,
         refreshMutation,
       }}
     >
