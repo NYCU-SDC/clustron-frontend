@@ -3,18 +3,19 @@ import { Button } from "@/components/ui/button";
 import GroupDescription from "@/components/group/GroupDes";
 import { useGetGroups } from "@/hooks/useGetGroups";
 import { useGlobalPermissions } from "@/hooks/useGlobalPermissions";
-import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useContext } from "react";
 import { authContext } from "@/lib/auth/authContext";
 import { AccessLevelAdmin, AccessLevelOwner } from "@/types/group";
+import { useTranslation } from "react-i18next";
+import { Loader2 } from "lucide-react";
 
 export default function GroupListPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { data, isLoading, isError } = useGetGroups();
   const { canCreateGroup } = useGlobalPermissions();
-  const payload = useJwtPayload();
   const { isLoggedIn } = useContext(authContext);
-  console.log(payload);
+
   if (!isLoggedIn()) {
     navigate("/login");
     return null;
@@ -28,17 +29,20 @@ export default function GroupListPage() {
             onClick={() => navigate("/groups/new")}
             className="bg-gray-900 text-white"
           >
-            + New Course
+            {t("groupPages.groupList.newCourse")}
           </Button>
         )}
       </div>
 
       {isLoading ? (
-        <p className="text-gray-500">載入中...</p>
+        <p className="text-gray-500">{t("groupPages.groupList.loading")}</p>
       ) : isError ? (
-        <p className="text-red-500">載入失敗</p>
+        <p className="text-red-500">
+          <Loader2 className="w-4 h-4 animate-spin" />
+          {t("groupPages.groupList.loadingFailed")}
+        </p>
       ) : !data || data.items.length === 0 ? (
-        <p className="text-gray-500">你尚未加入任何課程。</p>
+        <p className="text-gray-500">{t("groupPages.groupList.noCourses")}</p>
       ) : (
         <div className="space-y-4">
           {data.items.map((group) => {
