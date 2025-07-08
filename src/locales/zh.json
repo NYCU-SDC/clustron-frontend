@@ -6,6 +6,7 @@
     "placeHolderForInputName": "王曉菲",
     "labelForInputUsername": "Linux 使用者名稱",
     "successToast": "基本資訊儲存成功",
+    "formatErrorToast": "Linux 使用者名稱須以小寫字母或底線開頭，可含小寫字母、數字、底線、連字號(-)，結尾可為 $，不可含空白",
     "saveFailToast": "基本資訊儲存失敗",
     "EmptyUsernameToast": "Linux 使用者名稱不可包含空白字元",
     "loadingBtn": "載入中...",

@@ -1,13 +1,10 @@
 import { createContext } from "react";
 import { UseMutationResult } from "@tanstack/react-query";
+import { AuthCookie } from "@/types/type";
 
 type AuthContextType = {
   login: (provider: "google" | "nycu") => void;
-  setCookiesForAuthToken: (
-    accessToken: string,
-    refreshToken: string,
-    refreshTokenExpirationTime?: number,
-  ) => void;
+  setCookiesForAuthToken: (data: AuthCookie) => void;
   logout: () => void;
   isLoggedIn: () => boolean;
   email: () => string | null;

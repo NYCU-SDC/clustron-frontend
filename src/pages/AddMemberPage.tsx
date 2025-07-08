@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import AddMemberRow from "@/components/group/AddMemberRow";
 import { useAddMember } from "@/hooks/useAddMember";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
-// import { useGroupRoles } from "@/hooks/useGroupRoles";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { AccessLevelUser, type GroupMemberRoleName } from "@/types/group";
 import {
@@ -16,7 +15,7 @@ import {
 } from "@/components/ui/table";
 import { GlobalRole } from "@/lib/permission";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
-import { Button } from "@/components/ui/button.tsx";
+import { Button } from "@/components/ui/button";
 
 export default function AddMemberPage() {
   const { id: groupId } = useParams();
@@ -27,10 +26,10 @@ export default function AddMemberPage() {
   const payload = useJwtPayload();
 
   const [members, setMembers] = useState<
-    { id: string; role: GroupMemberRoleName }[]
-  >([{ id: "", role: "student" }]);
+    { id: string; roleName: GroupMemberRoleName }[]
+  >([{ id: "", roleName: "student" }]);
 
-  const { mutate: addMember } = useAddMember(groupId!, {
+  const addMember = useAddMember(groupId!, {
     onSuccess: () => navigate(`/groups/${groupId}/settings`),
   });
 
@@ -43,30 +42,30 @@ export default function AddMemberPage() {
 
   const accessLevel = group.me.role.accessLevel ?? AccessLevelUser;
 
-  const updateRow = (index: number, key: "id" | "role", value: string) => {
+  const updateRow = (index: number, key: "id" | "roleName", value: string) => {
     const next = [...members];
     next[index][key] = value as GroupMemberRoleName;
     setMembers(next);
   };
 
-  const addRow = () => setMembers([...members, { id: "", role: "student" }]);
+  const addRow = () =>
+    setMembers([...members, { id: "", roleName: "student" }]);
 
   const removeRow = (index: number) => {
     const next = members.filter((_, i) => i !== index);
-    setMembers(next.length === 0 ? [{ id: "", role: "student" }] : next);
+    setMembers(next.length === 0 ? [{ id: "", roleName: "student" }] : next);
   };
 
   const handleSave = () => {
     const newMembers = members.map((m) => {
-      const roleId = roleNameToId(m.role);
-      console.log("roleId", m, roleId);
-      if (!roleId) throw new Error(`Invalid role: ${m.role}`);
+      const roleId = roleNameToId(m.roleName);
+      if (!roleId) throw new Error(`Invalid roleName: ${m.roleName}`);
       return {
         member: m.id.trim(),
         roleId,
       };
     });
-    addMember(newMembers);
+    addMember.mutate(newMembers);
   };
 
   const hasDuplicate = members.some(
@@ -75,7 +74,7 @@ export default function AddMemberPage() {
   );
 
   const handleAddBatch = (
-    newMembers: { id: string; role: GroupMemberRoleName }[],
+    newMembers: { id: string; roleName: GroupMemberRoleName }[],
   ) => {
     setMembers((prev) => [...prev, ...newMembers]);
   };
@@ -106,7 +105,7 @@ export default function AddMemberPage() {
                   key={i}
                   index={i}
                   id={m.id}
-                  role={m.role}
+                  roleName={m.roleName}
                   accessLevel={accessLevel}
                   globalRole={payload?.Role as GlobalRole}
                   onChange={updateRow}
@@ -123,6 +122,7 @@ export default function AddMemberPage() {
 
         <div className="mt-6 flex justify-end gap-3">
           <Button
+            variant="outline"
             onClick={() => navigate(`/groups/${group.id}/settings`)}
             className="px-4 py-2 border rounded"
           >
@@ -130,10 +130,7 @@ export default function AddMemberPage() {
           </Button>
           <Button
             onClick={handleSave}
-            disabled={hasDuplicate}
-            className={`px-4 py-2 rounded text-white ${
-              hasDuplicate ? "bg-gray-400 cursor-not-allowed" : "bg-gray-900"
-            }`}
+            disabled={hasDuplicate || addMember.isPending}
           >
             {t("groupPages.addMemberPage.save")}
           </Button>

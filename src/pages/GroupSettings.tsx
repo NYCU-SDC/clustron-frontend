@@ -8,15 +8,14 @@ import { useUnarchiveGroup } from "@/hooks/useUnarchiveGroup";
 import { useRemoveMember } from "@/hooks/useRemoveMember";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useGroupPermissions } from "@/hooks/useGroupPermissions";
-import { Button } from "@/components/ui/button.tsx";
-
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { GlobalRole } from "@/types/group.ts";
+import { GlobalRole } from "@/types/group";
 import { useQueryClient } from "@tanstack/react-query";
 
 export type GroupContextType = {
@@ -27,13 +26,13 @@ export default function GroupSettings() {
   const { groupId } = useOutletContext<GroupContextType>();
   const { t } = useTranslation();
   const { data: group, isLoading } = useGetGroupById(groupId);
-  const user = useJwtPayload(); // use JWT hook to get user information
+  const user = useJwtPayload();
   const archiveMutation = useArchiveGroup(groupId);
   const unarchiveMutation = useUnarchiveGroup(groupId);
   const queryClient = useQueryClient();
   const removeMutation = useRemoveMember(groupId, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["members", groupId] }); // 正確地寫在 onSuccess 函數體內
+      queryClient.invalidateQueries({ queryKey: ["members", groupId] });
     },
     onError: (err) =>
       alert(
@@ -51,8 +50,6 @@ export default function GroupSettings() {
   ).canArchive;
   const canArchive = isAdmin || baseCanArchive;
 
-  // console.log("ACC", isAdmin, "\\", baseCanArchive, "\\", canArchive);
-
   const handleRemove = (memberId: string) => {
     removeMutation.mutate(memberId);
   };
@@ -66,6 +63,8 @@ export default function GroupSettings() {
     }
   };
 
+  const isToggling = archiveMutation.isPending || unarchiveMutation.isPending;
+  console.log(isToggling);
   if (isLoading || !user || !group) {
     return (
       <div className="p-4 text-gray-600">
@@ -105,11 +104,9 @@ export default function GroupSettings() {
               <Button
                 onClick={toggleArchive}
                 className="min-w-[100px] px-4 py-2 "
-                disabled={
-                  archiveMutation.isPending || unarchiveMutation.isPending
-                }
+                disabled={isToggling}
               >
-                {archiveMutation.isPending || unarchiveMutation.isPending
+                {isToggling
                   ? t("groupPages.groupSettings.saving")
                   : group.isArchived
                     ? t("groupPages.groupSettings.unarchive")

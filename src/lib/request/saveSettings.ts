@@ -1,34 +1,9 @@
-import { getAccessTokenFromCookies } from "@/lib/getAccessTokenFromCookies";
+import { api } from "@/lib/request/api";
+import { Settings } from "@/types/type";
 
-export async function saveSettings(payload: {
-  username: string;
-  linuxUsername: string;
-}) {
-  const token = getAccessTokenFromCookies();
-  if (!token) {
-    console.error("No token but no logout");
-    throw new Error();
-  }
-
-  const res = await fetch(
-    `${import.meta.env.VITE_BACKEND_BASE_URL}/api/settings`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(payload),
-    },
-  );
-
-  if (!res.ok) {
-    if (res.status === 400) {
-      const err = new Error();
-      err.name = "Bad Request";
-      throw err;
-    }
-    console.error("Failed to save name");
-    throw new Error();
-  }
+export async function saveSettings(payload: Settings): Promise<void> {
+  return api("/api/settings", {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
 }
