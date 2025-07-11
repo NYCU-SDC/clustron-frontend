@@ -2,13 +2,13 @@
   "onboardingForm": {
     "cardTitleForName": "Enter Your Basic Information",
     "saveBtn": "Save",
-    "labelForInputName": "Full Name",
-    "placeHolderForInputName": "John Doe",
-    "labelForInputUsername": "Linux Username",
+    "labelForInputFullName": "Full Name",
+    "placeHolderForInputFullName": "John Doe",
+    "labelForInputLinuxUsername": "Linux Username",
     "successToast": "Informaion saved successfully",
     "formatErrorToast": "Linux Username must start with a lowercase letter or underscore, can include lowercase letters, numbers, underscores(_), or hyphens(-), may end with $, and must not contain spaces",
     "saveFailToast": "Failed to save your information",
-    "EmptyUsernameToast": "Linux username cannot contain spaces",
+    "EmptyLinuxUsernameToast": "Linux username cannot contain spaces",
     "loadingBtn": "Loading...",
     "saveBtnToolTip": "Please fill in your full name and Linux username"
   },
@@ -59,11 +59,11 @@
     "saveFailToast": "Failed to save your public key",
     "loadingBtn": "Loading..."
   },
-  "settingNameForm": {
-    "cardTitleForName": "Full Name",
-    "cardDescriptionForName": "Your full name to let the group administrator recognize you",
+  "settingFullNameForm": {
+    "cardTitleForFullName": "Full Name",
+    "cardDescriptionForFullName": "Your full name to let the group administrator recognize you",
     "saveBtn": "Save",
-    "placeHolderForInputName": "Jammy Wang",
+    "placeHolderForInputFullName": "Jammy Wang",
     "successToast": "Name saved successfully",
     "emptyErrorToast": "Please enter your full name",
     "saveFailToast": "Failed to save your full name",
@@ -71,9 +71,9 @@
     "loadingBtn": "Loading...",
     "saveBtnToolTip": "Please fill in your full name"
   },
-  "settingUsernameForm": {
-    "cardTitleForUsername": "Linux Username",
-    "cardDescriptionForUsername": "The username to login to the remote server",
+  "settingLinuxUsernameForm": {
+    "cardTitleForLinuxUsername": "Linux Username",
+    "cardDescriptionForLinuxUsername": "The username to login to the remote server",
     "saveBtn": "Save",
     "successToast": "Linux username saved successfully",
     "emptyErrorToast": "Please enter your Linux username",
