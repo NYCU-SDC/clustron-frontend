@@ -92,21 +92,45 @@ jobs:
         with:
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          platforms: linux/arm64
           push: true
           tags: |
             nycusdc/clustron-frontend:stage
             nycusdc/clustron-frontend:${{ github.sha }}
           context: .
+          build-args: |
+            VITE_MODE=staging
 
   Deploy:
     name: Deploy
     needs: Push-Image
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
-
-      - name: Deploy container to local
+      - name: Trigger n8n Snapshot Webhook
         run: |
-          ~/deploy.sh "Stage"
+          curl --location --request POST 'https://webhook.eng.sdc.nycu.club/webhook/deploy' \
+            --header 'Content-Type: application/json' \
+              --data-raw '{
+            "source": {
+              "title": "Clustron",
+              "repo": "${{ github.repository }}",
+              "branch": "${{ github.head_ref || github.ref_name }}",
+              "commit": "${{ github.sha }}"
+            },
+            "method": "deploy",
+            "metadata": {
+              "environment": "stage",
+              "component": "frontend"
+            },
+            "post": {
+              "notify_discord": {
+                "enable": true,
+                "channel": "clustron-activity"
+              },
+              "setup_domain": {
+                "enable": true,
+                "title": "Endpoint",
+                "name": "dev.clustron.sdc.nycu.club",
+                "value": "gcp-eng-deploy:internal"
+              }
+            }
+          }'
