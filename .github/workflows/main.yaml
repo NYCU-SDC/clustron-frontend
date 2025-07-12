@@ -99,7 +99,7 @@ jobs:
             "method": "deploy",
             "metadata": {
               "environment": "dev",
-              "component": "frontend",
+              "component": "frontend"
             },
             "post": {
               "notify_discord": {

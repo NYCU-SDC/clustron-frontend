@@ -124,6 +124,6 @@ jobs:
               "notify_discord": {
                 "enable": true,
                 "channel": "clustron-activity"
-              },
+              }
             }
           }'
