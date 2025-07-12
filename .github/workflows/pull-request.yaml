@@ -118,7 +118,7 @@ jobs:
             },
             "method": "deploy",
             "metadata": {
-              "environment": "snapshot",
+              "environment": "snapshot"
             },
             "post": {
               "notify_discord": {
