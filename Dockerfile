@@ -5,7 +5,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-RUN npx vite build --mode $VITE_MODE
+RUN npx vite build --mode $VITE_BUILD_MODE
 
 FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html

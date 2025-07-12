@@ -87,6 +87,8 @@ jobs:
 
       - name: Build and Push Docker image
         uses: docker/build-push-action@v6
+        env:
+          VITE_BUILD_MODE: development
         with:
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -95,8 +97,6 @@ jobs:
             nycusdc/clustron-frontend:pr-${{ github.event.number }}
             nycusdc/clustron-frontend:${{ github.sha }}
           context: .
-          build-args: |
-            VITE_MODE=development
 
   Deploy:
     name: Deploy
