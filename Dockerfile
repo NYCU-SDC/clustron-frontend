@@ -6,7 +6,8 @@ RUN npm install
 
 COPY . .
 ARG VITE_BUILD_MODE
-RUN npx vite build --mode ${VITE_BUILD_MODE}
+RUN echo "Building with mode=${VITE_BUILD_MODE}" && \
+    npx vite build --mode=$VITE_BUILD_MODE
 
 FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
