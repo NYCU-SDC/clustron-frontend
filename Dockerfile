@@ -5,7 +5,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-ARG VITE_BUILD_MODE=production
+ARG VITE_BUILD_MODE
 RUN npx vite build --mode ${VITE_BUILD_MODE}
 
 FROM nginx:alpine
