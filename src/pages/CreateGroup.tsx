@@ -26,30 +26,31 @@ export default function AddGroupPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [members, setMembers] = useState<
-    { id: string; role: GroupMemberRoleName }[]
-  >([{ id: "", role: "student" }]);
+    { id: string; roleName: GroupMemberRoleName }[]
+  >([{ id: "", roleName: "student" }]);
 
-  const { mutate: createGroup } = useCreateGroup({
+  const createGroup = useCreateGroup({
     onSuccess: () => navigate(`/groups`),
   });
 
-  const updateRow = (index: number, key: "id" | "role", value: string) => {
+  const updateRow = (index: number, key: "id" | "roleName", value: string) => {
     const next = [...members];
     next[index][key] = value as GroupMemberRoleName;
     setMembers(next);
   };
 
-  const addRow = () => setMembers([...members, { id: "", role: "student" }]);
+  const addRow = () =>
+    setMembers([...members, { id: "", roleName: "student" }]);
 
   const removeRow = (index: number) => {
     const next = members.filter((_, i) => i !== index);
-    setMembers(next.length === 0 ? [{ id: "", role: "student" }] : next);
+    setMembers(next.length === 0 ? [{ id: "", roleName: "student" }] : next);
   };
 
   const handleSave = () => {
     const newMembers = members.map((m) => {
-      const roleId = roleNameToId(m.role);
-      if (!roleId) throw new Error(`Invalid role: ${m.role}`);
+      const roleId = roleNameToId(m.roleName);
+      if (!roleId) throw new Error(`Invalid role: ${m.roleName}`);
       return {
         member: m.id.trim(),
         roleId,
@@ -60,12 +61,11 @@ export default function AddGroupPage() {
     const selfIncluded = members.some((m) => m.id.trim() === payloadId);
     if (!selfIncluded) {
       const ownerRoleId = roleNameToId("group_owner");
-      console.log("crategrp", payloadId, ownerRoleId);
       if (!ownerRoleId) throw new Error("Missing group_owner role");
       newMembers.unshift({ member: payloadId, roleId: ownerRoleId });
     }
 
-    createGroup({
+    createGroup.mutate({
       title,
       description,
       members: newMembers,
@@ -78,7 +78,7 @@ export default function AddGroupPage() {
   );
 
   const handleAddBatch = (
-    newMembers: { id: string; role: GroupMemberRoleName }[],
+    newMembers: { id: string; roleName: GroupMemberRoleName }[],
   ) => {
     setMembers((prev) => [...prev, ...newMembers]);
   };
@@ -128,7 +128,7 @@ export default function AddGroupPage() {
                   key={i}
                   index={i}
                   id={m.id}
-                  role={m.role}
+                  roleName={m.roleName}
                   onChange={updateRow}
                   onAdd={addRow}
                   onRemove={removeRow}
@@ -152,22 +152,11 @@ export default function AddGroupPage() {
           </Button>
           <Button
             onClick={handleSave}
-            disabled={hasDuplicate || !title.trim()}
-            className={`px-4 py-2 rounded text-white ${
-              hasDuplicate || !title.trim()
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-gray-900"
-            }`}
+            disabled={hasDuplicate || !title.trim() || createGroup.isPending}
           >
             {t("groupPages.createGroup.create")}
           </Button>
         </div>
-
-        {/*{error && (*/}
-        {/*  <p className="text-red-500 text-sm mt-2">*/}
-        {/*    Failed to create group: {(error as Error).message}*/}
-        {/*  </p>*/}
-        {/*)}*/}
       </main>
     </div>
   );

@@ -20,15 +20,14 @@ export type GroupMemberRoleName =
 
 // group role
 export type GroupRole = {
+  ID: string;
   Role: GroupMemberRoleName;
-  id: string;
-  role: GroupMemberRoleName;
   accessLevel: GroupRoleAccessLevel;
 };
 // group member
 export type GroupMember = {
   id: string;
-  username: string;
+  fullName: string;
   email: string;
   studentId: string;
   role: GroupRole;

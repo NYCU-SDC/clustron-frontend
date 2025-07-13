@@ -19,13 +19,25 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 type Props = {
-  onConfirm: () => void;
+  onConfirm: () => Promise<void> | void;
   isArchived?: boolean;
 };
 
 export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
+  const [isPending, setIsPending] = useState(false);
+
+  const handleDelete = async () => {
+    if (isArchived) return;
+    setIsPending(true);
+    try {
+      await onConfirm();
+      setOpen(false);
+    } finally {
+      setIsPending(false);
+    }
+  };
 
   return (
     <>
@@ -39,10 +51,7 @@ export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
           <DropdownMenuContent align="end">
             <DropdownMenuItem
               className="text-red-600"
-              onClick={() => {
-                setOpen(false);
-                onConfirm();
-              }}
+              onClick={() => setOpen(true)}
             >
               {t("groupComponents.memberDeleteButton.removeUser")}
             </DropdownMenuItem>
@@ -69,9 +78,8 @@ export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
             <DialogClose asChild>
               <Button
                 variant="destructive"
-                onClick={() => {
-                  if (!isArchived) onConfirm();
-                }}
+                onClick={handleDelete}
+                disabled={isPending}
               >
                 {t("groupComponents.memberDeleteButton.delete")}
               </Button>
