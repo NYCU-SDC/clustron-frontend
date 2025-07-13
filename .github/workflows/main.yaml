@@ -79,7 +79,7 @@ jobs:
             nycusdc/clustron-frontend:${{ github.sha }}
           context: .
           build-args: |
-            VITE_MODE=development
+            VITE_BUILD_MODE=development
 
   Deploy:
     name: Deploy
