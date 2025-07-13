@@ -15,6 +15,7 @@ import { CircleUserRound } from "lucide-react";
 import { getAccessToken } from "@/lib/token";
 import { jwtDecode } from "jwt-decode";
 import { AccessToken } from "@/types/type";
+import { LogOut } from "lucide-react";
 
 function navLinkclass(isActive: boolean) {
   return [
@@ -72,6 +73,7 @@ export default function Navbar() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logout}>
+                  <LogOut />
                   {t("navbar.logoutBtn")}
                 </DropdownMenuItem>
               </DropdownMenuContent>
