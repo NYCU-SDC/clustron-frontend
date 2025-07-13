@@ -70,7 +70,9 @@
     "saveFailToast": "無法儲存姓名",
     "getFailToast": "無法取得姓名",
     "loadingBtn": "載入中...",
-    "saveBtnToolTip": "請填入你的姓名"
+    "saveBtnToolTip": "請填入你的姓名",
+    "cardTitleForLanguage": "語言",
+    "cardDescriptionForLanguage": "選擇在 Clustron 顯示的語言"
   },
   "settingLinuxUsernameForm": {
     "cardTitleForLinuxUsername": "Linux 使用者名稱",
