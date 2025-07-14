@@ -27,7 +27,7 @@ export type GroupRole = {
 // group member
 export type GroupMember = {
   id: string;
-  username: string;
+  fullName: string;
   email: string;
   studentId: string;
   role: GroupRole;

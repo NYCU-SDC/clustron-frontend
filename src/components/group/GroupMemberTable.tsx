@@ -126,7 +126,7 @@ export default function GroupMemberTable({
                 {members.map((m) => (
                   <GroupMemberRow
                     key={m.id}
-                    name={m.username}
+                    name={m.fullName}
                     id={m.studentId}
                     email={m.email}
                     roleName={m.role.Role as GroupMemberRoleName}
