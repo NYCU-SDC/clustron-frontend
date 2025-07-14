@@ -12,7 +12,7 @@ export default function GroupSideBar({ title }: { title: string }) {
     }`;
 
   return (
-    <aside className="sticky top-23 w-64 border-r p-6">
+    <aside className="sticky top-23 w-2/3  p-6">
       <h2 className="text-xl font-semibold mb-4">{title}</h2>
       <ul className="space-y-2">
         <li>
