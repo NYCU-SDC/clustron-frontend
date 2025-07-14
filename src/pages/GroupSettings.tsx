@@ -65,7 +65,7 @@ export default function GroupSettings() {
   };
 
   const isToggling = archiveMutation.isPending || unarchiveMutation.isPending;
-  console.log(isToggling);
+  // console.log(isToggling);
   if (isLoading || !user || !group) {
     return (
       <div className="p-4 text-gray-600">
@@ -91,7 +91,6 @@ export default function GroupSettings() {
           accessLevel={group.me.role.accessLevel} //
           globalRole={isAdmin ? "admin" : undefined} //
           isArchived={group.isArchived}
-          onRemove={handleRemove}
         />
         {canArchive && (
           <Card className="">
