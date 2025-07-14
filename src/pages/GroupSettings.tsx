@@ -8,7 +8,7 @@ import { useArchiveGroup } from "@/hooks/useArchiveGroup";
 import { useUnarchiveGroup } from "@/hooks/useUnarchiveGroup";
 import { useRemoveMember } from "@/hooks/useRemoveMember";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
-import { useGroupPermissions } from "@/hooks/useGroupPermissions";
+import { getGroupPermissions } from "@/lib/groupPermissions";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -45,7 +45,7 @@ export default function GroupSettings() {
   const globalRole = payload?.Role as GlobalRole;
   const isAdmin = group?.me?.type === "adminOverride";
   const accessLevel = group?.me.role.accessLevel;
-  const baseCanArchive = useGroupPermissions(
+  const baseCanArchive = getGroupPermissions(
     accessLevel,
     globalRole,
   ).canArchive;
