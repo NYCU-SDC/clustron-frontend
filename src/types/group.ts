@@ -160,9 +160,9 @@ export type GetPendingMembersResponse = {
 
 // PUT /api/groups/{id}/pendingMembers/{pendingId}
 export type UpdatePendingMemberInput = {
-  id: string; // group id
-  pendingId: string; // pending member id
-  role: string; // role id (e.g., 'student')
+  id: string;
+  pendingId: string;
+  roleId: string;
 };
 
 export type UpdatePendingMemberResponse = {
@@ -171,6 +171,6 @@ export type UpdatePendingMemberResponse = {
 
 // DELETE /api/groups/{id}/pendingMembers/{pendingId}
 export type RemovePendingMemberParams = {
-  id: string; // group id
-  pendingId: string; // pending member id
+  id: string;
+  pendingId: string;
 };

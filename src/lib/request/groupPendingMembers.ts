@@ -17,11 +17,11 @@ export async function getPendingMembers(
 export async function updatePendingMember({
   id,
   pendingId,
-  role,
+  roleId,
 }: UpdatePendingMemberInput): Promise<UpdatePendingMemberResponse> {
   return api(`/api/groups/${id}/pendingMembers/${pendingId}`, {
     method: "PUT",
-    body: JSON.stringify({ role }),
+    body: JSON.stringify({ roleId }),
   });
 }
 

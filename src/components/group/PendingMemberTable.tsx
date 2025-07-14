@@ -35,7 +35,6 @@ type Props = {
   accessLevel?: GroupRoleAccessLevel;
   globalRole?: GlobalRole;
   isArchived?: boolean;
-  onRemove?: (pendingId: string) => void;
 };
 
 export default function PendingMemberTable({
@@ -43,7 +42,6 @@ export default function PendingMemberTable({
   accessLevel = AccessLevelUser,
   globalRole,
   isArchived = false,
-  onRemove,
 }: Props) {
   const payload = useJwtPayload();
   const effectiveGlobalRole = globalRole ?? (payload?.Role as GlobalRole);
@@ -70,21 +68,21 @@ export default function PendingMemberTable({
     newRole: GroupMemberRoleName,
   ) => {
     const roleId = roleNameToId(newRole);
+
     if (!roleId) {
-      console.error(" Invalid role name:", newRole);
+      console.error("fail to  find role:");
       return;
     }
 
     updatePendingMember({
       id: groupId,
-      pendingId: pendingId,
-      role: roleId,
+      pendingId,
+      roleId,
     });
   };
 
   const handleRemove = (pendingId: string) => {
     removePendingMember({ id: groupId, pendingId });
-    onRemove?.(pendingId);
   };
 
   return (
@@ -110,20 +108,24 @@ export default function PendingMemberTable({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {pagedMembers.map((m) => (
-                  <PendingRow
-                    key={m.id}
-                    id={m.userIdentifier}
-                    email={m.userIdentifier}
-                    role={m.role.Role as GroupMemberRoleName}
-                    accessLevel={accessLevel}
-                    showActions={canEditMembers}
-                    isArchived={isArchived}
-                    onDelete={() => handleRemove(m.id)}
-                    onUpdateRole={(newRole) => handleUpdateRole(m.id, newRole)}
-                    roleId={""}
-                  />
-                ))}
+                {pagedMembers.map((m) => {
+                  return (
+                    <PendingRow
+                      key={m.id}
+                      id={m.userIdentifier}
+                      email={m.userIdentifier}
+                      role={m.role.Role as GroupMemberRoleName}
+                      accessLevel={accessLevel}
+                      showActions={canEditMembers}
+                      isArchived={isArchived}
+                      onDelete={() => handleRemove(m.id)}
+                      onUpdateRole={(newRole) =>
+                        handleUpdateRole(m.id, newRole)
+                      }
+                      roleId={m.role.ID}
+                    />
+                  );
+                })}
               </TableBody>
             </Table>
 
