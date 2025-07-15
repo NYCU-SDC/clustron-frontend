@@ -38,7 +38,7 @@ export default function GroupMemberRow({
   email,
   globalRole,
   roleName,
-  accessLevel = globalRole == "admin" ? AccessLevelOwner : AccessLevelUser,
+  accessLevel = AccessLevelUser,
   onDelete,
   onUpdateRole,
   showActions = false,
@@ -46,7 +46,10 @@ export default function GroupMemberRow({
   isPending = false,
 }: Props) {
   const { t } = useTranslation();
-  const assignableRoles = assignableRolesMap[accessLevel] ?? [];
+  const assignableRoles =
+    assignableRolesMap[
+      globalRole == "admin" ? AccessLevelOwner : accessLevel
+    ] ?? [];
   const getRoleLabel = (roleName: GroupMemberRoleName) => {
     const translated = t?.(`groupComponents.roles.${roleName}`);
     if (translated && translated !== `groupComponents.roles.${roleName}`) {
