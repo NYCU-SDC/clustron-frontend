@@ -100,20 +100,26 @@ export default function GroupMemberTable({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {members.map((m) => (
-                  <GroupMemberRow
-                    key={m.id}
-                    name={m.username}
-                    id={m.studentId}
-                    email={m.email}
-                    role={m.role.roleName as GroupMemberRoleName}
-                    accessLevel={accessLevel}
-                    showActions={canEditMembers}
-                    isArchived={isArchived}
-                    onDelete={onRemove ? () => onRemove(m.id) : undefined}
-                    onUpdateRole={(newRole) => updateMemberRole(m.id, newRole)}
-                  />
-                ))}
+                {members.map((m) => {
+                  // console.log("✅ member row data:", m); // 👈 這行會 log 出每個 m 的資料
+
+                  return (
+                    <GroupMemberRow
+                      key={m.id}
+                      name={m.username}
+                      id={m.studentId}
+                      email={m.email}
+                      role={m.role?.roleName as GroupMemberRoleName}
+                      accessLevel={accessLevel}
+                      showActions={canEditMembers}
+                      isArchived={isArchived}
+                      onDelete={onRemove ? () => onRemove(m.id) : undefined}
+                      onUpdateRole={(newRole) =>
+                        updateMemberRole(m.id, newRole)
+                      }
+                    />
+                  );
+                })}
               </TableBody>
             </Table>
 

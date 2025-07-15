@@ -40,7 +40,7 @@ export default function GroupMemberRow({
 
   const assignableRoles = getRolesByAccessLevel(accessLevel);
 
-  // ✅ 查找當前 role 的 label
+  console.log(accessLevel);
   const currentRole = roles.find((r) => r.roleName === role);
   const currentRoleLabel = currentRole?.roleName || role;
 

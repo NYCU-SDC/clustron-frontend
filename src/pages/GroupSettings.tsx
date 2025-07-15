@@ -65,7 +65,9 @@ export default function GroupSettings() {
   if (isLoading || !user || !group) {
     return <div className="p-4 text-gray-600">Loading group info...</div>;
   }
-
+  console.log("🧩 GroupMemberTable props", {
+    me: group.me,
+  });
   return (
     <>
       <div className="max-w-4xl mx-auto p-6 space-y-6">

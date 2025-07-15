@@ -1,5 +1,3 @@
-// common role type
-// export type GroupRoleAccessLevel = "GROUP_OWNER" | "GROUP_ADMIN" | "USER";
 export const AccessLevelUser = "USER";
 export const AccessLevelAdmin = "GROUP_ADMIN";
 export const AccessLevelOwner = "GROUP_OWNER";
@@ -12,13 +10,6 @@ export const AccessLevels = [
 export type GlobalRole = "admin" | "organizer" | "user";
 export type GroupRoleAccessLevel = (typeof AccessLevels)[number];
 export type GroupMemberRoleName = string;
-// export type GroupMemberRoleName =
-//   | "group_owner"
-//   | "teacher_assistant"
-//   | "student"
-//   | "auditor";
-
-// group role
 export type GroupRole = {
   roleName: string;
   id: string;

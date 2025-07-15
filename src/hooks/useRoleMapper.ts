@@ -40,6 +40,8 @@ export function useRoleMapper() {
     accessLevel: GroupRoleAccessLevel,
   ): RoleItem[] => {
     const minLevel = AccessLevelOrder[accessLevel] ?? 0;
+    // console.log("💡 accessLevel", accessLevel);
+    // console.log("🧱 AccessLevelOrder", AccessLevelOrder);
     return data.filter(
       (r) => (AccessLevelOrder[r.accessLevel] ?? 0) <= minLevel,
     );
