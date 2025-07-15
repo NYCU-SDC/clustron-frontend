@@ -1,7 +1,7 @@
 import { TableRow, TableCell } from "@/components/ui/table";
 import { ChevronDown, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import MemberDeleteMenu from "./MemberDeleteButton";
+import MemberDeleteMenu from "./MemberDeleteMenu.tsx";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
