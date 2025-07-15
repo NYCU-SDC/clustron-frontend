@@ -3,9 +3,10 @@ import {
   canArchiveGroup,
   isReadonlyMember,
 } from "@/lib/permission";
+
 import type { GroupRoleAccessLevel, GlobalRole } from "@/types/group";
 
-export function useGroupPermissions(
+export function getGroupPermissions(
   accessLevel: GroupRoleAccessLevel | undefined,
   globalRole: GlobalRole | undefined,
 ) {
