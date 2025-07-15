@@ -50,6 +50,7 @@ export default function AddGroupPage() {
   const handleSave = () => {
     const newMembers = members.map((m) => {
       const roleId = roleNameToId(m.roleName);
+      console.log("roleNameToId", m.roleName, roleId);
       if (!roleId) throw new Error(`Invalid role: ${m.roleName}`);
       return {
         member: m.id.trim(),
