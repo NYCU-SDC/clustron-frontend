@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { authContext } from "@/lib/auth/authContext";
 import { jwtDecode } from "jwt-decode";
 import { AccessToken } from "@/types/type";
-import { getAccessTokenFromCookies } from "@/lib/getAccessTokenFromCookies";
+import { getAccessToken } from "@/lib/token";
 
 export default function ProtectedRoute({
   showLoginRequiredToast = true,
@@ -16,13 +16,13 @@ export default function ProtectedRoute({
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const token = useRef<string | null>(getAccessTokenFromCookies());
+  const token = useRef<string | null>(getAccessToken());
   const role = useRef<string | undefined>(
     token.current ? jwtDecode<AccessToken>(token.current).Role : undefined,
   );
 
   const updateTokenAndRole = () => {
-    const newToken = getAccessTokenFromCookies();
+    const newToken = getAccessToken();
 
     if (newToken !== token.current) {
       token.current = newToken;
