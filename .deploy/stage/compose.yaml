@@ -9,10 +9,10 @@ services:
     labels:
       - "vector.enable=true"
       - "traefik.enable=true"
-      - "traefik.http.routers.clustron-frontend.rule=Host(`stage.clustron.sdc.nycu.club`)"
-      - "traefik.http.routers.clustron-frontend.entrypoints=websecure"
-      - "traefik.http.routers.clustron-frontend.tls=true"
-      - "traefik.http.routers.clustron-frontend.tls.certresolver=cloudflare"
+      - "traefik.http.routers.clustron-frontend-stage.rule=Host(`stage.clustron.sdc.nycu.club`)"
+      - "traefik.http.routers.clustron-frontend-stage.entrypoints=websecure"
+      - "traefik.http.routers.clustron-frontend-stage.tls=true"
+      - "traefik.http.routers.clustron-frontend-stage.tls.certresolver=cloudflare"
 
 networks:
   traefik:
