@@ -109,7 +109,7 @@ export default function PendingMemberTable({
               </TableHeader>
               <TableBody>
                 {pagedMembers.map((m) => {
-                  console.log("👀 pending member row data:", m);
+                  // console.log("👀 pending member row data:", m);
                   return (
                     <PendingRow
                       key={m.id}
