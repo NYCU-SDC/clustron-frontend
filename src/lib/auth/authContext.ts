@@ -5,7 +5,7 @@ import { AuthCookie } from "@/types/type";
 type AuthContextType = {
   login: (provider: "google" | "nycu") => void;
   setCookiesForAuthToken: (data: AuthCookie) => void;
-  logout: () => void;
+  handleLogout: () => void;
   isLoggedIn: () => boolean;
   refreshMutation: UseMutationResult<AuthCookie, Error, void, unknown>;
 };
@@ -19,7 +19,7 @@ export const authContext = createContext<AuthContextType>({
     console.warn("setCookiesForAuthToken() called without provider");
   },
 
-  logout: () => {
+  handleLogout: () => {
     console.warn("logout() called without provider");
   },
 

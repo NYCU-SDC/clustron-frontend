@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { AccessToken, AuthCookie } from "@/types/type";
 import { refreshAuthToken } from "@/lib/request/refreshAuthToken";
 import { authContext } from "@/lib/auth/authContext";
+import { logout } from "@/lib/request/logout";
 
 let refreshTimer: number;
 
@@ -49,9 +50,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     [setCookie],
   );
 
-  const logout = useCallback(() => {
+  const handleLogout = useCallback(() => {
     removeCookie("accessToken", { path: "/" });
     removeCookie("refreshToken", { path: "/" });
+    logout();
     navigate("/login");
     toast.info(t("authProvider.logoutToast"));
     clearTimers();
@@ -74,7 +76,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       setAutoRefresh();
     },
-    onError: logout,
+    onError: handleLogout,
   });
 
   const setAutoRefresh = useCallback(() => {
@@ -110,7 +112,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       value={{
         login,
         setCookiesForAuthToken,
-        logout,
+        handleLogout,
         isLoggedIn,
         refreshMutation,
       }}

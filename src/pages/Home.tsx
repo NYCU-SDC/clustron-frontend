@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button.tsx";
 
 export default function Home() {
   const navigate = useNavigate();
-  const { logout } = useContext(authContext);
+  const { handleLogout } = useContext(authContext);
 
   useEffect(() => {
     navigate("/groups");
@@ -25,7 +25,7 @@ export default function Home() {
         Login
       </Button>
       <Button
-        onClick={logout}
+        onClick={handleLogout}
         className="px-4 py-2 bg-black text-white hover:bg-gray-700 active:bg-gray-800 transition-colors"
       >
         Logout
