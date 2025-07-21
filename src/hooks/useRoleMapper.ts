@@ -1,20 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import { GroupRoleAccessLevel } from "@/types/group";
+import { GroupRole, GroupRoleAccessLevel } from "@/types/group";
 import { api } from "@/lib/request/api";
 import { AccessLevelOrder } from "@/lib/permission";
 
-export type RoleItem = {
-  id: string;
-  roleName: string;
-  accessLevel: GroupRoleAccessLevel;
-};
-
-async function fetchRoles(): Promise<RoleItem[]> {
+async function fetchRoles(): Promise<GroupRole[]> {
   const res = await api("/api/roles");
-  return res.map((item: any) => ({
-    id: item.ID,
-    roleName: item.Role,
-    accessLevel: item.AccessLevel,
+  return (res as GroupRole[]).map((item) => ({
+    id: item.id,
+    roleName: item.roleName,
+    accessLevel: item.accessLevel,
   }));
 }
 
@@ -23,7 +17,7 @@ export function useRoleMapper() {
     data = [],
     isLoading,
     isError,
-  } = useQuery<RoleItem[]>({
+  } = useQuery<GroupRole[]>({
     queryKey: ["roles"],
     queryFn: fetchRoles,
   });
@@ -38,13 +32,12 @@ export function useRoleMapper() {
 
   const getRolesByAccessLevel = (
     accessLevel: GroupRoleAccessLevel,
-  ): RoleItem[] => {
-    const minLevel = AccessLevelOrder[accessLevel] ?? 0;
-    // console.log("💡 accessLevel", accessLevel);
-    // console.log("🧱 AccessLevelOrder", AccessLevelOrder);
-    return data.filter(
-      (r) => (AccessLevelOrder[r.accessLevel] ?? 0) <= minLevel,
-    );
+  ): GroupRole[] => {
+    const currentLevel = AccessLevelOrder[accessLevel] ?? 0;
+    return data.filter((role) => {
+      const targetLevel = AccessLevelOrder[role.accessLevel] ?? 0;
+      return targetLevel < currentLevel;
+    });
   };
 
   return {

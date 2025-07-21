@@ -40,7 +40,6 @@ export default function GroupMemberRow({
 
   const assignableRoles = getRolesByAccessLevel(accessLevel);
 
-  console.log(accessLevel);
   const currentRole = roles.find((r) => r.roleName === role);
   const currentRoleLabel = currentRole?.roleName || role;
 

@@ -101,8 +101,6 @@ export default function GroupMemberTable({
               </TableHeader>
               <TableBody>
                 {members.map((m) => {
-                  // console.log("✅ member row data:", m); // 👈 這行會 log 出每個 m 的資料
-
                   return (
                     <GroupMemberRow
                       key={m.id}
