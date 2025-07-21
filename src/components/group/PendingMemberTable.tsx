@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
@@ -49,26 +49,23 @@ export default function PendingMemberTable({
     accessLevel,
     effectiveGlobalRole,
   );
-  const { data, isLoading, isError } = useGetPendingMembers(groupId);
+
   const { mutate: updatePendingMember } = useUpdatePendingMember(groupId);
   const { mutate: removePendingMember } = useRemovePendingMember(groupId);
   const { roleNameToId } = useRoleMapper();
-  const members = data?.items ?? [];
-  const pageSize = 10;
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.max(1, Math.ceil(members.length / pageSize));
-
-  const pagedMembers = useMemo(() => {
-    const start = (currentPage - 1) * pageSize;
-    return members.slice(start, start + pageSize);
-  }, [members, currentPage]);
+  const { data, isLoading, isError } = useGetPendingMembers(
+    groupId,
+    currentPage,
+  );
+  const members = data?.items ?? [];
+  const totalPages = data?.totalPages ?? 1;
 
   const handleUpdateRole = (
     pendingId: string,
     newRole: GroupMemberRoleName,
   ) => {
     const roleId = roleNameToId(newRole);
-
     if (!roleId) {
       console.error("fail to  find role:");
       return;
@@ -108,22 +105,22 @@ export default function PendingMemberTable({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {pagedMembers.map((m) => {
+                {members.map((m) => {
                   // console.log("👀 pending member row data:", m);
                   return (
                     <PendingRow
                       key={m.id}
                       id={m.userIdentifier}
                       email={m.userIdentifier}
-                      role={m.role.Role as GroupMemberRoleName}
+                      role={m.role.roleName as GroupMemberRoleName}
                       accessLevel={accessLevel}
+                      roleId={m.role.id}
                       showActions={canEditMembers}
                       isArchived={isArchived}
                       onDelete={() => handleRemove(m.id)}
                       onUpdateRole={(newRole) =>
                         handleUpdateRole(m.id, newRole)
                       }
-                      roleId={m.role.ID}
                     />
                   );
                 })}
@@ -136,6 +133,11 @@ export default function PendingMemberTable({
                   <PaginationItem>
                     <PaginationPrevious
                       onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                      className={
+                        currentPage === 1
+                          ? "opacity-50 pointer-events-none"
+                          : ""
+                      }
                     />
                   </PaginationItem>
 
@@ -156,6 +158,11 @@ export default function PendingMemberTable({
                     <PaginationNext
                       onClick={() =>
                         setCurrentPage((p) => Math.min(p + 1, totalPages))
+                      }
+                      className={
+                        currentPage === totalPages
+                          ? "opacity-50 pointer-events-none"
+                          : ""
                       }
                     />
                   </PaginationItem>

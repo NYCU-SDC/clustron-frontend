@@ -50,10 +50,7 @@ export default function PendingMemberRow({
       </TableCell>
 
       <TableCell>
-        {showActions &&
-        assignableRoles.length > 0 &&
-        !isArchived &&
-        role !== "group_owner" ? (
+        {showActions && !isArchived && role !== "group_owner" ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-1 cursor-pointer font-medium text-sm">
