@@ -1,26 +1,29 @@
 import { Plus } from "lucide-react";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 
 type Props = {
   groupId: string;
   isArchived?: boolean;
+  display?: boolean;
 };
 
-export default function AddMemberButton({ groupId, isArchived }: Props) {
+export default function AddMemberButton({
+  groupId,
+  isArchived,
+  display = true,
+}: Props) {
   const navigate = useNavigate();
-  const location = useLocation();
   const { t } = useTranslation();
-
-  const isSettingsPage = location.pathname === `/groups/${groupId}/settings`;
 
   const handleClick = () => {
     if (isArchived) return;
     navigate(`/groups/${groupId}/add-member`);
   };
 
-  if (!isSettingsPage) return null;
+  if (!display) return null;
+
   return (
     <Button
       onClick={handleClick}

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import GroupDescription from "@/components/group/GroupDes";
@@ -34,6 +34,7 @@ export default function GroupOverviewPage() {
         groupId={group.id}
         isArchived={group.isArchived}
         isOverview={true}
+        displayAddMemberBtn={false}
       />
     </div>
   );
