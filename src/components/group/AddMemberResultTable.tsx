@@ -7,6 +7,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useTranslation } from "react-i18next";
+import type { AddGroupMemberResponse } from "@/types/group";
 
 const StatusIcon = ({ type }: { type: "success" | "warning" | "error" }) => {
   const iconProps = {
@@ -57,68 +59,88 @@ const StatusIcon = ({ type }: { type: "success" | "warning" | "error" }) => {
   }
 };
 
-export default function AddMemberResultTable() {
+interface AddMemberResultTableProps {
+  result: AddGroupMemberResponse;
+  members: { member: string; roleName: string }[];
+}
+
+export default function AddMemberResultTable({
+  result,
+  members,
+}: AddMemberResultTableProps) {
+  const { t } = useTranslation();
+
+  const memberStatuses = members.map((member) => {
+    const error = result.errors.find((err) => err.member === member.member);
+
+    if (error) {
+      return {
+        ...member,
+        status: "error" as const,
+        message: error.message,
+      };
+    } else {
+      return {
+        ...member,
+        status: "success" as const,
+        message: t("groupPages.addMemberResult.successMessage"),
+      };
+    }
+  });
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl">Add Member Results</CardTitle>
+        <CardTitle className="text-2xl">
+          {t("groupPages.addMemberResult.title")}
+        </CardTitle>
+        <div className="text-sm text-gray-600 dark:text-gray-300">
+          {t("groupPages.addMemberResult.successCount")}:{" "}
+          {result.addedSuccessNumber} |{" "}
+          {t("groupPages.addMemberResult.failureCount")}:{" "}
+          {result.addedFailureNumber}
+        </div>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="w-3/10 text-gray-500 dark:text-white">
-                Student ID or Email
+                {t("groupPages.addMemberResult.studentIdOrEmail")}
               </TableHead>
               <TableHead className="w-1/10 text-gray-500 dark:text-white">
-                Role
+                {t("groupPages.addMemberResult.role")}
               </TableHead>
               <TableHead className="w-min text-center text-gray-500 dark:text-white">
-                Status
+                {t("groupPages.addMemberResult.status")}
               </TableHead>
               <TableHead className=" text-gray-500 dark:text-white">
-                Additional Information
+                {t("groupPages.addMemberResult.additionalInfo")}
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell>aj47512.mg12@nycu.edu.tw</TableCell>
-              <TableCell>Student</TableCell>
-              <TableCell className="flex justify-center">
-                <StatusIcon type="success" />
-              </TableCell>
-              <TableCell>This student has been 21.</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>teacher@gmail.com</TableCell>
-              <TableCell>Teacher</TableCell>
-              <TableCell className="flex justify-center">
-                <StatusIcon type="warning" />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>111503010</TableCell>
-              <TableCell>Student</TableCell>
-              <TableCell className="flex justify-center">
-                <StatusIcon type="error" />
-              </TableCell>
-            </TableRow>
+            {memberStatuses.map((member, index) => (
+              <TableRow key={index}>
+                <TableCell>{member.member}</TableCell>
+                <TableCell>{member.roleName}</TableCell>
+                <TableCell className="flex justify-center">
+                  <StatusIcon type={member.status} />
+                </TableCell>
+                <TableCell>{member.message}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
 
         <div className="flex justify-center gap-8 mt-6 text-sm text-gray-600 dark:text-gray-300">
           <div className="flex gap-2">
             <StatusIcon type="success" />
-            <span>Successfully added into the group</span>
-          </div>
-          <div className="flex gap-2">
-            <StatusIcon type="warning" />
-            <span>Waiting for user to register</span>
+            <span>{t("groupPages.addMemberResult.successStatus")}</span>
           </div>
           <div className="flex gap-2">
             <StatusIcon type="error" />
-            <span>Fail to add member to the group</span>
+            <span>{t("groupPages.addMemberResult.errorStatus")}</span>
           </div>
         </div>
       </CardContent>

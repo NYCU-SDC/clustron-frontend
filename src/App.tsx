@@ -17,7 +17,7 @@ import GroupSettings from "@/pages/GroupSettings";
 import AddMemberPage from "@/pages/AddMemberPage";
 import AddGroupPage from "@/pages/CreateGroup";
 import GroupLayout from "@/pages/layouts/GroupLayout.tsx";
-import AddMemberResult from "./pages/AddMemberResult";
+import AddMemberResult from "@/pages/AddMemberResult";
 const App = () => {
   return (
     <Routes>
@@ -47,8 +47,8 @@ const App = () => {
               <Route index element={<GroupOverview />} />
               <Route path="settings" element={<GroupSettings />} />
               <Route path="add-member" element={<AddMemberPage />} />
+              <Route path="add-member-result" element={<AddMemberResult />} />
             </Route>
-            <Route path="/groups/result" element={<AddMemberResult />}></Route>
           </Route>
           {/*  end*/}
         </Route>

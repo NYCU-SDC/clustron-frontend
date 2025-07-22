@@ -177,6 +177,18 @@
       "saving": "Saving...",
       "unarchive": "Unarchive",
       "archive": "Archive"
+    },
+    "addMemberResult": {
+      "title": "Add Member Results",
+      "successCount": "Success",
+      "failureCount": "Failed",
+      "studentIdOrEmail": "Student ID or Email",
+      "role": "Role",
+      "status": "Status",
+      "additionalInfo": "Additional Information",
+      "successStatus": "Successfully added to group",
+      "errorStatus": "Failed to add to group",
+      "successMessage": "Successfully added to group"
     }
   }
 }

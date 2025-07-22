@@ -30,7 +30,17 @@ export default function AddMemberPage() {
   >([{ id: "", roleName: "student" }]);
 
   const addMember = useAddMember(groupId!, {
-    onSuccess: () => navigate(`/groups/${groupId}/settings`),
+    onSuccess: (data) => {
+      navigate(`/groups/${groupId}/add-member-result`, {
+        state: {
+          result: data,
+          members: members.map((m) => ({
+            member: m.id.trim(),
+            roleName: m.roleName,
+          })),
+        },
+      });
+    },
   });
 
   if (isLoading)

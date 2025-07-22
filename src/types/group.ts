@@ -79,7 +79,17 @@ export type CreateGroupInput = {
   }[];
 };
 
-export type CreateGroupResponse = GroupDetail;
+export type JoinMemberErrorResponse = {
+  member: string;
+  role: string;
+  message: string;
+};
+
+export type CreateGroupResponse = GroupDetail & {
+  addedSuccessNumber?: number;
+  addedFailureNumber?: number;
+  errors?: JoinMemberErrorResponse[];
+};
 
 // =========================
 // 🔹 GET /api/groups/{id}/members
@@ -103,7 +113,12 @@ export type AddGroupMemberInput = {
   roleId: string;
 };
 
-export type AddGroupMemberResponse = GroupMember;
+// export type AddGroupMemberResponse = GroupMember;
+export type AddGroupMemberResponse = {
+  addedSuccessNumber: number;
+  addedFailureNumber: number;
+  errors: JoinMemberErrorResponse[];
+};
 
 // =========================
 // 🔹 DELETE /api/groups/{id}/members/{memberId}

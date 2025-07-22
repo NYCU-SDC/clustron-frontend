@@ -9,7 +9,7 @@ import { api } from "@/lib/request/api";
 export async function addMember(
   groupId: string,
   members: AddGroupMemberInput[],
-): Promise<AddGroupMemberResponse[]> {
+): Promise<AddGroupMemberResponse> {
   return api(`/api/groups/${groupId}/members`, {
     method: "POST",
     headers: {
