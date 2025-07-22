@@ -9,7 +9,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { assignableRolesMap, roleLabelMap } from "@/lib/permission";
 import {
+  AccessLevelOwner,
   AccessLevelUser,
+  GlobalRole,
   type GroupMemberRoleName,
   type GroupRoleAccessLevel,
 } from "@/types/group";
@@ -22,6 +24,7 @@ type Props = {
   role: GroupMemberRoleName;
   roleId: string;
   accessLevel?: GroupRoleAccessLevel;
+  globalRole: GlobalRole;
   onDelete?: () => void;
   onUpdateRole?: (newRole: GroupMemberRoleName) => void;
   showActions?: boolean;
@@ -33,13 +36,16 @@ export default function PendingMemberRow({
   email,
   role,
   accessLevel = AccessLevelUser, //default to user access level
+  globalRole,
   onDelete,
   onUpdateRole,
   showActions = false,
   isArchived = false,
 }: Props) {
-  const assignableRoles = assignableRolesMap[accessLevel] ?? [];
-
+  const assignableRoles =
+    assignableRolesMap[
+      globalRole == "admin" ? AccessLevelOwner : accessLevel
+    ] ?? [];
   return (
     <TableRow className="hover:bg-muted">
       <TableCell>

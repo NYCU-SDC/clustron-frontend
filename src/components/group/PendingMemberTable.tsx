@@ -53,7 +53,7 @@ export default function PendingMemberTable({
   const { mutate: updatePendingMember } = useUpdatePendingMember(groupId);
   const { mutate: removePendingMember } = useRemovePendingMember(groupId);
   const { roleNameToId } = useRoleMapper();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const { data, isLoading, isError } = useGetPendingMembers(
     groupId,
     currentPage,
@@ -67,7 +67,7 @@ export default function PendingMemberTable({
   ) => {
     const roleId = roleNameToId(newRole);
     if (!roleId) {
-      console.error("fail to  find role:");
+      console.error("fail to find role:");
       return;
     }
 
@@ -106,7 +106,6 @@ export default function PendingMemberTable({
               </TableHeader>
               <TableBody>
                 {members.map((m) => {
-                  // console.log("👀 pending member row data:", m);
                   return (
                     <PendingRow
                       key={m.id}
@@ -114,6 +113,7 @@ export default function PendingMemberTable({
                       email={m.userIdentifier}
                       role={m.role.roleName as GroupMemberRoleName}
                       accessLevel={accessLevel}
+                      globalRole={effectiveGlobalRole}
                       roleId={m.role.id}
                       showActions={canEditMembers}
                       isArchived={isArchived}
@@ -132,27 +132,25 @@ export default function PendingMemberTable({
                 <PaginationContent>
                   <PaginationItem>
                     <PaginationPrevious
-                      onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                      onClick={() => setCurrentPage((p) => Math.max(p - 1, 0))}
                       className={
-                        currentPage === 1
+                        currentPage === 0
                           ? "opacity-50 pointer-events-none"
                           : ""
                       }
                     />
                   </PaginationItem>
 
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                    (page) => (
-                      <PaginationItem key={page}>
-                        <PaginationLink
-                          isActive={page === currentPage}
-                          onClick={() => setCurrentPage(page)}
-                        >
-                          {page}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ),
-                  )}
+                  {Array.from({ length: totalPages }, (_, i) => (
+                    <PaginationItem key={i}>
+                      <PaginationLink
+                        isActive={i === currentPage}
+                        onClick={() => setCurrentPage(i)}
+                      >
+                        {i + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
 
                   <PaginationItem>
                     <PaginationNext

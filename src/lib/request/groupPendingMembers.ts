@@ -11,7 +11,7 @@ export async function getPendingMembers(
   groupId: string,
   page = 1,
 ): Promise<GetPendingMembersResponse> {
-  return api(`/api/groups/${groupId}/pendingMembers?page=${page - 1}`);
+  return api(`/api/groups/${groupId}/pendingMembers?page=${page}`);
 }
 
 // PUT
