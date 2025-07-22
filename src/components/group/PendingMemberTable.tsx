@@ -29,7 +29,6 @@ import type {
   GroupMemberRoleName,
 } from "@/types/group";
 import { AccessLevelUser } from "@/types/group";
-
 type Props = {
   groupId: string;
   accessLevel?: GroupRoleAccessLevel;
@@ -81,6 +80,14 @@ export default function PendingMemberTable({
   const handleRemove = (pendingId: string) => {
     removePendingMember({ id: groupId, pendingId });
   };
+
+  const maxVisiblePages = 4;
+  let startPage = Math.max(currentPage - 1, 0);
+  let endPage = startPage + maxVisiblePages - 1;
+  if (endPage >= totalPages) {
+    endPage = totalPages - 1;
+    startPage = Math.max(endPage - maxVisiblePages + 1, 0);
+  }
 
   return (
     <Card>
@@ -141,24 +148,39 @@ export default function PendingMemberTable({
                     />
                   </PaginationItem>
 
-                  {Array.from({ length: totalPages }, (_, i) => (
-                    <PaginationItem key={i}>
+                  {startPage > 0 && (
+                    <PaginationItem>
+                      <span className="px-2">...</span>
+                    </PaginationItem>
+                  )}
+
+                  {Array.from(
+                    { length: endPage - startPage + 1 },
+                    (_, i) => startPage + i,
+                  ).map((page) => (
+                    <PaginationItem key={page}>
                       <PaginationLink
-                        isActive={i === currentPage}
-                        onClick={() => setCurrentPage(i)}
+                        isActive={page === currentPage}
+                        onClick={() => setCurrentPage(page)}
                       >
-                        {i + 1}
+                        {page + 1}
                       </PaginationLink>
                     </PaginationItem>
                   ))}
 
+                  {endPage < totalPages - 1 && (
+                    <PaginationItem>
+                      <span className="px-2">...</span>
+                    </PaginationItem>
+                  )}
+
                   <PaginationItem>
                     <PaginationNext
                       onClick={() =>
-                        setCurrentPage((p) => Math.min(p + 1, totalPages))
+                        setCurrentPage((p) => Math.min(p + 1, totalPages - 1))
                       }
                       className={
-                        currentPage === totalPages
+                        currentPage === totalPages - 1
                           ? "opacity-50 pointer-events-none"
                           : ""
                       }

@@ -177,6 +177,10 @@
       "saving": "Saving...",
       "unarchive": "Unarchive",
       "archive": "Archive"
+    },
+    "pagination": {
+      "next": "Next",
+      "previous": "Previous"
     }
   }
 }
