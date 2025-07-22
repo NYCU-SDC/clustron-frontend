@@ -22,13 +22,14 @@ import { useRoleMapper } from "@/hooks/useRoleMapper";
 import { useGetPendingMembers } from "@/hooks/useGetPendingMembers";
 import { useUpdatePendingMember } from "@/hooks/useUpdatePendingMember";
 import { useRemovePendingMember } from "@/hooks/useRemovePendingMember";
-
+import { useTranslation } from "react-i18next";
 import type {
   GlobalRole,
   GroupRoleAccessLevel,
   GroupMemberRoleName,
 } from "@/types/group";
 import { AccessLevelUser } from "@/types/group";
+import { Loader2 } from "lucide-react";
 type Props = {
   groupId: string;
   accessLevel?: GroupRoleAccessLevel;
@@ -48,7 +49,7 @@ export default function PendingMemberTable({
     accessLevel,
     effectiveGlobalRole,
   );
-
+  const { t } = useTranslation();
   const { mutate: updatePendingMember } = useUpdatePendingMember(groupId);
   const { mutate: removePendingMember } = useRemovePendingMember(groupId);
   const { roleNameToId } = useRoleMapper();
@@ -93,22 +94,33 @@ export default function PendingMemberTable({
     <Card>
       <CardContent className="p-6">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="font-bold text-lg">Pending Members</h3>
+          <h3 className="font-bold text-lg">{t("groupPages.pendingMember")}</h3>
         </div>
 
         {isLoading ? (
-          <p className="text-sm text-gray-500">Loading members...</p>
+          <div className="text-sm text-gray-500 flex items-center gap-2">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            {t("groupComponents.groupMemberTable.loadingMembers")}
+          </div>
         ) : isError ? (
-          <p className="text-sm text-red-500">Failed to load members.</p>
+          <p className="text-sm text-red-500">
+            {t("groupComponents.groupMemberTable.failedToLoadMembers")}
+          </p>
         ) : members.length === 0 ? (
-          <p className="text-sm text-gray-500">No pending members found.</p>
+          <p className="text-sm text-gray-500">
+            {t("groupComponents.groupMemberTable.noMembersFound")}
+          </p>
         ) : (
           <>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Student ID or Email</TableHead>
-                  <TableHead>Role</TableHead>
+                  <TableHead>
+                    {t("groupComponents.groupMemberTable.studentIdOrEmail")}
+                  </TableHead>
+                  <TableHead>
+                    {t("groupComponents.groupMemberTable.role")}
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

@@ -181,6 +181,7 @@
     "pagination": {
       "next": "Next",
       "previous": "Previous"
-    }
+    },
+    "pendingMember": "待定成員"
   }
 }

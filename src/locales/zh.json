@@ -181,6 +181,7 @@
     "pagination": {
       "next": "上一頁",
       "previous": "下一頁"
-    }
+    },
+    "pendingMember": "待定成員"
   }
 }
