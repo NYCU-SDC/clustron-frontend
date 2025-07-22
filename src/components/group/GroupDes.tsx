@@ -8,19 +8,11 @@ type Props = {
 
 export default function GroupDescription({ title, desc, isArchived }: Props) {
   return (
-    <Card>
-      <CardHeader
-        className={`text-xl font-semibold ${
-          isArchived ? "text-gray-400" : "text-gray-900"
-        }`}
-      >
+    <Card className={`${isArchived ? "opacity-50" : "opacity-100"}`}>
+      <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
-      <CardContent
-        className={`mt-1 text-sm ${isArchived ? "text-gray-300" : "text-gray-600"}`}
-      >
-        {desc}
-      </CardContent>
+      <CardContent>{desc}</CardContent>
     </Card>
   );
 }
