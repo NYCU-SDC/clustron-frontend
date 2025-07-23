@@ -21,7 +21,8 @@ export function canEditMembers(
 ) {
   return (
     globalRole === "admin" ||
-    accessLevel == (AccessLevelOwner || AccessLevelAdmin)
+    accessLevel == AccessLevelOwner ||
+    accessLevel == AccessLevelAdmin
   );
 }
 

@@ -10,7 +10,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { assignableRolesMap, roleLabelMap } from "@/lib/permission";
 import {
+  AccessLevelOwner,
   AccessLevelUser,
+  GlobalRole,
   type GroupMemberRoleName,
   type GroupRoleAccessLevel,
 } from "@/types/group";
@@ -20,6 +22,7 @@ type Props = {
   name: string;
   id: string;
   email: string;
+  globalRole: GlobalRole;
   roleName: GroupMemberRoleName;
   accessLevel?: GroupRoleAccessLevel;
   onDelete?: () => void;
@@ -33,6 +36,7 @@ export default function GroupMemberRow({
   name,
   id,
   email,
+  globalRole,
   roleName,
   accessLevel = AccessLevelUser,
   onDelete,
@@ -42,7 +46,10 @@ export default function GroupMemberRow({
   isPending = false,
 }: Props) {
   const { t } = useTranslation();
-  const assignableRoles = assignableRolesMap[accessLevel] ?? [];
+  const assignableRoles =
+    assignableRolesMap[
+      globalRole == "admin" ? AccessLevelOwner : accessLevel
+    ] ?? [];
   const getRoleLabel = (roleName: GroupMemberRoleName) => {
     const translated = t?.(`groupComponents.roles.${roleName}`);
     if (translated && translated !== `groupComponents.roles.${roleName}`) {

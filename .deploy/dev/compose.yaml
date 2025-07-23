@@ -1,0 +1,19 @@
+services:
+  frontend:
+    image: nycusdc/clustron-frontend:dev
+    container_name: clustron-frontend-dev
+    networks:
+      - traefik
+    environment:
+      HOST: 0.0.0.0
+    labels:
+      - "vector.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.clustron-frontend-dev.rule=Host(`dev.clustron.sdc.nycu.club`)"
+      - "traefik.http.routers.clustron-frontend-dev.entrypoints=websecure"
+      - "traefik.http.routers.clustron-frontend-dev.tls=true"
+      - "traefik.http.routers.clustron-frontend-dev.tls.certresolver=cloudflare"
+
+networks:
+  traefik:
+    external: true

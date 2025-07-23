@@ -9,8 +9,9 @@ import type {
 // GET
 export async function getPendingMembers(
   groupId: string,
+  page = 1,
 ): Promise<GetPendingMembersResponse> {
-  return api(`/api/groups/${groupId}/pendingMembers`);
+  return api(`/api/groups/${groupId}/pendingMembers?page=${page}`);
 }
 
 // PUT

@@ -1,6 +1,6 @@
 import { TableRow, TableCell } from "@/components/ui/table";
 import { ChevronDown } from "lucide-react";
-import MemberDeleteMenu from "./MemberDeleteButton";
+import MemberDeleteMenu from "./MemberDeleteMenu";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -9,7 +9,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { assignableRolesMap, roleLabelMap } from "@/lib/permission";
 import {
+  AccessLevelOwner,
   AccessLevelUser,
+  GlobalRole,
   type GroupMemberRoleName,
   type GroupRoleAccessLevel,
 } from "@/types/group";
@@ -22,6 +24,7 @@ type Props = {
   role: GroupMemberRoleName;
   roleId: string;
   accessLevel?: GroupRoleAccessLevel;
+  globalRole: GlobalRole;
   onDelete?: () => void;
   onUpdateRole?: (newRole: GroupMemberRoleName) => void;
   showActions?: boolean;
@@ -33,13 +36,16 @@ export default function PendingMemberRow({
   email,
   role,
   accessLevel = AccessLevelUser, //default to user access level
+  globalRole,
   onDelete,
   onUpdateRole,
   showActions = false,
   isArchived = false,
 }: Props) {
-  const assignableRoles = assignableRolesMap[accessLevel] ?? [];
-
+  const assignableRoles =
+    assignableRolesMap[
+      globalRole == "admin" ? AccessLevelOwner : accessLevel
+    ] ?? [];
   return (
     <TableRow className="hover:bg-muted">
       <TableCell>
@@ -50,10 +56,7 @@ export default function PendingMemberRow({
       </TableCell>
 
       <TableCell>
-        {showActions &&
-        assignableRoles.length > 0 &&
-        !isArchived &&
-        role !== "group_owner" ? (
+        {showActions && !isArchived && role !== "group_owner" ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-1 cursor-pointer font-medium text-sm">
