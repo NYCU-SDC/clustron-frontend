@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
@@ -22,14 +22,14 @@ import { useRoleMapper } from "@/hooks/useRoleMapper";
 import { useGetPendingMembers } from "@/hooks/useGetPendingMembers";
 import { useUpdatePendingMember } from "@/hooks/useUpdatePendingMember";
 import { useRemovePendingMember } from "@/hooks/useRemovePendingMember";
-
+import { useTranslation } from "react-i18next";
 import type {
   GlobalRole,
   GroupRoleAccessLevel,
   GroupMemberRoleName,
 } from "@/types/group";
 import { AccessLevelUser } from "@/types/group";
-
+import { Loader2 } from "lucide-react";
 type Props = {
   groupId: string;
   accessLevel?: GroupRoleAccessLevel;
@@ -49,28 +49,25 @@ export default function PendingMemberTable({
     accessLevel,
     effectiveGlobalRole,
   );
-  const { data, isLoading, isError } = useGetPendingMembers(groupId);
+  const { t } = useTranslation();
   const { mutate: updatePendingMember } = useUpdatePendingMember(groupId);
   const { mutate: removePendingMember } = useRemovePendingMember(groupId);
   const { roleNameToId } = useRoleMapper();
+  const [currentPage, setCurrentPage] = useState(0);
+  const { data, isLoading, isError } = useGetPendingMembers(
+    groupId,
+    currentPage,
+  );
   const members = data?.items ?? [];
-  const pageSize = 10;
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.max(1, Math.ceil(members.length / pageSize));
-
-  const pagedMembers = useMemo(() => {
-    const start = (currentPage - 1) * pageSize;
-    return members.slice(start, start + pageSize);
-  }, [members, currentPage]);
+  const totalPages = data?.totalPages ?? 1;
 
   const handleUpdateRole = (
     pendingId: string,
     newRole: GroupMemberRoleName,
   ) => {
     const roleId = roleNameToId(newRole);
-
     if (!roleId) {
-      console.error("fail to  find role:");
+      console.error("fail to find role:");
       return;
     }
 
@@ -85,44 +82,64 @@ export default function PendingMemberTable({
     removePendingMember({ id: groupId, pendingId });
   };
 
+  const maxVisiblePages = 4;
+  let startPage = Math.max(currentPage - 1, 0);
+  let endPage = startPage + maxVisiblePages - 1;
+  if (endPage >= totalPages) {
+    endPage = totalPages - 1;
+    startPage = Math.max(endPage - maxVisiblePages + 1, 0);
+  }
+
   return (
     <Card>
       <CardContent className="p-6">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="font-bold text-lg">Pending Members</h3>
+          <h3 className="font-bold text-lg">{t("groupPages.pendingMember")}</h3>
         </div>
 
         {isLoading ? (
-          <p className="text-sm text-gray-500">Loading members...</p>
+          <div className="text-sm text-gray-500 flex items-center gap-2">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            {t("groupComponents.groupMemberTable.loadingMembers")}
+          </div>
         ) : isError ? (
-          <p className="text-sm text-red-500">Failed to load members.</p>
+          <p className="text-sm text-red-500">
+            {t("groupComponents.groupMemberTable.failedToLoadMembers")}
+          </p>
         ) : members.length === 0 ? (
-          <p className="text-sm text-gray-500">No pending members found.</p>
+          <p className="text-sm text-gray-500">
+            {t("groupComponents.groupMemberTable.noMembersFound")}
+          </p>
         ) : (
           <>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Student ID or Email</TableHead>
-                  <TableHead>Role</TableHead>
+                  <TableHead>
+                    {t("groupComponents.groupMemberTable.studentIdOrEmail")}
+                  </TableHead>
+                  <TableHead>
+                    {t("groupComponents.groupMemberTable.role")}
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {pagedMembers.map((m) => {
+                {members.map((m) => {
                   return (
                     <PendingRow
                       key={m.id}
                       id={m.userIdentifier}
                       email={m.userIdentifier}
-                      role={m.role.Role as GroupMemberRoleName}
+                      role={m.role.roleName as GroupMemberRoleName}
                       accessLevel={accessLevel}
+                      globalRole={effectiveGlobalRole}
+                      roleId={m.role.id}
                       showActions={canEditMembers}
                       isArchived={isArchived}
                       onDelete={() => handleRemove(m.id)}
                       onUpdateRole={(newRole) =>
                         handleUpdateRole(m.id, newRole)
                       }
-                      roleId={m.role.ID}
                     />
                   );
                 })}
@@ -134,27 +151,50 @@ export default function PendingMemberTable({
                 <PaginationContent>
                   <PaginationItem>
                     <PaginationPrevious
-                      onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                      onClick={() => setCurrentPage((p) => Math.max(p - 1, 0))}
+                      className={
+                        currentPage === 0
+                          ? "opacity-50 pointer-events-none"
+                          : ""
+                      }
                     />
                   </PaginationItem>
 
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                    (page) => (
-                      <PaginationItem key={page}>
-                        <PaginationLink
-                          isActive={page === currentPage}
-                          onClick={() => setCurrentPage(page)}
-                        >
-                          {page}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ),
+                  {startPage > 0 && (
+                    <PaginationItem>
+                      <span className="px-2">...</span>
+                    </PaginationItem>
+                  )}
+
+                  {Array.from(
+                    { length: endPage - startPage + 1 },
+                    (_, i) => startPage + i,
+                  ).map((page) => (
+                    <PaginationItem key={page}>
+                      <PaginationLink
+                        isActive={page === currentPage}
+                        onClick={() => setCurrentPage(page)}
+                      >
+                        {page + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+
+                  {endPage < totalPages - 1 && (
+                    <PaginationItem>
+                      <span className="px-2">...</span>
+                    </PaginationItem>
                   )}
 
                   <PaginationItem>
                     <PaginationNext
                       onClick={() =>
-                        setCurrentPage((p) => Math.min(p + 1, totalPages))
+                        setCurrentPage((p) => Math.min(p + 1, totalPages - 1))
+                      }
+                      className={
+                        currentPage === totalPages - 1
+                          ? "opacity-50 pointer-events-none"
+                          : ""
                       }
                     />
                   </PaginationItem>

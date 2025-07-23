@@ -15,6 +15,7 @@ import { CircleUserRound } from "lucide-react";
 import { getAccessToken } from "@/lib/token";
 import { jwtDecode } from "jwt-decode";
 import { AccessToken } from "@/types/type";
+import { LogOut } from "lucide-react";
 
 function navLinkclass(isActive: boolean) {
   return [
@@ -27,7 +28,7 @@ function navLinkclass(isActive: boolean) {
 }
 
 export default function Navbar() {
-  const { logout, isLoggedIn } = useContext(authContext);
+  const { handleLogout, isLoggedIn } = useContext(authContext);
   const { t } = useTranslation();
   const accessToken = getAccessToken();
   const email = useMemo(() => {
@@ -71,7 +72,8 @@ export default function Navbar() {
                   {email}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout}>
+                <DropdownMenuItem onClick={handleLogout}>
+                  <LogOut />
                   {t("navbar.logoutBtn")}
                 </DropdownMenuItem>
               </DropdownMenuContent>

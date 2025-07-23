@@ -43,29 +43,9 @@ jobs:
 
         run: npx prettier . --check
 
-  Build:
-    name: Build Vite production
-    runs-on: ubuntu-latest
-    needs: [Lint, Format]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 23
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build Vite production
-        run: npm run build
-
-  Push-Image:
+  Build-Push-Image:
     name: Build Docker image
     runs-on: ubuntu-latest
-    needs: Build
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -92,21 +72,46 @@ jobs:
         with:
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          platforms: linux/arm64
           push: true
           tags: |
             nycusdc/clustron-frontend:dev
             nycusdc/clustron-frontend:${{ github.sha }}
           context: .
+          build-args: |
+            VITE_BUILD_MODE=development
 
   Deploy:
     name: Deploy
-    needs: Push-Image
-    runs-on: self-hosted
+    needs: Build-Push-Image
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
-
-      - name: Deploy container to local
+      - name: Trigger n8n Snapshot Webhook
         run: |
-          ~/deploy.sh "Dev"
+          curl --location --request POST 'https://webhook.eng.sdc.nycu.club/webhook/deploy' \
+            --header 'Content-Type: application/json' \
+            --header 'x-deploy-token: ${{ secrets.N8N_DEPLOY_TOKEN }}' \
+              --data-raw '{
+            "source": {
+              "title": "Clustron",
+              "repo": "${{ github.repository }}",
+              "branch": "${{ github.head_ref || github.ref_name }}",
+              "commit": "${{ github.sha }}"
+            },
+            "method": "deploy",
+            "metadata": {
+              "environment": "dev",
+              "component": "frontend"
+            },
+            "post": {
+              "notify_discord": {
+                "enable": true,
+                "channel": "clustron-activity"
+              },
+              "setup_domain": {
+                "enable": true,
+                "title": "Endpoint",
+                "name": "dev.clustron.sdc.nycu.club",
+                "value": "gcp-eng-deploy:internal"
+              }
+            }
+          }'

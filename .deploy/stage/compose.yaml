@@ -1,0 +1,19 @@
+services:
+  frontend:
+    image: nycusdc/clustron-frontend:stage
+    container_name: clustron-frontend-stage
+    networks:
+      - traefik
+    environment:
+      HOST: 0.0.0.0
+    labels:
+      - "vector.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.clustron-frontend-stage.rule=Host(`stage.clustron.sdc.nycu.club`)"
+      - "traefik.http.routers.clustron-frontend-stage.entrypoints=websecure"
+      - "traefik.http.routers.clustron-frontend-stage.tls=true"
+      - "traefik.http.routers.clustron-frontend-stage.tls.certresolver=cloudflare"
+
+networks:
+  traefik:
+    external: true

@@ -20,8 +20,8 @@ export type GroupMemberRoleName =
 
 // group role
 export type GroupRole = {
-  ID: string;
-  Role: GroupMemberRoleName;
+  id: string;
+  roleName: GroupMemberRoleName;
   accessLevel: GroupRoleAccessLevel;
 };
 // group member
@@ -141,11 +141,10 @@ export type ArchiveGroupParams = {
 export type PendingMember = {
   id: string;
   userIdentifier: string;
-  groupId: string;
   role: {
-    ID: string;
-    Role: GroupMemberRoleName;
-    AccessLevel: GroupRoleAccessLevel;
+    id: string;
+    roleName: GroupMemberRoleName;
+    accessLevel: GroupRoleAccessLevel;
   };
 };
 

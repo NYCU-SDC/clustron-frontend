@@ -129,7 +129,8 @@ export default function GroupMemberTable({
                     name={m.fullName}
                     id={m.studentId}
                     email={m.email}
-                    roleName={m.role.Role as GroupMemberRoleName}
+                    globalRole={effectiveGlobalRole}
+                    roleName={m.role.roleName as GroupMemberRoleName}
                     accessLevel={accessLevel}
                     showActions={canEditMembers && !isOverview}
                     isArchived={isArchived}

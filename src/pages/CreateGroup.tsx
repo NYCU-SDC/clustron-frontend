@@ -50,6 +50,7 @@ export default function AddGroupPage() {
   const handleSave = () => {
     const newMembers = members.map((m) => {
       const roleId = roleNameToId(m.roleName);
+      console.log("roleNameToId", m.roleName, roleId);
       if (!roleId) throw new Error(`Invalid role: ${m.roleName}`);
       return {
         member: m.id.trim(),
@@ -61,7 +62,6 @@ export default function AddGroupPage() {
     const selfIncluded = members.some((m) => m.id.trim() === payloadId);
     if (!selfIncluded) {
       const ownerRoleId = roleNameToId("group_owner");
-
       if (!ownerRoleId) throw new Error("Missing group_owner role");
       newMembers.unshift({ member: payloadId, roleId: ownerRoleId });
     }

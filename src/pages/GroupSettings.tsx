@@ -65,7 +65,6 @@ export default function GroupSettings() {
   };
 
   const isToggling = archiveMutation.isPending || unarchiveMutation.isPending;
-  // console.log(isToggling);
   if (isLoading || !user || !group) {
     return (
       <div className="p-4 text-gray-600">
@@ -93,7 +92,7 @@ export default function GroupSettings() {
           isArchived={group.isArchived}
         />
         {canArchive && (
-          <Card className="">
+          <Card className="mt-10">
             <CardHeader className="flex flex-row items-center justify-between gap-4">
               <div>
                 <CardTitle>
