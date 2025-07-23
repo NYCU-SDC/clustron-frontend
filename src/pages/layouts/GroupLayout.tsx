@@ -9,6 +9,7 @@ export default function GroupLayout() {
       </aside>
 
       <main className=" flex w-full justify-center mt-20">
+
         <Outlet />
       </main>
     </div>
