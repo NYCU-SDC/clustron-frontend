@@ -12,7 +12,7 @@ export default function GroupSideBar({ title }: { title: string }) {
     }`;
 
   return (
-    <aside className="sticky top-23 w-2/3  p-6">
+    <div className="p-6">
       <h2 className="text-xl font-semibold mb-4">{title}</h2>
       <ul className="space-y-2">
         <li>
@@ -34,6 +34,6 @@ export default function GroupSideBar({ title }: { title: string }) {
           </NavLink>
         </li>
       </ul>
-    </aside>
+    </div>
   );
 }

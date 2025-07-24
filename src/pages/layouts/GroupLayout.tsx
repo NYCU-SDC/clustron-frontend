@@ -3,12 +3,12 @@ import GroupSideBar from "@/components/group/GroupSideBar";
 
 export default function GroupLayout() {
   return (
-    <div className="flex w-full min-h-screen">
-      <aside className="sticky top-6 border-r z-10 basis-1/6 shrink-0">
+    <div className="flex w-full h-full">
+      <aside className="sticky top-23 border-r basis-1/6 shrink-0 self-start">
         <GroupSideBar title="Group" />
       </aside>
 
-      <main className=" flex w-full justify-center mt-20">
+      <main className=" flex w-full justify-center">
         <Outlet />
       </main>
     </div>

@@ -1,5 +1,4 @@
 import { Outlet, useParams } from "react-router-dom";
-// import GroupSideBar from "@/components/group/GroupSideBar";
 import GroupDescription from "@/components/group/GroupDes";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
@@ -28,7 +27,6 @@ export default function GroupPage() {
         </div>
       ) : (
         <>
-          {/*<GroupSideBar title={group.title} />*/}
           <main className="flex-1 w-full p-6 space-y-6">
             <Outlet context={{ group, groupId: id }} />
           </main>
