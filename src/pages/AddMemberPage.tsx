@@ -74,7 +74,7 @@ export default function AddMemberPage() {
   );
 
   const handleAddBatch = (
-    newMembers: { id: string; role: GroupMemberRoleName }[],
+    newMembers: { id: string; roleName: GroupMemberRoleName }[],
   ) => {
     setMembers((prev) => [...prev, ...newMembers]);
   };
