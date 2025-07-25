@@ -4,8 +4,8 @@ import {
   isReadonlyMember,
 } from "@/lib/permission";
 
-import type { GroupRoleAccessLevel, GlobalRole } from "@/types/group";
-
+import type { GroupRoleAccessLevel } from "@/types/group";
+import { GlobalRole } from "@/lib/permission";
 export function getGroupPermissions(
   accessLevel: GroupRoleAccessLevel | undefined,
   globalRole: GlobalRole | undefined,

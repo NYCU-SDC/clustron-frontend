@@ -70,6 +70,7 @@ export default function GroupMemberTable({
 
   const updateMemberRole = (memberId: string, newRole: GroupMemberRoleName) => {
     const roleId = roleNameToId(newRole);
+    console.log("show", newRole);
     if (!roleId) {
       console.error(`Invalid role name: ${newRole}`);
       return;
@@ -130,7 +131,7 @@ export default function GroupMemberTable({
                     id={m.studentId}
                     email={m.email}
                     globalRole={effectiveGlobalRole}
-                    roleName={m.role.roleName as GroupMemberRoleName}
+                    role={m.role?.roleName as GroupMemberRoleName}
                     accessLevel={accessLevel}
                     showActions={canEditMembers && !isOverview}
                     isArchived={isArchived}
