@@ -1,37 +1,23 @@
-import { useParams } from "react-router";
-import { useTranslation } from "react-i18next";
-import { useGetGroupById } from "@/hooks/useGetGroupById";
+// import { useTranslation } from "react-i18next";
+import { useOutletContext } from "react-router-dom";
 import GroupDescription from "@/components/group/GroupDes";
 import GroupMemberTable from "@/components/group/GroupMemberTable";
-import { Loader2 } from "lucide-react";
+import type { GroupDetail } from "@/types/group";
+
+type GroupContext = {
+  group: GroupDetail;
+  groupId: string;
+};
 
 export default function GroupOverviewPage() {
-  const { id } = useParams<{ id: string }>();
-  const { t } = useTranslation();
-  const { data: group, isLoading, isError } = useGetGroupById(id ?? "");
-
-  if (!id)
-    return (
-      <div className="p-6">{t("groupPages.groupOverview.provideCourseId")}</div>
-    );
-  if (isLoading)
-    return (
-      <div className="p-6">
-        <Loader2 className="w-4 h-4 animate-spin" />
-        {t("groupPages.groupOverview.loading")}
-      </div>
-    );
-  if (isError || !group)
-    return (
-      <div className="p-6">{t("groupPages.groupOverview.courseNotFound")}</div>
-    );
+  // const { t } = useTranslation();
+  const { group, groupId } = useOutletContext<GroupContext>();
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       <GroupDescription title={group.title} desc={group.description} />
-
       <GroupMemberTable
-        groupId={group.id}
+        groupId={groupId}
         isArchived={group.isArchived}
         isOverview={true}
       />
