@@ -16,7 +16,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { GlobalRole } from "@/types/group";
+import { GlobalRole } from "@/lib/permission";
 import { useQueryClient } from "@tanstack/react-query";
 
 export type GroupContextType = {

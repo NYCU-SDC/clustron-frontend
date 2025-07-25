@@ -12,11 +12,10 @@ import { useRoleMapper } from "@/hooks/useRoleMapper";
 import {
   AccessLevelUser,
   AccessLevelOwner,
-  GlobalRole,
   type GroupRoleAccessLevel,
 } from "@/types/group";
 import { Button } from "@/components/ui/button.tsx";
-
+import { GlobalRole } from "@/lib/permission";
 type Props = {
   id: string;
   email: string;

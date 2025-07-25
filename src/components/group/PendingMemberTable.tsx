@@ -16,18 +16,14 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import PendingMemberRow from "@/components/group/PendingMemberRow";
-import { useGroupPermissions } from "@/hooks/useGroupPermissions";
 import { getGroupPermissions } from "@/lib/groupPermissions";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useGetPendingMembers } from "@/hooks/useGetPendingMembers";
 import { useUpdatePendingMember } from "@/hooks/useUpdatePendingMember";
 import { useRemovePendingMember } from "@/hooks/useRemovePendingMember";
 import { useTranslation } from "react-i18next";
-import type {
-  GlobalRole,
-  GroupRoleAccessLevel,
-  GroupMemberRoleName,
-} from "@/types/group";
+import type { GroupRoleAccessLevel, GroupMemberRoleName } from "@/types/group";
+import { GlobalRole } from "@/lib/permission";
 import { AccessLevelUser } from "@/types/group";
 import { Loader2 } from "lucide-react";
 type Props = {
