@@ -38,7 +38,6 @@ const App = () => {
           </Route>
           <Route path="/groups" element={<GroupListPage />} />
           <Route path="/groups/new" element={<AddGroupPage />} />
-          <Route path="/groups/:id/add-member" element={<AddMemberPage />} />
           <Route path="/add-group" element={<AddGroupPage />} />
           <Route element={<GroupLayout />}>
             <Route path="/groups/:id" element={<GroupPage />}>

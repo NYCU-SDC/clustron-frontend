@@ -11,7 +11,7 @@ export default function GroupLayout() {
   return (
     <>
       <GroupSideBar title={group.title} />
-      <main className=" flex-1 flex justify-center mt-20">
+      <main className=" flex-1 flex justify-center ">
         <Outlet context={{ group, groupId: id }} />
       </main>
     </>
