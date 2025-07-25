@@ -19,7 +19,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 type Props = {
-  onConfirm: () => Promise<void> | void;
+  onConfirm: () => void;
   isArchived?: boolean;
 };
 
@@ -32,7 +32,7 @@ export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
     if (isArchived) return;
     setIsPending(true);
     try {
-      await onConfirm();
+      onConfirm();
       setOpen(false);
     } finally {
       setIsPending(false);

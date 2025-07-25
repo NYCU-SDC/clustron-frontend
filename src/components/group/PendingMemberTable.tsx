@@ -15,19 +15,15 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import PendingRow from "@/components/group/PendingMemberRow";
-import { useGroupPermissions } from "@/hooks/useGroupPermissions";
+import PendingMemberRow from "@/components/group/PendingMemberRow";
+import { getGroupPermissions } from "@/lib/groupPermissions";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
-import { useRoleMapper } from "@/hooks/useRoleMapper";
 import { useGetPendingMembers } from "@/hooks/useGetPendingMembers";
 import { useUpdatePendingMember } from "@/hooks/useUpdatePendingMember";
 import { useRemovePendingMember } from "@/hooks/useRemovePendingMember";
 import { useTranslation } from "react-i18next";
-import type {
-  GlobalRole,
-  GroupRoleAccessLevel,
-  GroupMemberRoleName,
-} from "@/types/group";
+import type { GroupRoleAccessLevel, GroupMemberRoleName } from "@/types/group";
+import { GlobalRole } from "@/lib/permission";
 import { AccessLevelUser } from "@/types/group";
 import { Loader2 } from "lucide-react";
 type Props = {
@@ -45,14 +41,13 @@ export default function PendingMemberTable({
 }: Props) {
   const payload = useJwtPayload();
   const effectiveGlobalRole = globalRole ?? (payload?.Role as GlobalRole);
-  const { canEditMembers } = useGroupPermissions(
+  const { canEditMembers } = getGroupPermissions(
     accessLevel,
     effectiveGlobalRole,
   );
   const { t } = useTranslation();
   const { mutate: updatePendingMember } = useUpdatePendingMember(groupId);
   const { mutate: removePendingMember } = useRemovePendingMember(groupId);
-  const { roleNameToId } = useRoleMapper();
   const [currentPage, setCurrentPage] = useState(0);
   const { data, isLoading, isError } = useGetPendingMembers(
     groupId,
@@ -61,12 +56,8 @@ export default function PendingMemberTable({
   const members = data?.items ?? [];
   const totalPages = data?.totalPages ?? 1;
 
-  const handleUpdateRole = (
-    pendingId: string,
-    newRole: GroupMemberRoleName,
-  ) => {
-    const roleId = roleNameToId(newRole);
-    if (!roleId) {
+  const handleUpdateRole = (pendingId: string, newRoleId: string) => {
+    if (!newRoleId) {
       console.error("fail to find role:");
       return;
     }
@@ -74,7 +65,7 @@ export default function PendingMemberTable({
     updatePendingMember({
       id: groupId,
       pendingId,
-      roleId,
+      roleId: newRoleId,
     });
   };
 
@@ -126,19 +117,18 @@ export default function PendingMemberTable({
               <TableBody>
                 {members.map((m) => {
                   return (
-                    <PendingRow
+                    <PendingMemberRow
                       key={m.id}
                       id={m.userIdentifier}
                       email={m.userIdentifier}
                       role={m.role.roleName as GroupMemberRoleName}
                       accessLevel={accessLevel}
                       globalRole={effectiveGlobalRole}
-                      roleId={m.role.id}
                       showActions={canEditMembers}
                       isArchived={isArchived}
                       onDelete={() => handleRemove(m.id)}
-                      onUpdateRole={(newRole) =>
-                        handleUpdateRole(m.id, newRole)
+                      onUpdateRole={(newRoleId) =>
+                        handleUpdateRole(m.id, newRoleId)
                       }
                     />
                   );

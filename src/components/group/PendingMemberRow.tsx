@@ -7,26 +7,23 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { assignableRolesMap, roleLabelMap } from "@/lib/permission";
+import { useRoleMapper } from "@/hooks/useRoleMapper";
+
 import {
-  AccessLevelOwner,
   AccessLevelUser,
-  GlobalRole,
-  type GroupMemberRoleName,
+  AccessLevelOwner,
   type GroupRoleAccessLevel,
 } from "@/types/group";
-// import { useRoleMapper } from "@/hooks/useRoleMapper"; //動態 hook
-// import { roleLabelMap } from "@/lib/permission"; //靜態 label map
-
+import { Button } from "@/components/ui/button.tsx";
+import { GlobalRole } from "@/lib/permission";
 type Props = {
   id: string;
   email: string;
-  role: GroupMemberRoleName;
-  roleId: string;
+  role: string;
   accessLevel?: GroupRoleAccessLevel;
   globalRole: GlobalRole;
   onDelete?: () => void;
-  onUpdateRole?: (newRole: GroupMemberRoleName) => void;
+  onUpdateRole?: (roleId: string) => void;
   showActions?: boolean;
   isArchived?: boolean;
 };
@@ -42,10 +39,15 @@ export default function PendingMemberRow({
   showActions = false,
   isArchived = false,
 }: Props) {
-  const assignableRoles =
-    assignableRolesMap[
-      globalRole == "admin" ? AccessLevelOwner : accessLevel
-    ] ?? [];
+  const { getRolesByAccessLevel, roles } = useRoleMapper();
+  const effectiveAccessLevel =
+    globalRole === "admin" ? AccessLevelOwner : accessLevel;
+
+  const assignableRoles = getRolesByAccessLevel(effectiveAccessLevel);
+
+  const currentRole = roles.find((r) => r.roleName === role);
+  const currentRoleLabel = currentRole?.roleName || role;
+
   return (
     <TableRow className="hover:bg-muted">
       <TableCell>
@@ -59,25 +61,28 @@ export default function PendingMemberRow({
         {showActions && !isArchived && role !== "group_owner" ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-1 cursor-pointer font-medium text-sm">
-                {roleLabelMap[role] ?? role}
+              <Button
+                variant="ghost"
+                className="flex items-center gap-1 cursor-pointer font-medium text-sm"
+              >
+                {currentRoleLabel}
                 <ChevronDown className="w-4 h-4" />
-              </button>
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {assignableRoles.map((r) => (
                 <DropdownMenuItem
-                  key={r}
-                  onClick={() => onUpdateRole?.(r)}
-                  disabled={r === role}
+                  key={r.id}
+                  onClick={() => onUpdateRole?.(r.id)}
+                  disabled={r.roleName === role}
                 >
-                  {roleLabelMap[r] ?? r}
+                  {r.roleName}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-          <span>{roleLabelMap[role] ?? role}</span>
+          <span>{currentRoleLabel}</span>
         )}
       </TableCell>
 

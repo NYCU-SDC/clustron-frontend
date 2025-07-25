@@ -3,7 +3,7 @@ import { useUpdateMember } from "@/hooks/useUpdateMember";
 import GroupMemberRow from "@/components/group/GroupMemberRow";
 import AddMemberButton from "@/components/group/AddMemberButton";
 import { Card, CardContent } from "@/components/ui/card";
-import { useGroupPermissions } from "@/hooks/useGroupPermissions";
+import { getGroupPermissions } from "@/lib/groupPermissions";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
 import { useQueryClient } from "@tanstack/react-query";
@@ -41,7 +41,7 @@ export default function GroupMemberTable({
   const { t } = useTranslation();
   const payload = useJwtPayload();
   const effectiveGlobalRole = globalRole ?? (payload?.Role as GlobalRole);
-  const { canEditMembers } = useGroupPermissions(
+  const { canEditMembers } = getGroupPermissions(
     accessLevel,
     effectiveGlobalRole,
   );
@@ -70,6 +70,7 @@ export default function GroupMemberTable({
 
   const updateMemberRole = (memberId: string, newRole: GroupMemberRoleName) => {
     const roleId = roleNameToId(newRole);
+    console.log("show", newRole);
     if (!roleId) {
       console.error(`Invalid role name: ${newRole}`);
       return;
@@ -130,7 +131,7 @@ export default function GroupMemberTable({
                     id={m.studentId}
                     email={m.email}
                     globalRole={effectiveGlobalRole}
-                    roleName={m.role.roleName as GroupMemberRoleName}
+                    role={m.role?.roleName as GroupMemberRoleName}
                     accessLevel={accessLevel}
                     showActions={canEditMembers && !isOverview}
                     isArchived={isArchived}

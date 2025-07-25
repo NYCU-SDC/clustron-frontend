@@ -1,26 +1,23 @@
-// import { useTranslation } from "react-i18next";
+import { Outlet } from "react-router-dom";
 import GroupDescription from "@/components/group/GroupDes";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
-import { useGroupPermissions } from "@/hooks/useGroupPermissions";
+import { getGroupPermissions } from "@/lib/groupPermissions";
+import type { GlobalRole } from "@/lib/permission";
 import { useOutletContext } from "react-router-dom";
 import type { GroupDetail } from "@/types/group";
-import type { GlobalRole } from "@/lib/permission";
-import { Outlet } from "react-router";
-
 type GroupContext = {
   group: GroupDetail;
   groupId: string;
 };
 
 export default function GroupPage() {
-  // const { t } = useTranslation();
   const { group, groupId } = useOutletContext<GroupContext>();
   const payload = useJwtPayload();
 
   const accessLevel = group.me.role.accessLevel;
   const globalRole = payload?.Role as GlobalRole;
 
-  const { isReadonly } = useGroupPermissions(accessLevel, globalRole);
+  const { isReadonly } = getGroupPermissions(accessLevel, globalRole);
 
   return (
     <div className="flex w-full">

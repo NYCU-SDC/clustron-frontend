@@ -1,10 +1,6 @@
 import { CircleMinus, CirclePlus } from "lucide-react";
-import {
-  assignableRolesMap,
-  roleLabelMap,
-  type GlobalRole,
-  type GroupRoleAccessLevel,
-} from "@/lib/permission";
+import { GlobalRole, type GroupRoleAccessLevel } from "@/lib/permission";
+import { useRoleMapper } from "@/hooks/useRoleMapper";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -14,11 +10,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import {
-  AccessLevelAdmin,
-  AccessLevelOwner,
-  GroupMemberRoleName,
-} from "@/types/group";
+import { AccessLevelOwner, GroupMemberRoleName } from "@/types/group";
 import { cn } from "@/lib/utils";
 import { AccessLevelUser } from "@/types/group";
 import { useTranslation } from "react-i18next";
@@ -26,7 +18,7 @@ import { useTranslation } from "react-i18next";
 type Props = {
   index: number;
   id: string;
-  roleName: GroupMemberRoleName;
+  roleName: string;
   isLast: boolean;
   isDuplicate?: boolean;
   disabled?: boolean;
@@ -47,6 +39,7 @@ export default function AddMemberRow({
   roleName,
   isLast,
   isDuplicate,
+  globalRole,
   disabled = false,
   isPending = false,
   onAddBatch,
@@ -56,26 +49,13 @@ export default function AddMemberRow({
   accessLevel = AccessLevelUser,
 }: Props) {
   const { t } = useTranslation();
-  const resolvedAccessLevel: GroupRoleAccessLevel = AccessLevelAdmin
-    ? AccessLevelOwner
-    : accessLevel;
+  const { getRolesByAccessLevel } = useRoleMapper();
 
-  const assignableRoles =
-    assignableRolesMap[
-      resolvedAccessLevel as keyof typeof assignableRolesMap
-    ] ?? [];
+  const effectiveAccessLevel =
+    globalRole === "admin" ? AccessLevelOwner : accessLevel;
 
+  const assignableRoles = getRolesByAccessLevel(effectiveAccessLevel);
   const isInputDisabled = disabled || isPending;
-
-  // for role i18n
-  const getRoleLabel = (roleName: GroupMemberRoleName) => {
-    const translated = t?.(`groupComponents.roles.${roleName}`);
-    if (translated && translated !== `groupComponents.roles.${roleName}`) {
-      return translated;
-    }
-
-    return roleLabelMap[roleName] ?? roleName;
-  };
   return (
     <tr className={`hover:bg-muted ${isPending ? "opacity-50" : ""}`}>
       <td className="py-2 px-2">
@@ -101,7 +81,7 @@ export default function AddMemberRow({
               e.preventDefault();
               const newMembers = rows.map((r) => ({
                 id: r,
-                roleName: assignableRoles[0] ?? "student",
+                roleName: assignableRoles[0]?.roleName ?? "",
               }));
               onAddBatch(newMembers);
             }
@@ -118,15 +98,12 @@ export default function AddMemberRow({
           }
         >
           <SelectTrigger className="h-10 w-full text-sm">
-            <SelectValue>
-              {getRoleLabel(roleName) ??
-                t("groupComponents.addMemberRow.selectRole")}
-            </SelectValue>
+            <SelectValue placeholder="Select Role" />
           </SelectTrigger>
           <SelectContent>
             {assignableRoles.map((r) => (
-              <SelectItem key={r} value={r}>
-                {getRoleLabel(r)}
+              <SelectItem key={r.id} value={r.roleName}>
+                {r.roleName}
               </SelectItem>
             ))}
           </SelectContent>
