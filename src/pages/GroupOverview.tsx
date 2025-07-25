@@ -34,7 +34,6 @@ export default function GroupOverviewPage() {
         groupId={group.id}
         isArchived={group.isArchived}
         isOverview={true}
-        displayAddMemberBtn={false}
       />
     </div>
   );

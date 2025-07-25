@@ -28,7 +28,6 @@ type Props = {
   onRemove?: (memberId: string) => void;
   isArchived?: boolean;
   isOverview?: boolean;
-  displayAddMemberBtn?: boolean;
 };
 
 export default function GroupMemberTable({
@@ -38,7 +37,6 @@ export default function GroupMemberTable({
   onRemove,
   isArchived = false,
   isOverview = false,
-  displayAddMemberBtn = true,
 }: Props) {
   const { t } = useTranslation();
   const payload = useJwtPayload();
@@ -91,11 +89,7 @@ export default function GroupMemberTable({
             {t("groupComponents.groupMemberTable.members")}
           </h3>
           {canEditMembers && !isOverview && (
-            <AddMemberButton
-              groupId={groupId}
-              isArchived={isArchived}
-              display={displayAddMemberBtn}
-            />
+            <AddMemberButton groupId={groupId} isArchived={isArchived} />
           )}
         </div>
 

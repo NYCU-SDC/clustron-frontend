@@ -6,14 +6,9 @@ import { Button } from "@/components/ui/button";
 type Props = {
   groupId: string;
   isArchived?: boolean;
-  display?: boolean;
 };
 
-export default function AddMemberButton({
-  groupId,
-  isArchived,
-  display = true,
-}: Props) {
+export default function AddMemberButton({ groupId, isArchived }: Props) {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -21,8 +16,6 @@ export default function AddMemberButton({
     if (isArchived) return;
     navigate(`/groups/${groupId}/add-member`);
   };
-
-  if (!display) return null;
 
   return (
     <Button
