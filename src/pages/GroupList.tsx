@@ -53,14 +53,11 @@ export default function GroupListPage() {
             const path = `/groups/${group.id}/${isManager ? "" : "info"}`;
 
             return (
-              <div
-                key={group.id}
-                onClick={() => navigate(path)}
-                className="cursor-pointer rounded-lg border hover:bg-gray-50 transition"
-              >
+              <div key={group.id} onClick={() => navigate(path)}>
                 <GroupDescription
                   title={group.title}
                   desc={group.description}
+                  isArchived={group.isArchived}
                 />
               </div>
             );

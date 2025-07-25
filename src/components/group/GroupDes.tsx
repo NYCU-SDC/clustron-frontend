@@ -3,17 +3,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 type Props = {
   title: string;
   desc: string;
+  isArchived?: boolean;
 };
 
-export default function GroupDescription({ title, desc }: Props) {
+export default function GroupDescription({ title, desc, isArchived }: Props) {
   return (
-    <Card>
+    <Card className={`${isArchived ? "opacity-50" : "opacity-100"}`}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
-      <CardContent className="whitespace-pre-line text-sm text-muted-foreground">
-        {desc}
-      </CardContent>
+      <CardContent>{desc}</CardContent>
     </Card>
   );
 }
