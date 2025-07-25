@@ -15,7 +15,7 @@ export default function GroupLayout() {
       </aside>
 
       <main className=" flex w-full justify-center">
-        <Outlet />
+        <Outlet context={{ group, groupId: id }} />
       </main>
     </div>
   );
