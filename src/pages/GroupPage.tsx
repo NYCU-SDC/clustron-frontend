@@ -3,7 +3,7 @@ import GroupSideBar from "@/components/group/GroupSideBar";
 import GroupDescription from "@/components/group/GroupDes";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
-import { useGroupPermissions } from "@/hooks/useGroupPermissions";
+import { getGroupPermissions } from "@/lib/groupPermissions";
 import type { GlobalRole } from "@/lib/permission";
 
 export default function GroupPage() {
@@ -14,7 +14,7 @@ export default function GroupPage() {
   const accessLevel = group?.me?.role.accessLevel;
   const globalRole = payload?.Role as GlobalRole;
 
-  const { isReadonly } = useGroupPermissions(accessLevel, globalRole);
+  const { isReadonly } = getGroupPermissions(accessLevel, globalRole);
 
   if (isLoading || !group) return <div className="p-6">載入中...</div>;
 
