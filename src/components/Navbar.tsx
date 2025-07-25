@@ -57,6 +57,12 @@ export default function Navbar() {
               >
                 {t("navbar.settingLink")}
               </NavLink>
+              <NavLink
+                to="/admin"
+                className={({ isActive }) => navLinkclass(isActive)}
+              >
+                admin
+              </NavLink>
             </>
           )}
         </div>
