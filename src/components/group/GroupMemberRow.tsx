@@ -24,7 +24,7 @@ type Props = {
   role: string;
   accessLevel?: GroupRoleAccessLevel;
   onDelete?: () => void;
-  onUpdateRole?: (newRole: string) => void;
+  onUpdateRole?: (newRoleId: string) => void;
   showActions?: boolean;
   isArchived?: boolean;
   isPending?: boolean;
@@ -90,7 +90,7 @@ export default function GroupMemberRow({
                 {assignableRoles.map((r) => (
                   <DropdownMenuItem
                     key={r.id}
-                    onClick={() => onUpdateRole?.(r.roleName)}
+                    onClick={() => onUpdateRole?.(r.id)}
                     disabled={r.roleName === role}
                   >
                     {r.roleName}

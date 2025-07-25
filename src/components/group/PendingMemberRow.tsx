@@ -24,7 +24,7 @@ type Props = {
   accessLevel?: GroupRoleAccessLevel;
   globalRole: GlobalRole;
   onDelete?: () => void;
-  onUpdateRole?: (newRole: string) => void;
+  onUpdateRole?: (roleId: string) => void;
   showActions?: boolean;
   isArchived?: boolean;
 };
@@ -74,7 +74,7 @@ export default function PendingMemberRow({
               {assignableRoles.map((r) => (
                 <DropdownMenuItem
                   key={r.id}
-                  onClick={() => onUpdateRole?.(r.roleName)}
+                  onClick={() => onUpdateRole?.(r.id)}
                   disabled={r.roleName === role}
                 >
                   {r.roleName}

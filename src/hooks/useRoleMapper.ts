@@ -14,14 +14,13 @@ async function fetchRoles(): Promise<GroupRole[]> {
 
 export function useRoleMapper() {
   const {
-    data = [],
+    data = [] as GroupRole[],
     isLoading,
     isError,
   } = useQuery<GroupRole[]>({
     queryKey: ["roles"],
     queryFn: fetchRoles,
   });
-
   const roleNameToId = (roleName: string): string | undefined =>
     data.find((r) => r.roleName === roleName)?.id;
 

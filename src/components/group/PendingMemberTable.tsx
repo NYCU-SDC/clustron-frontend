@@ -18,7 +18,6 @@ import {
 import PendingMemberRow from "@/components/group/PendingMemberRow";
 import { useGroupPermissions } from "@/hooks/useGroupPermissions";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
-import { useRoleMapper } from "@/hooks/useRoleMapper";
 import { useGetPendingMembers } from "@/hooks/useGetPendingMembers";
 import { useUpdatePendingMember } from "@/hooks/useUpdatePendingMember";
 import { useRemovePendingMember } from "@/hooks/useRemovePendingMember";
@@ -52,7 +51,6 @@ export default function PendingMemberTable({
   const { t } = useTranslation();
   const { mutate: updatePendingMember } = useUpdatePendingMember(groupId);
   const { mutate: removePendingMember } = useRemovePendingMember(groupId);
-  const { roleNameToId } = useRoleMapper();
   const [currentPage, setCurrentPage] = useState(0);
   const { data, isLoading, isError } = useGetPendingMembers(
     groupId,
@@ -61,12 +59,8 @@ export default function PendingMemberTable({
   const members = data?.items ?? [];
   const totalPages = data?.totalPages ?? 1;
 
-  const handleUpdateRole = (
-    pendingId: string,
-    newRole: GroupMemberRoleName,
-  ) => {
-    const roleId = roleNameToId(newRole);
-    if (!roleId) {
+  const handleUpdateRole = (pendingId: string, newRoleId: string) => {
+    if (!newRoleId) {
       console.error("fail to find role:");
       return;
     }
@@ -74,7 +68,7 @@ export default function PendingMemberTable({
     updatePendingMember({
       id: groupId,
       pendingId,
-      roleId,
+      roleId: newRoleId,
     });
   };
 
@@ -136,8 +130,8 @@ export default function PendingMemberTable({
                       showActions={canEditMembers}
                       isArchived={isArchived}
                       onDelete={() => handleRemove(m.id)}
-                      onUpdateRole={(newRole) =>
-                        handleUpdateRole(m.id, newRole)
+                      onUpdateRole={(newRoleId) =>
+                        handleUpdateRole(m.id, newRoleId)
                       }
                     />
                   );
