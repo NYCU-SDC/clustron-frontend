@@ -2,8 +2,7 @@ import { useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import GroupDescription from "@/components/group/GroupDes";
 import GroupMemberTable from "@/components/group/GroupMemberTable";
-import PendingMemberTable from "@/components/group/PendingMemberTable.tsx";
-import { useGetGroupById } from "@/hooks/useGetGroupById";
+import PendingMemberTable from "@/components/group/PendingMemberTable";
 import { useArchiveGroup } from "@/hooks/useArchiveGroup";
 import { useUnarchiveGroup } from "@/hooks/useUnarchiveGroup";
 import { useRemoveMember } from "@/hooks/useRemoveMember";
@@ -16,21 +15,24 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { GlobalRole } from "@/lib/permission";
+import { GroupDetail } from "@/types/group";
 import { useQueryClient } from "@tanstack/react-query";
+import { GlobalRole } from "@/lib/permission";
 
-export type GroupContextType = {
+type GroupContextType = {
+  group: GroupDetail;
   groupId: string;
 };
 
 export default function GroupSettings() {
-  const { groupId } = useOutletContext<GroupContextType>();
+  const { group, groupId } = useOutletContext<GroupContextType>();
   const { t } = useTranslation();
-  const { data: group, isLoading } = useGetGroupById(groupId);
   const user = useJwtPayload();
+  const queryClient = useQueryClient();
+
   const archiveMutation = useArchiveGroup(groupId);
   const unarchiveMutation = useUnarchiveGroup(groupId);
-  const queryClient = useQueryClient();
+
   const removeMutation = useRemoveMember(groupId, {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["members", groupId] });
@@ -56,7 +58,6 @@ export default function GroupSettings() {
   };
 
   const toggleArchive = () => {
-    if (!group) return;
     if (group.isArchived) {
       unarchiveMutation.mutate();
     } else {
@@ -65,7 +66,8 @@ export default function GroupSettings() {
   };
 
   const isToggling = archiveMutation.isPending || unarchiveMutation.isPending;
-  if (isLoading || !user || !group) {
+
+  if (!user || !group) {
     return (
       <div className="p-4 text-gray-600">
         {t("groupPages.groupSettings.loadingGroupInfo")}

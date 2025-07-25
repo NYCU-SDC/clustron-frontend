@@ -1,38 +1,36 @@
-import { Outlet, useParams } from "react-router-dom";
-import GroupSideBar from "@/components/group/GroupSideBar";
+import { Outlet } from "react-router-dom";
 import GroupDescription from "@/components/group/GroupDes";
-import { useGetGroupById } from "@/hooks/useGetGroupById";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { getGroupPermissions } from "@/lib/groupPermissions";
 import type { GlobalRole } from "@/lib/permission";
+import { useOutletContext } from "react-router-dom";
+import type { GroupDetail } from "@/types/group";
+type GroupContext = {
+  group: GroupDetail;
+  groupId: string;
+};
 
 export default function GroupPage() {
-  const { id } = useParams<{ id: string }>();
+  const { group, groupId } = useOutletContext<GroupContext>();
   const payload = useJwtPayload();
-  const { data: group, isLoading } = useGetGroupById(id!);
 
-  const accessLevel = group?.me?.role.accessLevel;
+  const accessLevel = group.me.role.accessLevel;
   const globalRole = payload?.Role as GlobalRole;
 
   const { isReadonly } = getGroupPermissions(accessLevel, globalRole);
 
-  if (isLoading || !group) return <div className="p-6">載入中...</div>;
-
   return (
-    <div className="flex w-full ">
+    <div className="flex w-full">
       {isReadonly ? (
-        <div className="flex-1 w-full  items-center justify-center">
-          <main className=" max-w-2xl items-center justify-center p-6 ">
+        <div className="flex-1 w-full items-center justify-center">
+          <main className="max-w-2xl items-center justify-center p-6">
             <GroupDescription title={group.title} desc={group.description} />
           </main>
         </div>
       ) : (
-        <>
-          <GroupSideBar title={group.title} />
-          <main className="flex-1 w-full p-6 space-y-6">
-            <Outlet context={{ group, groupId: id }} />
-          </main>
-        </>
+        <main className="flex-1 w-full p-6 space-y-6">
+          <Outlet context={{ group, groupId }} />
+        </main>
       )}
     </div>
   );
