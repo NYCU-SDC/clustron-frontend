@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   AccessLevelUser,
+  AccessLevelOwner,
   GlobalRole,
   type GroupRoleAccessLevel,
 } from "@/types/group";
@@ -33,7 +34,7 @@ export default function GroupMemberRow({
   name,
   id,
   email,
-  // globalRole,
+  globalRole,
   role,
   accessLevel = AccessLevelUser,
   onDelete,
@@ -45,11 +46,10 @@ export default function GroupMemberRow({
   // const { t } = useTranslation();
   const { getRolesByAccessLevel, roles } = useRoleMapper();
 
-  const assignableRoles = getRolesByAccessLevel(accessLevel);
-  //const assignableRoles =
-  //     assignableRolesMap[
-  //       globalRole == "admin" ? AccessLevelOwner : accessLevel
-  //     ] ?? [];//TODO
+  const effectiveAccessLevel =
+    globalRole === "admin" ? AccessLevelOwner : accessLevel;
+
+  const assignableRoles = getRolesByAccessLevel(effectiveAccessLevel);
   const currentRole = roles.find((r) => r.roleName === role);
   const currentRoleLabel = currentRole?.roleName || role;
 

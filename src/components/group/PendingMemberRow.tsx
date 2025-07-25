@@ -11,6 +11,7 @@ import { useRoleMapper } from "@/hooks/useRoleMapper";
 
 import {
   AccessLevelUser,
+  AccessLevelOwner,
   GlobalRole,
   type GroupRoleAccessLevel,
 } from "@/types/group";
@@ -33,15 +34,18 @@ export default function PendingMemberRow({
   email,
   role,
   accessLevel = AccessLevelUser, //default to user access level
-  // globalRole,
+  globalRole,
   onDelete,
   onUpdateRole,
   showActions = false,
   isArchived = false,
 }: Props) {
   const { getRolesByAccessLevel, roles } = useRoleMapper();
+  const effectiveAccessLevel =
+    globalRole === "admin" ? AccessLevelOwner : accessLevel;
 
-  const assignableRoles = getRolesByAccessLevel(accessLevel);
+  const assignableRoles = getRolesByAccessLevel(effectiveAccessLevel);
+
   const currentRole = roles.find((r) => r.roleName === role);
   const currentRoleLabel = currentRole?.roleName || role;
 
