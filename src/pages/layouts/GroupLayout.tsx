@@ -9,14 +9,11 @@ export default function GroupLayout() {
   if (isLoading || !group) return <div>loading...</div>;
 
   return (
-    <div className="flex w-full min-h-screen">
-      <aside className="sticky top-6  border-r z-10">
-        <GroupSideBar title={group.title} />
-      </aside>
-
-      <main className=" flex w-full justify-center">
+    <>
+      <GroupSideBar title={group.title} />
+      <main className=" flex-1 flex justify-center mt-20">
         <Outlet context={{ group, groupId: id }} />
       </main>
-    </div>
+    </>
   );
 }
