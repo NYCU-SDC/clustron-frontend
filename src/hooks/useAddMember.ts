@@ -6,7 +6,7 @@ import type {
 } from "@/types/group";
 
 type UseAddMemberOptions = {
-  onSuccess?: (data: AddGroupMemberResponse) => void | Promise<void>;
+  onSuccess?: (data: AddGroupMemberResponse[]) => void | Promise<void>;
   onError?: (err: unknown) => void;
 };
 

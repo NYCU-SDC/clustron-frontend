@@ -30,7 +30,27 @@ export default function AddGroupPage() {
   >([{ id: "", roleName: "student" }]);
 
   const createGroup = useCreateGroup({
-    onSuccess: () => navigate(`/groups`),
+    onSuccess: (data) => {
+      if (
+        data.addedResult &&
+        (data.addedResult.addedFailureNumber > 0 ||
+          data.addedResult.addedSuccessNumber > 0)
+      ) {
+        navigate(`/groups/${data.id}/add-member-result`, {
+          state: {
+            result: data.addedResult,
+            members: members
+              .filter((m) => m.id.trim())
+              .map((m) => ({
+                member: m.id.trim(),
+                roleName: m.roleName,
+              })),
+          },
+        });
+      } else {
+        navigate(`/groups`);
+      }
+    },
   });
 
   const updateRow = (index: number, key: "id" | "roleName", value: string) => {

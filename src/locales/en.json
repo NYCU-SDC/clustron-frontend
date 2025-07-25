@@ -180,6 +180,7 @@
     },
     "addMemberResult": {
       "title": "Add Member Results",
+      "createGroupResultTitle": "Group Creation Results",
       "successCount": "Success",
       "failureCount": "Failed",
       "studentIdOrEmail": "Student ID or Email",
@@ -188,6 +189,8 @@
       "additionalInfo": "Additional Information",
       "successStatus": "Successfully added to group",
       "errorStatus": "Failed to add to group",
+      "backToSettings": "Back to Group Settings",
+      "backToGroupList": "Back to Group List",
       "successMessage": "Successfully added to group"
     }
   }

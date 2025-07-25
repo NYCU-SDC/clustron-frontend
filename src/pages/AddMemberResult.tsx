@@ -1,19 +1,18 @@
 import { useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router";
-import AddMemberResultTable from "@/components/group/AddMemberResultTable";
-import type { AddGroupMemberResponse } from "@/types/group";
+import { useLocation, useNavigate } from "react-router";
+import CreateGroupResultTable from "@/components/group/CreateGroupResultTable";
+import type { CreateGroupResultData } from "@/types/group";
 
 export default function AddMemberResult() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { id: groupId } = useParams();
   const { result, members } = location.state || {};
 
   useEffect(() => {
     if (!result || !members) {
-      navigate(`/groups/${groupId}/settings`);
+      navigate(`/groups`);
     }
-  }, [result, members, navigate, groupId]);
+  }, [result, members, navigate]);
 
   if (!result || !members) {
     return null;
@@ -22,8 +21,8 @@ export default function AddMemberResult() {
   return (
     <div className="flex w-2/3 justify-center">
       <main className="w-full max-w-5xl min-w-5xl p-6">
-        <AddMemberResultTable
-          result={result as AddGroupMemberResponse}
+        <CreateGroupResultTable
+          result={result as CreateGroupResultData}
           members={members as { member: string; roleName: string }[]}
         />
       </main>

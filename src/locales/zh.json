@@ -180,6 +180,7 @@
     },
     "addMemberResult": {
       "title": "新增成員結果",
+      "createGroupResultTitle": "群組建立結果",
       "successCount": "成功",
       "failureCount": "失敗",
       "studentIdOrEmail": "學號或Email",
@@ -188,6 +189,8 @@
       "additionalInfo": "詳細資訊",
       "successStatus": "成功加入群組",
       "errorStatus": "加入失敗",
+      "backToSettings": "返回群組設定",
+      "backToGroupList": "返回群組列表",
       "successMessage": "成功加入群組"
     }
   }

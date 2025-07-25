@@ -7,8 +7,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
-import type { AddGroupMemberResponse } from "@/types/group";
+import type { CreateGroupResultData } from "@/types/group";
 
 const StatusIcon = ({ type }: { type: "success" | "warning" | "error" }) => {
   const iconProps = {
@@ -59,15 +61,16 @@ const StatusIcon = ({ type }: { type: "success" | "warning" | "error" }) => {
   }
 };
 
-interface AddMemberResultTableProps {
-  result: AddGroupMemberResponse;
+interface CreateGroupResultTableProps {
+  result: CreateGroupResultData;
   members: { member: string; roleName: string }[];
 }
 
-export default function AddMemberResultTable({
+export default function CreateGroupResultTable({
   result,
   members,
-}: AddMemberResultTableProps) {
+}: CreateGroupResultTableProps) {
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const memberStatuses = members.map((member) => {
@@ -88,11 +91,15 @@ export default function AddMemberResultTable({
     }
   });
 
+  const handleBackClick = () => {
+    navigate(`/groups`);
+  };
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-2xl">
-          {t("groupPages.addMemberResult.title")}
+          {t("groupPages.addMemberResult.createGroupResultTitle")}
         </CardTitle>
         <div className="text-sm text-gray-600 dark:text-gray-300">
           {t("groupPages.addMemberResult.successCount")}:{" "}
@@ -142,6 +149,12 @@ export default function AddMemberResultTable({
             <StatusIcon type="error" />
             <span>{t("groupPages.addMemberResult.errorStatus")}</span>
           </div>
+        </div>
+
+        <div className="flex justify-center mt-6">
+          <Button onClick={handleBackClick} className="px-6 py-2">
+            {t("groupPages.addMemberResult.backToGroupList")}
+          </Button>
         </div>
       </CardContent>
     </Card>
