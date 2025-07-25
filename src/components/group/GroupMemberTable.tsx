@@ -124,26 +124,22 @@ export default function GroupMemberTable({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {members.map((m) => {
-                  return (
-                    <GroupMemberRow
-                      key={m.id}
-                      name={m.fullName}
-                      id={m.studentId}
-                      email={m.email}
-                      globalRole={effectiveGlobalRole}
-                      role={m.role?.roleName as GroupMemberRoleName}
-                      accessLevel={accessLevel}
-                      showActions={canEditMembers && !isOverview}
-                      isArchived={isArchived}
-                      isPending={isUpdatingMember}
-                      onDelete={onRemove ? () => onRemove(m.id) : undefined}
-                      onUpdateRole={(newRole) =>
-                        updateMemberRole(m.id, newRole)
-                      }
-                    />
-                  );
-                })}
+                {members.map((m) => (
+                  <GroupMemberRow
+                    key={m.id}
+                    name={m.fullName}
+                    id={m.studentId}
+                    email={m.email}
+                    globalRole={effectiveGlobalRole}
+                    role={m.role?.roleName as GroupMemberRoleName}
+                    accessLevel={accessLevel}
+                    showActions={canEditMembers && !isOverview}
+                    isArchived={isArchived}
+                    isPending={isUpdatingMember}
+                    onDelete={onRemove ? () => onRemove(m.id) : undefined}
+                    onUpdateRole={(newRole) => updateMemberRole(m.id, newRole)}
+                  />
+                ))}
               </TableBody>
             </Table>
 
