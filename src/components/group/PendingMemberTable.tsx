@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/pagination";
 import PendingMemberRow from "@/components/group/PendingMemberRow";
 import { useGroupPermissions } from "@/hooks/useGroupPermissions";
+import { getGroupPermissions } from "@/lib/groupPermissions";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useGetPendingMembers } from "@/hooks/useGetPendingMembers";
 import { useUpdatePendingMember } from "@/hooks/useUpdatePendingMember";
@@ -44,7 +45,7 @@ export default function PendingMemberTable({
 }: Props) {
   const payload = useJwtPayload();
   const effectiveGlobalRole = globalRole ?? (payload?.Role as GlobalRole);
-  const { canEditMembers } = useGroupPermissions(
+  const { canEditMembers } = getGroupPermissions(
     accessLevel,
     effectiveGlobalRole,
   );
