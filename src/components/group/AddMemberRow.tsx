@@ -1,5 +1,5 @@
 import { CircleMinus, CirclePlus } from "lucide-react";
-import { type GlobalRole, type GroupRoleAccessLevel } from "@/lib/permission";
+import { GlobalRole, type GroupRoleAccessLevel } from "@/lib/permission";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
 import { Input } from "@/components/ui/input";
 import {
@@ -10,7 +10,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { GroupMemberRoleName } from "@/types/group";
+import { AccessLevelOwner, GroupMemberRoleName } from "@/types/group";
 import { cn } from "@/lib/utils";
 import { AccessLevelUser } from "@/types/group";
 import { useTranslation } from "react-i18next";
@@ -39,6 +39,7 @@ export default function AddMemberRow({
   roleName,
   isLast,
   isDuplicate,
+  globalRole,
   disabled = false,
   isPending = false,
   onAddBatch,
@@ -50,8 +51,10 @@ export default function AddMemberRow({
   const { t } = useTranslation();
   const { getRolesByAccessLevel } = useRoleMapper();
 
-  const assignableRoles = getRolesByAccessLevel(accessLevel);
-  // console.log(assignableRoles);
+  const effectiveAccessLevel =
+    globalRole === "admin" ? AccessLevelOwner : accessLevel;
+
+  const assignableRoles = getRolesByAccessLevel(effectiveAccessLevel);
   const isInputDisabled = disabled || isPending;
   return (
     <tr className={`hover:bg-muted ${isPending ? "opacity-50" : ""}`}>
