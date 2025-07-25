@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   onConfirm: () => void;
@@ -24,6 +25,19 @@ type Props = {
 
 export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
+  const [isPending, setIsPending] = useState(false);
+
+  const handleDelete = async () => {
+    if (isArchived) return;
+    setIsPending(true);
+    try {
+      onConfirm();
+      setOpen(false);
+    } finally {
+      setIsPending(false);
+    }
+  };
 
   return (
     <>
@@ -37,12 +51,9 @@ export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
           <DropdownMenuContent align="end">
             <DropdownMenuItem
               className="text-red-600"
-              onClick={() => {
-                setOpen(false);
-                onConfirm();
-              }}
+              onClick={() => setOpen(true)}
             >
-              Remove User
+              {t("groupComponents.memberDeleteButton.removeUser")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         )}
@@ -52,24 +63,25 @@ export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="text-red-600">
-              Delete User Confirm
+              {t("groupComponents.memberDeleteButton.deleteUserConfirm")}
             </DialogTitle>
             <DialogDescription>
-              Are you sure to delete this user? This action is not recoverable.
+              {t("groupComponents.memberDeleteButton.deleteConfirmation")}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex justify-end gap-2">
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline">
+                {t("groupComponents.memberDeleteButton.cancel")}
+              </Button>
             </DialogClose>
             <DialogClose asChild>
               <Button
                 variant="destructive"
-                onClick={() => {
-                  if (!isArchived) onConfirm();
-                }}
+                onClick={handleDelete}
+                disabled={isPending}
               >
-                Delete
+                {t("groupComponents.memberDeleteButton.delete")}
               </Button>
             </DialogClose>
           </DialogFooter>

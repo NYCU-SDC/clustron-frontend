@@ -1,25 +1,13 @@
 import { createContext } from "react";
 import { UseMutationResult } from "@tanstack/react-query";
+import { AuthCookie } from "@/types/type";
 
 type AuthContextType = {
   login: (provider: "google" | "nycu") => void;
-  setCookiesForAuthToken: (
-    accessToken: string,
-    refreshToken: string,
-    refreshTokenExpirationTime?: number,
-  ) => void;
-  logout: () => void;
+  setCookiesForAuthToken: (data: AuthCookie) => void;
+  handleLogout: () => void;
   isLoggedIn: () => boolean;
-  refreshMutation: UseMutationResult<
-    {
-      accessToken: string;
-      refreshToken: string;
-      refreshTokenExpirationTime: number;
-    },
-    Error,
-    void,
-    unknown
-  >;
+  refreshMutation: UseMutationResult<AuthCookie, Error, void, unknown>;
 };
 
 export const authContext = createContext<AuthContextType>({
@@ -31,7 +19,7 @@ export const authContext = createContext<AuthContextType>({
     console.warn("setCookiesForAuthToken() called without provider");
   },
 
-  logout: () => {
+  handleLogout: () => {
     console.warn("logout() called without provider");
   },
 
@@ -40,14 +28,5 @@ export const authContext = createContext<AuthContextType>({
     return false;
   },
 
-  refreshMutation: {} as UseMutationResult<
-    {
-      accessToken: string;
-      refreshToken: string;
-      refreshTokenExpirationTime: number;
-    },
-    Error,
-    void,
-    unknown
-  >,
+  refreshMutation: {} as UseMutationResult<AuthCookie, Error, void, unknown>,
 });

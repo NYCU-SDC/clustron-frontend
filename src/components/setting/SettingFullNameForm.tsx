@@ -23,19 +23,20 @@ import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2Icon } from "lucide-react";
+import type { Settings } from "@/types/type";
 
-export default function SettingNameForm({
+export default function SettingFullNameForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  const [username, setUsername] = useState("");
+  const [fullName, setFullName] = useState("");
   const [linuxUsername, setLinuxUsername] = useState("");
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const PROFILE_QUERY_KEY = ["username"];
 
   const {
-    data = { username: "", linuxUsername: "" },
+    data = { fullName: "", linuxUsername: "" },
     isSuccess,
     isLoading,
     isError,
@@ -45,28 +46,27 @@ export default function SettingNameForm({
   });
 
   const addMutation = useMutation({
-    mutationFn: (payload: { username: string; linuxUsername: string }) =>
-      saveSettings(payload),
+    mutationFn: (payload: Settings) => saveSettings(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
-      toast.success(t("settingNameForm.successToast"));
+      toast.success(t("settingFullNameForm.successToast"));
     },
     onError: (error: Error) => {
       if (error.name === "Bad Request") {
-        toast.error(t("settingNameForm.emptyErrorToast"));
+        toast.error(t("settingFullNameForm.emptyErrorToast"));
       } else {
-        toast.error(t("settingNameForm.saveFailToast"));
+        toast.error(t("settingFullNameForm.saveFailToast"));
       }
     },
   });
 
   useEffect(() => {
     if (isSuccess) {
-      setUsername(data.username);
+      setFullName(data.fullName);
       setLinuxUsername(data.linuxUsername);
     }
     if (isError) {
-      toast.error(t("settingNameForm.getFailToast"));
+      toast.error(t("settingFullNameForm.getFailToast"));
     }
   }, [isSuccess, isError, data, t]);
 
@@ -75,10 +75,10 @@ export default function SettingNameForm({
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">
-            {t("settingNameForm.cardTitleForName")}
+            {t("settingFullNameForm.cardTitleForFullName")}
           </CardTitle>
           <CardDescription>
-            {t("settingNameForm.cardDescriptionForName")}
+            {t("settingFullNameForm.cardDescriptionForFullName")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -87,11 +87,13 @@ export default function SettingNameForm({
               <Skeleton className="h-9 w-full border rounded-md " />
             ) : (
               <Input
-                id="username"
+                id="fullName"
                 type="name"
-                placeholder={t("settingNameForm.placeHolderForInputName")}
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder={t(
+                  "settingFullNameForm.placeHolderForInputFullName",
+                )}
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
                 disabled={isLoading}
               />
             )}
@@ -100,16 +102,16 @@ export default function SettingNameForm({
               {addMutation.isPending ? (
                 <Button className="px-7 py-5 w-24 cursor-pointer" disabled>
                   <Loader2Icon className="animate-spin" />
-                  {t("settingNameForm.loadingBtn")}
+                  {t("settingFullNameForm.loadingBtn")}
                 </Button>
-              ) : username ? (
+              ) : fullName ? (
                 <Button
                   className="px-7 py-5 w-24 cursor-pointer"
                   onClick={() => {
-                    addMutation.mutate({ username, linuxUsername });
+                    addMutation.mutate({ fullName: fullName, linuxUsername });
                   }}
                 >
-                  {t("settingNameForm.saveBtn")}
+                  {t("settingFullNameForm.saveBtn")}
                 </Button>
               ) : (
                 <Tooltip>
@@ -118,11 +120,11 @@ export default function SettingNameForm({
                       disabled
                       className="px-7 py-5 w-24 disabled:cursor-not-allowed disabled:pointer-events-auto"
                     >
-                      {t("settingNameForm.saveBtn")}
+                      {t("settingFullNameForm.saveBtn")}
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent side="top" align="center">
-                    {t("settingNameForm.saveBtnToolTip")}
+                    {t("settingFullNameForm.saveBtnToolTip")}
                   </TooltipContent>
                 </Tooltip>
               )}

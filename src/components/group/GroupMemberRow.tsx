@@ -1,6 +1,6 @@
 import { TableRow, TableCell } from "@/components/ui/table";
-import { ChevronDown } from "lucide-react";
-import MemberDeleteMenu from "./MemberDeleteButton";
+import { ChevronDown, Loader2 } from "lucide-react";
+import MemberDeleteMenu from "./MemberDeleteMenu.tsx";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -9,42 +9,56 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   AccessLevelUser,
-  type GroupMemberRoleName,
+  GlobalRole,
   type GroupRoleAccessLevel,
 } from "@/types/group";
 import { useRoleMapper } from "@/hooks/useRoleMapper"; //
+import { Button } from "@/components/ui/button.tsx";
+
 type Props = {
   name: string;
   id: string;
   email: string;
+  globalRole: GlobalRole;
   role: string;
   accessLevel?: GroupRoleAccessLevel;
   onDelete?: () => void;
-  onUpdateRole?: (newRole: GroupMemberRoleName) => void;
+  onUpdateRole?: (newRole: string) => void;
   showActions?: boolean;
   isArchived?: boolean;
+  isPending?: boolean;
 };
 
 export default function GroupMemberRow({
   name,
   id,
   email,
+  // globalRole,
   role,
   accessLevel = AccessLevelUser,
   onDelete,
   onUpdateRole,
   showActions = false,
   isArchived = false,
+  isPending = false,
 }: Props) {
-  const { getRolesByAccessLevel, roles, isLoading } = useRoleMapper();
+  // const { t } = useTranslation();
+  const { getRolesByAccessLevel, roles } = useRoleMapper();
 
   const assignableRoles = getRolesByAccessLevel(accessLevel);
-
+  //const assignableRoles =
+  //     assignableRolesMap[
+  //       globalRole == "admin" ? AccessLevelOwner : accessLevel
+  //     ] ?? [];//TODO
   const currentRole = roles.find((r) => r.roleName === role);
   const currentRoleLabel = currentRole?.roleName || role;
 
   return (
-    <TableRow className="hover:bg-muted">
+    <TableRow
+      className={`hover:bg-muted transition-opacity ${
+        isPending ? "opacity-50 cursor-wait" : ""
+      }`}
+    >
       <TableCell>{name}</TableCell>
 
       <TableCell>
@@ -55,31 +69,36 @@ export default function GroupMemberRow({
       </TableCell>
 
       <TableCell>
-        {isLoading ? (
-          <span className="text-xs text-muted-foreground">Loading...</span>
-        ) : showActions &&
-          assignableRoles.length > 0 &&
-          !isArchived &&
-          role !== "group_owner" ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-1 cursor-pointer font-medium text-sm">
-                {currentRoleLabel}
-                <ChevronDown className="w-4 h-4" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {assignableRoles.map((r) => (
-                <DropdownMenuItem
-                  key={r.id}
-                  onClick={() => onUpdateRole?.(r.roleName)}
-                  disabled={r.roleName === role}
+        {showActions && !isArchived && role !== "group_owner" ? (
+          isPending ? (
+            <div className="flex items-center text-sm text-muted-foreground gap-2">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Updating...
+            </div>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="flex items-center gap-1 font-medium text-sm px-2 py-1 hover:bg-muted"
                 >
-                  {r.roleName}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  {currentRoleLabel}
+                  <ChevronDown className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {assignableRoles.map((r) => (
+                  <DropdownMenuItem
+                    key={r.id}
+                    onClick={() => onUpdateRole?.(r.roleName)}
+                    disabled={r.roleName === role}
+                  >
+                    {r.roleName}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )
         ) : (
           <span>{currentRoleLabel}</span>
         )}

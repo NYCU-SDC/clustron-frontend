@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
@@ -14,26 +14,29 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { useMutation } from "@tanstack/react-query";
 import { saveOnboardingInfo } from "@/lib/request/saveOnboardingInfo";
-import { useContext } from "react";
 import { authContext } from "@/lib/auth/authContext";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
+import { z } from "zod";
+import type { Settings } from "@/types/type";
 
 export default function OnboardingForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  const [username, setUsername] = useState("");
+  const [fullName, setFullName] = useState("");
   const [linuxUsername, setLinuxUsername] = useState("");
   const navigate = useNavigate();
   const { refreshMutation } = useContext(authContext);
   const { t } = useTranslation();
 
+  const linuxUsernameSchema = z
+    .string()
+    .min(1)
+    .regex(/^[a-z_][a-z0-9_-]*\$?$/);
+
   const addMutation = useMutation({
-    mutationFn: async (payload: {
-      username: string;
-      linuxUsername: string;
-    }) => {
+    mutationFn: async (payload: Settings) => {
       await saveOnboardingInfo(payload);
       await refreshMutation.mutateAsync();
     },
@@ -41,8 +44,12 @@ export default function OnboardingForm({
       navigate("/");
       toast.success(t("onboardingForm.successToast"));
     },
-    onError: () => {
-      toast.error(t("onboardingForm.saveFailToast"));
+    onError: (err: Error) => {
+      if (err.name === "400") {
+        toast.error(t("onboardingForm.formatErrorToast"));
+      } else {
+        toast.error(t("onboardingForm.saveFailToast"));
+      }
     },
   });
 
@@ -58,21 +65,21 @@ export default function OnboardingForm({
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label className="ml-2 font-medium">
-                {t("onboardingForm.labelForInputName")}
+                {t("onboardingForm.labelForInputFullName")}
                 <span className="text-red-400">*</span>
               </Label>
               <Input
                 className="mx-2 w-auto"
-                id="username"
+                id="fullname"
                 type="name"
-                placeholder={t("onboardingForm.placeHolderForInputName")}
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder={t("onboardingForm.placeHolderForInputFullName")}
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
               />
             </div>
             <div className="grid gap-2">
               <Label className="ml-2 font-medium">
-                {t("onboardingForm.labelForInputUsername")}
+                {t("onboardingForm.labelForInputLinuxUsername")}
                 <span className="text-red-400">*</span>
               </Label>
               <Input
@@ -91,16 +98,17 @@ export default function OnboardingForm({
                     <Loader2Icon className="animate-spin" />
                     {t("onboardingForm.loadingBtn")}
                   </Button>
-                ) : username && linuxUsername ? (
+                ) : fullName && linuxUsername ? (
                   <Button
                     className="px-7 py-5 w-16 cursor-pointer"
                     onClick={() => {
-                      // TODO: Replace with Zod + React Hook Form for more comprehensive validation
-                      if (linuxUsername.includes(" ")) {
-                        toast.error(t("onboardingForm.EmptyUsernameToast"));
+                      if (
+                        !linuxUsernameSchema.safeParse(linuxUsername).success
+                      ) {
+                        toast.error(t("onboardingForm.formatErrorToast"));
                         return;
                       }
-                      addMutation.mutate({ username, linuxUsername });
+                      addMutation.mutate({ fullName, linuxUsername });
                     }}
                   >
                     {t("onboardingForm.saveBtn")}

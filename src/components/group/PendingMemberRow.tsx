@@ -1,37 +1,45 @@
 import { TableRow, TableCell } from "@/components/ui/table";
 import { ChevronDown } from "lucide-react";
-import MemberDeleteMenu from "./MemberDeleteButton";
+import MemberDeleteMenu from "./MemberDeleteMenu";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { AccessLevelUser, type GroupRoleAccessLevel } from "@/types/group";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
+
+import {
+  AccessLevelUser,
+  GlobalRole,
+  type GroupRoleAccessLevel,
+} from "@/types/group";
+import { Button } from "@/components/ui/button.tsx";
 
 type Props = {
   id: string;
   email: string;
-  role: string; // ✅ dynamic role name
+  role: string;
   accessLevel?: GroupRoleAccessLevel;
+  globalRole: GlobalRole;
   onDelete?: () => void;
   onUpdateRole?: (newRole: string) => void;
   showActions?: boolean;
   isArchived?: boolean;
 };
 
-export default function PendingRow({
+export default function PendingMemberRow({
   id,
   email,
   role,
-  accessLevel = AccessLevelUser,
+  accessLevel = AccessLevelUser, //default to user access level
+  // globalRole,
   onDelete,
   onUpdateRole,
   showActions = false,
   isArchived = false,
 }: Props) {
-  const { getRolesByAccessLevel, roles, isLoading } = useRoleMapper();
+  const { getRolesByAccessLevel, roles } = useRoleMapper();
 
   const assignableRoles = getRolesByAccessLevel(accessLevel);
   const currentRole = roles.find((r) => r.roleName === role);
@@ -47,18 +55,16 @@ export default function PendingRow({
       </TableCell>
 
       <TableCell>
-        {isLoading ? (
-          <span className="text-xs text-muted-foreground">Loading...</span>
-        ) : showActions &&
-          assignableRoles.length > 0 &&
-          !isArchived &&
-          role !== "group_owner" ? (
+        {showActions && !isArchived && role !== "group_owner" ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-1 cursor-pointer font-medium text-sm">
+              <Button
+                variant="ghost"
+                className="flex items-center gap-1 cursor-pointer font-medium text-sm"
+              >
                 {currentRoleLabel}
                 <ChevronDown className="w-4 h-4" />
-              </button>
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {assignableRoles.map((r) => (

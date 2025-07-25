@@ -2,12 +2,13 @@
   "onboardingForm": {
     "cardTitleForName": "Enter Your Basic Information",
     "saveBtn": "Save",
-    "labelForInputName": "Full Name",
-    "placeHolderForInputName": "John Doe",
-    "labelForInputUsername": "Linux Username",
+    "labelForInputFullName": "Full Name",
+    "placeHolderForInputFullName": "John Doe",
+    "labelForInputLinuxUsername": "Linux Username",
     "successToast": "Informaion saved successfully",
+    "formatErrorToast": "Linux Username must start with a lowercase letter or underscore, can include lowercase letters, numbers, underscores(_), or hyphens(-), may end with $, and must not contain spaces",
     "saveFailToast": "Failed to save your information",
-    "EmptyUsernameToast": "Linux username cannot contain spaces",
+    "EmptyLinuxUsernameToast": "Linux username cannot contain spaces",
     "loadingBtn": "Loading...",
     "saveBtnToolTip": "Please fill in your full name and Linux username"
   },
@@ -58,21 +59,23 @@
     "saveFailToast": "Failed to save your public key",
     "loadingBtn": "Loading..."
   },
-  "settingNameForm": {
-    "cardTitleForName": "Full Name",
-    "cardDescriptionForName": "Your full name to let the group administrator recognize you",
+  "settingFullNameForm": {
+    "cardTitleForFullName": "Full Name",
+    "cardDescriptionForFullName": "Your full name to let the group administrator recognize you",
     "saveBtn": "Save",
-    "placeHolderForInputName": "Jammy Wang",
+    "placeHolderForInputFullName": "Jammy Wang",
     "successToast": "Name saved successfully",
     "emptyErrorToast": "Please enter your full name",
     "saveFailToast": "Failed to save your full name",
     "getFailToast": "Failed to get your full name",
     "loadingBtn": "Loading...",
-    "saveBtnToolTip": "Please fill in your full name"
+    "saveBtnToolTip": "Please fill in your full name",
+    "cardTitleForLanguage": "Language",
+    "cardDescriptionForLanguage": "Choose the display language in Clustron"
   },
-  "settingUsernameForm": {
-    "cardTitleForUsername": "Linux Username",
-    "cardDescriptionForUsername": "The username to login to the remote server",
+  "settingLinuxUsernameForm": {
+    "cardTitleForLinuxUsername": "Linux Username",
+    "cardDescriptionForLinuxUsername": "The username to login to the remote server",
     "saveBtn": "Save",
     "successToast": "Linux username saved successfully",
     "emptyErrorToast": "Please enter your Linux username",
@@ -94,5 +97,91 @@
     "cancelBtn": "Cancel",
     "confirmBtn": "Delete",
     "loadingBtn": "Loading..."
+  },
+  "groupComponents": {
+    "addMemberButton": {
+      "newMembers": "New Members"
+    },
+    "groupMemberTable": {
+      "members": "Members",
+      "loadingMembers": "Loading members...",
+      "failedToLoadMembers": "Failed to load members.",
+      "noMembersFound": "No members found.",
+      "name": "Name",
+      "studentIdOrEmail": "Student ID or Email",
+      "role": "Role",
+      "loadingMore": "Loading more...",
+      "loadMore": "Load more"
+    },
+    "groupSideBar": {
+      "overview": "Overview",
+      "groupSettings": "Group Settings"
+    },
+    "memberDeleteButton": {
+      "removeUser": "Remove User",
+      "deleteUserConfirm": "Delete User Confirm",
+      "deleteConfirmation": "Are you sure to delete this user? This action is not recoverable.",
+      "cancel": "Cancel",
+      "delete": "Delete"
+    },
+    "addMemberRow": {
+      "enterStudentIdOrEmail": "Enter StudentID or Email",
+      "selectRole": "Select Role",
+      "duplicateEntry": "Duplicate entry"
+    },
+    "roles": {
+      "group_owner": "Group Owner",
+      "teacher_assistant": "TA",
+      "student": "Student",
+      "auditor": "Auditor"
+    }
+  },
+  "groupPages": {
+    "addMemberPage": {
+      "title": "Add New Members",
+      "studentIdOrEmail": "Student ID or Email",
+      "role": "Role",
+      "loading": "Loading...",
+      "courseNotFound": "Course not found.",
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "createGroup": {
+      "title": "Create New Group",
+      "courseTitlePlaceholder": "Course Title",
+      "courseDescriptionPlaceholder": "Course Description",
+      "addInitialMembers": "Add Initial Members",
+      "studentIdOrEmail": "Student ID or Email",
+      "role": "Role",
+      "cancel": "Cancel",
+      "create": "Create"
+    },
+    "groupList": {
+      "newCourse": "+ New Course",
+      "loading": "Loading...",
+      "loadingFailed": "Loading failed",
+      "noCourses": "You haven't joined any courses yet."
+    },
+    "groupOverview": {
+      "provideCourseId": "Please provide course ID",
+      "loading": "Loading...",
+      "courseNotFound": "Course not found"
+    },
+    "groupSettings": {
+      "loadingGroupInfo": "Loading group info...",
+      "deleteFailed": "Delete failed: ",
+      "unarchiveGroup": "Unarchive This Group",
+      "archiveGroup": "Archive This Group",
+      "unarchiveDescription": "This will reactivate the group and allow updates again.",
+      "archiveDescription": "This will turn the group into archive state, no update can be made before it is activated again.",
+      "saving": "Saving...",
+      "unarchive": "Unarchive",
+      "archive": "Archive"
+    },
+    "pagination": {
+      "next": "Next",
+      "previous": "Previous"
+    },
+    "pendingMember": "待定成員"
   }
 }

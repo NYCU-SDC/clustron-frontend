@@ -1,4 +1,5 @@
 import {
+  AccessLevelAdmin,
   AccessLevelOwner,
   AccessLevelUser,
   GroupRoleAccessLevel,
@@ -17,7 +18,11 @@ export function canEditMembers(
   accessLevel?: GroupRoleAccessLevel,
   globalRole?: GlobalRole,
 ) {
-  return globalRole === "admin" || accessLevel == AccessLevelOwner;
+  return (
+    globalRole === "admin" ||
+    accessLevel == AccessLevelOwner ||
+    accessLevel == AccessLevelAdmin
+  );
 }
 
 export function canArchiveGroup(
@@ -27,8 +32,11 @@ export function canArchiveGroup(
   return globalRole === "admin" || accessLevel == AccessLevelOwner;
 }
 
-export function isReadonlyMember(accessLevel?: GroupRoleAccessLevel) {
-  return accessLevel == AccessLevelUser;
+export function isReadonlyMember(
+  accessLevel?: GroupRoleAccessLevel,
+  globalRole?: GlobalRole,
+) {
+  return accessLevel == AccessLevelUser && !(globalRole === "admin");
 }
 
 export const AccessLevelOrder: Record<GroupRoleAccessLevel, number> = {

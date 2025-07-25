@@ -19,7 +19,7 @@ export type GroupRole = {
 // group member
 export type GroupMember = {
   id: string;
-  username: string;
+  fullName: string;
   email: string;
   studentId: string;
   role: GroupRole;
@@ -124,4 +124,44 @@ export type UpdateGroupMemberResponse = GroupMember;
 
 export type ArchiveGroupParams = {
   id: string;
+};
+
+// =========================
+// 🔹 Pending Member Types
+// =========================
+
+export type PendingMember = {
+  id: string;
+  userIdentifier: string;
+  role: {
+    id: string;
+    roleName: GroupMemberRoleName;
+    accessLevel: GroupRoleAccessLevel;
+  };
+};
+
+export type GetPendingMembersResponse = {
+  items: PendingMember[];
+  totalPages: number;
+  totalItems: number;
+  currentPage: number;
+  pageSize: number;
+  hasNextPage: boolean;
+};
+
+// PUT /api/groups/{id}/pendingMembers/{pendingId}
+export type UpdatePendingMemberInput = {
+  id: string;
+  pendingId: string;
+  roleId: string;
+};
+
+export type UpdatePendingMemberResponse = {
+  pendingMember: PendingMember;
+};
+
+// DELETE /api/groups/{id}/pendingMembers/{pendingId}
+export type RemovePendingMemberParams = {
+  id: string;
+  pendingId: string;
 };
