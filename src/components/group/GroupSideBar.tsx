@@ -12,8 +12,8 @@ export default function GroupSideBar({ title }: { title: string }) {
     }`;
 
   return (
-    <div className="p-6">
-      <h2 className="text-xl font-semibold mb-4">{title}</h2>
+    <div className="sticky top-23 w-64  p-6">
+      <h2 className="text-xl font-semibold mb-4 pl-4">{title}</h2>
       <ul className="space-y-2">
         <li>
           <NavLink to={`/groups/${id}`} end className={linkClass}>
