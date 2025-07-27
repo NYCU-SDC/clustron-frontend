@@ -61,7 +61,7 @@ export default function Navbar() {
                 to="/admin"
                 className={({ isActive }) => navLinkclass(isActive)}
               >
-                admin
+                {t("navbar.adminLink")}
               </NavLink>
             </>
           )}

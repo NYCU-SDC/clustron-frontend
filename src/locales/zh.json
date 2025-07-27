@@ -23,7 +23,8 @@
     "loginBtn": "登入",
     "logoutBtn": "登出",
     "groupLink": "群組",
-    "settingLink": "設定"
+    "settingLink": "設定",
+    "adminLink": "管理員"
   },
   "callback": {
     "loadingMessage": "載入中...",
@@ -97,6 +98,30 @@
     "cancelBtn": "取消",
     "confirmBtn": "刪除",
     "loadingBtn": "載入中..."
+  },
+  "roleConfigTable": {
+    "cardTitle": "角色權限配置",
+    "tableHeadRole": "角色",
+    "tableHeadAccess": "權限",
+    "placeholderRoleName": "請輸入角色名稱",
+    "placeholderSelectAccess": "選擇權限",
+    "confirmTitle": "確認刪除角色",
+    "confirmDescription": "您確定要刪除此角色嗎？",
+    "cancelBtn": "取消",
+    "removeBtn": "刪除",
+    "removingBtn": "刪除中...",
+    "createSuccessToast": "角色建立成功",
+    "createFailToast": "角色建立失敗",
+    "createDuplicateToast": "角色名稱已存在",
+    "updateSuccessToast": "角色更新成功",
+    "updateFailToast": "角色更新失敗",
+    "deleteSuccessToast": "角色刪除成功",
+    "deleteFailToast": "角色刪除失敗",
+    "loadFailToast": "角色載入失敗"
+  },
+  "adminSidebar": {
+    "title": "管理員",
+    "roleAccessConfigLink": "權限配置"
   },
   "groupComponents": {
     "addMemberButton": {

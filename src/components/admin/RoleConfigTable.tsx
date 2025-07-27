@@ -1,5 +1,8 @@
-import { useState } from "react";
-import { CircleMinus, CirclePlus } from "lucide-react";
+import { useState, useEffect } from "react";
+import { CircleMinus, CirclePlus, Loader2Icon } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import {
   Table,
   TableHeader,
@@ -28,137 +31,255 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { GlobalRole, GLOBAL_ROLES } from "@/types/group";
-
-type RoleConfig = {
-  id: string;
-  roleName: string;
-  accessLevel: GlobalRole;
-};
+import {
+  type GroupMemberRoleName,
+  AccessLevels,
+  type GroupRoleAccessLevel,
+  type RoleConfigInput,
+} from "@/types/group";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getRoleConfigs } from "@/lib/request/getRoleConfigs";
+import { createRoleConfig } from "@/lib/request/createRoleConfig";
+import { updateRoleConfig } from "@/lib/request/updateRoleConfig";
+import { removeRoleConfig } from "@/lib/request/removeRoleConfig";
 
 export default function RoleConfigTable() {
-  const [roleConfigs, setRoleConfigs] = useState<RoleConfig[]>([
-    { id: "1", roleName: "Student", accessLevel: "user" },
-    { id: "2", roleName: "TA", accessLevel: "organizer" },
-    { id: "3", roleName: "Teacher", accessLevel: "admin" },
-  ]);
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const ROLE_CONFIGS_QUERY_KEY = ["roleConfigs"] as const;
+
+  const {
+    data: roleConfigs = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ROLE_CONFIGS_QUERY_KEY,
+    queryFn: getRoleConfigs,
+  });
 
   const [newRole, setNewRole] = useState<{
     roleName: string;
-    accessLevel: GlobalRole;
+    accessLevel: GroupRoleAccessLevel | "";
   }>({
     roleName: "",
-    accessLevel: "user",
+    accessLevel: "",
   });
   const [deleteRoleId, setDeleteRoleId] = useState<string | null>(null);
 
-  const handleAddRole = () => {
-    if (newRole.roleName.trim()) {
-      const newRoleConfig: RoleConfig = {
-        id: Date.now().toString(),
-        roleName: newRole.roleName.trim(),
-        accessLevel: newRole.accessLevel,
-      };
-      setRoleConfigs([...roleConfigs, newRoleConfig]);
-      setNewRole({ roleName: "", accessLevel: "user" });
-    }
-  };
+  const createMutation = useMutation({
+    mutationFn: (payload: RoleConfigInput) => createRoleConfig(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ROLE_CONFIGS_QUERY_KEY });
+      toast.success(t("roleConfigTable.createSuccessToast"));
+      setNewRole({ roleName: "", accessLevel: "" });
+    },
+    onError: (error: Error) => {
+      if (error.name === "400") {
+        toast.error(t("roleConfigTable.createDuplicateToast"));
+      } else {
+        toast.error(t("roleConfigTable.createFailToast"));
+      }
+    },
+  });
 
-  const handleRemoveRole = (id: string) => {
-    setDeleteRoleId(id);
+  const updateMutation = useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload: RoleConfigInput }) =>
+      updateRoleConfig(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ROLE_CONFIGS_QUERY_KEY });
+      toast.success(t("roleConfigTable.updateSuccessToast"));
+    },
+    onError: () => {
+      toast.error(t("roleConfigTable.updateFailToast"));
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => removeRoleConfig(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ROLE_CONFIGS_QUERY_KEY });
+      toast.success(t("roleConfigTable.deleteSuccessToast"));
+      setDeleteRoleId(null);
+    },
+    onError: () => {
+      toast.error(t("roleConfigTable.deleteFailToast"));
+    },
+  });
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(t("roleConfigTable.loadFailToast"));
+    } else {
+      console.log(roleConfigs);
+    }
+  }, [isError, roleConfigs, t]);
+
+  const handleAddRole = () => {
+    if (newRole.roleName.trim() && newRole.accessLevel) {
+      createMutation.mutate({
+        role: newRole.roleName.trim() as GroupMemberRoleName,
+        accessLevel: newRole.accessLevel,
+      });
+    }
   };
 
   const confirmRemoveRole = () => {
     if (deleteRoleId) {
-      setRoleConfigs(roleConfigs.filter((role) => role.id !== deleteRoleId));
-      setDeleteRoleId(null);
+      deleteMutation.mutate(deleteRoleId);
     }
   };
 
-  const formatGlobalRole = (role: GlobalRole): string => {
-    return role.charAt(0).toUpperCase() + role.slice(1);
+  const handleAccessLevelChange = (
+    roleId: string,
+    newAccessLevel: GroupRoleAccessLevel,
+  ) => {
+    const role = roleConfigs.find((r) => r.id === roleId);
+    if (role) {
+      updateMutation.mutate({
+        id: roleId,
+        payload: {
+          role: role.roleName,
+          accessLevel: newAccessLevel,
+        },
+      });
+    }
   };
 
   return (
     <>
       <Card>
         <CardHeader className="flex justify-between">
-          <CardTitle className="text-2xl">Role Access Configuration</CardTitle>
+          <CardTitle className="text-2xl">
+            {t("roleConfigTable.cardTitle")}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead className="w-1/5 py-4 px-4 text-gray-500 dark:text-white">
-                  Role
+                  {t("roleConfigTable.tableHeadRole")}
                 </TableHead>
                 <TableHead className="w-1/5 py-4 px-4 text-gray-500 dark:text-white">
-                  Access
+                  {t("roleConfigTable.tableHeadAccess")}
                 </TableHead>
                 <TableHead className="py-4 px-4"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {roleConfigs.map((role) => (
-                <TableRow key={role.id} className="hover:bg-muted">
-                  <TableCell className="py-4 px-4">{role.roleName}</TableCell>
-                  <TableCell className="py-4 px-4">
-                    <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-sm font-medium rounded-xl">
-                      {formatGlobalRole(role.accessLevel)}
-                    </span>
-                  </TableCell>
-                  <TableCell className="py-4 px-4 text-center">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleRemoveRole(role.id)}
-                      className="text-gray-600 hover:text-red-600 hover:cursor-pointer"
-                    >
-                      <CircleMinus size={16} />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {isLoading
+                ? Array.from({ length: 3 }).map((_, index) => (
+                    <TableRow key={index}>
+                      <TableCell>
+                        <Skeleton className="h-8 w-full" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-8 w-full" />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                : roleConfigs.map((role) => (
+                    <TableRow key={role.id} className="hover:bg-muted">
+                      <TableCell className="py-4 px-4">
+                        {role.roleName}
+                      </TableCell>
+                      <TableCell className="py-4 px-4">
+                        <Select
+                          value={role.accessLevel}
+                          onValueChange={(value: GroupRoleAccessLevel) =>
+                            handleAccessLevelChange(role.id, value)
+                          }
+                          disabled={updateMutation.isPending}
+                        >
+                          <SelectTrigger className="px-2 py-1 text-sm font-medium rounded-xl border-none bg-gray-100 dark:bg-gray-700 hover:cursor-pointer">
+                            <SelectValue
+                              placeholder={t(
+                                "roleConfigTable.placeholderSelectAccess",
+                              )}
+                            />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {AccessLevels.map((level) => (
+                              <SelectItem key={level} value={level}>
+                                {level}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </TableCell>
+                      <TableCell className="py-4 px-4 text-center">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setDeleteRoleId(role.id)}
+                          className="text-gray-600 hover:text-red-600 hover:cursor-pointer"
+                          disabled={deleteMutation.isPending}
+                        >
+                          <CircleMinus size={16} />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
 
               <TableRow>
                 <TableCell className="py-4 px-4">
                   <Input
                     value={newRole.roleName}
-                    placeholder="Enter Role Name"
+                    placeholder={t("roleConfigTable.placeholderRoleName")}
                     className="border-none shadow-none focus-visible:ring-0 p-0 dark:bg-transparent"
                     onChange={(e) =>
                       setNewRole({ ...newRole, roleName: e.target.value })
                     }
+                    disabled={createMutation.isPending}
                   />
                 </TableCell>
                 <TableCell className="py-4 px-4">
                   <Select
                     value={newRole.accessLevel}
-                    onValueChange={(value: GlobalRole) =>
+                    onValueChange={(value: GroupRoleAccessLevel) =>
                       setNewRole({ ...newRole, accessLevel: value })
                     }
+                    disabled={createMutation.isPending}
                   >
-                    <SelectTrigger className="px-2 py-1 text-sm font-medium rounded-xl border-none shadow-none hover:cursor-pointer dark:hover:bg-gray-600 focus:ring-0 w-fit">
-                      <SelectValue placeholder="Select Access" />
+                    <SelectTrigger className="px-2 py-1 text-sm shadow-none font-medium rounded-xl dark:bg-transparent border-none hover:cursor-pointer">
+                      <SelectValue
+                        placeholder={t(
+                          "roleConfigTable.placeholderSelectAccess",
+                        )}
+                      />
                     </SelectTrigger>
                     <SelectContent>
-                      {GLOBAL_ROLES.map((level) => (
+                      {AccessLevels.map((level) => (
                         <SelectItem key={level} value={level}>
-                          {formatGlobalRole(level)}
+                          {level}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </TableCell>
                 <TableCell className="py-4 px-4 text-center">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={handleAddRole}
-                    className="text-gray-600 hover:text-green-600 hover:cursor-pointer"
-                  >
-                    <CirclePlus size={16} />
-                  </Button>
+                  {createMutation.isPending ? (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      disabled
+                      className="text-gray-600"
+                    >
+                      <Loader2Icon className="animate-spin" size={16} />
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={handleAddRole}
+                      className="text-gray-600 hover:text-green-600 hover:cursor-pointer"
+                      disabled={
+                        !newRole.roleName.trim() || !newRole.accessLevel
+                      }
+                    >
+                      <CirclePlus size={16} />
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -173,22 +294,35 @@ export default function RoleConfigTable() {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="text-red-600">
-              Remove Role Confirm
+              {t("roleConfigTable.confirmTitle")}
             </AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure to remove this role?
+              {t("roleConfigTable.confirmDescription")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setDeleteRoleId(null)}>
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={confirmRemoveRole}
-              className="bg-red-600 hover:bg-red-700"
+            <AlertDialogCancel
+              className="cursor-pointer"
+              onClick={() => setDeleteRoleId(null)}
             >
-              Remove
-            </AlertDialogAction>
+              {t("roleConfigTable.cancelBtn")}
+            </AlertDialogCancel>
+            {deleteMutation.isPending ? (
+              <AlertDialogAction
+                className="bg-destructive hover:bg-destructive disabled:cursor-not-allowed"
+                disabled
+              >
+                <Loader2Icon className="animate-spin mr-2" size={16} />
+                {t("roleConfigTable.removingBtn")}
+              </AlertDialogAction>
+            ) : (
+              <AlertDialogAction
+                onClick={confirmRemoveRole}
+                className="cursor-pointer bg-destructive hover:bg-destructive"
+              >
+                {t("roleConfigTable.removeBtn")}
+              </AlertDialogAction>
+            )}
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

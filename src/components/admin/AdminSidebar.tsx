@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 function navLinkClass(isActive: boolean) {
   return [
@@ -12,14 +12,16 @@ function navLinkClass(isActive: boolean) {
 }
 
 export default function AdminSideBar() {
-  //   const { t } = useTranslation();
+  const { t } = useTranslation();
   return (
     <aside className="sticky top-[7rem] self-start min-w-36 ml-15 my-8">
-      <div className="text-4xl font-semibold mb-8">Admin</div>
+      <div className="text-4xl font-semibold mb-8">
+        {t("adminSidebar.title")}
+      </div>
       <ul className="space-y-4">
         <li>
           <NavLink to="#" className={({ isActive }) => navLinkClass(isActive)}>
-            Role Access Configuration
+            {t("adminSidebar.roleAccessConfigLink")}
           </NavLink>
         </li>
       </ul>
