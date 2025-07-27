@@ -31,14 +31,14 @@ export default function AddGroupPage() {
 
   const createGroup = useCreateGroup({
     onSuccess: (data) => {
-      if (
-        data.addedResult &&
-        (data.addedResult.addedFailureNumber > 0 ||
-          data.addedResult.addedSuccessNumber > 0)
-      ) {
+      if (data) {
         navigate(`/groups/${data.id}/add-member-result`, {
           state: {
-            result: data.addedResult,
+            result: {
+              addedSuccessNumber: data.addedSuccessNumber,
+              addedFailureNumber: data.addedFailureNumber,
+              errors: data.errors,
+            },
             members: members
               .filter((m) => m.id.trim())
               .map((m) => ({
@@ -105,8 +105,8 @@ export default function AddGroupPage() {
   };
 
   return (
-    <div className="flex w-full justify-center">
-      <main className="w-full max-w-3xl p-6">
+    <div className="flex-1 flex justify-center">
+      <main className="w-full max-w-4xl p-6">
         <h1 className="text-2xl font-bold mb-6">
           {t("groupPages.createGroup.title")}
         </h1>

@@ -86,7 +86,8 @@ export default function CreateGroupResultTable({
       return {
         ...member,
         status: "success" as const,
-        message: t("groupPages.addMemberResult.successMessage"),
+        message: "",
+        // message: t("groupPages.addMemberResult.successMessage"),
       };
     }
   });
@@ -101,12 +102,6 @@ export default function CreateGroupResultTable({
         <CardTitle className="text-2xl">
           {t("groupPages.addMemberResult.createGroupResultTitle")}
         </CardTitle>
-        <div className="text-sm text-gray-600 dark:text-gray-300">
-          {t("groupPages.addMemberResult.successCount")}:{" "}
-          {result.addedSuccessNumber} |{" "}
-          {t("groupPages.addMemberResult.failureCount")}:{" "}
-          {result.addedFailureNumber}
-        </div>
       </CardHeader>
       <CardContent>
         <Table>
