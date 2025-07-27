@@ -24,7 +24,7 @@
     "logoutBtn": "登出",
     "groupLink": "群組",
     "settingLink": "設定",
-    "adminLink": "管理員"
+    "adminLink": "管理"
   },
   "callback": {
     "loadingMessage": "載入中...",
@@ -120,7 +120,7 @@
     "loadFailToast": "角色載入失敗"
   },
   "adminSidebar": {
-    "title": "管理員",
+    "title": "管理",
     "roleAccessConfigLink": "權限配置"
   },
   "groupComponents": {

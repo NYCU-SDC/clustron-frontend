@@ -14,7 +14,7 @@ function navLinkClass(isActive: boolean) {
 export default function AdminSideBar() {
   const { t } = useTranslation();
   return (
-    <aside className="sticky top-[7rem] self-start min-w-36 ml-15 my-8">
+    <aside className="sticky top-[7rem] self-start min-w-48 ml-15 my-8">
       <div className="text-4xl font-semibold mb-8">
         {t("adminSidebar.title")}
       </div>
