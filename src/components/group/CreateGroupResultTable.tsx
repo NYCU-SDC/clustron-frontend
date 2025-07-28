@@ -7,8 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import type { CreateGroupResultData } from "@/types/group";
 
@@ -70,7 +68,6 @@ export default function CreateGroupResultTable({
   result,
   members,
 }: CreateGroupResultTableProps) {
-  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const memberStatuses = members.map((member) => {
@@ -91,10 +88,6 @@ export default function CreateGroupResultTable({
       };
     }
   });
-
-  const handleBackClick = () => {
-    navigate(`/groups`);
-  };
 
   return (
     <Card>
@@ -141,15 +134,13 @@ export default function CreateGroupResultTable({
             <span>{t("groupPages.addMemberResult.successStatus")}</span>
           </div>
           <div className="flex gap-2">
+            <StatusIcon type="warning" />
+            <span>{t("groupPages.addMemberResult.warningStatus")}</span>
+          </div>
+          <div className="flex gap-2">
             <StatusIcon type="error" />
             <span>{t("groupPages.addMemberResult.errorStatus")}</span>
           </div>
-        </div>
-
-        <div className="flex justify-center mt-6">
-          <Button onClick={handleBackClick} className="px-6 py-2">
-            {t("groupPages.addMemberResult.backToGroupList")}
-          </Button>
         </div>
       </CardContent>
     </Card>

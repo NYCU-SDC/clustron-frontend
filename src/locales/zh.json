@@ -188,6 +188,7 @@
       "status": "狀態",
       "additionalInfo": "詳細資訊",
       "successStatus": "成功加入群組",
+      "warningStatus": "等待使用者註冊",
       "errorStatus": "加入失敗",
       "backToSettings": "返回群組設定",
       "backToGroupList": "返回群組列表",
