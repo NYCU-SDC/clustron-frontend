@@ -23,7 +23,7 @@ export default function GroupListPage() {
 
   return (
     <div className="p-10 space-y-4 w-1/2 mx-auto">
-      <div className="flex justify-between mb-6">
+      <div className="flex justify-end mb-6">
         {canCreateGroup && (
           <Button
             onClick={() => navigate("/groups/new")}
