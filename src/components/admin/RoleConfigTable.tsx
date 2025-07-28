@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { CircleMinus, CirclePlus, Loader2Icon } from "lucide-react";
+import {
+  CircleMinus,
+  CirclePlus,
+  Loader2Icon,
+  TriangleAlert,
+} from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -109,8 +114,6 @@ export default function RoleConfigTable() {
   useEffect(() => {
     if (isError) {
       toast.error(t("roleConfigTable.loadFailToast"));
-    } else {
-      console.log(roleConfigs);
     }
   }, [isError, roleConfigs, t]);
 
@@ -133,6 +136,7 @@ export default function RoleConfigTable() {
     roleId: string,
     newAccessLevel: GroupRoleAccessLevel,
   ) => {
+    console.log("ID", roleId);
     const role = roleConfigs.find((r) => r.id === roleId);
     if (role) {
       updateMutation.mutate({
@@ -293,8 +297,11 @@ export default function RoleConfigTable() {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-red-600">
-              {t("roleConfigTable.confirmTitle")}
+            <AlertDialogTitle>
+              <div className="flex items-center gap-2">
+                <TriangleAlert className="w-5 h-5" />
+                {t("roleConfigTable.confirmTitle")}
+              </div>
             </AlertDialogTitle>
             <AlertDialogDescription>
               {t("roleConfigTable.confirmDescription")}
