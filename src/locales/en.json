@@ -183,5 +183,14 @@
       "previous": "Previous"
     },
     "pendingMember": "待定成員"
+  },
+  "groupSettings": {
+    "transferOwnership": {
+      "title": "Transfer Group Owner",
+      "description": "Handover ownership to another account.",
+      "notice": "You will lose owner access after transfer."
+    },
+    "cancel": "cancel",
+    "transfer": "transfer"
   }
 }

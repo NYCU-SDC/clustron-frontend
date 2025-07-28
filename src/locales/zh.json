@@ -183,5 +183,14 @@
       "previous": "上一頁"
     },
     "pendingMember": "待定成員"
+  },
+  "groupSettings": {
+    "transferOwnership": {
+      "title": "轉移群組擁有者",
+      "description": "將擁有權交給其他帳號。",
+      "notice": "轉移後你將失去群組擁有者權限。"
+    },
+    "cancel": "取消",
+    "transfer": "轉移"
   }
 }
