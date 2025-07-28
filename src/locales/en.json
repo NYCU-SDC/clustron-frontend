@@ -157,7 +157,7 @@
       "create": "Create"
     },
     "groupList": {
-      "newCourse": "+ New Course",
+      "newGroup": "+ New Group",
       "loading": "Loading...",
       "loadingFailed": "Loading failed",
       "noCourses": "You haven't joined any courses yet."
