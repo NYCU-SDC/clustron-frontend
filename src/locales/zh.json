@@ -157,7 +157,7 @@
       "create": "建立"
     },
     "groupList": {
-      "newCourse": "+ 新課程",
+      "newGroup": "+ 新群組",
       "loading": "載入中...",
       "loadingFailed": "載入失敗",
       "noCourses": "你尚未加入任何課程。"
