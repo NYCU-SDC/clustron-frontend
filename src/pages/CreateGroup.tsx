@@ -35,9 +35,9 @@ export default function AddGroupPage() {
         navigate(`/groups/${data.id}/add-member-result`, {
           state: {
             result: {
-              addedSuccessNumber: data.addedSuccessNumber,
-              addedFailureNumber: data.addedFailureNumber,
-              errors: data.errors,
+              addedSuccessNumber: data.addedResult.addedSuccessNumber,
+              addedFailureNumber: data.addedResult.addedFailureNumber,
+              errors: data.addedResult.errors,
             },
             members: members
               .filter((m) => m.id.trim())

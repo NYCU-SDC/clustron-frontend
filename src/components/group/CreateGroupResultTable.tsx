@@ -10,7 +10,7 @@ import {
 import { useTranslation } from "react-i18next";
 import type { CreateGroupResultData } from "@/types/group";
 
-const StatusIcon = ({ type }: { type: "success" | "warning" | "error" }) => {
+const StatusIcon = ({ type }: { type: "success" | "error" }) => {
   const iconProps = {
     width: "24",
     height: "24",
@@ -30,18 +30,6 @@ const StatusIcon = ({ type }: { type: "success" | "warning" | "error" }) => {
           className="lucide lucide-check-icon lucide-check"
         >
           <path d="M20 6 9 17l-5-5" />
-        </svg>
-      );
-    case "warning":
-      return (
-        <svg
-          {...iconProps}
-          fill="#f4bb77"
-          stroke="#f4bb77"
-          strokeWidth="2"
-          className="lucide lucide-dot-icon lucide-dot"
-        >
-          <circle cx="12.1" cy="12.1" r="4" />
         </svg>
       );
     case "error":
@@ -132,10 +120,6 @@ export default function CreateGroupResultTable({
           <div className="flex gap-2">
             <StatusIcon type="success" />
             <span>{t("groupPages.addMemberResult.successStatus")}</span>
-          </div>
-          <div className="flex gap-2">
-            <StatusIcon type="warning" />
-            <span>{t("groupPages.addMemberResult.warningStatus")}</span>
           </div>
           <div className="flex gap-2">
             <StatusIcon type="error" />

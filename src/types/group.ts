@@ -91,7 +91,9 @@ export type CreateGroupResultData = {
   errors: JoinMemberErrorResponse[];
 };
 
-export type CreateGroupResponse = GroupDetail & CreateGroupResultData;
+export type CreateGroupResponse = GroupDetail & {
+  addedResult: CreateGroupResultData;
+};
 
 // =========================
 // 🔹 GET /api/groups/{id}/members
