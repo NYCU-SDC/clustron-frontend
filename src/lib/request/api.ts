@@ -40,9 +40,9 @@ export async function api<T>(
   }
 
   // 204 means no content, so it will cause error when return res.json()
-  // if (res.status === 204) {
-  //   return null;
-  // }
+  if (res.status === 204) {
+    return { message: "success" } as T;
+  }
 
   return res.json();
 }
