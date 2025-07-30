@@ -188,9 +188,13 @@
     "transferOwnership": {
       "title": "Transfer Group Owner",
       "description": "Handover ownership to another account.",
-      "notice": "You will lose owner access after transfer."
+      "notice": "You will lose owner access after transfer.",
+      "startButton": "Start Transfer",
+      "transferring": "Transferring...",
+      "success": "Ownership transferred successfully.",
+      "failed": "Failed to transfer ownership."
     },
-    "cancel": "cancel",
-    "transfer": "transfer"
+    "transfer": "Transfer",
+    "cancel": "Cancel"
   }
 }

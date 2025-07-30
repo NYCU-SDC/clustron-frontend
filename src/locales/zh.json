@@ -187,10 +187,14 @@
   "groupSettings": {
     "transferOwnership": {
       "title": "轉移群組擁有者",
-      "description": "將擁有權交給其他帳號。",
-      "notice": "轉移後你將失去群組擁有者權限。"
+      "description": "將群組擁有權轉移給其他成員。",
+      "notice": "轉移成功後，你將失去擁有者的權限。",
+      "startButton": "開始轉移",
+      "transferring": "轉移中...",
+      "success": "擁有者轉移成功。",
+      "failed": "擁有者轉移失敗。"
     },
-    "cancel": "取消",
-    "transfer": "轉移"
+    "transfer": "轉移",
+    "cancel": "取消"
   }
 }

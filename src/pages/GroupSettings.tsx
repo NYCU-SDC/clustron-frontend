@@ -22,6 +22,7 @@ import { getGroupPermissions } from "@/lib/groupPermissions";
 import { GlobalRole } from "@/lib/permission";
 import { GroupDetail } from "@/types/group";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 type GroupContextType = {
   group: GroupDetail;
@@ -54,11 +55,20 @@ export default function GroupSettings() {
   ).canArchive;
   const canArchive = isAdmin || baseCanArchive;
 
-  const [email, setEmail] = useState("");
+  const [transferOwnerEmail, setTransferOwnerEmail] = useState("");
+  const [isTransferExpanded, setIsTransferExpanded] = useState(false);
+
   const { mutate: transferOwner, isPending: isTransferring } =
-    useTransferGroupOwner(groupId, () => {
-      queryClient.invalidateQueries({ queryKey: ["group", groupId] });
-      setEmail("");
+    useTransferGroupOwner(groupId, {
+      onSuccess: () => {
+        toast.success(t("groupSettings.transferOwnership.success"));
+        queryClient.invalidateQueries({ queryKey: ["group", groupId] });
+        setTransferOwnerEmail("");
+        setIsTransferExpanded(false);
+      },
+      onError: () => {
+        toast.error(t("groupSettings.transferOwnership.failed"));
+      },
     });
 
   const handleRemove = (memberId: string) => {
@@ -76,7 +86,7 @@ export default function GroupSettings() {
   const isToggling = archiveMutation.isPending || unarchiveMutation.isPending;
 
   const handleTransfer = () => {
-    transferOwner({ identifier: email });
+    transferOwner({ identifier: transferOwnerEmail });
   };
 
   if (!user || !group) {
@@ -149,24 +159,37 @@ export default function GroupSettings() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Input
-            type="email"
-            placeholder="example@email.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mb-4 placeholder:text-gray-400"
-          />
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={() => setEmail("")}>
-              {t("groupSettings.cancel")}
+          {isTransferExpanded ? (
+            <>
+              <Input
+                type="email"
+                placeholder="example@email.com"
+                value={transferOwnerEmail}
+                onChange={(e) => setTransferOwnerEmail(e.target.value)}
+                className="mb-4 placeholder:text-gray-400"
+              />
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setIsTransferExpanded(false)}
+                >
+                  {t("cancel")}
+                </Button>
+                <Button
+                  onClick={handleTransfer}
+                  disabled={!transferOwnerEmail || isTransferring}
+                >
+                  {isTransferring
+                    ? t("groupSettings.transferOwnership.transferring")
+                    : t("transfer")}
+                </Button>
+              </div>
+            </>
+          ) : (
+            <Button onClick={() => setIsTransferExpanded(true)}>
+              {t("groupSettings.transferOwnership.startButton")}
             </Button>
-            <Button
-              onClick={handleTransfer}
-              disabled={!email || isTransferring}
-            >
-              {isTransferring ? "Transferring..." : t("groupSettings.transfer")}
-            </Button>
-          </div>
+          )}
         </CardContent>
       </Card>
     </div>

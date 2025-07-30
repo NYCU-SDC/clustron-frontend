@@ -1,7 +1,7 @@
 import { api } from "@/lib/request/api";
 
 export type TransferGroupOwnershipRequest = {
-  email: string;
+  identifier: string;
 };
 
 export async function transferGroupOwner(
