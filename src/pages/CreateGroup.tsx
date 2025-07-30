@@ -78,14 +78,6 @@ export default function AddGroupPage() {
       };
     });
 
-    const payloadId = payload?.ID ?? "";
-    const selfIncluded = members.some((m) => m.id.trim() === payloadId);
-    if (!selfIncluded) {
-      const ownerRoleId = roleNameToId("group_owner");
-      if (!ownerRoleId) throw new Error("Missing group_owner role");
-      newMembers.unshift({ member: payloadId, roleId: ownerRoleId });
-    }
-
     createGroup.mutate({
       title,
       description,
