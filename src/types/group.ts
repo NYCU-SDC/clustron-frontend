@@ -111,8 +111,9 @@ export type RemoveMemberParams = {
 // =========================
 
 export type UpdateGroupMemberInput = {
-  id: string;
-  role: GroupMemberRoleName;
+  groupId: string;
+  memberId: string;
+  roleId: GroupMemberRoleName;
 };
 
 export type UpdateGroupMemberResponse = GroupMember;

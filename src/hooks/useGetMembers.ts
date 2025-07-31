@@ -1,13 +1,12 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getMembers } from "@/lib/request/getMembers";
+import type { GetGroupMembersResponse } from "@/types/group";
 
-export function useInfiniteMembers(groupId: string) {
-  return useInfiniteQuery({
-    queryKey: ["members", groupId],
-    queryFn: ({ pageParam = 1 }) => getMembers(groupId, pageParam),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) =>
-      lastPage.hasNextPage ? lastPage.currentPage + 1 : undefined,
+export function useGetMembers(groupId: string, page: number = 1) {
+  return useQuery<GetGroupMembersResponse>({
+    queryKey: ["GroupMember", groupId, page],
+    queryFn: () => getMembers(groupId, page),
     enabled: !!groupId,
+    placeholderData: (prev) => prev,
   });
 }
