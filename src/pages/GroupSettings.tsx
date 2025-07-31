@@ -148,49 +148,56 @@ export default function GroupSettings() {
       )}
 
       <Card>
-        <CardHeader>
-          <CardTitle>{t("groupSettings.transferOwnership.title")}</CardTitle>
-          <CardDescription>
-            {t("groupSettings.transferOwnership.description")}
-            <br />
-            <span className="text-red-500 font-medium">
-              {t("groupSettings.transferOwnership.notice")}
-            </span>
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {isTransferExpanded ? (
-            <>
-              <Input
-                type="email"
-                placeholder="example@email.com"
-                value={transferOwnerEmail}
-                onChange={(e) => setTransferOwnerEmail(e.target.value)}
-                className="mb-4 placeholder:text-gray-400"
-              />
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setIsTransferExpanded(false)}
-                >
-                  {t("cancel")}
-                </Button>
-                <Button
-                  onClick={handleTransfer}
-                  disabled={!transferOwnerEmail || isTransferring}
-                >
-                  {isTransferring
-                    ? t("groupSettings.transferOwnership.transferring")
-                    : t("transfer")}
-                </Button>
-              </div>
-            </>
-          ) : (
+        <CardHeader className="flex flex-row justify-between items-center">
+          <div>
+            <CardTitle>{t("groupSettings.transferOwnership.title")}</CardTitle>
+            <CardDescription>
+              {t("groupSettings.transferOwnership.description")}
+            </CardDescription>
+          </div>
+
+          {!isTransferExpanded && (
             <Button onClick={() => setIsTransferExpanded(true)}>
               {t("groupSettings.transferOwnership.startButton")}
             </Button>
           )}
-        </CardContent>
+        </CardHeader>
+
+        {isTransferExpanded && (
+          <CardContent>
+            <p className="text-sm text-red-500 font-medium mb-2">
+              {t("groupSettings.transferOwnership.notice")}
+            </p>
+
+            <Input
+              type="email"
+              placeholder="example@email.com"
+              value={transferOwnerEmail}
+              onChange={(e) => setTransferOwnerEmail(e.target.value)}
+              className="mb-4 placeholder:text-gray-400"
+            />
+
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setIsTransferExpanded(false);
+                  setTransferOwnerEmail("");
+                }}
+              >
+                {t("cancel")}
+              </Button>
+              <Button
+                onClick={handleTransfer}
+                disabled={!transferOwnerEmail || isTransferring}
+              >
+                {isTransferring
+                  ? t("groupSettings.transferOwnership.transferring")
+                  : t("transfer")}
+              </Button>
+            </div>
+          </CardContent>
+        )}
       </Card>
     </div>
   );
