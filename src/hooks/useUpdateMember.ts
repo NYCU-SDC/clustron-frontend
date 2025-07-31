@@ -8,7 +8,7 @@ export function useUpdateMember(groupId: string) {
   return useMutation({
     mutationFn: (params: UpdateGroupMemberInput) => updateMember(params),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["members", groupId] });
+      queryClient.invalidateQueries({ queryKey: ["GroupMember", groupId] });
     },
   });
 }

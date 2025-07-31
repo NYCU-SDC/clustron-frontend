@@ -53,7 +53,7 @@ export default function GroupMemberTable({
   );
   const [currentPage, setCurrentPage] = useState(0);
 
-  const { data, isLoading, isError } = useGetMembers(groupId, currentPage);
+  const { data, isLoading, isError } = useGetMembers(groupId, currentPage, 1);
   const members = data?.items ?? [];
   const totalPages = data?.totalPages ?? 1;
 
@@ -62,13 +62,13 @@ export default function GroupMemberTable({
 
   const updateMemberRole = (memberId: string, newRoldId: string) => {
     if (!newRoldId) {
-      console.error(`Invalid role name: ${newRoldId}`);
+      console.error(`Invalid role `);
       return;
     }
 
     updateMember({
-      memberId,
-      groupId,
+      memberId: memberId,
+      groupId: groupId,
       roleId: newRoldId,
     });
   };
