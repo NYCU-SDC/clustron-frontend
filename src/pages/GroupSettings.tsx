@@ -185,7 +185,7 @@ export default function GroupSettings() {
                   setTransferOwnerEmail("");
                 }}
               >
-                {t("cancel")}
+                {t("groupSettings.cancel")}
               </Button>
               <Button
                 onClick={handleTransfer}
@@ -193,7 +193,7 @@ export default function GroupSettings() {
               >
                 {isTransferring
                   ? t("groupSettings.transferOwnership.transferring")
-                  : t("transfer")}
+                  : t("groupSettings.transfer")}
               </Button>
             </div>
           </CardContent>
