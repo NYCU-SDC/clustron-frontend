@@ -196,6 +196,10 @@
       "failed": "擁有者轉移失敗。"
     },
     "transfer": "轉移",
-    "cancel": "取消"
+    "cancel": "取消",
+    "toast": {
+      "success": "轉移成功",
+      "fail": "轉移失敗"
+    }
   }
 }

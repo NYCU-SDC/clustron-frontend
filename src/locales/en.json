@@ -196,6 +196,10 @@
       "failed": "Failed to transfer ownership."
     },
     "transfer": "Transfer",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "toast": {
+      "success": "Transfer successful",
+      "fail": "Transfer fail"
+    }
   }
 }

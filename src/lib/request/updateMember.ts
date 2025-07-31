@@ -7,9 +7,6 @@ export async function updateMember(
 ) {
   return api(`/api/groups/${groupId}/members/${memberId}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify({ roleId }),
   });
 }

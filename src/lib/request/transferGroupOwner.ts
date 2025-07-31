@@ -10,9 +10,6 @@ export async function transferGroupOwner(
 ) {
   return api(`/api/groups/${groupId}/transfer`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify(body),
   });
 }
