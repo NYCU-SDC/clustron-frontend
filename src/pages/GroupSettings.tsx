@@ -61,13 +61,13 @@ export default function GroupSettings() {
   const { mutate: transferOwner, isPending: isTransferring } =
     useTransferGroupOwner(groupId, {
       onSuccess: () => {
-        toast.success(t("groupSettings.transferOwnership.success"));
+        toast.success(t("groupSettings.toast.success"));
         queryClient.invalidateQueries({ queryKey: ["group", groupId] });
         setTransferOwnerEmail("");
         setIsTransferExpanded(false);
       },
       onError: () => {
-        toast.error(t("groupSettings.transferOwnership.failed"));
+        toast.error(t("groupSettings.toast.fail"));
       },
     });
 
