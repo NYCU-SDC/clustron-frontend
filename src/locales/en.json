@@ -187,7 +187,8 @@
   "groupSettings": {
     "transferOwnership": {
       "title": "Transfer Group Owner",
-      "description": "Handover ownership to another account.",
+      "description1": "Handover ownership to another account.",
+      "description2": "Please enter the email address or student ID of the person you wish to assign as the new group owner.",
       "notice": "You will lose owner access after transfer.",
       "startButton": "Start Transfer",
       "transferring": "Transferring...",

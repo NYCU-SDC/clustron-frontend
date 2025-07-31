@@ -152,7 +152,7 @@ export default function GroupSettings() {
           <div>
             <CardTitle>{t("groupSettings.transferOwnership.title")}</CardTitle>
             <CardDescription>
-              {t("groupSettings.transferOwnership.description")}
+              {t("groupSettings.transferOwnership.description1")}
             </CardDescription>
           </div>
 
@@ -165,6 +165,9 @@ export default function GroupSettings() {
 
         {isTransferExpanded && (
           <CardContent>
+            <p className="text-sm font-medium mb-2">
+              {t("groupSettings.transferOwnership.description2")}
+            </p>
             <p className="text-sm text-red-500 font-medium mb-2">
               {t("groupSettings.transferOwnership.notice")}
             </p>

@@ -187,7 +187,8 @@
   "groupSettings": {
     "transferOwnership": {
       "title": "轉移群組擁有者",
-      "description": "將群組擁有權轉移給其他成員。",
+      "description1": "將群組擁有權轉移給其他成員。",
+      "description2": "請輸入你希望指派為新群組擁有者的電子郵件或學號。",
       "notice": "轉移成功後，你將失去擁有者的權限。",
       "startButton": "開始轉移",
       "transferring": "轉移中...",
