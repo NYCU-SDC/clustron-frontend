@@ -7,8 +7,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import type { CreateGroupResultData } from "@/types/group";
+import { ArrowRightFromLine } from "lucide-react";
 
 const StatusIcon = ({ type }: { type: "success" | "error" }) => {
   const iconProps = {
@@ -47,16 +50,17 @@ const StatusIcon = ({ type }: { type: "success" | "error" }) => {
   }
 };
 
-interface CreateGroupResultTableProps {
-  result: CreateGroupResultData;
-  members: { member: string; roleName: string }[];
-}
-
 export default function CreateGroupResultTable({
   result,
   members,
-}: CreateGroupResultTableProps) {
+  groupId,
+}: {
+  result: CreateGroupResultData;
+  members: { member: string; roleName: string }[];
+  groupId?: string;
+}) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const memberStatuses = members.map((member) => {
     const error = result.errors.find((err) => err.member === member.member);
@@ -72,7 +76,6 @@ export default function CreateGroupResultTable({
         ...member,
         status: "success" as const,
         message: "",
-        // message: t("groupPages.addMemberResult.successMessage"),
       };
     }
   });
@@ -126,6 +129,19 @@ export default function CreateGroupResultTable({
             <span>{t("groupPages.addMemberResult.errorStatus")}</span>
           </div>
         </div>
+
+        {groupId && (
+          <div className="mt-4 flex justify-center">
+            <Button
+              onClick={() => navigate(`/groups/${groupId}`)}
+              className="cursor-pointer"
+              variant="secondary"
+            >
+              <ArrowRightFromLine />
+              {t("groupPages.addMemberResult.goToGroupDetail")}
+            </Button>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

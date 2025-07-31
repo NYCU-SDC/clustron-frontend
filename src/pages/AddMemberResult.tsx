@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import CreateGroupResultTable from "@/components/group/CreateGroupResultTable";
 import type { CreateGroupResultData } from "@/types/group";
 
 export default function AddMemberResult() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { id: groupId } = useParams<{ id: string }>();
   const { result, members } = location.state || {};
 
   useEffect(() => {
@@ -24,6 +25,7 @@ export default function AddMemberResult() {
         <CreateGroupResultTable
           result={result as CreateGroupResultData}
           members={members as { member: string; roleName: string }[]}
+          groupId={groupId}
         />
       </main>
     </div>

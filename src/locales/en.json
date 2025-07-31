@@ -192,7 +192,7 @@
       "errorStatus": "Failed to add to group",
       "backToSettings": "Back to Group Settings",
       "backToGroupList": "Back to Group List",
-      "successMessage": "Successfully added to group"
+      "goToGroupDetail": "Go to Group Details"
     }
   }
 }
