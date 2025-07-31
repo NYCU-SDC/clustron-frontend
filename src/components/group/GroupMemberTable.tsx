@@ -53,7 +53,7 @@ export default function GroupMemberTable({
   );
   const [currentPage, setCurrentPage] = useState(0);
 
-  const { data, isLoading, isError } = useGetMembers(groupId, currentPage, 1);
+  const { data, isLoading, isError } = useGetMembers(groupId, currentPage);
   const members = data?.items ?? [];
   const totalPages = data?.totalPages ?? 1;
 
