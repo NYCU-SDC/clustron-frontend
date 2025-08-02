@@ -193,6 +193,11 @@
       "backToSettings": "返回群組設定",
       "backToGroupList": "返回群組列表",
       "goToGroupDetail": "前往群組詳細頁面"
-    }
+    },
+    "pagination": {
+      "next": "下一頁",
+      "previous": "上一頁"
+    },
+    "pendingMember": "待定成員"
   }
 }

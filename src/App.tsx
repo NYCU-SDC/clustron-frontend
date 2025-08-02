@@ -37,7 +37,9 @@ const App = () => {
             <Route path="ssh" element={<SettingSSH />} />
             <Route path="add-new-key" element={<SettingAddKey />} />
           </Route>
-          {/*start*/}
+          <Route path="/groups" element={<GroupListPage />} />
+          <Route path="/groups/new" element={<AddGroupPage />} />
+          <Route path="/add-group" element={<AddGroupPage />} />
           <Route element={<GroupLayout />}>
             <Route path="/groups" element={<GroupListPage />} />
             <Route path="/groups/new" element={<AddGroupPage />} />
@@ -53,7 +55,6 @@ const App = () => {
               <Route path="add-member" element={<AddMemberPage />} />
             </Route>
           </Route>
-          {/*  end*/}
         </Route>
       </Route>
 
