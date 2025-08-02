@@ -1,5 +1,3 @@
-// common role type
-// export type GroupRoleAccessLevel = "GROUP_OWNER" | "GROUP_ADMIN" | "USER";
 export const AccessLevelUser = "USER";
 export const AccessLevelAdmin = "GROUP_ADMIN";
 export const AccessLevelOwner = "GROUP_OWNER";
@@ -9,20 +7,13 @@ export const AccessLevels = [
   AccessLevelAdmin,
   AccessLevelOwner,
 ];
-export type GlobalRole = "admin" | "organizer" | "user";
 
 export type GroupRoleAccessLevel = (typeof AccessLevels)[number];
+export type GroupMemberRoleName = string;
 
-export type GroupMemberRoleName =
-  | "group_owner"
-  | "teacher_assistant"
-  | "student"
-  | "auditor";
-
-// group role
 export type GroupRole = {
+  roleName: string;
   id: string;
-  roleName: GroupMemberRoleName;
   accessLevel: GroupRoleAccessLevel;
 };
 // group member
@@ -143,4 +134,44 @@ export type ArchiveGroupParams = {
 export type RoleConfigInput = {
   role: GroupMemberRoleName;
   accessLevel: GroupRoleAccessLevel;
+};
+
+// =========================
+// 🔹 Pending Member Types
+// =========================
+
+export type PendingMember = {
+  id: string;
+  userIdentifier: string;
+  role: {
+    id: string;
+    roleName: GroupMemberRoleName;
+    accessLevel: GroupRoleAccessLevel;
+  };
+};
+
+export type GetPendingMembersResponse = {
+  items: PendingMember[];
+  totalPages: number;
+  totalItems: number;
+  currentPage: number;
+  pageSize: number;
+  hasNextPage: boolean;
+};
+
+// PUT /api/groups/{id}/pendingMembers/{pendingId}
+export type UpdatePendingMemberInput = {
+  id: string;
+  pendingId: string;
+  roleId: string;
+};
+
+export type UpdatePendingMemberResponse = {
+  pendingMember: PendingMember;
+};
+
+// DELETE /api/groups/{id}/pendingMembers/{pendingId}
+export type RemovePendingMemberParams = {
+  id: string;
+  pendingId: string;
 };

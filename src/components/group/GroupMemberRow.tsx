@@ -1,6 +1,5 @@
 import { TableRow, TableCell } from "@/components/ui/table";
 import { ChevronDown, Loader2 } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import MemberDeleteMenu from "./MemberDeleteMenu.tsx";
 import {
   DropdownMenu,
@@ -8,25 +7,23 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { assignableRolesMap, roleLabelMap } from "@/lib/permission";
 import {
-  AccessLevelOwner,
   AccessLevelUser,
-  GlobalRole,
-  type GroupMemberRoleName,
+  AccessLevelOwner,
   type GroupRoleAccessLevel,
 } from "@/types/group";
+import { useRoleMapper } from "@/hooks/useRoleMapper"; //
 import { Button } from "@/components/ui/button.tsx";
-
+import { GlobalRole } from "@/lib/permission";
 type Props = {
   name: string;
   id: string;
   email: string;
   globalRole: GlobalRole;
-  roleName: GroupMemberRoleName;
+  role: string;
   accessLevel?: GroupRoleAccessLevel;
   onDelete?: () => void;
-  onUpdateRole?: (newRole: GroupMemberRoleName) => void;
+  onUpdateRole?: (newRoleId: string) => void;
   showActions?: boolean;
   isArchived?: boolean;
   isPending?: boolean;
@@ -37,7 +34,7 @@ export default function GroupMemberRow({
   id,
   email,
   globalRole,
-  roleName,
+  role,
   accessLevel = AccessLevelUser,
   onDelete,
   onUpdateRole,
@@ -45,19 +42,16 @@ export default function GroupMemberRow({
   isArchived = false,
   isPending = false,
 }: Props) {
-  const { t } = useTranslation();
-  const assignableRoles =
-    assignableRolesMap[
-      globalRole == "admin" ? AccessLevelOwner : accessLevel
-    ] ?? [];
-  const getRoleLabel = (roleName: GroupMemberRoleName) => {
-    const translated = t?.(`groupComponents.roles.${roleName}`);
-    if (translated && translated !== `groupComponents.roles.${roleName}`) {
-      return translated;
-    }
+  // const { t } = useTranslation();
+  const { getRolesByAccessLevel, roles } = useRoleMapper();
 
-    return roleLabelMap[roleName] ?? roleName;
-  };
+  const effectiveAccessLevel =
+    globalRole === "admin" ? AccessLevelOwner : accessLevel;
+
+  const assignableRoles = getRolesByAccessLevel(effectiveAccessLevel);
+  const currentRole = roles.find((r) => r.roleName === role);
+  const currentRoleLabel = currentRole?.roleName || role;
+
   return (
     <TableRow
       className={`hover:bg-muted transition-opacity ${
@@ -74,10 +68,7 @@ export default function GroupMemberRow({
       </TableCell>
 
       <TableCell>
-        {showActions &&
-        assignableRoles.length > 0 &&
-        !isArchived &&
-        roleName !== "group_owner" ? (
+        {showActions && !isArchived && role !== "group_owner" ? (
           isPending ? (
             <div className="flex items-center text-sm text-muted-foreground gap-2">
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -90,25 +81,25 @@ export default function GroupMemberRow({
                   variant="ghost"
                   className="flex items-center gap-1 font-medium text-sm px-2 py-1 hover:bg-muted"
                 >
-                  {getRoleLabel(roleName)}
+                  {currentRoleLabel}
                   <ChevronDown className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 {assignableRoles.map((r) => (
                   <DropdownMenuItem
-                    key={r}
-                    onClick={() => onUpdateRole?.(r)}
-                    disabled={r === roleName}
+                    key={r.id}
+                    onClick={() => onUpdateRole?.(r.id)}
+                    disabled={r.roleName === role}
                   >
-                    {getRoleLabel(r)}
+                    {r.roleName}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
           )
         ) : (
-          <span>{getRoleLabel(roleName)}</span>
+          <span>{currentRoleLabel}</span>
         )}
       </TableCell>
 
