@@ -128,6 +128,16 @@ export type ArchiveGroupParams = {
 };
 
 // =========================
+// 🔹 POST /api/roles
+// 🔹 PUT /api/roles/{id}
+// =========================
+
+export type RoleConfigInput = {
+  role: GroupMemberRoleName;
+  accessLevel: GroupRoleAccessLevel;
+};
+
+// =========================
 // 🔹 Pending Member Types
 // =========================
 
