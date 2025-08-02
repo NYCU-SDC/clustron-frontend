@@ -88,7 +88,6 @@ export default function SettingKeyTable() {
               <TableHead className="w-3/5 text-gray-500 dark:text-white">
                 {t("settingKeyTable.tableHeadForKey")}
               </TableHead>
-              <TableHead />
             </TableRow>
           </TableHeader>
           <TableBody>

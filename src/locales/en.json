@@ -178,6 +178,22 @@
       "unarchive": "Unarchive",
       "archive": "Archive"
     },
+    "addMemberResult": {
+      "title": "Add Member Results",
+      "createGroupResultTitle": "Group Creation Results",
+      "successCount": "Success",
+      "failureCount": "Failed",
+      "studentIdOrEmail": "Student ID or Email",
+      "role": "Role",
+      "status": "Status",
+      "additionalInfo": "Additional Information",
+      "successStatus": "Successfully added to group",
+      "warningStatus": "Waiting for user to register",
+      "errorStatus": "Failed to add to group",
+      "backToSettings": "Back to Group Settings",
+      "backToGroupList": "Back to Group List",
+      "goToGroupDetail": "Go to Group Details"
+    },
     "pagination": {
       "next": "Next",
       "previous": "Previous"
