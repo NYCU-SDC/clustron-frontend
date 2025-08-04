@@ -20,8 +20,8 @@ export default function AddMemberResult() {
   }
 
   return (
-    <div className="flex justify-center">
-      <main className="w-full max-w-4xl min-w-4xl p-6">
+    <div className="mx-auto">
+      <main className="min-w-4xl p-6">
         <CreateGroupResultTable
           result={result as CreateGroupResultData}
           members={members as { member: string; roleName: string }[]}

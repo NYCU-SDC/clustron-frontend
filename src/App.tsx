@@ -40,13 +40,13 @@ const App = () => {
           <Route path="/groups" element={<GroupListPage />} />
           <Route path="/groups/new" element={<AddGroupPage />} />
           <Route path="/add-group" element={<AddGroupPage />} />
+          <Route
+            path="/groups/:id/add-member-result"
+            element={<AddMemberResult />}
+          />
           <Route element={<GroupLayout />}>
             <Route path="/groups" element={<GroupListPage />} />
             <Route path="/groups/new" element={<AddGroupPage />} />
-            <Route
-              path="/groups/:id/add-member-result"
-              element={<AddMemberResult />}
-            />
             <Route path="/groups/:id/add-member" element={<AddMemberPage />} />
             <Route path="/add-group" element={<AddGroupPage />} />
             <Route path="/groups/:id" element={<GroupPage />}>
