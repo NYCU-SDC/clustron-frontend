@@ -167,7 +167,6 @@ export default function RoleConfigTable() {
                 <TableHead className="w-1/5 py-4 px-4 text-gray-500 dark:text-white">
                   {t("roleConfigTable.tableHeadAccess")}
                 </TableHead>
-                <TableHead className="py-4 px-4"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -216,7 +215,7 @@ export default function RoleConfigTable() {
                           variant="ghost"
                           size="icon"
                           onClick={() => setDeleteRoleId(role.id)}
-                          className="text-gray-600 hover:text-red-600 hover:cursor-pointer"
+                          className="hover:text-red-600 hover:cursor-pointer"
                           disabled={deleteMutation.isPending}
                         >
                           <CircleMinus size={16} />
@@ -263,12 +262,7 @@ export default function RoleConfigTable() {
                 </TableCell>
                 <TableCell className="py-4 px-4 text-center">
                   {createMutation.isPending ? (
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      disabled
-                      className="text-gray-600"
-                    >
+                    <Button variant="ghost" size="icon" disabled>
                       <Loader2Icon className="animate-spin" size={16} />
                     </Button>
                   ) : (
@@ -276,7 +270,7 @@ export default function RoleConfigTable() {
                       variant="ghost"
                       size="icon"
                       onClick={handleAddRole}
-                      className="text-gray-600 hover:text-green-600 hover:cursor-pointer"
+                      className="hover:text-green-600 hover:cursor-pointer"
                       disabled={
                         !newRole.roleName.trim() || !newRole.accessLevel
                       }

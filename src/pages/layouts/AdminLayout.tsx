@@ -28,7 +28,7 @@ export default function AdminLayout() {
       <div className="min-w-xs border-r">
         <AdminSideBar />
       </div>
-      <main className="flex-1 flex justify-center mt-20 px-6">
+      <main className="flex-1 flex justify-center px-6">
         <Outlet />
       </main>
     </div>
