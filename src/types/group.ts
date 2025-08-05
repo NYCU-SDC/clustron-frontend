@@ -71,7 +71,21 @@ export type CreateGroupInput = {
   }[];
 };
 
-export type CreateGroupResponse = GroupDetail;
+export type JoinMemberErrorResponse = {
+  member: string;
+  role: string;
+  message: string;
+};
+
+export type CreateGroupResultData = {
+  addedSuccessNumber: number;
+  addedFailureNumber: number;
+  errors: JoinMemberErrorResponse[];
+};
+
+export type CreateGroupResponse = GroupDetail & {
+  addedResult: CreateGroupResultData;
+};
 
 // =========================
 // 🔹 GET /api/groups/{id}/members
