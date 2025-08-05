@@ -43,7 +43,7 @@ export default function Navbar() {
   }, [accessToken]);
 
   return (
-    <nav className="sticky top-0 w-full border-b bg-white dark:bg-black">
+    <nav className="sticky top-0 z-1 w-full border-b bg-white dark:bg-black">
       <div className="flex items-center justify-between w-full px-6 py-4">
         <div className="flex items-center space-x-4">
           <div className="text-2xl font-bold px-3 py-2">Clustron</div>

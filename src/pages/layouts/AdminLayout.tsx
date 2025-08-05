@@ -12,23 +12,25 @@ export default function AdminLayout() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (accessToken) {
-      setRole(jwtDecode<AccessToken>(accessToken).Role);
+    if (!accessToken) {
+      navigate("/", { replace: true });
+      return;
     }
-
-    if (role != "admin") {
+    const decodedRole = jwtDecode<AccessToken>(accessToken).Role;
+    setRole(decodedRole);
+    if (decodedRole !== "admin") {
       navigate("/", { replace: true });
     }
-  }, [accessToken, navigate, role]);
+  }, [accessToken, navigate]);
 
   if (role != "admin") return null;
 
   return (
-    <div className="flex min-h-screen w-full">
+    <div className="flex w-full">
       <div className="min-w-xs border-r">
         <AdminSideBar />
       </div>
-      <main className="flex-1 flex justify-center px-6">
+      <main className="flex-1 flex justify-center">
         <Outlet />
       </main>
     </div>
