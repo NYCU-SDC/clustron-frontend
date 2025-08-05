@@ -25,11 +25,8 @@ export default function GroupListPage() {
     <div className="p-10 space-y-4 w-1/2 mx-auto">
       <div className="flex justify-between mb-6">
         {canCreateGroup && (
-          <Button
-            onClick={() => navigate("/groups/new")}
-            className="bg-gray-900 text-white"
-          >
-            {t("groupPages.groupList.newCourse")}
+          <Button onClick={() => navigate("/groups/new")}>
+            {t("groupPages.groupList.newGroup")}
           </Button>
         )}
       </div>

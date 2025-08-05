@@ -1,16 +1,5 @@
-import { useInfiniteMembers } from "@/hooks/useGetMembers";
-import { useUpdateMember } from "@/hooks/useUpdateMember";
-import GroupMemberRow from "@/components/group/GroupMemberRow";
-import AddMemberButton from "@/components/group/AddMemberButton";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { getGroupPermissions } from "@/lib/groupPermissions";
-import { useJwtPayload } from "@/hooks/useJwtPayload";
-import { useRoleMapper } from "@/hooks/useRoleMapper";
-import { useQueryClient } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
-
-import type { GlobalRole, GroupRoleAccessLevel } from "@/lib/permission";
-import { AccessLevelUser, type GroupMemberRoleName } from "@/types/group";
 import {
   Table,
   TableHeader,
@@ -18,8 +7,25 @@ import {
   TableHead,
   TableBody,
 } from "@/components/ui/table";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button.tsx";
+import { useTranslation } from "react-i18next";
+import { getGroupPermissions } from "@/lib/groupPermissions";
+import { useJwtPayload } from "@/hooks/useJwtPayload";
+import { useGetMembers } from "@/hooks/useGetMembers";
+import { useUpdateMember } from "@/hooks/useUpdateMember";
+import AddMemberButton from "@/components/group/AddMemberButton";
+import GroupMemberRow from "@/components/group/GroupMemberRow";
+
+import type { GlobalRole, GroupRoleAccessLevel } from "@/lib/permission";
+import { AccessLevelUser, type GroupMemberRoleName } from "@/types/group";
 
 type Props = {
   groupId: string;
@@ -45,42 +51,35 @@ export default function GroupMemberTable({
     accessLevel,
     effectiveGlobalRole,
   );
-  const {
-    data,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isError,
-  } = useInfiniteMembers(groupId);
+  const [currentPage, setCurrentPage] = useState(0);
 
-  const members = data?.pages.flatMap((page) => page.items) ?? [];
+  const { data, isLoading, isError } = useGetMembers(groupId, currentPage);
+  const members = data?.items ?? [];
+  const totalPages = data?.totalPages ?? 1;
 
-  const queryClient = useQueryClient();
-  const { mutate: updateMember, isPending: isUpdatingMember } = useUpdateMember(
-    groupId,
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["members", groupId] });
-      },
-    },
-  );
+  const { mutate: updateMember, isPending: isUpdatingMember } =
+    useUpdateMember(groupId);
 
-  const { roleNameToId } = useRoleMapper();
-
-  const updateMemberRole = (memberId: string, newRole: GroupMemberRoleName) => {
-    const roleId = roleNameToId(newRole);
-    console.log("show", newRole);
-    if (!roleId) {
-      console.error(`Invalid role name: ${newRole}`);
+  const updateMemberRole = (memberId: string, newRoldId: string) => {
+    if (!newRoldId) {
+      console.error(`Invalid role `);
       return;
     }
 
     updateMember({
-      memberId,
-      roleId,
+      memberId: memberId,
+      groupId: groupId,
+      roleId: newRoldId,
     });
   };
+
+  const maxPages = 4;
+  let startPage = Math.max(currentPage - 1, 0);
+  let endPage = startPage + maxPages - 1;
+  if (endPage >= totalPages) {
+    endPage = totalPages - 1;
+    startPage = Math.max(endPage - maxPages + 1, 0);
+  }
 
   return (
     <Card>
@@ -137,25 +136,69 @@ export default function GroupMemberTable({
                     isArchived={isArchived}
                     isPending={isUpdatingMember}
                     onDelete={onRemove ? () => onRemove(m.id) : undefined}
-                    onUpdateRole={(newRole) => updateMemberRole(m.id, newRole)}
+                    onUpdateRole={(newRoleId) =>
+                      updateMemberRole(m.id, newRoleId)
+                    }
                   />
                 ))}
               </TableBody>
             </Table>
 
-            {hasNextPage && (
-              <div className="mt-4 w-full flex justify-center">
-                <Button
-                  onClick={() => fetchNextPage()}
-                  disabled={isFetchingNextPage}
-                  className="text-sm text-blue-600 hover:underline"
-                >
-                  {isFetchingNextPage
-                    ? t("groupComponents.groupMemberTable.loadingMore")
-                    : t("groupComponents.groupMemberTable.loadMore")}
-                </Button>
-              </div>
-            )}
+            <div className="mt-6 flex justify-center">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      onClick={() => setCurrentPage((p) => Math.max(p - 1, 0))}
+                      className={
+                        currentPage === 0
+                          ? "opacity-50 pointer-events-none"
+                          : ""
+                      }
+                    />
+                  </PaginationItem>
+
+                  {startPage > 0 && (
+                    <PaginationItem>
+                      <span className="px-2">...</span>
+                    </PaginationItem>
+                  )}
+
+                  {Array.from(
+                    { length: endPage - startPage + 1 },
+                    (_, i) => startPage + i,
+                  ).map((page) => (
+                    <PaginationItem key={page}>
+                      <PaginationLink
+                        isActive={page === currentPage}
+                        onClick={() => setCurrentPage(page)}
+                      >
+                        {page + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+
+                  {endPage < totalPages - 1 && (
+                    <PaginationItem>
+                      <span className="px-2">...</span>
+                    </PaginationItem>
+                  )}
+
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={() =>
+                        setCurrentPage((p) => Math.min(p + 1, totalPages - 1))
+                      }
+                      className={
+                        currentPage === totalPages - 1
+                          ? "opacity-50 pointer-events-none"
+                          : ""
+                      }
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
           </>
         )}
       </CardContent>

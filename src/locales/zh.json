@@ -182,7 +182,7 @@
       "create": "建立"
     },
     "groupList": {
-      "newCourse": "+ 新課程",
+      "newGroup": "+ 新群組",
       "loading": "載入中...",
       "loadingFailed": "載入失敗",
       "noCourses": "你尚未加入任何課程。"
@@ -203,10 +203,44 @@
       "unarchive": "解除封存",
       "archive": "封存"
     },
+    "addMemberResult": {
+      "title": "新增成員結果",
+      "createGroupResultTitle": "群組建立結果",
+      "successCount": "成功",
+      "failureCount": "失敗",
+      "studentIdOrEmail": "學號或Email",
+      "role": "角色",
+      "status": "狀態",
+      "additionalInfo": "詳細資訊",
+      "successStatus": "成功加入群組",
+      "warningStatus": "等待使用者註冊",
+      "errorStatus": "加入失敗",
+      "backToSettings": "返回群組設定",
+      "backToGroupList": "返回群組列表",
+      "goToGroupDetail": "前往群組詳細頁面"
+    },
     "pagination": {
       "next": "下一頁",
       "previous": "上一頁"
     },
     "pendingMember": "待定成員"
+  },
+  "groupSettings": {
+    "transferOwnership": {
+      "title": "轉移群組擁有者",
+      "description1": "將群組擁有權轉移給其他成員。",
+      "description2": "請輸入你希望指派為新群組擁有者的電子郵件或學號。",
+      "notice": "轉移成功後，你將失去擁有者的權限。",
+      "startButton": "開始轉移",
+      "transferring": "轉移中...",
+      "success": "擁有者轉移成功。",
+      "failed": "擁有者轉移失敗。"
+    },
+    "transfer": "轉移",
+    "cancel": "取消",
+    "toast": {
+      "success": "轉移成功",
+      "fail": "轉移失敗"
+    }
   }
 }

@@ -6,9 +6,6 @@ export async function createGroup(
 ): Promise<CreateGroupResponse> {
   return api("/api/groups", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify(payload),
   });
 }

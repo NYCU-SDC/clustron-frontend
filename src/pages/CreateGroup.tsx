@@ -30,7 +30,27 @@ export default function AddGroupPage() {
   >([{ id: "", roleName: "student" }]);
 
   const createGroup = useCreateGroup({
-    onSuccess: () => navigate(`/groups`),
+    onSuccess: (data) => {
+      if (data) {
+        navigate(`/groups/${data.id}/add-member-result`, {
+          state: {
+            result: {
+              addedSuccessNumber: data.addedResult.addedSuccessNumber,
+              addedFailureNumber: data.addedResult.addedFailureNumber,
+              errors: data.addedResult.errors,
+            },
+            members: members
+              .filter((m) => m.id.trim())
+              .map((m) => ({
+                member: m.id.trim(),
+                roleName: m.roleName,
+              })),
+          },
+        });
+      } else {
+        navigate(`/groups`);
+      }
+    },
   });
 
   const updateRow = (index: number, key: "id" | "roleName", value: string) => {
@@ -58,14 +78,6 @@ export default function AddGroupPage() {
       };
     });
 
-    const payloadId = payload?.ID ?? "";
-    const selfIncluded = members.some((m) => m.id.trim() === payloadId);
-    if (!selfIncluded) {
-      const ownerRoleId = roleNameToId("group_owner");
-      if (!ownerRoleId) throw new Error("Missing group_owner role");
-      newMembers.unshift({ member: payloadId, roleId: ownerRoleId });
-    }
-
     createGroup.mutate({
       title,
       description,
@@ -85,8 +97,8 @@ export default function AddGroupPage() {
   };
 
   return (
-    <div className="flex w-full justify-center">
-      <main className="w-full max-w-3xl p-6">
+    <div className="flex-1 flex justify-center">
+      <main className="w-full max-w-4xl p-6">
         <h1 className="text-2xl font-bold mb-6">
           {t("groupPages.createGroup.title")}
         </h1>
