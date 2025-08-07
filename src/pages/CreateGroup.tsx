@@ -14,6 +14,7 @@ import {
   TableRow,
   TableHead,
   TableBody,
+  TableCell,
 } from "@/components/ui/table";
 import { GlobalRole } from "@/lib/permission";
 
@@ -117,7 +118,68 @@ export default function AddGroupPage() {
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-
+        <div className="space-y-2">
+          <h2 className="text-lg font-semibold">Link Resources</h2>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Title</TableHead>
+                <TableHead>URL</TableHead>
+                <TableHead />
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {links.map((link, index) => (
+                <TableRow key={index} className="hover:bg-muted">
+                  <TableCell>{link.title}</TableCell>
+                  <TableCell>
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      className="font-medium text-muted-foreground"
+                    >
+                      {link.url}
+                    </a>
+                  </TableCell>
+                  <TableCell className="w-10">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => onRemove(index)}
+                    >
+                      −
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+              <TableRow>
+                <TableCell>
+                  <Input
+                    placeholder="Title"
+                    value={newLink.title}
+                    onChange={(e) =>
+                      setNewLink((prev) => ({ ...prev, title: e.target.value }))
+                    }
+                  />
+                </TableCell>
+                <TableCell>
+                  <Input
+                    placeholder="URL"
+                    value={newLink.url}
+                    onChange={(e) =>
+                      setNewLink((prev) => ({ ...prev, url: e.target.value }))
+                    }
+                  />
+                </TableCell>
+                <TableCell className="w-10">
+                  <Button variant="ghost" size="icon" onClick={handleAdd}>
+                    ＋
+                  </Button>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
         <h2 className="text-lg font-semibold mb-2">
           {t("groupPages.createGroup.addInitialMembers")}
         </h2>

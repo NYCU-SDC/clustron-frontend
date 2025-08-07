@@ -180,3 +180,22 @@ export type RemovePendingMemberParams = {
   id: string;
   pendingId: string;
 };
+
+// =========================
+// 🔹 Group Link Types
+// =========================
+
+// POST /api/groups/{id}/link
+// PUT  /api/groups/{id}/link/{linkId}
+// DELETE /api/groups/{id}/link/{linkId}
+
+export type GroupLinkPayload = {
+  title: string;
+  url: string;
+};
+
+export type GroupLinkResponse = {
+  id: string;
+  title: string;
+  url: string;
+};
