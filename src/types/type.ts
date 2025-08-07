@@ -27,3 +27,28 @@ export type Settings = {
   fullName: string;
   linuxUsername: string;
 };
+
+//jobs
+export type JobState = "RUNNING" | "PENDING" | "FAILED";
+
+export interface Resources {
+  cpu: number;
+  gpu: number;
+  mem: number;
+}
+
+export interface Job {
+  id: number;
+  state: JobState;
+  user: string;
+  partition: string;
+  resources: Resources;
+}
+
+export type SortBy = keyof Job | keyof Resources;
+
+export interface FilterOptions {
+  myJobs: boolean;
+  status: JobState[];
+  resource: (keyof Resources)[];
+}

@@ -1,8 +1,8 @@
 // import { useTranslation } from "react-i18next";
 import { useOutletContext } from "react-router-dom";
-import GroupDescription from "@/components/group/GroupDes";
-import GroupMemberTable from "@/components/group/GroupMemberTable";
-import type { GroupDetail } from "@/types/group";
+import GroupDescription from "@/components/group/GroupDes.tsx";
+import GroupMemberTable from "@/components/group/GroupMemberTable.tsx";
+import type { GroupDetail } from "@/types/group.ts";
 
 type GroupContext = {
   group: GroupDetail;

@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import GroupDescription from "@/components/group/GroupDes";
-import { useGetGroupById } from "@/hooks/useGetGroupById";
+import GroupDescription from "@/components/group/GroupDes.tsx";
+import { useGetGroupById } from "@/hooks/useGetGroupById.ts";
 
 export default function CourseDescriptionPage() {
   const { id } = useParams<{ id: string }>();
