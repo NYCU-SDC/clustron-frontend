@@ -11,28 +11,17 @@ function navLinkClass(isActive: boolean) {
     .join(" ");
 }
 
-export default function SettingSideBar() {
+export default function AdminSideBar() {
   const { t } = useTranslation();
   return (
     <aside className="sticky top-[7rem] self-start min-w-48 ml-15 my-8">
       <div className="text-4xl font-semibold mb-8">
-        {t("settingSideBar.title")}
+        {t("adminSidebar.title")}
       </div>
       <ul className="space-y-4">
         <li>
-          <NavLink
-            to={`/setting/general`}
-            className={({ isActive }) => navLinkClass(isActive)}
-          >
-            {t("settingSideBar.GeneralNavLink")}
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to={`/setting/ssh`}
-            className={({ isActive }) => navLinkClass(isActive)}
-          >
-            {t("settingSideBar.SSHNavLink")}
+          <NavLink to="#" className={({ isActive }) => navLinkClass(isActive)}>
+            {t("adminSidebar.roleAccessConfigLink")}
           </NavLink>
         </li>
       </ul>
