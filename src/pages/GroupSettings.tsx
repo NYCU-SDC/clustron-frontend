@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import GroupDescription from "@/components/group/GroupDes";
+import GroupDescription from "@/components/group/GroupDescription.tsx";
 import GroupMemberTable from "@/components/group/GroupMemberTable";
 import PendingMemberTable from "@/components/group/PendingMemberTable";
 import { useArchiveGroup } from "@/hooks/useArchiveGroup";
@@ -99,7 +99,12 @@ export default function GroupSettings() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <GroupDescription title={group.title} desc={group.description} />
+      <GroupDescription
+        title={group.title}
+        desc={group.description}
+        isArchived={group.isArchived}
+        links={group.links ?? []}
+      />
 
       <GroupMemberTable
         groupId={group.id}

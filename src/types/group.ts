@@ -56,6 +56,7 @@ export type GroupDetail = GroupSummary & {
     type: string;
     role: GroupRole;
   };
+  links?: GroupLinkResponse[];
 };
 
 // =========================
@@ -69,6 +70,7 @@ export type CreateGroupInput = {
     member: string; // email or user id
     roleId: string;
   }[];
+  links?: GroupLinkPayload[];
 };
 
 export type JoinMemberErrorResponse = {

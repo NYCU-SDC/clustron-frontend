@@ -4,11 +4,9 @@ import type { GroupLinkPayload, GroupLinkResponse } from "@/types/group";
 // 🔸 Create Link
 export async function createGroupLink(
   groupId: string,
-  payload: GroupLinkPayload,
 ): Promise<GroupLinkResponse> {
   return api(`/api/groups/${groupId}/link`, {
     method: "POST",
-    body: JSON.stringify(payload),
   });
 }
 
@@ -31,14 +29,5 @@ export async function deleteGroupLink(
 ): Promise<void> {
   return api(`/api/groups/${groupId}/link/${linkId}`, {
     method: "DELETE",
-  });
-}
-
-// 🔸 Get all Links
-export async function getGroupLinks(
-  groupId: string,
-): Promise<GroupLinkResponse[]> {
-  return api(`/api/groups/${groupId}/link`, {
-    method: "GET",
   });
 }

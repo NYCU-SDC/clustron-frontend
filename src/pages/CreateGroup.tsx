@@ -7,7 +7,11 @@ import AddMemberRow from "@/components/group/AddMemberRow";
 import { useCreateGroup } from "@/hooks/useCreateGroup";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
-import { AccessLevelOwner, type GroupMemberRoleName } from "@/types/group";
+import {
+  AccessLevelOwner,
+  type GroupMemberRoleName,
+  type GroupLinkPayload,
+} from "@/types/group";
 import {
   Table,
   TableHeader,
@@ -26,6 +30,11 @@ export default function AddGroupPage() {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [links, setLinks] = useState<GroupLinkPayload[]>([]);
+  const [newLink, setNewLink] = useState<GroupLinkPayload>({
+    title: "",
+    url: "",
+  });
   const [members, setMembers] = useState<
     { id: string; roleName: GroupMemberRoleName }[]
   >([{ id: "", roleName: "student" }]);
@@ -68,6 +77,17 @@ export default function AddGroupPage() {
     setMembers(next.length === 0 ? [{ id: "", roleName: "student" }] : next);
   };
 
+  const handleAdd = () => {
+    if (newLink.title.trim() && newLink.url.trim()) {
+      setLinks((prev) => [...prev, newLink]);
+      setNewLink({ title: "", url: "" });
+    }
+  };
+
+  const onRemove = (index: number) => {
+    setLinks((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const handleSave = () => {
     const newMembers = members.map((m) => {
       const roleId = roleNameToId(m.roleName);
@@ -83,6 +103,7 @@ export default function AddGroupPage() {
       title,
       description,
       members: newMembers,
+      links: links.filter((l) => l.title.trim() && l.url.trim()),
     });
   };
 
@@ -118,6 +139,7 @@ export default function AddGroupPage() {
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
+
         <div className="space-y-2">
           <h2 className="text-lg font-semibold">Link Resources</h2>
           <Table>
@@ -180,6 +202,7 @@ export default function AddGroupPage() {
             </TableBody>
           </Table>
         </div>
+
         <h2 className="text-lg font-semibold mb-2">
           {t("groupPages.createGroup.addInitialMembers")}
         </h2>

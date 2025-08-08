@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import GroupDescription from "@/components/group/GroupDes";
+import GroupDescription from "@/components/group/GroupDescription.tsx";
 import { useGetGroups } from "@/hooks/useGetGroups";
 import { useGlobalPermissions } from "@/hooks/useGlobalPermissions";
 import { useContext } from "react";
