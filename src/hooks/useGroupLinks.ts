@@ -1,46 +1,26 @@
+// hooks/useGroupLinks.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  createGroupLink,
-  updateGroupLink,
-  deleteGroupLink,
-} from "@/lib/request/groupLinks";
-import type { GroupLinkPayload } from "@/types/group";
+import { createGroupLink } from "@/lib/request/groupLinks";
+import type { GroupLinkPayload, GroupLinkResponse } from "@/types/group";
 
-// 🔸 Create link
-export function useCreateGroupLink(groupId: string) {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: () => createGroupLink(groupId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["GroupLinks", groupId] });
+type Vars = { groupId: string; payload: GroupLinkPayload };
+
+export function useCreateGroupLink(options?: {
+  onSuccess?: (data: GroupLinkResponse) => void;
+  onError?: (err: unknown) => void;
+}) {
+  const qc = useQueryClient();
+
+  return useMutation<GroupLinkResponse, unknown, Vars>({
+    mutationFn: createGroupLink,
+    mutationKey: ["GroupLinks", "create"],
+    onSuccess: (data, vars) => {
+      qc.invalidateQueries({ queryKey: ["GroupLinks", vars.groupId] });
+      options?.onSuccess?.(data);
     },
-  });
-}
-
-// 🔸 Update link
-export function useUpdateGroupLink(groupId: string) {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({
-      linkId,
-      payload,
-    }: {
-      linkId: string;
-      payload: GroupLinkPayload;
-    }) => updateGroupLink(groupId, linkId, payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["GroupLinks", groupId] });
-    },
-  });
-}
-
-// 🔸 Delete link
-export function useDeleteGroupLink(groupId: string) {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (linkId: string) => deleteGroupLink(groupId, linkId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["GroupLinks", groupId] });
+    onError: (err) => {
+      console.error("Failed to create group link:", err);
+      options?.onError?.(err);
     },
   });
 }

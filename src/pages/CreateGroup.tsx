@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AddMemberRow from "@/components/group/AddMemberRow";
 import { useCreateGroup } from "@/hooks/useCreateGroup";
+import { useCreateGroupLink } from "@/hooks/useGroupLinks";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
 import {
@@ -21,6 +22,14 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { GlobalRole } from "@/lib/permission";
+import { CircleMinus, CirclePlus } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card.tsx";
+import { Textarea } from "@/components/ui/textarea.tsx";
 
 export default function AddGroupPage() {
   const navigate = useNavigate();
@@ -39,27 +48,45 @@ export default function AddGroupPage() {
     { id: string; roleName: GroupMemberRoleName }[]
   >([{ id: "", roleName: "student" }]);
 
+  const { mutateAsync: createLink } = useCreateGroupLink();
+
   const createGroup = useCreateGroup({
-    onSuccess: (data) => {
-      if (data) {
-        navigate(`/groups/${data.id}/add-member-result`, {
-          state: {
-            result: {
-              addedSuccessNumber: data.addedResult.addedSuccessNumber,
-              addedFailureNumber: data.addedResult.addedFailureNumber,
-              errors: data.addedResult.errors,
-            },
-            members: members
-              .filter((m) => m.id.trim())
-              .map((m) => ({
-                member: m.id.trim(),
-                roleName: m.roleName,
-              })),
-          },
-        });
-      } else {
+    onSuccess: async (data) => {
+      if (!data) {
         navigate(`/groups`);
+        return;
       }
+
+      const groupId = data.id;
+
+      const pending: GroupLinkPayload[] = [
+        ...links,
+        ...(newLink.title.trim() && newLink.url.trim()
+          ? [{ title: newLink.title.trim(), url: newLink.url.trim() }]
+          : []),
+      ].filter((l) => l.title.trim() && l.url.trim());
+
+      if (pending.length) {
+        await Promise.allSettled(
+          pending.map((payload) => createLink({ groupId, payload })),
+        );
+      }
+
+      navigate(`/groups/${groupId}/add-member-result`, {
+        state: {
+          result: {
+            addedSuccessNumber: data.addedResult.addedSuccessNumber,
+            addedFailureNumber: data.addedResult.addedFailureNumber,
+            errors: data.addedResult.errors,
+          },
+          members: members
+            .filter((m) => m.id.trim())
+            .map((m) => ({
+              member: m.id.trim(),
+              roleName: m.roleName,
+            })),
+        },
+      });
     },
   });
 
@@ -70,137 +97,150 @@ export default function AddGroupPage() {
   };
 
   const addRow = () =>
-    setMembers([...members, { id: "", roleName: "student" }]);
-
+    setMembers((prev) => [...prev, { id: "", roleName: "student" }]);
   const removeRow = (index: number) => {
     const next = members.filter((_, i) => i !== index);
     setMembers(next.length === 0 ? [{ id: "", roleName: "student" }] : next);
   };
-
-  const handleAdd = () => {
-    if (newLink.title.trim() && newLink.url.trim()) {
-      setLinks((prev) => [...prev, newLink]);
-      setNewLink({ title: "", url: "" });
-    }
-  };
-
-  const onRemove = (index: number) => {
-    setLinks((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const handleSave = () => {
-    const newMembers = members.map((m) => {
-      const roleId = roleNameToId(m.roleName);
-      console.log("roleNameToId", m.roleName, roleId);
-      if (!roleId) throw new Error(`Invalid role: ${m.roleName}`);
-      return {
-        member: m.id.trim(),
-        roleId,
-      };
-    });
-
-    createGroup.mutate({
-      title,
-      description,
-      members: newMembers,
-      links: links.filter((l) => l.title.trim() && l.url.trim()),
-    });
-  };
-
-  const hasDuplicate = members.some(
-    (m, i) =>
-      members.findIndex((other) => other.id.trim() === m.id.trim()) !== i,
-  );
-
   const handleAddBatch = (
     newMembers: { id: string; roleName: GroupMemberRoleName }[],
   ) => {
     setMembers((prev) => [...prev, ...newMembers]);
   };
 
+  const handleAddLink = () => {
+    const title = newLink.title.trim();
+    const url = newLink.url.trim();
+    if (!title || !url) return;
+    setLinks((prev) => [...prev, { title, url }]);
+    setNewLink({ title: "", url: "" });
+  };
+  const handleRemoveLink = (index: number) => {
+    setLinks((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSave = () => {
+    const newMembers = members.map((m) => {
+      const roleId = roleNameToId(m.roleName);
+      if (!roleId) throw new Error(`Invalid role: ${m.roleName}`);
+      return { member: m.id.trim(), roleId };
+    });
+
+    createGroup.mutate({ title, description, members: newMembers });
+  };
+
+  const hasDuplicate = members.some(
+    (m, i) => members.findIndex((o) => o.id.trim() === m.id.trim()) !== i,
+  );
+
   return (
     <div className="flex-1 flex justify-center">
-      <main className="w-full max-w-4xl p-6">
-        <h1 className="text-2xl font-bold mb-6">
-          {t("groupPages.createGroup.title")}
-        </h1>
+      <Card className="w-2/3 max-w-4xl p-6">
+        <div className="space-y-2">
+          <CardHeader className="text-2xl">
+            <CardTitle className="text-2xl">
+              {t("groupPages.createGroup.title")}
+            </CardTitle>
+          </CardHeader>
 
-        <div className="mb-6 space-y-3">
-          <Input
-            placeholder={t("groupPages.createGroup.courseTitlePlaceholder")}
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <Input
-            placeholder={t(
-              "groupPages.createGroup.courseDescriptionPlaceholder",
-            )}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
+          <CardContent>
+            <Input
+              placeholder={t("groupPages.createGroup.courseTitlePlaceholder")}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </CardContent>
+
+          <CardHeader>
+            <CardTitle className="text-2xl">Description</CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            <Textarea
+              placeholder={t(
+                "groupPages.createGroup.courseDescriptionPlaceholder",
+              )}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="min-h-[96px]"
+            />
+          </CardContent>
         </div>
 
         <div className="space-y-2">
-          <h2 className="text-lg font-semibold">Link Resources</h2>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Title</TableHead>
-                <TableHead>URL</TableHead>
-                <TableHead />
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {links.map((link, index) => (
-                <TableRow key={index} className="hover:bg-muted">
-                  <TableCell>{link.title}</TableCell>
+          <CardHeader className="text-2xl">
+            <CardTitle className="text-2xl">Link Resource</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Title</TableHead>
+                  <TableHead>URL</TableHead>
+                  <TableHead />
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {links.map((link, index) => (
+                  <TableRow key={index} className="hover:bg-muted">
+                    <TableCell>{link.title}</TableCell>
+                    <TableCell>
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="font-medium text-muted-foreground break-all"
+                      >
+                        {link.url}
+                      </a>
+                    </TableCell>
+                    <TableCell className="w-10">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleRemoveLink(index)}
+                      >
+                        <CircleMinus size={16} />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                <TableRow>
                   <TableCell>
-                    <a
-                      href={link.url}
-                      target="_blank"
-                      className="font-medium text-muted-foreground"
-                    >
-                      {link.url}
-                    </a>
+                    <Input
+                      placeholder="Title"
+                      value={newLink.title}
+                      onChange={(e) =>
+                        setNewLink((prev) => ({
+                          ...prev,
+                          title: e.target.value,
+                        }))
+                      }
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Input
+                      placeholder="URL"
+                      value={newLink.url}
+                      onChange={(e) =>
+                        setNewLink((prev) => ({ ...prev, url: e.target.value }))
+                      }
+                    />
                   </TableCell>
                   <TableCell className="w-10">
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => onRemove(index)}
+                      onClick={handleAddLink}
+                      disabled={!newLink.title.trim() || !newLink.url.trim()}
                     >
-                      −
+                      <CirclePlus size={16} />
                     </Button>
                   </TableCell>
                 </TableRow>
-              ))}
-              <TableRow>
-                <TableCell>
-                  <Input
-                    placeholder="Title"
-                    value={newLink.title}
-                    onChange={(e) =>
-                      setNewLink((prev) => ({ ...prev, title: e.target.value }))
-                    }
-                  />
-                </TableCell>
-                <TableCell>
-                  <Input
-                    placeholder="URL"
-                    value={newLink.url}
-                    onChange={(e) =>
-                      setNewLink((prev) => ({ ...prev, url: e.target.value }))
-                    }
-                  />
-                </TableCell>
-                <TableCell className="w-10">
-                  <Button variant="ghost" size="icon" onClick={handleAdd}>
-                    ＋
-                  </Button>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+              </TableBody>
+            </Table>
+          </CardContent>
         </div>
 
         <h2 className="text-lg font-semibold mb-2">
@@ -242,20 +282,19 @@ export default function AddGroupPage() {
         </Table>
 
         <div className="mt-6 flex justify-end gap-3">
-          <Button
-            onClick={() => navigate("/groups")}
-            className="px-4 py-2 border rounded"
-          >
+          <Button onClick={() => navigate("/groups")} variant="secondary">
             {t("groupPages.createGroup.cancel")}
           </Button>
           <Button
             onClick={handleSave}
             disabled={hasDuplicate || !title.trim() || createGroup.isPending}
           >
-            {t("groupPages.createGroup.create")}
+            {createGroup.isPending
+              ? (t("groupPages.createGroup.saving") ?? "Saving...")
+              : t("groupPages.createGroup.create")}
           </Button>
         </div>
-      </main>
+      </Card>
     </div>
   );
 }

@@ -1,12 +1,17 @@
+// lib/request/groupLinks.ts
 import { api } from "@/lib/request/api";
 import type { GroupLinkPayload, GroupLinkResponse } from "@/types/group";
 
-// 🔸 Create Link
-export async function createGroupLink(
-  groupId: string,
-): Promise<GroupLinkResponse> {
+export async function createGroupLink({
+  groupId,
+  payload,
+}: {
+  groupId: string;
+  payload: GroupLinkPayload;
+}): Promise<GroupLinkResponse> {
   return api(`/api/groups/${groupId}/link`, {
     method: "POST",
+    body: JSON.stringify(payload),
   });
 }
 
