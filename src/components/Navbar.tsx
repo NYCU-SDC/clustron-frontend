@@ -78,7 +78,7 @@ export default function Navbar() {
           <ColorModeToggle />
           {isLoggedIn() ? (
             <DropdownMenu>
-              <DropdownMenuTrigger>
+              <DropdownMenuTrigger className="cursor-pointer">
                 <CircleUserRound />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">

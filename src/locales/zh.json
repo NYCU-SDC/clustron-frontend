@@ -242,5 +242,16 @@
       "success": "轉移成功",
       "fail": "轉移失敗"
     }
+  },
+  "bindLoginForm": {
+    "cardTitle": "連結其他登入方式",
+    "cardDescription": "使用不同的登入方式存取同一個帳號",
+    "connectLoginMethods": "已連結登入方式：",
+    "connectLoginMethodBtn": "＋ 連結登入方式",
+    "dialogTitle": "Clustron",
+    "nycuLoginNote": "國立陽明交通大學在學生 請透過單一入口登入",
+    "nycuLoginBtn": "使用國立陽明交通大學單一入口登入",
+    "googleLoginNote": "非國立陽明交通大學在學生 請使用 Google 帳號登入",
+    "googleLoginBtn": "使用 Google 登入"
   }
 }
