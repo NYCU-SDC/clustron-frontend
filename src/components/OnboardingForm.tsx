@@ -46,12 +46,21 @@ export default function OnboardingForm({
     },
     onError: (err: Error) => {
       if (err.name === "400") {
+        // Error message from the receveid response
+        // invalid username: Linux username already exists
         if (err.message.includes("exists")) {
           toast.error(t("onboardingForm.usernameExistsErrorToast"));
-        } else if (err.message.includes("reserved")) {
+        }
+        // invalid username: Linux username contain reserved keywords
+        else if (err.message.includes("reserved")) {
           toast.error(t("onboardingForm.reservedKeywordErrorToast"));
-        } else if (err.message.includes("start"))
+        }
+        // invalid username: Linux username must start with a lowercase letter or underscore,
+        // followed by lowercase letters, numbers, underscores, or hyphens, and can end with a dollar sign
+        else if (err.message.includes("start")) {
           toast.error(t("onboardingForm.formatErrorToast"));
+        }
+        // other uncaught message
         else {
           toast.error(t("onboardingForm.saveFailToast"));
         }
