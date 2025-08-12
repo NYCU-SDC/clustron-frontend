@@ -23,7 +23,8 @@
     "loginBtn": "登入",
     "logoutBtn": "登出",
     "groupLink": "群組",
-    "settingLink": "設定"
+    "settingLink": "設定",
+    "jobsLink": "排程"
   },
   "callback": {
     "loadingMessage": "載入中...",

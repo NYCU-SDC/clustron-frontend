@@ -29,7 +29,13 @@ export type Settings = {
 };
 
 //jobs
-export type JobState = "RUNNING" | "PENDING" | "FAILED";
+export type JobState =
+  | "RUNNING"
+  | "PENDING"
+  | "FAILED"
+  | "COMPLETED"
+  | "TIMEOUT"
+  | "CANCELLED";
 
 export interface Resources {
   cpu: number;

@@ -1,69 +1,82 @@
-import React from "react";
+import { Dispatch, SetStateAction } from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
-import { Command, CommandList, CommandItem } from "@/components/ui/command";
-import { SortBy } from "@/types/type";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuCheckboxItem,
+} from "@/components/ui/dropdown-menu";
+import {
+  Check,
+  ChevronDown,
+  ArrowUpNarrowWide,
+  ArrowDownWideNarrow,
+} from "lucide-react";
+import type { SortBy } from "@/types/type";
 
-export interface SortSelectorProps {
-  sortBy: SortBy;
-  setSortBy: (field: SortBy) => void;
-  sortOrder: "asc" | "desc";
-  setSortOrder: (order: "asc" | "desc") => void;
-}
-
-const options: SortBy[] = [
-  "id",
-  "user",
-  "state",
-  "partition",
-  "cpu",
-  "gpu",
-  "mem",
+const sortOptions: { key: SortBy; label: string }[] = [
+  { key: "id", label: "ID" },
+  { key: "user", label: "User" },
+  { key: "state", label: "Status" },
+  { key: "cpu", label: "CPU" },
+  { key: "gpu", label: "GPU" },
+  { key: "mem", label: "Mem" },
 ];
 
-const SortSelector: React.FC<SortSelectorProps> = ({
+type Props = {
+  sortBy: SortBy;
+  setSortBy: Dispatch<SetStateAction<SortBy>>;
+  sortOrder: "asc" | "desc";
+  setSortOrder: Dispatch<SetStateAction<"asc" | "desc">>;
+};
+
+export default function SortSelector({
   sortBy,
   setSortBy,
   sortOrder,
   setSortOrder,
-}) => {
+}: Props) {
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2">
-          <span className="transform rotate-90">⇅</span>
-          Sort
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-40 p-0">
-        <Command>
-          <CommandList>
-            {options.map((opt) => (
-              <CommandItem
-                key={opt}
-                onSelect={() => setSortBy(opt)}
-                className={`flex justify-between ${sortBy === opt ? "bg-accent" : ""}`}
-              >
-                {opt.toUpperCase()}
-              </CommandItem>
-            ))}
-            <CommandItem
-              onSelect={() =>
-                setSortOrder(sortOrder === "asc" ? "desc" : "asc")
-              }
-              className="mt-1"
+    <div className="flex items-center gap-2">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" className="gap-2">
+            <ArrowUpNarrowWide className="h-4 w-4" />
+            Sort
+            <ChevronDown className="h-4 w-4 opacity-60" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="w-40">
+          <DropdownMenuLabel>Sort by</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {sortOptions.map((opt) => (
+            <DropdownMenuCheckboxItem
+              key={opt.key}
+              checked={sortBy === opt.key}
+              onCheckedChange={() => setSortBy(opt.key)}
+              className="justify-between"
             >
-              {sortOrder === "asc" ? "Ascending" : "Descending"}
-            </CommandItem>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+              {opt.label}
+              {sortBy === opt.key && <Check className="h-4 w-4" />}
+            </DropdownMenuCheckboxItem>
+          ))}
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() => setSortOrder((p) => (p === "asc" ? "desc" : "asc"))}
+            className="justify-between"
+          >
+            {sortOrder === "asc" ? "Ascending" : "Descending"}
+            {sortOrder === "asc" ? (
+              <ArrowUpNarrowWide className="h-4 w-4" />
+            ) : (
+              <ArrowDownWideNarrow className="h-4 w-4" />
+            )}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
-};
-
-export default SortSelector;
+}

@@ -23,7 +23,8 @@
     "logoutBtn": "Logout",
     "loginBtn": "Login",
     "groupLink": "Groups",
-    "settingLink": "Settings"
+    "settingLink": "Settings",
+    "jobsLink": "Jobs"
   },
   "callback": {
     "loadingMessage": "Loading...",
