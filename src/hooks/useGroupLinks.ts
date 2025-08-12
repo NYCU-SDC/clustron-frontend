@@ -1,4 +1,3 @@
-// hooks/useGroupLinks.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createGroupLink } from "@/lib/request/groupLinks";
 import type { GroupLinkPayload, GroupLinkResponse } from "@/types/group";
