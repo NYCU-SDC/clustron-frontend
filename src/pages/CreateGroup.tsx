@@ -102,11 +102,6 @@ export default function AddGroupPage() {
     const next = members.filter((_, i) => i !== index);
     setMembers(next.length === 0 ? [{ id: "", roleName: "student" }] : next);
   };
-  const handleAddBatch = (
-    newMembers: { id: string; roleName: GroupMemberRoleName }[],
-  ) => {
-    setMembers((prev) => [...prev, ...newMembers]);
-  };
 
   const handleAddLink = () => {
     const title = newLink.title.trim();
@@ -130,17 +125,23 @@ export default function AddGroupPage() {
   };
 
   const hasDuplicate = members.some(
-    (m, i) => members.findIndex((o) => o.id.trim() === m.id.trim()) !== i,
+    (m, i) =>
+      members.findIndex((other) => other.id.trim() === m.id.trim()) !== i,
   );
 
+  const handleAddBatch = (
+    newMembers: { id: string; roleName: GroupMemberRoleName }[],
+  ) => {
+    setMembers((prev) => [...prev, ...newMembers]);
+  };
+
   return (
-    <div className="flex-1 flex justify-center">
+    <div className="flex-1 flex flex-col justify-center items-center gap-6">
+      {/* Title / Description */}
       <Card className="w-2/3 max-w-4xl p-6">
         <div className="space-y-2">
           <CardHeader className="text-2xl">
-            <CardTitle className="text-2xl">
-              {t("groupPages.createGroup.title")}
-            </CardTitle>
+            <CardTitle>{t("groupPages.createGroup.courseTitle")}*</CardTitle>
           </CardHeader>
 
           <CardContent>
@@ -151,8 +152,11 @@ export default function AddGroupPage() {
             />
           </CardContent>
 
-          <CardHeader>
-            <CardTitle className="text-2xl">Description</CardTitle>
+          {/* Description */}
+          <CardHeader className="mt-6">
+            <CardTitle className="text-2xl">
+              {t("groupPages.createGroup.descriptionTitle")}*
+            </CardTitle>
           </CardHeader>
 
           <CardContent>
@@ -167,17 +171,21 @@ export default function AddGroupPage() {
           </CardContent>
         </div>
 
+        {/* Link Resource */}
         <div className="space-y-2">
           <CardHeader className="text-2xl">
-            <CardTitle className="text-2xl">Link Resource</CardTitle>
+            <CardTitle>{t("groupPages.createGroup.linkTitle")}</CardTitle>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>URL</TableHead>
-                  <TableHead />
+                  <TableHead className="w-[40%] text-gray-500 dark:text-white">
+                    {t("groupPages.createGroup.title")}
+                  </TableHead>
+                  <TableHead className="w-[50%] text-gray-500 dark:text-white">
+                    {t("groupPages.createGroup.URL")}
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -194,7 +202,7 @@ export default function AddGroupPage() {
                         {link.url}
                       </a>
                     </TableCell>
-                    <TableCell className="w-10">
+                    <TableCell className="flex justify-center">
                       <Button
                         variant="ghost"
                         size="icon"
@@ -208,7 +216,7 @@ export default function AddGroupPage() {
                 <TableRow>
                   <TableCell>
                     <Input
-                      placeholder="Title"
+                      placeholder={t("groupPages.createGroup.title")}
                       value={newLink.title}
                       onChange={(e) =>
                         setNewLink((prev) => ({
@@ -220,14 +228,14 @@ export default function AddGroupPage() {
                   </TableCell>
                   <TableCell>
                     <Input
-                      placeholder="URL"
+                      placeholder={t("groupPages.createGroup.URL")}
                       value={newLink.url}
                       onChange={(e) =>
                         setNewLink((prev) => ({ ...prev, url: e.target.value }))
                       }
                     />
                   </TableCell>
-                  <TableCell className="w-10">
+                  <TableCell className="flex justify-center">
                     <Button
                       variant="ghost"
                       size="icon"
@@ -242,59 +250,65 @@ export default function AddGroupPage() {
             </Table>
           </CardContent>
         </div>
-
-        <h2 className="text-lg font-semibold mb-2">
-          {t("groupPages.createGroup.addInitialMembers")}
-        </h2>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>
-                {t("groupPages.createGroup.studentIdOrEmail")}
-              </TableHead>
-              <TableHead>{t("groupPages.createGroup.role")}</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {members.map((m, i) => {
-              const isDuplicate = members
-                .filter((_, idx) => idx !== i)
-                .some((other) => other.id.trim() === m.id.trim());
-
-              return (
-                <AddMemberRow
-                  key={i}
-                  index={i}
-                  id={m.id}
-                  roleName={m.roleName}
-                  onChange={updateRow}
-                  onAdd={addRow}
-                  onRemove={removeRow}
-                  isLast={i === members.length - 1}
-                  onAddBatch={handleAddBatch}
-                  globalRole={payload?.Role as GlobalRole}
-                  accessLevel={AccessLevelOwner}
-                  isDuplicate={isDuplicate}
-                />
-              );
-            })}
-          </TableBody>
-        </Table>
-
-        <div className="mt-6 flex justify-end gap-3">
-          <Button onClick={() => navigate("/groups")} variant="secondary">
-            {t("groupPages.createGroup.cancel")}
-          </Button>
-          <Button
-            onClick={handleSave}
-            disabled={hasDuplicate || !title.trim() || createGroup.isPending}
-          >
-            {createGroup.isPending
-              ? (t("groupPages.createGroup.saving") ?? "Saving...")
-              : t("groupPages.createGroup.create")}
-          </Button>
-        </div>
       </Card>
+
+      {/* Add Member */}
+      <Card className="w-2/3 max-w-4xl p-6">
+        <CardHeader className="text-2xl">
+          <CardTitle className="text-2xl">
+            {t("groupPages.createGroup.addInitialMembers")}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>
+                  {t("groupPages.createGroup.studentIdOrEmail")}
+                </TableHead>
+                <TableHead>{t("groupPages.createGroup.role")}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {members.map((m, i) => {
+                const isDuplicate = members
+                  .filter((_, idx) => idx !== i)
+                  .some((other) => other.id.trim() === m.id.trim());
+
+                return (
+                  <AddMemberRow
+                    key={i}
+                    index={i}
+                    id={m.id}
+                    roleName={m.roleName}
+                    onChange={updateRow}
+                    onAdd={addRow}
+                    onRemove={removeRow}
+                    isLast={i === members.length - 1}
+                    onAddBatch={handleAddBatch}
+                    globalRole={payload?.Role as GlobalRole}
+                    accessLevel={AccessLevelOwner}
+                    isDuplicate={isDuplicate}
+                  />
+                );
+              })}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+
+      {/* button */}
+      <div className="w-2/3 max-w-4xl flex justify-start gap-3 mb-10">
+        <Button onClick={() => navigate("/groups")}>
+          {t("groupPages.createGroup.cancel")}
+        </Button>
+        <Button
+          onClick={handleSave}
+          disabled={hasDuplicate || !title.trim() || createGroup.isPending}
+        >
+          {t("groupPages.createGroup.create")}
+        </Button>
+      </div>
     </div>
   );
 }
