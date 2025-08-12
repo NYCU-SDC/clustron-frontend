@@ -46,7 +46,15 @@ export default function OnboardingForm({
     },
     onError: (err: Error) => {
       if (err.name === "400") {
-        toast.error(t("onboardingForm.formatErrorToast"));
+        if (err.message.includes("exists")) {
+          toast.error(t("onboardingForm.usernameExistsErrorToast"));
+        } else if (err.message.includes("reserved")) {
+          toast.error(t("onboardingForm.reservedKeywordErrorToast"));
+        } else if (err.message.includes("start"))
+          toast.error(t("onboardingForm.formatErrorToast"));
+        else {
+          toast.error(t("onboardingForm.saveFailToast"));
+        }
       } else {
         toast.error(t("onboardingForm.saveFailToast"));
       }
