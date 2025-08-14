@@ -27,7 +27,6 @@ export default function GroupPage() {
               title={group.title}
               desc={group.description}
               links={group.links ?? []}
-              isArchived={group.isArchived}
             />
           </main>
         </div>

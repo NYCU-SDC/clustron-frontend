@@ -4,19 +4,13 @@ import { useTranslation } from "react-i18next";
 type Props = {
   title: string;
   desc: string;
-  isArchived?: boolean;
   links?: { title: string; url: string }[];
 };
 
-export default function GroupDescription({
-  title,
-  desc,
-  isArchived,
-  links,
-}: Props) {
+export default function GroupDescription({ title, desc, links }: Props) {
   const { t } = useTranslation();
   return (
-    <Card className={isArchived ? "opacity-50" : "opacity-100"}>
+    <Card>
       <CardHeader>
         <CardTitle className="text-lg font-bold">{title}</CardTitle>
       </CardHeader>

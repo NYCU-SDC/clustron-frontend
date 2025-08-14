@@ -66,7 +66,7 @@ export type GroupDetail = GroupSummary & {
 export type CreateGroupInput = {
   title: string;
   description: string;
-  members: {
+  members?: {
     member: string; // email or user id
     roleId: string;
   }[];

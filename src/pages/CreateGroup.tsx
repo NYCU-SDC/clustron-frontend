@@ -5,13 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AddMemberRow from "@/components/group/AddMemberRow";
 import { useCreateGroup } from "@/hooks/useCreateGroup";
-import { useCreateGroupLink } from "@/hooks/useGroupLinks";
+// import { useCreateGroupLink } from "@/hooks/useGroupLinks";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
 import {
   AccessLevelOwner,
   type GroupMemberRoleName,
   type GroupLinkPayload,
+  CreateGroupInput,
 } from "@/types/group";
 import {
   Table,
@@ -48,7 +49,7 @@ export default function AddGroupPage() {
     { id: string; roleName: GroupMemberRoleName }[]
   >([{ id: "", roleName: "student" }]);
 
-  const { mutateAsync: createLink } = useCreateGroupLink();
+  // const { mutateAsync: createLink } = useCreateGroupLink();
 
   const createGroup = useCreateGroup({
     onSuccess: async (data) => {
@@ -58,19 +59,6 @@ export default function AddGroupPage() {
       }
 
       const groupId = data.id;
-
-      const pending: GroupLinkPayload[] = [
-        ...links,
-        ...(newLink.title.trim() && newLink.url.trim()
-          ? [{ title: newLink.title.trim(), url: newLink.url.trim() }]
-          : []),
-      ].filter((l) => l.title.trim() && l.url.trim());
-
-      if (pending.length) {
-        await Promise.allSettled(
-          pending.map((payload) => createLink({ groupId, payload })),
-        );
-      }
 
       navigate(`/groups/${groupId}/add-member-result`, {
         state: {
@@ -114,6 +102,15 @@ export default function AddGroupPage() {
     setLinks((prev) => prev.filter((_, i) => i !== index));
   };
 
+  function normalizeUrl(url: string): string {
+    const trimmed = url.trim();
+    if (!trimmed) return "";
+    if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:\/\//.test(trimmed)) {
+      return trimmed;
+    }
+    return `https://${trimmed}`;
+  }
+
   const handleSave = () => {
     const newMembers = members.map((m) => {
       const roleId = roleNameToId(m.roleName);
@@ -121,7 +118,24 @@ export default function AddGroupPage() {
       return { member: m.id.trim(), roleId };
     });
 
-    createGroup.mutate({ title, description, members: newMembers });
+    const linksToSubmit: GroupLinkPayload[] = [
+      ...links,
+      ...(newLink.title.trim() && newLink.url.trim()
+        ? [{ title: newLink.title.trim(), url: newLink.url.trim() }]
+        : []),
+    ]
+      .filter((l) => l.title.trim() && l.url.trim())
+      .map((l) => ({
+        title: l.title.trim(),
+        url: normalizeUrl(l.url),
+      }));
+
+    createGroup.mutate({
+      title,
+      description,
+      members: newMembers,
+      links: linksToSubmit,
+    } as CreateGroupInput);
   };
 
   const hasDuplicate = members.some(
@@ -177,32 +191,35 @@ export default function AddGroupPage() {
             <CardTitle>{t("groupPages.createGroup.linkTitle")}</CardTitle>
           </CardHeader>
           <CardContent>
-            <Table>
+            <Table className="table-fixed w-full">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[40%] text-gray-500 dark:text-white">
+                  <TableHead className="w-[25%] text-gray-500 dark:text-white">
                     {t("groupPages.createGroup.title")}
                   </TableHead>
-                  <TableHead className="w-[50%] text-gray-500 dark:text-white">
+                  <TableHead className="w-[60%] text-gray-500 dark:text-white">
                     {t("groupPages.createGroup.URL")}
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {links.map((link, index) => (
-                  <TableRow key={index} className="hover:bg-muted">
+                  <TableRow key={index} className="hover:bg-muted ">
                     <TableCell>{link.title}</TableCell>
-                    <TableCell>
-                      <a
-                        href={link.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="font-medium text-muted-foreground break-all"
-                      >
-                        {link.url}
-                      </a>
+                    <TableCell className="w-[30%] break-all text-muted-foreground">
+                      <div className="max-w-full overflow-hidden">
+                        <a
+                          href={link.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="break-all block"
+                        >
+                          {link.url}
+                        </a>
+                      </div>
                     </TableCell>
-                    <TableCell className="flex justify-center">
+
+                    <TableCell className="flex justify-center ">
                       <Button
                         variant="ghost"
                         size="icon"
@@ -227,14 +244,32 @@ export default function AddGroupPage() {
                     />
                   </TableCell>
                   <TableCell>
-                    <Input
-                      placeholder={t("groupPages.createGroup.URL")}
-                      value={newLink.url}
-                      onChange={(e) =>
-                        setNewLink((prev) => ({ ...prev, url: e.target.value }))
-                      }
-                    />
+                    <div className="space-y-1 max-w-full overflow-hidden">
+                      <Input
+                        placeholder={t("groupPages.createGroup.URL")}
+                        value={newLink.url}
+                        onChange={(e) =>
+                          setNewLink((prev) => ({
+                            ...prev,
+                            url: e.target.value,
+                          }))
+                        }
+                      />
+                      {newLink.url.trim() && (
+                        <div className="text-xs text-muted-foreground break-all">
+                          <a
+                            href={normalizeUrl(newLink.url)}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="break-all block"
+                          >
+                            {normalizeUrl(newLink.url)}
+                          </a>
+                        </div>
+                      )}
+                    </div>
                   </TableCell>
+
                   <TableCell className="flex justify-center">
                     <Button
                       variant="ghost"

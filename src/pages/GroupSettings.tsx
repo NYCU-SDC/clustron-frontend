@@ -102,7 +102,6 @@ export default function GroupSettings() {
       <GroupDescription
         title={group.title}
         desc={group.description}
-        isArchived={group.isArchived}
         links={group.links ?? []}
       />
 

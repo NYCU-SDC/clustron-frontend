@@ -16,7 +16,6 @@ export default function GroupOverviewPage() {
       <GroupDescription
         title={group.title}
         desc={group.description}
-        isArchived={group.isArchived}
         links={group.links ?? []}
       />
       <GroupMemberTable

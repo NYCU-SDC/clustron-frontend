@@ -54,7 +54,6 @@ export default function GroupListPage() {
                 <GroupDescription
                   title={group.title}
                   desc={group.description}
-                  isArchived={group.isArchived}
                 />
               </div>
             );
