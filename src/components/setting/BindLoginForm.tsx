@@ -18,6 +18,10 @@ import {
 import nycuLightImg from "@/assets/NYCU_Light.png";
 import nycuDarkImg from "@/assets/NYCU_Dark.png";
 import { useTranslation } from "react-i18next";
+import { useQuery } from "@tanstack/react-query";
+import { getSettings } from "@/lib/request/getSettings";
+import { createBindMethods } from "@/lib/request/createBindMethods";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const LoginMethodIcon = ({ type }: { type: "google" | "nycu" }) => {
   switch (type) {
@@ -58,6 +62,14 @@ const LoginMethodIcon = ({ type }: { type: "google" | "nycu" }) => {
 
 export default function BindLoginForm() {
   const { t } = useTranslation();
+  // const queryClient = useQueryClient();
+  const PROFILE_QUERY_KEY = ["settings"];
+
+  const { data, isSuccess, isLoading, isError } = useQuery({
+    queryKey: PROFILE_QUERY_KEY,
+    queryFn: getSettings,
+  });
+
   return (
     <Card className="flex flex-col gap-6">
       <CardHeader>
@@ -71,19 +83,32 @@ export default function BindLoginForm() {
           {t("bindLoginForm.connectLoginMethods")}
         </div>
         <div className="flex flex-col gap-2 mt-3">
-          <div className="flex items-center gap-2">
-            <LoginMethodIcon type="nycu" />
-            <span className="text-gray-500 dark:text-gray-300">
-              example@nycu.edu.tw
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <LoginMethodIcon type="google" />
-            <span className="text-gray-500 dark:text-gray-300">
-              example@gmail.com
-            </span>
-          </div>
+          {isLoading && (
+            <>
+              <div className="flex items-center gap-2">
+                <Skeleton className="w-5 h-5 rounded-full" />
+                <Skeleton className="h-5 w-48" />
+              </div>
+              <div className="flex items-center gap-2">
+                <Skeleton className="w-5 h-5 rounded-full" />
+                <Skeleton className="h-5 w-48" />
+              </div>
+            </>
+          )}
+          {isError && <p className="text-sm text-destructive">Error</p>}
+          {isSuccess &&
+            (data.boundLoginMethods ? (
+              data.boundLoginMethods.map((method) => (
+                <div key={method.provider} className="flex items-center gap-2">
+                  <LoginMethodIcon type={method.provider} />
+                  <span className="text-gray-500 dark:text-gray-300">
+                    {method.email}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <p className="text-sm">Empty</p>
+            ))}
         </div>
       </CardContent>
       <Separator />
@@ -105,7 +130,13 @@ export default function BindLoginForm() {
                   {t("bindLoginForm.nycuLoginNote")}
                 </span>
               </div>
-              <Button variant="outline" className="w-full p-6 cursor-pointer">
+              <Button
+                variant="outline"
+                className="w-full p-6 cursor-pointer"
+                onClick={() => {
+                  createBindMethods("nycu");
+                }}
+              >
                 <LoginMethodIcon type="nycu" />
                 {t("bindLoginForm.nycuLoginBtn")}
               </Button>
@@ -116,7 +147,11 @@ export default function BindLoginForm() {
                   {t("bindLoginForm.googleLoginNote")}
                 </span>
               </div>
-              <Button variant="outline" className="w-full p-6 cursor-pointer">
+              <Button
+                variant="outline"
+                className="w-full p-6 cursor-pointer"
+                onClick={() => createBindMethods("google")}
+              >
                 <LoginMethodIcon type="google" />
                 {t("bindLoginForm.googleLoginBtn")}
               </Button>
