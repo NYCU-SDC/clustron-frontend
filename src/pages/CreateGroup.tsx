@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AddMemberRow from "@/components/group/AddMemberRow";
 import { useCreateGroup } from "@/hooks/useCreateGroup";
-// import { useCreateGroupLink } from "@/hooks/useGroupLinks";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
 import {
@@ -48,8 +47,6 @@ export default function AddGroupPage() {
   const [members, setMembers] = useState<
     { id: string; roleName: GroupMemberRoleName }[]
   >([{ id: "", roleName: "student" }]);
-
-  // const { mutateAsync: createLink } = useCreateGroupLink();
 
   const createGroup = useCreateGroup({
     onSuccess: async (data) => {
