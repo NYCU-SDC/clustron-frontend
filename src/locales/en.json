@@ -172,9 +172,13 @@
       "save": "Save"
     },
     "createGroup": {
-      "title": "Create New Group",
-      "courseTitlePlaceholder": "Course Title",
-      "courseDescriptionPlaceholder": "Course Description",
+      "courseTitle": "Group Title",
+      "courseTitlePlaceholder": "Give your new group a title",
+      "descriptionTitle": "Description",
+      "courseDescriptionPlaceholder": "Say something about this group",
+      "linkTitle": "Link Resources",
+      "title": "title",
+      "URL": "URL",
       "addInitialMembers": "Add Initial Members",
       "studentIdOrEmail": "Student ID or Email",
       "role": "Role",
