@@ -95,7 +95,7 @@ export default function AddGroupPage() {
     const title = newLink.title.trim();
     const url = newLink.url.trim();
     if (!title || !url) return;
-    setLinks((prev) => [...prev, { title, url }]);
+    setLinks((prev) => [...prev, { title, url: normalizeUrl(url) }]);
     setNewLink({ title: "", url: "" });
   };
   const handleRemoveLink = (index: number) => {
@@ -127,7 +127,7 @@ export default function AddGroupPage() {
       .filter((l) => l.title.trim() && l.url.trim())
       .map((l) => ({
         title: l.title.trim(),
-        url: normalizeUrl(l.url),
+        url: l.url,
       }));
 
     createGroup.mutate({
@@ -206,7 +206,7 @@ export default function AddGroupPage() {
                 {links.map((link, index) => (
                   <TableRow key={index} className="hover:bg-muted ">
                     <TableCell>{link.title}</TableCell>
-                    <TableCell className="w-[30%] break-all text-muted-foreground">
+                    <TableCell className="w-[30%] break-all text1-foreground">
                       <div className="max-w-full overflow-hidden">
                         <a
                           href={link.url}
@@ -244,17 +244,17 @@ export default function AddGroupPage() {
                     />
                   </TableCell>
                   <TableCell>
-                    <div className="space-y-1 max-w-full overflow-hidden">
-                      <Input
-                        placeholder={t("groupPages.createGroup.URL")}
-                        value={newLink.url}
-                        onChange={(e) =>
-                          setNewLink((prev) => ({
-                            ...prev,
-                            url: e.target.value,
-                          }))
-                        }
-                      />
+                    <Input
+                      placeholder={t("groupPages.createGroup.URL")}
+                      value={newLink.url}
+                      onChange={(e) =>
+                        setNewLink((prev) => ({
+                          ...prev,
+                          url: e.target.value,
+                        }))
+                      }
+                    />
+                    <div className=" max-w-full overflow-hidden">
                       {newLink.url.trim() && (
                         <div className="text-xs text-muted-foreground break-all">
                           <a
