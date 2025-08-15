@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { useQuery } from "@tanstack/react-query";
 import { getSettings } from "@/lib/request/getSettings";
 import { toast } from "sonner";
@@ -48,12 +47,7 @@ export default function SettingLinuxUsernameForm() {
           {isLoading ? (
             <Skeleton className="h-9 w-full border rounded-md " />
           ) : (
-            <Input
-              id="linuxUsername"
-              type="name"
-              value={linuxUsername}
-              disabled
-            />
+            <div className="text-sm rounded-lg border p-2">{linuxUsername}</div>
           )}
         </div>
       </CardContent>
