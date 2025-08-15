@@ -1,5 +1,6 @@
 import LangSwitcher from "@/components/LangSwitcher";
 import SettingFullNameForm from "@/components/setting/SettingFullNameForm";
+import BindLoginForm from "@/components/setting/BindLoginForm";
 import {
   Card,
   CardDescription,
@@ -28,6 +29,7 @@ export default function SettingGeneral() {
           </div>
         </CardHeader>
       </Card>
+      <BindLoginForm />
     </div>
   );
 }

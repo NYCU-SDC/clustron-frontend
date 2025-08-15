@@ -18,7 +18,7 @@ import { authContext } from "@/lib/auth/authContext";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
 import { z } from "zod";
-import type { Settings } from "@/types/type";
+import type { Settings } from "@/types/settings";
 
 export default function OnboardingForm({
   className,

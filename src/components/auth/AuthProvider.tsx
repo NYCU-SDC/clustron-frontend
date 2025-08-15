@@ -5,7 +5,7 @@ import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { AccessToken, AuthCookie } from "@/types/type";
+import { AccessToken, AuthCookie } from "@/types/settings";
 import { refreshAuthToken } from "@/lib/request/refreshAuthToken";
 import { authContext } from "@/lib/auth/authContext";
 import { logout } from "@/lib/request/logout";

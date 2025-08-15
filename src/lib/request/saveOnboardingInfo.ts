@@ -1,5 +1,5 @@
 import { api } from "@/lib/request/api";
-import type { Settings } from "@/types/type";
+import type { Settings } from "@/types/settings";
 
 export async function saveOnboardingInfo(payload: Settings): Promise<void> {
   return api("/api/onboarding", {

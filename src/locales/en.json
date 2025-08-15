@@ -242,5 +242,16 @@
       "success": "Transfer successful",
       "fail": "Transfer fail"
     }
+  },
+  "bindLoginForm": {
+    "cardTitle": "Connect Another Login Method",
+    "cardDescription": "Use a different login method to access the same account",
+    "connectLoginMethods": "Connected login methods:",
+    "connectLoginMethodBtn": "＋ Connect Login Method",
+    "dialogTitle": "Clustron",
+    "nycuLoginNote": "NYCU students log in via NYCU Portal",
+    "nycuLoginBtn": "Login with NYCU Portal",
+    "googleLoginNote": "Not an NYCU student? Log in via Google account",
+    "googleLoginBtn": "Login with Google"
   }
 }
