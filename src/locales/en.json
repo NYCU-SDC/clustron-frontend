@@ -10,7 +10,9 @@
     "saveFailToast": "Failed to save your information",
     "EmptyLinuxUsernameToast": "Linux username cannot contain spaces",
     "loadingBtn": "Loading...",
-    "saveBtnToolTip": "Please fill in your full name and Linux username"
+    "saveBtnToolTip": "Please fill in your full name and Linux username",
+    "usernameExistsErrorToast": "This Linux username is already in use",
+    "reservedKeywordErrorToast": "This Linux username is a reserved system keyword and cannot be used"
   },
   "login": {
     "loginTitle": "Login",
