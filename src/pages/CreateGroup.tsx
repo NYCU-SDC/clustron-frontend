@@ -254,20 +254,18 @@ export default function AddGroupPage() {
                         }))
                       }
                     />
-                    <div className=" max-w-full overflow-hidden">
-                      {newLink.url.trim() && (
-                        <div className="text-xs text-muted-foreground break-all">
-                          <a
-                            href={normalizeUrl(newLink.url)}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="break-all block"
-                          >
-                            {normalizeUrl(newLink.url)}
-                          </a>
-                        </div>
-                      )}
-                    </div>
+                    {newLink.url.trim() && (
+                      <div className="text-xs text-muted-foreground break-all overflow-hidden">
+                        <a
+                          href={normalizeUrl(newLink.url)}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="break-all block"
+                        >
+                          {normalizeUrl(newLink.url)}
+                        </a>
+                      </div>
+                    )}
                   </TableCell>
 
                   <TableCell className="flex justify-center">
@@ -339,7 +337,12 @@ export default function AddGroupPage() {
         </Button>
         <Button
           onClick={handleSave}
-          disabled={hasDuplicate || !title.trim() || createGroup.isPending}
+          disabled={
+            hasDuplicate ||
+            !title.trim() ||
+            createGroup.isPending ||
+            !description.trim()
+          }
         >
           {t("groupPages.createGroup.create")}
         </Button>
