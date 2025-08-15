@@ -1,17 +1,11 @@
-import { cn } from "@/lib/utils";
+import { StatusPill, type JobState } from "@/components/jobs/status";
 
 type Job = {
   id: number;
-  state:
-    | "RUNNING"
-    | "PENDING"
-    | "FAILED"
-    | "COMPLETED"
-    | "TIMEOUT"
-    | "CANCELLED";
+  state: JobState;
   user: string;
   partition: string;
-  resources: { cpu: number; gpu: number; mem: number }; // mem 單位 MB/GB 依你的 mock
+  resources: { cpu: number; gpu: number; mem: number };
 };
 
 export default function JobList({ jobs }: { jobs: Job[] }) {
@@ -38,20 +32,22 @@ export default function JobList({ jobs }: { jobs: Job[] }) {
                 <td className="py-3 px-4">{job.user}</td>
                 <td className="py-3 px-4">{job.partition}</td>
                 <td className="py-3 px-4">
-                  <span className="font-semibold">{job.resources.cpu}</span>
-                  {"  "}
-                  <span>
-                    <span className="text-xs align-super"> CPU</span>
-                  </span>
-                  {"  "}
-                  <span className="font-semibold">{job.resources.gpu}</span>
-                  {"  "}
-                  <span className="text-xs align-super"> GPU</span>
-                  {"  "}
-                  <span className="font-semibold">
-                    {formatMem(job.resources.mem)}
-                  </span>{" "}
-                  <span className="text-xs align-super"> Mem</span>
+                  <div className="flex items-baseline gap-4">
+                    <span>
+                      <span className="font-semibold">{job.resources.cpu}</span>{" "}
+                      <span className="text-xs align-bottom">CPU</span>
+                    </span>
+                    <span>
+                      <span className="font-semibold">{job.resources.gpu}</span>{" "}
+                      <span className="text-xs align-bottom">GPU</span>
+                    </span>
+                    <span>
+                      <span className="font-semibold">
+                        {formatMem(job.resources.mem)}
+                      </span>{" "}
+                      <span className="text-xs align-bottom">Mem</span>
+                    </span>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -62,28 +58,6 @@ export default function JobList({ jobs }: { jobs: Job[] }) {
   );
 }
 
-function StatusPill({ state }: { state: Job["state"] }) {
-  const map: Record<Job["state"], string> = {
-    RUNNING: "bg-emerald-100 text-emerald-700",
-    PENDING: "bg-amber-100 text-amber-700",
-    FAILED: "bg-rose-100 text-rose-700",
-    COMPLETED: "bg-sky-100 text-sky-700",
-    TIMEOUT: "bg-violet-100 text-violet-700",
-    CANCELLED: "bg-gray-200 text-gray-700",
-  };
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold",
-        map[state],
-      )}
-    >
-      {state}
-    </span>
-  );
-}
-
 function formatMem(mbOrGb: number) {
-  // 依你的 mock 決定：如果是 MB 就顯示 MB；這裡示例直接顯示數字＋GB
   return `${mbOrGb}GB`;
 }

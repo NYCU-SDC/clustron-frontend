@@ -3,14 +3,12 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
 import {
-  Check,
   ChevronDown,
   ArrowUpNarrowWide,
   ArrowDownWideNarrow,
@@ -39,16 +37,37 @@ export default function SortSelector({
   sortOrder,
   setSortOrder,
 }: Props) {
+  const toggleOrder = () => setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
+
   return (
-    <div className="flex items-center gap-2">
+    <div className="w-1/8 inline-flex  rounded-lg border bg-background">
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        onClick={toggleOrder}
+        title={sortOrder === "asc" ? "Descending" : "Ascending"}
+        aria-label={sortOrder === "asc" ? "Set descending" : "Set ascending"}
+        className="rounded-none rounded-l-lg"
+      >
+        {sortOrder === "asc" ? (
+          <ArrowUpNarrowWide className="h-4 w-4" />
+        ) : (
+          <ArrowDownWideNarrow className="h-4 w-4" />
+        )}
+      </Button>
+
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="gap-2">
-            <ArrowUpNarrowWide className="h-4 w-4" />
+          <Button
+            variant="ghost"
+            className="flex-1 gap-2 rounded-none rounded-r-lg  w-1/6"
+          >
             Sort
             <ChevronDown className="h-4 w-4 opacity-60" />
           </Button>
         </DropdownMenuTrigger>
+
         <DropdownMenuContent align="start" className="w-40">
           <DropdownMenuLabel>Sort by</DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -57,24 +76,10 @@ export default function SortSelector({
               key={opt.key}
               checked={sortBy === opt.key}
               onCheckedChange={() => setSortBy(opt.key)}
-              className="justify-between"
             >
               {opt.label}
-              {sortBy === opt.key && <Check className="h-4 w-4" />}
             </DropdownMenuCheckboxItem>
           ))}
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => setSortOrder((p) => (p === "asc" ? "desc" : "asc"))}
-            className="justify-between"
-          >
-            {sortOrder === "asc" ? "Ascending" : "Descending"}
-            {sortOrder === "asc" ? (
-              <ArrowUpNarrowWide className="h-4 w-4" />
-            ) : (
-              <ArrowDownWideNarrow className="h-4 w-4" />
-            )}
-          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

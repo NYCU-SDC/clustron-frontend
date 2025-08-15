@@ -9,7 +9,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Filter as FilterIcon, ChevronDown, X } from "lucide-react";
-import type { FilterOptions, JobState } from "@/types/type";
+import type { FilterOptions } from "@/types/type";
+import { JOB_STATUS_COLORS, type JobState } from "@/components/jobs/status";
 
 const ALL_STATUS: JobState[] = [
   "RUNNING",
@@ -31,22 +32,24 @@ export default function FilterPanel({ filters, setFilters }: Props) {
     const t: {
       key: string;
       label: string;
+      className: string; // 用 tailwind className 直接對應顏色
       onClear: () => void;
-      tone?: "dark" | "blue";
     }[] = [];
+
     if (filters.myJobs) {
       t.push({
         key: "myJobs",
         label: "MY JOBS",
-        tone: "blue",
+        className: "bg-blue-100 text-blue-700",
         onClear: () => setFilters((f) => ({ ...f, myJobs: false })),
       });
     }
+
     filters.status.forEach((s) =>
       t.push({
         key: `st:${s}`,
         label: s,
-        tone: "blue",
+        className: JOB_STATUS_COLORS[s], // ⭐ 使用同一套顏色
         onClear: () =>
           setFilters((f) => ({
             ...f,
@@ -54,11 +57,12 @@ export default function FilterPanel({ filters, setFilters }: Props) {
           })),
       }),
     );
+
     filters.resource.forEach((r) =>
       t.push({
         key: `res:${r}`,
         label: r.toUpperCase(),
-        tone: "dark",
+        className: "bg-neutral-800 text-white dark:bg-neutral-700",
         onClear: () =>
           setFilters((f) => ({
             ...f,
@@ -66,6 +70,7 @@ export default function FilterPanel({ filters, setFilters }: Props) {
           })),
       }),
     );
+
     return t;
   }, [filters, setFilters]);
 
@@ -105,7 +110,7 @@ export default function FilterPanel({ filters, setFilters }: Props) {
                   <TagPill
                     key={t.key}
                     label={t.label}
-                    tone={t.tone}
+                    className={t.className}
                     onClear={t.onClear}
                   />
                 ))
@@ -145,7 +150,7 @@ export default function FilterPanel({ filters, setFilters }: Props) {
             key={r}
             checked={filters.resource.includes(r)}
             onCheckedChange={() => toggleRes(r)}
-            onSelect={(e) => e.preventDefault()} // 防止關閉
+            onSelect={(e) => e.preventDefault()}
           >
             {r.toUpperCase()}
           </DropdownMenuCheckboxItem>
@@ -157,28 +162,24 @@ export default function FilterPanel({ filters, setFilters }: Props) {
 
 function TagPill({
   label,
+  className,
   onClear,
-  tone = "blue",
 }: {
   label: string;
+  className: string;
   onClear: () => void;
-  tone?: "blue" | "dark";
 }) {
-  const base =
-    "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold";
-  const style =
-    tone === "dark"
-      ? "bg-neutral-800 text-white dark:bg-neutral-700"
-      : "bg-blue-100 text-blue-700";
-
   return (
-    <span className={`${base} ${style}`}>
+    <span
+      className={[
+        "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold",
+        className,
+      ].join(" ")}
+    >
       {label}
       <button
         type="button"
-        aria-label={`remove ${label}`}
-        className="ml-0.5 opacity-80 hover:opacity-100"
-        onMouseDown={(e) => {
+        onPointerDown={(e) => {
           e.preventDefault();
           e.stopPropagation();
         }}
