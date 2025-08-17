@@ -2,8 +2,9 @@ import { useState, useMemo } from "react";
 import JobList from "@/components/jobs/JobList";
 import SortSelector from "@/components/jobs/SortSelector";
 import FilterPanel from "@/components/jobs/FilterPanel";
-import jobsData from "@/lib/mock/jobs";
+import { jobsData } from "@/lib/mocks/jobs.fixture.ts";
 import type { SortBy, FilterOptions } from "@/types/type";
+import CountsBar from "@/components/jobs/CountsBar";
 
 const JobDashboard: React.FC = () => {
   const [sortBy, setSortBy] = useState<SortBy>("id");
@@ -19,7 +20,7 @@ const JobDashboard: React.FC = () => {
     let data = [...jobsData];
     if (filters.myJobs) data = data.filter((job) => job.user === currentUser);
     if (filters.status.length)
-      data = data.filter((job) => filters.status.includes(job.state));
+      data = data.filter((job) => filters.status.includes(job.status));
     if (filters.resource.length)
       data = data.filter((job) =>
         filters.resource.some((res) => job.resources[res] > 0),
@@ -40,6 +41,7 @@ const JobDashboard: React.FC = () => {
   return (
     <main className="flex-1 flex  justify-center">
       <div className="p-6 space-y-4 max-w-4xl w-full">
+        <CountsBar />
         {/* Toolbar */}
         <div className="flex flex-col gap-2 ">
           <SortSelector

@@ -2,10 +2,10 @@ import { StatusPill, type JobState } from "@/components/jobs/status";
 
 type Job = {
   id: number;
-  state: JobState;
+  status: JobState;
   user: string;
   partition: string;
-  resources: { cpu: number; gpu: number; mem: number };
+  resources: { cpu: number; gpu: number; memory: number };
 };
 
 export default function JobList({ jobs }: { jobs: Job[] }) {
@@ -27,7 +27,7 @@ export default function JobList({ jobs }: { jobs: Job[] }) {
               <tr key={job.id} className="hover:bg-muted/40">
                 <td className="py-3 px-4 font-medium">{job.id}</td>
                 <td className="py-3 px-4">
-                  <StatusPill state={job.state} />
+                  <StatusPill state={job.status} />
                 </td>
                 <td className="py-3 px-4">{job.user}</td>
                 <td className="py-3 px-4">{job.partition}</td>
@@ -43,7 +43,7 @@ export default function JobList({ jobs }: { jobs: Job[] }) {
                     </span>
                     <span>
                       <span className="font-semibold">
-                        {formatMem(job.resources.mem)}
+                        {formatMem(job.resources.memory)}
                       </span>{" "}
                       <span className="text-xs align-bottom">Mem</span>
                     </span>

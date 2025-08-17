@@ -159,7 +159,6 @@ export default function FilterPanel({ filters, setFilters }: Props) {
     </DropdownMenu>
   );
 }
-
 function TagPill({
   label,
   className,
@@ -177,8 +176,9 @@ function TagPill({
       ].join(" ")}
     >
       {label}
-      <button
-        type="button"
+      <span
+        role="button"
+        tabIndex={0}
         onPointerDown={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -188,9 +188,10 @@ function TagPill({
           e.stopPropagation();
           onClear();
         }}
+        className="cursor-pointer"
       >
         <X className="h-3.5 w-3.5" />
-      </button>
+      </span>
     </span>
   );
 }
