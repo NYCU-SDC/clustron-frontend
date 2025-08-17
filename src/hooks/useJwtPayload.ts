@@ -1,6 +1,6 @@
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
-import type { AccessToken } from "@/types/type";
+import type { AccessToken } from "@/types/settings";
 
 export function useJwtPayload(): AccessToken | null {
   const [cookies] = useCookies(["accessToken"]);

@@ -23,7 +23,7 @@ import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2Icon } from "lucide-react";
-import type { Settings } from "@/types/type";
+import type { Settings } from "@/types/settings";
 
 export default function SettingLinuxUsernameForm({
   className,

@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { authContext } from "@/lib/auth/authContext";
 import { jwtDecode } from "jwt-decode";
-import { AccessToken } from "@/types/type";
+import { AccessToken } from "@/types/settings";
 import { getAccessToken } from "@/lib/token";
 
 export default function ProtectedRoute({

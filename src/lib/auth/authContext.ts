@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { UseMutationResult } from "@tanstack/react-query";
-import { AuthCookie } from "@/types/type";
+import { AuthCookie } from "@/types/settings";
 
 type AuthContextType = {
   login: (provider: "google" | "nycu") => void;
