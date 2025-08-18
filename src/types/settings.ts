@@ -36,3 +36,7 @@ export type boundLoginMethods = {
 };
 
 export type fullSettings = Settings & boundLoginMethods;
+
+export type BindLoginRespose = {
+  url: string;
+};
