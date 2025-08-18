@@ -1,4 +1,4 @@
-import { StatusPill, type JobState } from "@/components/jobs/status";
+import { StatusPill, type JobState } from "@/components/jobs/StatusPill.tsx";
 
 type Job = {
   id: number;

@@ -40,7 +40,7 @@ export type JobState =
 export interface Resources {
   cpu: number;
   gpu: number;
-  mem: number;
+  memory: number;
 }
 
 export interface Job {
@@ -56,5 +56,6 @@ export type SortBy = keyof Job | keyof Resources;
 export interface FilterOptions {
   myJobs: boolean;
   status: JobState[];
-  resource: (keyof Resources)[];
+  resource: ("cpu" | "gpu")[];
+  partition: string[];
 }

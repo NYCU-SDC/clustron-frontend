@@ -21,7 +21,8 @@ const sortOptions: { key: SortBy; label: string }[] = [
   { key: "state", label: "Status" },
   { key: "cpu", label: "CPU" },
   { key: "gpu", label: "GPU" },
-  { key: "mem", label: "Mem" },
+  { key: "memory", label: "Mem" },
+  { key: "partition", label: "Partition" },
 ];
 
 type Props = {

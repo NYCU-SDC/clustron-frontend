@@ -2,7 +2,7 @@ import StateCard from "@/components/jobs/StateCard";
 import { useJobCounts } from "@/hooks/useJobCounts";
 
 export default function CountsBar() {
-  const { data, isError } = useJobCounts();
+  const { data, isError } = useJobCounts(); //TODO: use GET /api/jobs/counts here
 
   if (isError) {
     return (

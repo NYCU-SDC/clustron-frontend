@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import JobList from "@/components/jobs/JobList";
 import SortSelector from "@/components/jobs/SortSelector";
 import FilterPanel from "@/components/jobs/FilterPanel";
-import { jobsData } from "@/lib/mocks/jobData";
+import { jobsData, JobResponse } from "@/lib/mocks/jobData"; // TODO: change real api from backend
 import type { SortBy, FilterOptions } from "@/types/type";
 import CountsBar from "@/components/jobs/CountsBar";
 import {
@@ -14,7 +14,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 3;
 
 const JobDashboard: React.FC = () => {
   const [sortBy, setSortBy] = useState<SortBy>("id");
@@ -23,13 +23,18 @@ const JobDashboard: React.FC = () => {
     myJobs: false,
     status: [],
     resource: [],
+    partition: [],
   });
   const [currentPage, setCurrentPage] = useState(0);
   const currentUser = "john";
 
-  // sort
+  //  TODO: use usestate to get /api/jobs data
   const sortedAndFilteredJobs = useMemo(() => {
-    let data = [...jobsData];
+    let data = [...jobsData]; //
+
+    //  only in mock: filter data based on param handle in backend
+    if (filters.partition.length)
+      data = data.filter((job) => filters.partition.includes(job.partition));
     if (filters.myJobs) data = data.filter((job) => job.user === currentUser);
     if (filters.status.length)
       data = data.filter((job) => filters.status.includes(job.status));
@@ -37,20 +42,33 @@ const JobDashboard: React.FC = () => {
       data = data.filter((job) =>
         filters.resource.some((res) => job.resources[res] > 0),
       );
-    data.sort((a, b) => {
-      const pick = (x: any) =>
-        sortBy in x.resources ? x.resources[sortBy as any] : x[sortBy as any];
-      const aVal = pick(a);
-      const bVal = pick(b);
+
+    //  only in mock: sort logic handle in backend
+    data.sort((a: JobResponse, b: JobResponse) => {
+      const isResourceKey = (key: string): key is keyof typeof a.resources => {
+        return key === "cpu" || key === "gpu" || key === "memory";
+      };
+
+      const aVal = isResourceKey(sortBy)
+        ? a.resources[sortBy]
+        : a[sortBy as keyof JobResponse];
+      const bVal = isResourceKey(sortBy)
+        ? b.resources[sortBy]
+        : b[sortBy as keyof JobResponse];
+
       const dir = sortOrder === "asc" ? 1 : -1;
-      if (typeof aVal === "string" || typeof bVal === "string")
+
+      if (typeof aVal === "string" || typeof bVal === "string") {
         return String(aVal).localeCompare(String(bVal)) * dir;
-      return ((aVal as number) - (bVal as number)) * dir;
+      }
+
+      return (Number(aVal) - Number(bVal)) * dir;
     });
+
     return data;
   }, [filters, sortBy, sortOrder]);
 
-  // 再做分頁
+  // TODO: pagination handle in backend
   const totalPages = Math.ceil(sortedAndFilteredJobs.length / PAGE_SIZE);
   const paginatedJobs = useMemo(() => {
     const start = currentPage * PAGE_SIZE;
@@ -58,7 +76,6 @@ const JobDashboard: React.FC = () => {
     return sortedAndFilteredJobs.slice(start, end);
   }, [sortedAndFilteredJobs, currentPage]);
 
-  // 分頁按鈕範圍控制
   const maxPages = 4;
   let startPage = Math.max(currentPage - 1, 0);
   let endPage = startPage + maxPages - 1;
@@ -71,7 +88,6 @@ const JobDashboard: React.FC = () => {
     <main className="flex-1 flex justify-center">
       <div className="p-6 space-y-4 max-w-4xl w-full">
         <CountsBar />
-
         {/* Toolbar */}
         <div className="flex flex-col gap-2">
           <SortSelector
@@ -82,10 +98,9 @@ const JobDashboard: React.FC = () => {
           />
           <FilterPanel filters={filters} setFilters={setFilters} />
         </div>
-
         {/* Job list */}
-        <JobList jobs={paginatedJobs} />
-
+        <JobList jobs={paginatedJobs} />{" "}
+        {/*  TODO: use /api/jobs API returned from backend  */}
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="mt-6 flex justify-center">

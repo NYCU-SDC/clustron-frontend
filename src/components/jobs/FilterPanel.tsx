@@ -10,8 +10,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Filter as FilterIcon, ChevronDown, X } from "lucide-react";
 import type { FilterOptions } from "@/types/type";
-import { JOB_STATUS_COLORS, type JobState } from "@/components/jobs/status";
+import {
+  JOB_STATUS_COLORS,
+  type JobState,
+} from "@/components/jobs/StatusPill.tsx";
 
+// Job status option
 const ALL_STATUS: JobState[] = [
   "RUNNING",
   "PENDING",
@@ -20,7 +24,12 @@ const ALL_STATUS: JobState[] = [
   "TIMEOUT",
   "CANCELLED",
 ];
+
+// Resource option
 const ALL_RES: Array<"cpu" | "gpu"> = ["cpu", "gpu"];
+
+// TODO: Replace with GET /api/jobs/partitions response
+const ALL_PARTITIONS: string[] = ["default", "compute", "gpu"];
 
 type Props = {
   filters: FilterOptions;
@@ -32,7 +41,7 @@ export default function FilterPanel({ filters, setFilters }: Props) {
     const t: {
       key: string;
       label: string;
-      className: string; // 用 tailwind className 直接對應顏色
+      className: string;
       onClear: () => void;
     }[] = [];
 
@@ -49,7 +58,7 @@ export default function FilterPanel({ filters, setFilters }: Props) {
       t.push({
         key: `st:${s}`,
         label: s,
-        className: JOB_STATUS_COLORS[s], // ⭐ 使用同一套顏色
+        className: JOB_STATUS_COLORS[s],
         onClear: () =>
           setFilters((f) => ({
             ...f,
@@ -71,6 +80,19 @@ export default function FilterPanel({ filters, setFilters }: Props) {
       }),
     );
 
+    filters.partition.forEach((p) =>
+      t.push({
+        key: `pt:${p}`,
+        label: p.toUpperCase(),
+        className: "bg-yellow-200 text-yellow-900",
+        onClear: () =>
+          setFilters((f) => ({
+            ...f,
+            partition: f.partition.filter((x) => x !== p),
+          })),
+      }),
+    );
+
     return t;
   }, [filters, setFilters]);
 
@@ -88,6 +110,14 @@ export default function FilterPanel({ filters, setFilters }: Props) {
       resource: f.resource.includes(r)
         ? f.resource.filter((x) => x !== r)
         : [...f.resource, r],
+    }));
+
+  const togglePartition = (p: string) =>
+    setFilters((f) => ({
+      ...f,
+      partition: f.partition.includes(p)
+        ? f.partition.filter((x) => x !== p)
+        : [...f.partition, p],
     }));
 
   return (
@@ -155,10 +185,24 @@ export default function FilterPanel({ filters, setFilters }: Props) {
             {r.toUpperCase()}
           </DropdownMenuCheckboxItem>
         ))}
+
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel>Partition</DropdownMenuLabel>
+        {ALL_PARTITIONS.map((p) => (
+          <DropdownMenuCheckboxItem
+            key={p}
+            checked={filters.partition.includes(p)}
+            onCheckedChange={() => togglePartition(p)}
+            onSelect={(e) => e.preventDefault()}
+          >
+            {p}
+          </DropdownMenuCheckboxItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );
 }
+
 function TagPill({
   label,
   className,

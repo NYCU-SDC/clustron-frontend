@@ -13,7 +13,7 @@ export default function StateCard({
         <div className="text-3xl font-semibold leading-none">
           {value ?? "—"}
         </div>
-        <div className="mt-2 text-muted-foreground">{label}</div>
+        <div className=" text-muted-foreground">{label}</div>
       </CardContent>
     </Card>
   );
