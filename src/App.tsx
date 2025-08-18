@@ -19,6 +19,8 @@ import AddGroupPage from "@/pages/group/CreateGroup";
 import GroupLayout from "@/pages/layouts/GroupLayout";
 import AddMemberResult from "@/pages/group/AddMemberResult";
 import JobDashboard from "@/pages/job/JobDashboard";
+import AdminLayout from "@/pages/layouts/AdminLayout.tsx";
+import RoleConfiguration from "@/pages/admin/RoleConfiguration.tsx";
 const App = () => {
   return (
     <Routes>
@@ -57,6 +59,12 @@ const App = () => {
               <Route path="add-member" element={<AddMemberPage />} />
             </Route>
           </Route>
+
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Navigate to="config" replace />} />
+            <Route path="config" element={<RoleConfiguration />}></Route>
+          </Route>
+          {/*  end*/}
         </Route>
       </Route>
 

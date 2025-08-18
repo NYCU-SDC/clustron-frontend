@@ -24,7 +24,8 @@
     "logoutBtn": "登出",
     "groupLink": "群組",
     "settingLink": "設定",
-    "jobsLink": "排程"
+    "jobsLink": "排程",
+    "adminLink": "管理"
   },
   "callback": {
     "loadingMessage": "載入中...",
@@ -99,6 +100,30 @@
     "confirmBtn": "刪除",
     "loadingBtn": "載入中..."
   },
+  "roleConfigTable": {
+    "cardTitle": "角色權限配置",
+    "tableHeadRole": "角色",
+    "tableHeadAccess": "權限",
+    "placeholderRoleName": "請輸入角色名稱",
+    "placeholderSelectAccess": "選擇權限",
+    "confirmTitle": "確認刪除角色",
+    "confirmDescription": "您確定要刪除此角色嗎？",
+    "cancelBtn": "取消",
+    "removeBtn": "刪除",
+    "removingBtn": "刪除中...",
+    "createSuccessToast": "角色建立成功",
+    "createFailToast": "角色建立失敗",
+    "createDuplicateToast": "角色名稱已存在",
+    "updateSuccessToast": "角色更新成功",
+    "updateFailToast": "角色更新失敗",
+    "deleteSuccessToast": "角色刪除成功",
+    "deleteFailToast": "角色刪除失敗",
+    "loadFailToast": "角色載入失敗"
+  },
+  "adminSidebar": {
+    "title": "管理",
+    "roleAccessConfigLink": "權限配置"
+  },
   "groupComponents": {
     "addMemberButton": {
       "newMembers": "新增成員"
@@ -148,9 +173,13 @@
       "save": "儲存"
     },
     "createGroup": {
-      "title": "建立新群組",
-      "courseTitlePlaceholder": "課程標題",
-      "courseDescriptionPlaceholder": "課程描述",
+      "courseTitle": "群組名稱",
+      "courseTitlePlaceholder": "為你的新群組取個名稱",
+      "descriptionTitle": "描述",
+      "courseDescriptionPlaceholder": "介紹一下這個群組",
+      "linkTitle": "連結資源",
+      "title": "標題",
+      "URL": "網址",
       "addInitialMembers": "新增初始成員",
       "studentIdOrEmail": "學號或電子信箱",
       "role": "角色",

@@ -29,7 +29,7 @@ const ALL_STATUS: JobState[] = [
 const ALL_RES: Array<"cpu" | "gpu"> = ["cpu", "gpu"];
 
 // TODO: Replace with GET /api/jobs/partitions response
-const ALL_PARTITIONS: string[] = ["default", "compute", "gpu"];
+const ALL_PARTITIONS: string[] = ["default", "compute"];
 
 type Props = {
   filters: FilterOptions;

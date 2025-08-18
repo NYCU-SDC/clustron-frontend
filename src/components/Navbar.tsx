@@ -1,6 +1,6 @@
 import { NavLink } from "react-router";
 import { useTranslation } from "react-i18next";
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useState } from "react";
 import { authContext } from "@/lib/auth/authContext";
 import {
   DropdownMenu,
@@ -31,40 +31,54 @@ export default function Navbar() {
   const { handleLogout, isLoggedIn } = useContext(authContext);
   const { t } = useTranslation();
   const accessToken = getAccessToken();
-  const email = useMemo(() => {
+  const [email, setEmail] = useState<string>("");
+  const [role, setRole] = useState<string>("");
+
+  useEffect(() => {
     if (accessToken) {
-      return jwtDecode<AccessToken>(accessToken).Email;
+      const decodedToken = jwtDecode<AccessToken>(accessToken);
+      setEmail(decodedToken.Email);
+      setRole(decodedToken.Role);
     }
-    return null;
   }, [accessToken]);
 
   return (
-    <nav className="sticky top-0 w-full border-b bg-white dark:bg-black">
+    <nav className="sticky top-0 z-1 w-full border-b bg-white dark:bg-black">
       <div className="flex items-center justify-between w-full px-6 py-4">
         <div className="flex items-center space-x-4">
           <div className="text-2xl font-bold px-3 py-2">Clustron</div>
-          {isLoggedIn() && window.location.pathname != "/onboarding" && (
-            <>
+          <>
+            {(role == "user" || role == "admin") && (
+              <>
+                <NavLink
+                  to="/groups"
+                  className={({ isActive }) => navLinkclass(isActive)}
+                >
+                  {t("navbar.groupLink")}
+                </NavLink>
+                <NavLink
+                  to="/joblist"
+                  className={({ isActive }) => navLinkclass(isActive)}
+                >
+                  {t("navbar.jobsLink")}
+                </NavLink>
+                <NavLink
+                  to="/setting"
+                  className={({ isActive }) => navLinkclass(isActive)}
+                >
+                  {t("navbar.settingLink")}
+                </NavLink>
+              </>
+            )}
+            {role == "admin" && (
               <NavLink
-                to="/groups"
+                to="/admin"
                 className={({ isActive }) => navLinkclass(isActive)}
               >
-                {t("navbar.groupLink")}
+                {t("navbar.adminLink")}
               </NavLink>
-              <NavLink
-                to="/joblist"
-                className={({ isActive }) => navLinkclass(isActive)}
-              >
-                {t("navbar.jobsLink")}
-              </NavLink>
-              <NavLink
-                to="/setting"
-                className={({ isActive }) => navLinkclass(isActive)}
-              >
-                {t("navbar.settingLink")}
-              </NavLink>
-            </>
-          )}
+            )}
+          </>
         </div>
         <div className="flex items-center space-x-4">
           <ColorModeToggle />

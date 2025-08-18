@@ -24,7 +24,8 @@
     "loginBtn": "Login",
     "groupLink": "Groups",
     "settingLink": "Settings",
-    "jobsLink": "Jobs"
+    "jobsLink": "Jobs",
+    "adminLink": "Admin"
   },
   "callback": {
     "loadingMessage": "Loading...",
@@ -99,6 +100,30 @@
     "confirmBtn": "Delete",
     "loadingBtn": "Loading..."
   },
+  "roleConfigTable": {
+    "cardTitle": "Role Access Configuration",
+    "tableHeadRole": "Role",
+    "tableHeadAccess": "Access Level",
+    "placeholderRoleName": "Enter Role Name",
+    "placeholderSelectAccess": "Select Access Level",
+    "confirmTitle": "Remove Role Confirm",
+    "confirmDescription": "Are you sure to remove this role?",
+    "cancelBtn": "Cancel",
+    "removeBtn": "Remove",
+    "removingBtn": "Removing...",
+    "createSuccessToast": "Role created successfully",
+    "createFailToast": "Failed to create role",
+    "createDuplicateToast": "Role name already exists",
+    "updateSuccessToast": "Role updated successfully",
+    "updateFailToast": "Failed to update role",
+    "deleteSuccessToast": "Role deleted successfully",
+    "deleteFailToast": "Failed to delete role",
+    "loadFailToast": "Failed to load roles"
+  },
+  "adminSidebar": {
+    "title": "Admin",
+    "roleAccessConfigLink": "Role Access Configuration"
+  },
   "groupComponents": {
     "addMemberButton": {
       "newMembers": "New Members"
@@ -148,9 +173,13 @@
       "save": "Save"
     },
     "createGroup": {
-      "title": "Create New Group",
-      "courseTitlePlaceholder": "Course Title",
-      "courseDescriptionPlaceholder": "Course Description",
+      "courseTitle": "Group Title",
+      "courseTitlePlaceholder": "Give your new group a title",
+      "descriptionTitle": "Description",
+      "courseDescriptionPlaceholder": "Say something about this group",
+      "linkTitle": "Link Resources",
+      "title": "title",
+      "URL": "URL",
       "addInitialMembers": "Add Initial Members",
       "studentIdOrEmail": "Student ID or Email",
       "role": "Role",

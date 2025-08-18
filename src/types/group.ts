@@ -56,6 +56,7 @@ export type GroupDetail = GroupSummary & {
     type: string;
     role: GroupRole;
   };
+  links?: GroupLinkResponse[];
 };
 
 // =========================
@@ -65,10 +66,11 @@ export type GroupDetail = GroupSummary & {
 export type CreateGroupInput = {
   title: string;
   description: string;
-  members: {
+  members?: {
     member: string; // email or user id
     roleId: string;
   }[];
+  links?: GroupLinkPayload[];
 };
 
 export type JoinMemberErrorResponse = {
@@ -142,6 +144,16 @@ export type ArchiveGroupParams = {
 };
 
 // =========================
+// 🔹 POST /api/roles
+// 🔹 PUT /api/roles/{id}
+// =========================
+
+export type RoleConfigInput = {
+  role: GroupMemberRoleName;
+  accessLevel: GroupRoleAccessLevel;
+};
+
+// =========================
 // 🔹 Pending Member Types
 // =========================
 
@@ -179,4 +191,23 @@ export type UpdatePendingMemberResponse = {
 export type RemovePendingMemberParams = {
   id: string;
   pendingId: string;
+};
+
+// =========================
+// 🔹 Group Link Types
+// =========================
+
+// POST /api/groups/{id}/link
+// PUT  /api/groups/{id}/link/{linkId}
+// DELETE /api/groups/{id}/link/{linkId}
+
+export type GroupLinkPayload = {
+  title: string;
+  url: string;
+};
+
+export type GroupLinkResponse = {
+  id: string;
+  title: string;
+  url: string;
 };
