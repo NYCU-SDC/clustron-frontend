@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import DefaultLayout from "./pages/layouts/DefaultLayout";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
-import Callback from "@/pages/group/Callback.tsx";
+import Callback from "@/pages/group/Callback";
 import Onboarding from "@/pages/Onboarding";
 import SettingLayout from "@/pages/layouts/SettingLayout";
 import SettingGeneral from "@/pages/setting/SettingGeneral";
@@ -10,15 +10,15 @@ import SettingAddKey from "@/pages/setting/SettingAddKey";
 import SettingSSH from "@/pages/setting/SettingSSH";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import GuestOnlyRoute from "@/components/auth/GuestOnlyRoute";
-import GroupPage from "@/pages/group/GroupPage.tsx";
-import GroupListPage from "@/pages/group/GroupList.tsx";
-import GroupOverview from "@/pages/group/GroupOverview.tsx";
-import GroupSettings from "@/pages/group/GroupSettings.tsx";
-import AddMemberPage from "@/pages/group/AddMemberPage.tsx";
-import AddGroupPage from "@/pages/group/CreateGroup.tsx";
-import GroupLayout from "@/pages/layouts/GroupLayout.tsx";
-import AddMemberResult from "@/pages/group/AddMemberResult.tsx";
-import JobDashboard from "@/pages/job/JobDashboard.tsx";
+import GroupPage from "@/pages/group/GroupPage";
+import GroupListPage from "@/pages/group/GroupList";
+import GroupOverview from "@/pages/group/GroupOverview";
+import GroupSettings from "@/pages/group/GroupSettings";
+import AddMemberPage from "@/pages/group/AddMemberPage";
+import AddGroupPage from "@/pages/group/CreateGroup";
+import GroupLayout from "@/pages/layouts/GroupLayout";
+import AddMemberResult from "@/pages/group/AddMemberResult";
+import JobDashboard from "@/pages/job/JobDashboard";
 const App = () => {
   return (
     <Routes>

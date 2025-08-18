@@ -1,21 +1,21 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import AddMemberRow from "@/components/group/AddMemberRow.tsx";
-import { useAddMember } from "@/hooks/useAddMember.ts";
-import { useGetGroupById } from "@/hooks/useGetGroupById.ts";
-import { useJwtPayload } from "@/hooks/useJwtPayload.ts";
-import { AccessLevelUser, type GroupMemberRoleName } from "@/types/group.ts";
+import AddMemberRow from "@/components/group/AddMemberRow";
+import { useAddMember } from "@/hooks/useAddMember";
+import { useGetGroupById } from "@/hooks/useGetGroupById";
+import { useJwtPayload } from "@/hooks/useJwtPayload";
+import { AccessLevelUser, type GroupMemberRoleName } from "@/types/group";
 import {
   Table,
   TableHeader,
   TableRow,
   TableHead,
   TableBody,
-} from "@/components/ui/table.tsx";
-import { GlobalRole } from "@/lib/permission.ts";
-import { useRoleMapper } from "@/hooks/useRoleMapper.ts";
-import { Button } from "@/components/ui/button.tsx";
+} from "@/components/ui/table";
+import { GlobalRole } from "@/lib/permission";
+import { useRoleMapper } from "@/hooks/useRoleMapper";
+import { Button } from "@/components/ui/button";
 
 export default function AddMemberPage() {
   const { id: groupId } = useParams();

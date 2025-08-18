@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { mockCountJobs } from "@/lib/mocks/jobsLogic.ts";
+import { mockCountJobs } from "@/lib/mocks/jobsLogic";
 
 export function useJobCounts(extra?: {
   filterBy?: string;

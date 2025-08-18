@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
-import GroupDescription from "@/components/group/GroupDes.tsx";
-import { useJwtPayload } from "@/hooks/useJwtPayload.ts";
-import { getGroupPermissions } from "@/lib/groupPermissions.ts";
-import type { GlobalRole } from "@/lib/permission.ts";
+import GroupDescription from "@/components/group/GroupDes";
+import { useJwtPayload } from "@/hooks/useJwtPayload";
+import { getGroupPermissions } from "@/lib/groupPermissions";
+import type { GlobalRole } from "@/lib/permission";
 import { useOutletContext } from "react-router-dom";
-import type { GroupDetail } from "@/types/group.ts";
+import type { GroupDetail } from "@/types/group";
 type GroupContext = {
   group: GroupDetail;
   groupId: string;

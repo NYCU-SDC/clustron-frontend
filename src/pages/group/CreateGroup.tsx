@@ -1,21 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Input } from "@/components/ui/input.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import AddMemberRow from "@/components/group/AddMemberRow.tsx";
-import { useCreateGroup } from "@/hooks/useCreateGroup.ts";
-import { useJwtPayload } from "@/hooks/useJwtPayload.ts";
-import { useRoleMapper } from "@/hooks/useRoleMapper.ts";
-import { AccessLevelOwner, type GroupMemberRoleName } from "@/types/group.ts";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import AddMemberRow from "@/components/group/AddMemberRow";
+import { useCreateGroup } from "@/hooks/useCreateGroup";
+import { useJwtPayload } from "@/hooks/useJwtPayload";
+import { useRoleMapper } from "@/hooks/useRoleMapper";
+import { AccessLevelOwner, type GroupMemberRoleName } from "@/types/group";
 import {
   Table,
   TableHeader,
   TableRow,
   TableHead,
   TableBody,
-} from "@/components/ui/table.tsx";
-import { GlobalRole } from "@/lib/permission.ts";
+} from "@/components/ui/table";
+import { GlobalRole } from "@/lib/permission";
 
 export default function AddGroupPage() {
   const navigate = useNavigate();

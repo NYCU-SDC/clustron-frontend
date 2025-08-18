@@ -3,8 +3,8 @@ import { jwtDecode } from "jwt-decode";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useNavigate, useLocation } from "react-router";
-import { AccessToken } from "@/types/type.ts";
-import { authContext } from "@/lib/auth/authContext.ts";
+import { AccessToken } from "@/types/type";
+import { authContext } from "@/lib/auth/authContext";
 
 export default function Callback() {
   const navigate = useNavigate();

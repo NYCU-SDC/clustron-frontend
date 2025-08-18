@@ -7,20 +7,20 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-} from "@/components/ui/card.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import GroupDescription from "@/components/group/GroupDes.tsx";
-import GroupMemberTable from "@/components/group/GroupMemberTable.tsx";
-import PendingMemberTable from "@/components/group/PendingMemberTable.tsx";
-import { useArchiveGroup } from "@/hooks/useArchiveGroup.ts";
-import { useUnarchiveGroup } from "@/hooks/useUnarchiveGroup.ts";
-import { useRemoveMember } from "@/hooks/useRemoveMember.ts";
-import { useTransferGroupOwner } from "@/hooks/useTransferGroupOwner.ts";
-import { useJwtPayload } from "@/hooks/useJwtPayload.ts";
-import { getGroupPermissions } from "@/lib/groupPermissions.ts";
-import { GlobalRole } from "@/lib/permission.ts";
-import { GroupDetail } from "@/types/group.ts";
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import GroupDescription from "@/components/group/GroupDes";
+import GroupMemberTable from "@/components/group/GroupMemberTable";
+import PendingMemberTable from "@/components/group/PendingMemberTable";
+import { useArchiveGroup } from "@/hooks/useArchiveGroup";
+import { useUnarchiveGroup } from "@/hooks/useUnarchiveGroup";
+import { useRemoveMember } from "@/hooks/useRemoveMember";
+import { useTransferGroupOwner } from "@/hooks/useTransferGroupOwner";
+import { useJwtPayload } from "@/hooks/useJwtPayload";
+import { getGroupPermissions } from "@/lib/groupPermissions";
+import { GlobalRole } from "@/lib/permission";
+import { GroupDetail } from "@/types/group";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 

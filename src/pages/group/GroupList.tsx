@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button.tsx";
-import GroupDescription from "@/components/group/GroupDes.tsx";
-import { useGetGroups } from "@/hooks/useGetGroups.ts";
-import { useGlobalPermissions } from "@/hooks/useGlobalPermissions.ts";
+import { Button } from "@/components/ui/button";
+import GroupDescription from "@/components/group/GroupDes";
+import { useGetGroups } from "@/hooks/useGetGroups";
+import { useGlobalPermissions } from "@/hooks/useGlobalPermissions";
 import { useContext } from "react";
-import { authContext } from "@/lib/auth/authContext.ts";
-import { AccessLevelAdmin, AccessLevelOwner } from "@/types/group.ts";
+import { authContext } from "@/lib/auth/authContext";
+import { AccessLevelAdmin, AccessLevelOwner } from "@/types/group";
 import { useTranslation } from "react-i18next";
 import { Loader2 } from "lucide-react";
 

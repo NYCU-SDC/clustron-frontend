@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
-import CreateGroupResultTable from "@/components/group/CreateGroupResultTable.tsx";
-import type { CreateGroupResultData } from "@/types/group.ts";
+import CreateGroupResultTable from "@/components/group/CreateGroupResultTable";
+import type { CreateGroupResultData } from "@/types/group";
 
 export default function AddMemberResult() {
   const location = useLocation();

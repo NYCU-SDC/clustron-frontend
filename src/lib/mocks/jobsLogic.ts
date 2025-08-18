@@ -1,5 +1,5 @@
 // src/mocks/jobs.logic.ts
-import { jobsData, type JobResponse } from "./jobs.fixture";
+import { jobsData, type JobResponse } from "@/lib/mocks/jobData";
 
 export type ListJobsQuery = {
   page?: number;
@@ -19,11 +19,13 @@ export type ListJobsQuery = {
   filterValue?: string; // e.g. "RUNNING" | "john" | "1"
 };
 
-export type PaginatedResponse<T> = {
-  data: T[];
-  total: number;
-  page: number;
+type PaginatedResponse<T> = {
+  items: T[];
+  totalPages: number;
+  totalItems: number;
+  currentPage: number;
   pageSize: number;
+  hasNextPage: boolean;
 };
 
 function applyFilter(data: JobResponse[], q: ListJobsQuery) {
@@ -61,28 +63,34 @@ function applySort(data: JobResponse[], q: ListJobsQuery) {
   });
 }
 
-function applyPagination<T>(data: T[], q: ListJobsQuery): PaginatedResponse<T> {
-  const page = q.page ?? 1;
-  const pageSize = q.pageSize ?? data.length;
-  const start = (page - 1) * pageSize;
-  const end = start + pageSize;
-  return { data: data.slice(start, end), total: data.length, page, pageSize };
-}
-
-/** 模擬 GET /api/jobs */
-export async function mockListJobs(
-  q: ListJobsQuery,
-): Promise<PaginatedResponse<JobResponse>> {
+/** mock GET /api/jobs */
+export function mockListJobs(q: ListJobsQuery): PaginatedResponse<JobResponse> {
   let data = [...jobsData];
   data = applyFilter(data, q);
   data = applySort(data, q);
-  const paged = applyPagination(data, q);
-  // 模擬延遲
-  await new Promise((r) => setTimeout(r, 250));
-  return paged;
+
+  const page = q.page ?? 1;
+  const pageSize = q.pageSize ?? 10;
+  const totalItems = data.length;
+  const totalPages = Math.ceil(totalItems / pageSize);
+  const currentPage = Math.min(Math.max(page, 1), totalPages);
+  const start = (currentPage - 1) * pageSize;
+  const end = start + pageSize;
+
+  const items = data.slice(start, end);
+  const hasNextPage = currentPage < totalPages;
+
+  return {
+    items,
+    totalPages,
+    totalItems,
+    currentPage,
+    pageSize,
+    hasNextPage,
+  };
 }
 
-/** 模擬 GET /api/jobs/counts */
+/** mock GET /api/jobs/counts */
 export async function mockCountJobs(filter?: {
   filterBy?: string;
   filterValue?: string;
@@ -125,9 +133,9 @@ export async function mockCountJobs(filter?: {
   return counts;
 }
 
-/** 模擬 GET /api/jobs/partitions */
+/** mock GET /api/jobs/partitions */
 export async function mockGetPartitions() {
-  const { PARTITIONS_FIXTURE } = await import("./jobs.fixture");
+  const { PARTITIONS_FIXTURE } = await import("./jobData");
   await new Promise((r) => setTimeout(r, 120));
   return PARTITIONS_FIXTURE;
 }

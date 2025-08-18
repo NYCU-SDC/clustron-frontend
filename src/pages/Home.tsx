@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { authContext } from "@/lib/auth/authContext";
 import { useContext, useEffect } from "react";
-import { Button } from "@/components/ui/button.tsx";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const navigate = useNavigate();
