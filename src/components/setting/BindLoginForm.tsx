@@ -64,12 +64,12 @@ export default function BindLoginForm() {
 
     const popupHtml = `
       <html>
-        <head><title>Mock Login</title></head>
+        <head><title>Clustron</title></head>
         <body style="display:flex;align-items:center;justify-content:center;height:90%;">
           <button id="finishBtn" style="padding:10px 20px;font-size:16px;">畢業了 嗎</button>
           <script>
             document.getElementById("finishBtn").onclick = function () {
-              window.opener.postMessage({ ty  pe: "LOGIN_SUCCESS" }, "*");
+              window.opener.postMessage({ type: "LOGIN_SUCCESS" }, "*");
               window.close();
             }
           </script>
@@ -93,6 +93,7 @@ export default function BindLoginForm() {
     const listener = (event: MessageEvent) => {
       if (event.data?.type === "LOGIN_SUCCESS") {
         setDialogOpen(false);
+        toast.success("綁定成功!!!");
       }
     };
     window.addEventListener("message", listener);
