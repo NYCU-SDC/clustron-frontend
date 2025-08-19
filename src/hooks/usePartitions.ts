@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { mockGetPartitions } from "@/lib/mocks/jobsLogic";
+import { mockGetPartitions } from "@/lib/mocks/jobLogic.ts";
 
 export function usePartitions() {
-  //TODO: wait for backend
+  //TODO: unused, wait for backend
   return useQuery({
     queryKey: ["job-partitions"],
     queryFn: () => mockGetPartitions(),

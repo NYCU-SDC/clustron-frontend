@@ -1,4 +1,3 @@
-// src/mocks/jobs.logic.ts
 import { jobsData, type JobResponse } from "@/lib/mocks/jobData";
 
 export type ListJobsQuery = {
@@ -15,8 +14,8 @@ export type ListJobsQuery = {
     | "gpu"
     | "memory";
   sortOrder?: "asc" | "desc";
-  filterBy?: string; // e.g. "status" | "user" | "resources.gpu"
-  filterValue?: string; // e.g. "RUNNING" | "john" | "1"
+  filterBy?: string;
+  filterValue?: string;
 };
 
 type PaginatedResponse<T> = {
@@ -28,38 +27,47 @@ type PaginatedResponse<T> = {
   hasNextPage: boolean;
 };
 
-function applyFilter(data: JobResponse[], q: ListJobsQuery) {
+function applyFilter(data: JobResponse[], q: ListJobsQuery): JobResponse[] {
   const { filterBy, filterValue } = q;
   if (!filterBy || !filterValue) return data;
 
-  return data.filter((j: any) => {
+  return data.filter((job) => {
     if (filterBy.startsWith("resources.")) {
-      const key = filterBy.split(".")[1]; // cpu/gpu/memory
-      return String(j.resources?.[key]) === String(filterValue);
+      const key = filterBy.split(".")[1] as keyof JobResponse["resources"];
+      return String(job.resources?.[key]) === String(filterValue);
     }
-    return (
-      String(j[filterBy])?.toLowerCase() === String(filterValue).toLowerCase()
-    );
+
+    const jobKey = filterBy as keyof JobResponse;
+    const val = job[jobKey];
+
+    return String(val)?.toLowerCase() === String(filterValue).toLowerCase();
   });
 }
 
-function applySort(data: JobResponse[], q: ListJobsQuery) {
+function applySort(data: JobResponse[], q: ListJobsQuery): JobResponse[] {
   const sortBy = q.sortBy ?? "id";
   const sortOrder = q.sortOrder ?? "asc";
   const dir = sortOrder === "asc" ? 1 : -1;
 
-  const pick = (x: any) => {
-    if (["cpu", "gpu", "memory"].includes(sortBy)) return x.resources?.[sortBy];
-    return x[sortBy];
-  };
-
   return [...data].sort((a, b) => {
-    const av = pick(a),
-      bv = pick(b);
-    if (typeof av === "string" || typeof bv === "string") {
-      return String(av).localeCompare(String(bv)) * dir;
+    let aVal: string | number | undefined;
+    let bVal: string | number | undefined;
+
+    if (["cpu", "gpu", "memory"].includes(sortBy)) {
+      const key = sortBy as keyof JobResponse["resources"];
+      aVal = a.resources[key];
+      bVal = b.resources[key];
+    } else {
+      const key = sortBy as keyof JobResponse;
+      aVal = a[key] as string | number;
+      bVal = b[key] as string | number;
     }
-    return ((av as number) - (bv as number)) * dir;
+
+    if (typeof aVal === "string" || typeof bVal === "string") {
+      return String(aVal).localeCompare(String(bVal)) * dir;
+    }
+
+    return (Number(aVal) - Number(bVal)) * dir;
   });
 }
 
