@@ -107,6 +107,9 @@ export default function OnboardingForm({
                 value={linuxUsername}
                 onChange={(e) => setLinuxUsername(e.target.value)}
               />
+              <p className="ml-2 text-sm text-destructive">
+                {t("onboardingForm.warningTextForLinuxUsername")}
+              </p>
             </div>
             <TooltipProvider>
               <div className="flex justify-end">

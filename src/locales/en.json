@@ -12,7 +12,8 @@
     "loadingBtn": "Loading...",
     "saveBtnToolTip": "Please fill in your full name and Linux username",
     "usernameExistsErrorToast": "This Linux username is already in use",
-    "reservedKeywordErrorToast": "This Linux username is a reserved system keyword and cannot be used"
+    "reservedKeywordErrorToast": "This Linux username is a reserved system keyword and cannot be used",
+    "warningTextForLinuxUsername": "The username to login to the remote server. This is not changeable after set."
   },
   "login": {
     "loginTitle": "Login",
