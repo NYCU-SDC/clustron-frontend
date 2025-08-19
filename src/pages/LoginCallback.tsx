@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from "react-router";
 import { AccessToken } from "@/types/settings";
 import { authContext } from "@/lib/auth/authContext";
 
-export default function Callback() {
+export default function LoginCallback() {
   const navigate = useNavigate();
   const location = useLocation();
   const { setCookiesForAuthToken } = useContext(authContext);

@@ -56,44 +56,44 @@ export default function BindLoginForm() {
   });
 
   // For demo popup window
-  const openPopup = () => {
-    const width = 500;
-    const height = 600;
-    const left = window.screenX + (window.outerWidth - width) / 2;
-    const top = window.screenY + (window.outerHeight - height) / 2;
+  // const openPopup = () => {
+  //   const width = 500;
+  //   const height = 600;
+  //   const left = window.screenX + (window.outerWidth - width) / 2;
+  //   const top = window.screenY + (window.outerHeight - height) / 2;
 
-    const popupHtml = `
-      <html>
-        <head><title>Clustron</title></head>
-        <body style="display:flex;align-items:center;justify-content:center;height:90%;">
-          <button id="finishBtn" style="padding:10px 20px;font-size:16px;">畢業了 嗎</button>
-          <script>
-            document.getElementById("finishBtn").onclick = function () {
-              window.opener.postMessage({ type: "LOGIN_SUCCESS" }, "*");
-              window.close();
-            }
-          </script>
-        </body>
-      </html>
-    `;
+  //   const popupHtml = `
+  //     <html>
+  //       <head><title>Clustron</title></head>
+  //       <body style="display:flex;align-items:center;justify-content:center;height:90%;">
+  //         <button id="finishBtn" style="padding:10px 20px;font-size:16px;">畢業了 嗎</button>
+  //         <script>
+  //           document.getElementById("finishBtn").onclick = function () {
+  //             window.opener.postMessage({ type: "BIND_SUCCESS" }, "*");
+  //             window.close();
+  //           }
+  //         </script>
+  //       </body>
+  //     </html>
+  //   `;
 
-    const popup = window.open(
-      "",
-      "loginPopup",
-      `width=${width},height=${height},left=${left},top=${top},resizable`,
-    );
+  //   const popup = window.open(
+  //     "",
+  //     "loginPopup",
+  //     `width=${width},height=${height},left=${left},top=${top},resizable`,
+  //   );
 
-    if (popup) {
-      popup.document.write(popupHtml);
-      popup.document.close();
-    }
-  };
+  //   if (popup) {
+  //     popup.document.write(popupHtml);
+  //     popup.document.close();
+  //   }
+  // };
 
   useEffect(() => {
     const listener = (event: MessageEvent) => {
-      if (event.data?.type === "LOGIN_SUCCESS") {
+      if (event.data?.type === "BIND_SUCCESS") {
         setDialogOpen(false);
-        toast.success("綁定成功!!!");
+        toast.success("Bind Success!!!");
       }
     };
     window.addEventListener("message", listener);
@@ -175,8 +175,8 @@ export default function BindLoginForm() {
                 variant="outline"
                 className="w-full p-6 cursor-pointer"
                 onClick={() => {
-                  // loginMutation.mutate("GOOGLE");
-                  openPopup();
+                  loginMutation.mutate("GOOGLE");
+                  // openPopup();
                 }}
               >
                 <LoginMethodIcon type="GOOGLE" />

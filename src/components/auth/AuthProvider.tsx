@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = useCallback((provider: "GOOGLE" | "NYCU") => {
-    const callbackUrl = `${window.location.protocol}//${window.location.host}/callback`;
+    const callbackUrl = `${window.location.protocol}//${window.location.host}/callback/login`;
     const redirectUrl = `${window.location.protocol}//${window.location.host}/`;
     const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
