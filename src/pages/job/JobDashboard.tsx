@@ -20,13 +20,11 @@ const JobDashboard: React.FC = () => {
   const [sortBy, setSortBy] = useState<SortBy>("id");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [filters, setFilters] = useState<FilterOptions>({
-    myJobs: false,
     status: [],
     resource: [],
     partition: [],
   });
   const [currentPage, setCurrentPage] = useState(0);
-  const currentUser = "john";
 
   //  TODO: use usestate to get /api/jobs data
   const sortedAndFilteredJobs = useMemo(() => {
@@ -35,7 +33,6 @@ const JobDashboard: React.FC = () => {
     //  only in mock: filter data based on param handle in backend
     if (filters.partition.length)
       data = data.filter((job) => filters.partition.includes(job.partition));
-    if (filters.myJobs) data = data.filter((job) => job.user === currentUser);
     if (filters.status.length)
       data = data.filter((job) => filters.status.includes(job.status));
     if (filters.resource.length)
@@ -114,13 +111,11 @@ const JobDashboard: React.FC = () => {
                     }
                   />
                 </PaginationItem>
-
                 {startPage > 0 && (
                   <PaginationItem>
                     <span className="px-2">...</span>
                   </PaginationItem>
                 )}
-
                 {Array.from(
                   { length: endPage - startPage + 1 },
                   (_, i) => startPage + i,
@@ -134,13 +129,11 @@ const JobDashboard: React.FC = () => {
                     </PaginationLink>
                   </PaginationItem>
                 ))}
-
                 {endPage < totalPages - 1 && (
                   <PaginationItem>
                     <span className="px-2">...</span>
                   </PaginationItem>
                 )}
-
                 <PaginationItem>
                   <PaginationNext
                     onClick={() =>

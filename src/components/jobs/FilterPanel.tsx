@@ -8,14 +8,12 @@ import {
   DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Filter as FilterIcon, ChevronDown, X } from "lucide-react";
+import { Filter as FilterIcon, ChevronDown } from "lucide-react";
 import type { FilterOptions } from "@/types/type";
-import {
-  JOB_STATUS_COLORS,
-  type JobState,
-} from "@/components/jobs/StatusPill.tsx";
+import type { JobState } from "@/types/type";
+import { Badge } from "@/components/jobs/Badge.tsx";
 
-// Job status option
+// Job status options
 const ALL_STATUS: JobState[] = [
   "RUNNING",
   "PENDING",
@@ -25,10 +23,10 @@ const ALL_STATUS: JobState[] = [
   "CANCELLED",
 ];
 
-// Resource option
+// Resource options
 const ALL_RES: Array<"cpu" | "gpu"> = ["cpu", "gpu"];
 
-// TODO: Replace with GET /api/jobs/partitions response
+// Partition options (mock)
 const ALL_PARTITIONS: string[] = ["default", "compute"];
 
 type Props = {
@@ -41,24 +39,15 @@ export default function FilterPanel({ filters, setFilters }: Props) {
     const t: {
       key: string;
       label: string;
-      className: string;
+      variant: "status" | "resource" | "partition";
       onClear: () => void;
     }[] = [];
-
-    if (filters.myJobs) {
-      t.push({
-        key: "myJobs",
-        label: "MY JOBS",
-        className: "bg-blue-100 text-blue-700",
-        onClear: () => setFilters((f) => ({ ...f, myJobs: false })),
-      });
-    }
 
     filters.status.forEach((s) =>
       t.push({
         key: `st:${s}`,
         label: s,
-        className: JOB_STATUS_COLORS[s],
+        variant: "status",
         onClear: () =>
           setFilters((f) => ({
             ...f,
@@ -71,7 +60,7 @@ export default function FilterPanel({ filters, setFilters }: Props) {
       t.push({
         key: `res:${r}`,
         label: r.toUpperCase(),
-        className: "bg-neutral-800 text-white dark:bg-neutral-700",
+        variant: "resource",
         onClear: () =>
           setFilters((f) => ({
             ...f,
@@ -84,7 +73,7 @@ export default function FilterPanel({ filters, setFilters }: Props) {
       t.push({
         key: `pt:${p}`,
         label: p.toUpperCase(),
-        className: "bg-yellow-200 text-yellow-900",
+        variant: "partition",
         onClear: () =>
           setFilters((f) => ({
             ...f,
@@ -137,10 +126,11 @@ export default function FilterPanel({ filters, setFilters }: Props) {
                 </span>
               ) : (
                 tags.map((t) => (
-                  <TagPill
+                  <Badge
                     key={t.key}
                     label={t.label}
-                    className={t.className}
+                    variant={t.variant}
+                    mode="interactive"
                     onClear={t.onClear}
                   />
                 ))
@@ -152,15 +142,6 @@ export default function FilterPanel({ filters, setFilters }: Props) {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="w-64" align="start">
-        <DropdownMenuCheckboxItem
-          checked={filters.myJobs}
-          onCheckedChange={(v) => setFilters((f) => ({ ...f, myJobs: !!v }))}
-          onSelect={(e) => e.preventDefault()}
-        >
-          My Jobs
-        </DropdownMenuCheckboxItem>
-
-        <DropdownMenuSeparator />
         <DropdownMenuLabel>Job Status</DropdownMenuLabel>
         {ALL_STATUS.map((s) => (
           <DropdownMenuCheckboxItem
@@ -200,42 +181,5 @@ export default function FilterPanel({ filters, setFilters }: Props) {
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
-  );
-}
-
-function TagPill({
-  label,
-  className,
-  onClear,
-}: {
-  label: string;
-  className: string;
-  onClear: () => void;
-}) {
-  return (
-    <span
-      className={[
-        "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold",
-        className,
-      ].join(" ")}
-    >
-      {label}
-      <span
-        role="button"
-        tabIndex={0}
-        onPointerDown={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          onClear();
-        }}
-        className="cursor-pointer"
-      >
-        <X className="h-3.5 w-3.5" />
-      </span>
-    </span>
   );
 }

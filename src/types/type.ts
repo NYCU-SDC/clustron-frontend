@@ -54,7 +54,6 @@ export interface Job {
 export type SortBy = keyof Job | keyof Resources;
 
 export interface FilterOptions {
-  myJobs: boolean;
   status: JobState[];
   resource: ("cpu" | "gpu")[];
   partition: string[];

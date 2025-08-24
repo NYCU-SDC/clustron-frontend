@@ -41,7 +41,7 @@ export default function SortSelector({
   const toggleOrder = () => setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
 
   return (
-    <div className="w-1/8 inline-flex  rounded-lg border bg-background">
+    <div className="w-[96px] inline-flex  rounded-lg border bg-background">
       <Button
         type="button"
         variant="ghost"

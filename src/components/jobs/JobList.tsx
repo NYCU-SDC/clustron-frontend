@@ -1,4 +1,5 @@
-import { StatusPill, type JobState } from "@/components/jobs/StatusPill.tsx";
+import { type JobState } from "@/types/type";
+import { Badge } from "@/components/jobs/Badge.tsx";
 
 type Job = {
   id: number;
@@ -27,7 +28,7 @@ export default function JobList({ jobs }: { jobs: Job[] }) {
               <tr key={job.id} className="hover:bg-muted/40">
                 <td className="py-3 px-4 font-medium">{job.id}</td>
                 <td className="py-3 px-4">
-                  <StatusPill state={job.status} />
+                  <Badge label={job.status} variant="status" />
                 </td>
                 <td className="py-3 px-4">{job.user}</td>
                 <td className="py-3 px-4">{job.partition}</td>
