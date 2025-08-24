@@ -1,6 +1,6 @@
 import { Outlet, useParams } from "react-router-dom";
 import GroupSideBar from "@/components/group/GroupSideBar";
-import { useGetGroupById } from "@/hooks/useGetGroupById.ts";
+import { useGetGroupById } from "@/hooks/useGetGroupById";
 
 export default function GroupLayout() {
   const { id } = useParams<{ id: string }>();

@@ -14,7 +14,7 @@ import {
   AccessLevelOwner,
   type GroupRoleAccessLevel,
 } from "@/types/group";
-import { Button } from "@/components/ui/button.tsx";
+import { Button } from "@/components/ui/button";
 import { GlobalRole } from "@/lib/permission";
 type Props = {
   id: string;

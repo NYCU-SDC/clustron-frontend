@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import DefaultLayout from "./pages/layouts/DefaultLayout";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
-import Callback from "@/pages/Callback";
+import Callback from "@/pages/group/Callback";
 import Onboarding from "@/pages/Onboarding";
 import SettingLayout from "@/pages/layouts/SettingLayout";
 import SettingGeneral from "@/pages/setting/SettingGeneral";
@@ -10,16 +10,17 @@ import SettingAddKey from "@/pages/setting/SettingAddKey";
 import SettingSSH from "@/pages/setting/SettingSSH";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import GuestOnlyRoute from "@/components/auth/GuestOnlyRoute";
-import GroupPage from "@/pages/GroupPage";
-import GroupListPage from "@/pages/GroupList";
-import GroupOverview from "@/pages/GroupOverview";
-import GroupSettings from "@/pages/GroupSettings";
-import AddMemberPage from "@/pages/AddMemberPage";
-import AddGroupPage from "@/pages/CreateGroup";
-import GroupLayout from "@/pages/layouts/GroupLayout.tsx";
-import AddMemberResult from "@/pages/AddMemberResult";
-import AdminLayout from "@/pages/layouts/AdminLayout";
-import RoleConfiguration from "@/pages/admin/RoleConfiguration";
+import GroupPage from "@/pages/group/GroupPage";
+import GroupListPage from "@/pages/group/GroupList";
+import GroupOverview from "@/pages/group/GroupOverview";
+import GroupSettings from "@/pages/group/GroupSettings";
+import AddMemberPage from "@/pages/group/AddMemberPage";
+import AddGroupPage from "@/pages/group/CreateGroup";
+import GroupLayout from "@/pages/layouts/GroupLayout";
+import AddMemberResult from "@/pages/group/AddMemberResult";
+import JobDashboard from "@/pages/job/JobDashboard";
+import AdminLayout from "@/pages/layouts/AdminLayout.tsx";
+import RoleConfiguration from "@/pages/admin/RoleConfiguration.tsx";
 const App = () => {
   return (
     <Routes>
@@ -46,6 +47,7 @@ const App = () => {
             path="/groups/:id/add-member-result"
             element={<AddMemberResult />}
           />
+          <Route path="/joblist" element={<JobDashboard />} />
           <Route element={<GroupLayout />}>
             <Route path="/groups" element={<GroupListPage />} />
             <Route path="/groups/new" element={<AddGroupPage />} />

@@ -5,7 +5,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { CookiesProvider } from "react-cookie";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import "./index.css";
-import App from "./App.tsx";
+import App from "./App";
 import "./i18n";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
