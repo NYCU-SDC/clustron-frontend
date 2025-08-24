@@ -1,7 +1,7 @@
 services:
   frontend:
-    image: nycusdc/clustron-frontend:dev
-    container_name: clustron-frontend-dev
+    image: "nycusdc/clustron-frontend:$VERSION"
+    container_name: clustron-frontend-$VERSION
     networks:
       - traefik
     environment:
