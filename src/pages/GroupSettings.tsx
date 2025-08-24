@@ -163,7 +163,7 @@ export default function GroupSettings() {
           {!isTransferExpanded && (
             <Button
               onClick={() => setIsTransferExpanded(true)}
-              disabled={group.isArchived | isToggling}
+              disabled={group.isArchived || isToggling}
             >
               {t("groupSettings.transferOwnership.startButton")}
             </Button>
