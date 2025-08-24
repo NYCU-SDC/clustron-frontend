@@ -12,7 +12,8 @@
     "loadingBtn": "載入中...",
     "saveBtnToolTip": "請填入你的姓名和Linux使用者名稱",
     "usernameExistsErrorToast": "此 Linux 使用者名稱已被使用",
-    "reservedKeywordErrorToast": "此 Linux 使用者名稱為系統保留字，無法使用"
+    "reservedKeywordErrorToast": "此 Linux 使用者名稱為系統保留字，無法使用",
+    "warningTextForLinuxUsername": "用於登入遠端伺服器的Linux使用者名稱，設定後將無法修改。"
   },
   "login": {
     "loginTitle": "登入",
