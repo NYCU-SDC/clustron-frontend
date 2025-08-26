@@ -127,7 +127,6 @@ export default function FilterPanel({ filters, setFilters }: Props) {
               ) : (
                 tags.map((t) => (
                   <Badge
-                    key={t.key}
                     label={t.label}
                     variant={t.variant}
                     mode="interactive"

@@ -1,10 +1,7 @@
 import { cn } from "@/lib/utils";
 import type { JobState } from "@/types/type";
 
-type Variant = "status" | "resource" | "partition";
-type Mode = "static" | "interactive";
-
-const statusColors: Record<JobState, string> = {
+const STATUS_COLORS: Record<JobState, string> = {
   RUNNING: "bg-emerald-100 text-emerald-700",
   PENDING: "bg-amber-100 text-amber-700",
   FAILED: "bg-rose-100 text-rose-700",
@@ -13,40 +10,32 @@ const statusColors: Record<JobState, string> = {
   CANCELLED: "bg-gray-200 text-gray-700",
 };
 
-const variantColor = (variant: Variant, label: string): string => {
-  if (variant === "status") {
-    return statusColors[label as JobState] || "bg-gray-200 text-gray-700";
-  }
-  if (variant === "resource") {
-    return "bg-neutral-800 text-white dark:bg-neutral-700";
-  }
-  if (variant === "partition") {
-    return "bg-yellow-200 text-yellow-900";
-  }
-  return "";
+type Props = {
+  label: string;
+  variant: "status" | "resource" | "partition";
+  mode?: "static" | "interactive";
+  onClear?: () => void;
 };
 
-export function Badge({
-  label,
-  variant,
-  mode = "static",
-  onClear,
-  className,
-}: {
-  label: string;
-  variant: Variant;
-  mode?: Mode;
-  onClear?: () => void;
-  className?: string;
-}) {
+export function Badge({ label, variant, mode = "static", onClear }: Props) {
+  const baseStyle =
+    "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold";
+
+  const getVariantClass = () => {
+    switch (variant) {
+      case "status":
+        return STATUS_COLORS[label as JobState] ?? "bg-gray-100 text-gray-700";
+      case "resource":
+        return "bg-neutral-800 text-white dark:bg-neutral-700";
+      case "partition":
+        return "bg-yellow-200 text-yellow-900";
+      default:
+        return "bg-gray-100 text-gray-700";
+    }
+  };
+
   return (
-    <span
-      className={cn(
-        "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold",
-        variantColor(variant, label),
-        className,
-      )}
-    >
+    <span className={cn(baseStyle, getVariantClass())}>
       {label}
       {mode === "interactive" && onClear && (
         <span
@@ -62,9 +51,7 @@ export function Badge({
             onClear();
           }}
           className="cursor-pointer"
-        >
-          {/*<X className="h-3.5 w-3.5" />*/}
-        </span>
+        ></span>
       )}
     </span>
   );
