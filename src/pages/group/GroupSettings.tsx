@@ -161,7 +161,10 @@ export default function GroupSettings() {
           </div>
 
           {!isTransferExpanded && (
-            <Button onClick={() => setIsTransferExpanded(true)}>
+            <Button
+              onClick={() => setIsTransferExpanded(true)}
+              disabled={group.isArchived || isToggling}
+            >
               {t("groupSettings.transferOwnership.startButton")}
             </Button>
           )}
@@ -182,6 +185,7 @@ export default function GroupSettings() {
               value={transferOwnerEmail}
               onChange={(e) => setTransferOwnerEmail(e.target.value)}
               className="mb-4 placeholder:text-gray-400"
+              disabled={isToggling}
             />
 
             <div className="flex gap-2">
@@ -196,7 +200,12 @@ export default function GroupSettings() {
               </Button>
               <Button
                 onClick={handleTransfer}
-                disabled={!transferOwnerEmail || isTransferring}
+                disabled={
+                  !transferOwnerEmail ||
+                  isTransferring ||
+                  isToggling ||
+                  group.isArchived
+                }
               >
                 {isTransferring
                   ? t("groupSettings.transferOwnership.transferring")

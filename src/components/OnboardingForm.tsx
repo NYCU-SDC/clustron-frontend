@@ -46,7 +46,24 @@ export default function OnboardingForm({
     },
     onError: (err: Error) => {
       if (err.name === "400") {
-        toast.error(t("onboardingForm.formatErrorToast"));
+        // Error message from the receveid response
+        // invalid username: Linux username already exists
+        if (err.message.includes("exists")) {
+          toast.error(t("onboardingForm.usernameExistsErrorToast"));
+        }
+        // invalid username: Linux username contain reserved keywords
+        else if (err.message.includes("reserved")) {
+          toast.error(t("onboardingForm.reservedKeywordErrorToast"));
+        }
+        // invalid username: Linux username must start with a lowercase letter or underscore,
+        // followed by lowercase letters, numbers, underscores, or hyphens, and can end with a dollar sign
+        else if (err.message.includes("start")) {
+          toast.error(t("onboardingForm.formatErrorToast"));
+        }
+        // other uncaught message
+        else {
+          toast.error(t("onboardingForm.saveFailToast"));
+        }
       } else {
         toast.error(t("onboardingForm.saveFailToast"));
       }
@@ -90,6 +107,9 @@ export default function OnboardingForm({
                 value={linuxUsername}
                 onChange={(e) => setLinuxUsername(e.target.value)}
               />
+              <p className="ml-2 text-sm text-destructive">
+                {t("onboardingForm.warningTextForLinuxUsername")}
+              </p>
             </div>
             <TooltipProvider>
               <div className="flex justify-end">
