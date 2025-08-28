@@ -27,6 +27,7 @@
     "loginBtn": "Login",
     "groupLink": "Groups",
     "settingLink": "Settings",
+    "jobsLink": "Jobs",
     "adminLink": "Admin"
   },
   "callback": {

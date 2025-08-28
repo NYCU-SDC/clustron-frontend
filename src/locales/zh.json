@@ -27,6 +27,7 @@
     "logoutBtn": "登出",
     "groupLink": "群組",
     "settingLink": "設定",
+    "jobsLink": "排程",
     "adminLink": "管理"
   },
   "callback": {
