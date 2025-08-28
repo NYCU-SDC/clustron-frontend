@@ -252,6 +252,9 @@
     "nycuLoginNote": "國立陽明交通大學在學生 請透過單一入口登入",
     "nycuLoginBtn": "使用國立陽明交通大學單一入口登入",
     "googleLoginNote": "非國立陽明交通大學在學生 請使用 Google 帳號登入",
-    "googleLoginBtn": "使用 Google 登入"
+    "googleLoginBtn": "使用 Google 登入",
+    "bindFailToast": "綁定失敗",
+    "bindSameAccountToast": "該帳號已被綁定",
+    "bindSuccessToast": "綁定成功"
   }
 }

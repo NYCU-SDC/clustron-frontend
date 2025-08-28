@@ -16,7 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useTranslation } from "react-i18next";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getSettings } from "@/lib/request/getSettings";
 import { createBindMethods } from "@/lib/request/createBindMethods";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -27,73 +27,44 @@ import { useEffect, useState } from "react";
 export default function BindLoginForm() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const { t } = useTranslation();
-  const PROFILE_QUERY_KEY = ["settings"];
+  const PROFILE_QUERY_KEY = ["connectedAccounts"];
+  const queryClient = useQueryClient();
 
   const { data, isSuccess, isLoading, isError } = useQuery({
     queryKey: PROFILE_QUERY_KEY,
     queryFn: getSettings,
   });
 
-  const loginMutation = useMutation({
-    mutationFn: (provider: "NYCU" | "GOOGLE") => createBindMethods(provider),
+  const bindMutation = useMutation({
+    mutationFn: (provider: "nycu" | "google") => createBindMethods(provider),
     onSuccess: (data) => {
+      console.log(data);
       const url = data.url;
       const width = 500;
       const height = 600;
       const left = window.screenX + (window.outerWidth - width) / 2;
       const top = window.screenY + (window.outerHeight - height) / 2;
 
-      // const popup =
       window.open(
         url,
-        "loginPopup",
+        "BindPopup",
         `width=${width},height=${height},left=${left},top=${top},resizable`,
       );
     },
-    onError: (error: Error) => {
-      toast.error(error.message);
+    onError: () => {
+      toast.error("bindLoginForm.bindFailToast");
     },
   });
-
-  // For demo popup window
-  // const openPopup = () => {
-  //   const width = 500;
-  //   const height = 600;
-  //   const left = window.screenX + (window.outerWidth - width) / 2;
-  //   const top = window.screenY + (window.outerHeight - height) / 2;
-
-  //   const popupHtml = `
-  //     <html>
-  //       <head><title>Clustron</title></head>
-  //       <body style="display:flex;align-items:center;justify-content:center;height:90%;">
-  //         <button id="finishBtn" style="padding:10px 20px;font-size:16px;">畢業了 嗎</button>
-  //         <script>
-  //           document.getElementById("finishBtn").onclick = function () {
-  //             window.opener.postMessage({ type: "BIND_SUCCESS" }, "*");
-  //             window.close();
-  //           }
-  //         </script>
-  //       </body>
-  //     </html>
-  //   `;
-
-  //   const popup = window.open(
-  //     "",
-  //     "loginPopup",
-  //     `width=${width},height=${height},left=${left},top=${top},resizable`,
-  //   );
-
-  //   if (popup) {
-  //     popup.document.write(popupHtml);
-  //     popup.document.close();
-  //   }
-  // };
 
   useEffect(() => {
     const listener = (event: MessageEvent) => {
       if (event.data?.type === "BIND_SUCCESS") {
         setDialogOpen(false);
-        toast.success("Bind Success!!!");
+        toast.success("bindLoginForm.bindSuccessToast");
+        queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
+      } else if (event.data?.type === "BIND_FAIL") {
+        setDialogOpen(false);
+        toast.success("bindLoginForm.bindFailToast");
       }
     };
     window.addEventListener("message", listener);
@@ -123,7 +94,10 @@ export default function BindLoginForm() {
           {isSuccess &&
             (data.boundLoginMethods ? (
               data.boundLoginMethods.map((method) => (
-                <div key={method.provider} className="flex items-center gap-2">
+                <div
+                  key={`${method.provider}-${method.email}`}
+                  className="flex items-center gap-2"
+                >
                   <LoginMethodIcon type={method.provider} />
                   <span className="text-gray-500 dark:text-gray-300">
                     {method.email}
@@ -158,7 +132,7 @@ export default function BindLoginForm() {
                 variant="outline"
                 className="w-full p-6 cursor-pointer"
                 onClick={() => {
-                  loginMutation.mutate("NYCU");
+                  bindMutation.mutate("nycu");
                 }}
               >
                 <LoginMethodIcon type="NYCU" />
@@ -175,8 +149,7 @@ export default function BindLoginForm() {
                 variant="outline"
                 className="w-full p-6 cursor-pointer"
                 onClick={() => {
-                  loginMutation.mutate("GOOGLE");
-                  // openPopup();
+                  bindMutation.mutate("google");
                 }}
               >
                 <LoginMethodIcon type="GOOGLE" />

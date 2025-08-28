@@ -252,6 +252,9 @@
     "nycuLoginNote": "NYCU students log in via NYCU Portal",
     "nycuLoginBtn": "Login with NYCU Portal",
     "googleLoginNote": "Not an NYCU student? Log in via Google account",
-    "googleLoginBtn": "Login with Google"
+    "googleLoginBtn": "Login with Google",
+    "bindFailToast": "Fail to connect to another account",
+    "bindSameAccountToast": "You have already connect to that account!",
+    "bindSuccessToast": "Connect Successful"
   }
 }

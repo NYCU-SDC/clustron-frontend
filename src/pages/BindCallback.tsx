@@ -14,11 +14,13 @@ export default function BindCallback() {
     const error = params.get("error");
 
     if (!accessToken || !refreshToken || error) {
-      window.opener.postmessage({ type: "BIND_FAIL" });
+      window.opener?.postMessage({ type: "BIND_FAIL" });
+      window.close();
       return;
     }
 
-    window.opener.postmessage({ type: "BIND_SUCCESS" });
+    window.opener?.postMessage({ type: "BIND_SUCCESS" }, "*");
+    window.close();
   }, [navigate, location, t]);
 
   return <div className="min-h-screen">{t("callback.loadingMessage")}</div>;
