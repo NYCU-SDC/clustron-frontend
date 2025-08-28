@@ -1,16 +1,16 @@
 import nycuLightImg from "@/assets/NYCU_Light.png";
 import nycuDarkImg from "@/assets/NYCU_Dark.png";
 
-export const LoginMethodIcon = ({ type }: { type: "GOOGLE" | "NYCU" }) => {
+export const LoginMethodIcon = ({ type }: { type: "google" | "nycu" }) => {
   switch (type) {
-    case "NYCU":
+    case "nycu":
       return (
         <>
           <img src={nycuLightImg} className="w-5 h-5 block dark:hidden"></img>
           <img src={nycuDarkImg} className="w-5 h-5 hidden dark:block"></img>
         </>
       );
-    case "GOOGLE":
+    case "google":
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"

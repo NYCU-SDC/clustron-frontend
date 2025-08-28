@@ -30,7 +30,7 @@ export type Settings = {
 
 export type boundLoginMethods = {
   boundLoginMethods: {
-    provider: "GOOGLE" | "NYCU";
+    provider: "google" | "nycu";
     email: string;
   }[];
 };

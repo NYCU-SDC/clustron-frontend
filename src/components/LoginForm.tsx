@@ -30,9 +30,9 @@ export default function LoginForm({
               <Button
                 variant="outline"
                 className="w-full p-6 cursor-pointer"
-                onClick={() => login("NYCU")}
+                onClick={() => login("nycu")}
               >
-                <LoginMethodIcon type="NYCU" />
+                <LoginMethodIcon type="nycu" />
                 {t("login.nycuLoginBtn")}
               </Button>
             </div>
@@ -45,9 +45,9 @@ export default function LoginForm({
               <Button
                 variant="outline"
                 className="w-full p-6 cursor-pointer"
-                onClick={() => login("GOOGLE")}
+                onClick={() => login("google")}
               >
-                <LoginMethodIcon type="GOOGLE" />
+                <LoginMethodIcon type="google" />
                 {t("login.googleLoginBtn")}
               </Button>
             </div>

@@ -98,7 +98,9 @@ export default function BindLoginForm() {
                   key={`${method.provider}-${method.email}`}
                   className="flex items-center gap-2"
                 >
-                  <LoginMethodIcon type={method.provider} />
+                  <LoginMethodIcon
+                    type={method.provider.toLowerCase() as "nycu" | "google"}
+                  />
                   <span className="text-gray-500 dark:text-gray-300">
                     {method.email}
                   </span>
@@ -135,7 +137,7 @@ export default function BindLoginForm() {
                   bindMutation.mutate("nycu");
                 }}
               >
-                <LoginMethodIcon type="NYCU" />
+                <LoginMethodIcon type="nycu" />
                 {t("bindLoginForm.nycuLoginBtn")}
               </Button>
             </div>
@@ -152,7 +154,7 @@ export default function BindLoginForm() {
                   bindMutation.mutate("google");
                 }}
               >
-                <LoginMethodIcon type="GOOGLE" />
+                <LoginMethodIcon type="google" />
                 {t("bindLoginForm.googleLoginBtn")}
               </Button>
             </div>
