@@ -10,7 +10,10 @@
     "saveFailToast": "Failed to save your information",
     "EmptyLinuxUsernameToast": "Linux username cannot contain spaces",
     "loadingBtn": "Loading...",
-    "saveBtnToolTip": "Please fill in your full name and Linux username"
+    "saveBtnToolTip": "Please fill in your full name and Linux username",
+    "usernameExistsErrorToast": "This Linux username is already in use",
+    "reservedKeywordErrorToast": "This Linux username is a reserved system keyword and cannot be used",
+    "warningTextForLinuxUsername": "The username to login to the remote server. This is not changeable after set."
   },
   "login": {
     "loginTitle": "Login",
@@ -24,6 +27,7 @@
     "loginBtn": "Login",
     "groupLink": "Groups",
     "settingLink": "Settings",
+    "jobsLink": "Jobs",
     "adminLink": "Admin"
   },
   "callback": {
@@ -172,9 +176,13 @@
       "save": "Save"
     },
     "createGroup": {
-      "title": "Create New Group",
-      "courseTitlePlaceholder": "Course Title",
-      "courseDescriptionPlaceholder": "Course Description",
+      "courseTitle": "Group Title",
+      "courseTitlePlaceholder": "Give your new group a title",
+      "descriptionTitle": "Description",
+      "courseDescriptionPlaceholder": "Say something about this group",
+      "linkTitle": "Link Resources",
+      "title": "title",
+      "URL": "URL",
       "addInitialMembers": "Add Initial Members",
       "studentIdOrEmail": "Student ID or Email",
       "role": "Role",

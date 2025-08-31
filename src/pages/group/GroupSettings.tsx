@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import GroupDescription from "@/components/group/GroupDes";
+import GroupDescription from "@/components/group/GroupDescription.tsx";
 import GroupMemberTable from "@/components/group/GroupMemberTable";
 import PendingMemberTable from "@/components/group/PendingMemberTable";
 import { useArchiveGroup } from "@/hooks/useArchiveGroup";
@@ -99,7 +99,11 @@ export default function GroupSettings() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <GroupDescription title={group.title} desc={group.description} />
+      <GroupDescription
+        title={group.title}
+        desc={group.description}
+        links={group.links ?? []}
+      />
 
       <GroupMemberTable
         groupId={group.id}
@@ -157,7 +161,10 @@ export default function GroupSettings() {
           </div>
 
           {!isTransferExpanded && (
-            <Button onClick={() => setIsTransferExpanded(true)}>
+            <Button
+              onClick={() => setIsTransferExpanded(true)}
+              disabled={group.isArchived || isToggling}
+            >
               {t("groupSettings.transferOwnership.startButton")}
             </Button>
           )}
@@ -178,6 +185,7 @@ export default function GroupSettings() {
               value={transferOwnerEmail}
               onChange={(e) => setTransferOwnerEmail(e.target.value)}
               className="mb-4 placeholder:text-gray-400"
+              disabled={isToggling}
             />
 
             <div className="flex gap-2">
@@ -192,7 +200,12 @@ export default function GroupSettings() {
               </Button>
               <Button
                 onClick={handleTransfer}
-                disabled={!transferOwnerEmail || isTransferring}
+                disabled={
+                  !transferOwnerEmail ||
+                  isTransferring ||
+                  isToggling ||
+                  group.isArchived
+                }
               >
                 {isTransferring
                   ? t("groupSettings.transferOwnership.transferring")

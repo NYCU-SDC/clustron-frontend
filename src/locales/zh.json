@@ -10,7 +10,10 @@
     "saveFailToast": "基本資訊儲存失敗",
     "EmptyLinuxUsernameToast": "Linux 使用者名稱不可包含空白字元",
     "loadingBtn": "載入中...",
-    "saveBtnToolTip": "請填入你的姓名和Linux使用者名稱"
+    "saveBtnToolTip": "請填入你的姓名和Linux使用者名稱",
+    "usernameExistsErrorToast": "此 Linux 使用者名稱已被使用",
+    "reservedKeywordErrorToast": "此 Linux 使用者名稱為系統保留字，無法使用",
+    "warningTextForLinuxUsername": "用於登入遠端伺服器的Linux使用者名稱，設定後將無法修改。"
   },
   "login": {
     "loginTitle": "登入",
@@ -24,6 +27,7 @@
     "logoutBtn": "登出",
     "groupLink": "群組",
     "settingLink": "設定",
+    "jobsLink": "排程",
     "adminLink": "管理"
   },
   "callback": {
@@ -172,9 +176,13 @@
       "save": "儲存"
     },
     "createGroup": {
-      "title": "建立新群組",
-      "courseTitlePlaceholder": "課程標題",
-      "courseDescriptionPlaceholder": "課程描述",
+      "courseTitle": "群組名稱",
+      "courseTitlePlaceholder": "為你的新群組取個名稱",
+      "descriptionTitle": "描述",
+      "courseDescriptionPlaceholder": "介紹一下這個群組",
+      "linkTitle": "連結資源",
+      "title": "標題",
+      "URL": "網址",
       "addInitialMembers": "新增初始成員",
       "studentIdOrEmail": "學號或電子信箱",
       "role": "角色",
