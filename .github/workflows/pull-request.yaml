@@ -123,7 +123,7 @@ jobs:
             --header 'x-deploy-token: ${{ secrets.N8N_DEPLOY_TOKEN }}' \
               --data-raw '{
             "source": {
-              "title": "Core System",
+              "title": "Clustron",
               "repo": "${{ github.repository }}",
               "branch": "${{ github.head_ref || github.ref_name }}",
               "commit": "${{ github.sha }}",
