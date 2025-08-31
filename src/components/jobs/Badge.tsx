@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import type { JobState } from "@/types/type";
+import type { JobState } from "@/types/settings";
 
 const STATUS_COLORS: Record<JobState, string> = {
   RUNNING: "bg-emerald-100 text-emerald-700",
