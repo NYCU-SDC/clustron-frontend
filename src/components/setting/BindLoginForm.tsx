@@ -1,3 +1,4 @@
+import { useEffect, useState, useMemo } from "react";
 import {
   Card,
   CardContent,
@@ -22,12 +23,11 @@ import { createBindMethods } from "@/lib/request/createBindMethods";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LoginMethodIcon } from "@/components/setting/LoginMethodIcon";
 import { toast } from "sonner";
-import { useEffect, useState } from "react";
 
 export default function BindLoginForm() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const { t } = useTranslation();
-  const PROFILE_QUERY_KEY = ["connectedAccounts"];
+  const PROFILE_QUERY_KEY = useMemo(() => ["connectedAccounts"], []);
   const queryClient = useQueryClient();
 
   const { data, isSuccess, isLoading, isError } = useQuery({
@@ -40,8 +40,8 @@ export default function BindLoginForm() {
     onSuccess: (data) => {
       console.log(data);
       const url = data.url;
-      const width = 500;
-      const height = 600;
+      const width = 1200;
+      const height = 1800;
       const left = window.screenX + (window.outerWidth - width) / 2;
       const top = window.screenY + (window.outerHeight - height) / 2;
 
@@ -52,24 +52,23 @@ export default function BindLoginForm() {
       );
     },
     onError: () => {
-      toast.error("bindLoginForm.bindFailToast");
+      toast.error(t("bindLoginForm.bindFailToast"));
     },
   });
 
   useEffect(() => {
     const listener = (event: MessageEvent) => {
+      setDialogOpen(false);
       if (event.data?.type === "BIND_SUCCESS") {
-        setDialogOpen(false);
-        toast.success("bindLoginForm.bindSuccessToast");
+        toast.success(t("bindLoginForm.bindSuccessToast"));
         queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
       } else if (event.data?.type === "BIND_FAIL") {
-        setDialogOpen(false);
-        toast.success("bindLoginForm.bindFailToast");
+        toast.success(t("bindLoginForm.bindFailToast"));
       }
     };
     window.addEventListener("message", listener);
     return () => window.removeEventListener("message", listener);
-  }, []);
+  }, [PROFILE_QUERY_KEY, queryClient, t]);
 
   return (
     <Card className="flex flex-col gap-6">
