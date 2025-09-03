@@ -21,6 +21,7 @@ import AddMemberResult from "@/pages/group/AddMemberResult";
 import JobDashboard from "@/pages/job/JobDashboard";
 import AdminLayout from "@/pages/layouts/AdminLayout.tsx";
 import RoleConfiguration from "@/pages/admin/RoleConfiguration.tsx";
+import JobSubmitPage from "@/pages/JobSubmitPage.tsx";
 const App = () => {
   return (
     <Routes>
@@ -48,6 +49,7 @@ const App = () => {
             element={<AddMemberResult />}
           />
           <Route path="/joblist" element={<JobDashboard />} />
+          <Route path="/jobform" element={<JobSubmitPage />} />
           <Route element={<GroupLayout />}>
             <Route path="/groups" element={<GroupListPage />} />
             <Route path="/groups/new" element={<AddGroupPage />} />
