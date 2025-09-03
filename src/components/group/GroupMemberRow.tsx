@@ -1,6 +1,6 @@
 import { TableRow, TableCell } from "@/components/ui/table";
 import { ChevronDown, Loader2 } from "lucide-react";
-import MemberDeleteMenu from "./MemberDeleteMenu.tsx";
+import MemberDeleteMenu from "./MemberDeleteMenu";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -13,7 +13,7 @@ import {
   type GroupRoleAccessLevel,
 } from "@/types/group";
 import { useRoleMapper } from "@/hooks/useRoleMapper"; //
-import { Button } from "@/components/ui/button.tsx";
+import { Button } from "@/components/ui/button";
 import { GlobalRole } from "@/lib/permission";
 type Props = {
   name: string;

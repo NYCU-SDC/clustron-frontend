@@ -57,6 +57,12 @@ export default function Navbar() {
                   {t("navbar.groupLink")}
                 </NavLink>
                 <NavLink
+                  to="/joblist"
+                  className={({ isActive }) => navLinkclass(isActive)}
+                >
+                  {t("navbar.jobsLink")}
+                </NavLink>
+                <NavLink
                   to="/setting"
                   className={({ isActive }) => navLinkclass(isActive)}
                 >
