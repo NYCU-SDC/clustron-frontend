@@ -14,7 +14,11 @@ export default function BindCallback() {
     const error = params.get("error");
 
     if (!accessToken || !refreshToken || error) {
-      window.opener?.postMessage({ type: "BIND_FAIL" });
+      if (error?.includes("conflict")) {
+        window.opener?.postMessage({ type: "BIND_CONFLICT" });
+      } else {
+        window.opener?.postMessage({ type: "BIND_FAIL" });
+      }
       window.close();
       return;
     }

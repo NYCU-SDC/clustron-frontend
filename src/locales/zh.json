@@ -262,7 +262,7 @@
     "googleLoginNote": "非國立陽明交通大學在學生 請使用 Google 帳號登入",
     "googleLoginBtn": "使用 Google 登入",
     "bindFailToast": "綁定失敗",
-    "bindSameAccountToast": "該帳號已被綁定",
+    "bindConflictToast": "該帳號已被綁定",
     "bindSuccessToast": "綁定成功",
     "popupBlockedToast": "你的瀏覽器阻擋了綁定視窗，請允許彈出視窗後再試一次。"
   }
