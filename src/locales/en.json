@@ -263,6 +263,7 @@
     "googleLoginBtn": "Login with Google",
     "bindFailToast": "Fail to connect to another account",
     "bindSameAccountToast": "You have already connect to that account!",
-    "bindSuccessToast": "Connect Successful"
+    "bindSuccessToast": "Connect Successful",
+    "bindLoginForm.popupBlockedToast": "The binding popup was blocked by your browser. Please allow pop-ups and try again."
   }
 }

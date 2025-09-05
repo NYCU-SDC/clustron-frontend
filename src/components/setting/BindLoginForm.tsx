@@ -43,11 +43,15 @@ export default function BindLoginForm() {
       const left = window.screenX + (window.outerWidth - width) / 2;
       const top = window.screenY + (window.outerHeight - height) / 2;
 
-      window.open(
+      const popup = window.open(
         url,
         "BindPopup",
         `width=${width},height=${height},left=${left},top=${top},resizable`,
       );
+
+      if (!popup) {
+        toast.error(t("bindLoginForm.popupBlockedToast"));
+      }
     },
     onError: () => {
       toast.error(t("bindLoginForm.bindFailToast"));
