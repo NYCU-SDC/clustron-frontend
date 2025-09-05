@@ -14,7 +14,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { useTranslation } from "react-i18next";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -38,7 +37,6 @@ export default function BindLoginForm() {
   const bindMutation = useMutation({
     mutationFn: (provider: "nycu" | "google") => createBindMethods(provider),
     onSuccess: (data) => {
-      console.log(data);
       const url = data.url;
       const width = 1200;
       const height = 1800;
@@ -112,11 +110,12 @@ export default function BindLoginForm() {
       </CardContent>
       <Separator />
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogTrigger className="mr-auto" asChild>
-          <Button className="px-7 py-5 ml-5 w-fit cursor-pointer">
-            {t("bindLoginForm.connectLoginMethodBtn")}
-          </Button>
-        </DialogTrigger>
+        <Button
+          className="px-7 py-5 ml-5 w-fit cursor-pointer"
+          onClick={() => setDialogOpen(true)}
+        >
+          {t("bindLoginForm.connectLoginMethodBtn")}
+        </Button>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{t("bindLoginForm.dialogTitle")}</DialogTitle>
