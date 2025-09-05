@@ -14,6 +14,7 @@ import { AccessLevelOwner, GroupMemberRoleName } from "@/types/group";
 import { cn } from "@/lib/utils";
 import { AccessLevelUser } from "@/types/group";
 import { useTranslation } from "react-i18next";
+import { useUserAutocomplete } from "@/hooks/useUserAutocomplete.ts";
 
 type Props = {
   index: number;
@@ -50,43 +51,79 @@ export default function AddMemberRow({
 }: Props) {
   const { t } = useTranslation();
   const { getRolesByAccessLevel } = useRoleMapper();
+  const { query, setQuery, suggestions, showSuggestions, handleSelect } =
+    useUserAutocomplete();
 
   const effectiveAccessLevel =
     globalRole === "admin" ? AccessLevelOwner : accessLevel;
 
   const assignableRoles = getRolesByAccessLevel(effectiveAccessLevel);
   const isInputDisabled = disabled || isPending;
+
   return (
     <tr className={`hover:bg-muted ${isPending ? "opacity-50" : ""}`}>
       <td className="py-2 px-2">
-        <Input
-          value={id}
-          disabled={isInputDisabled}
-          placeholder={t("groupComponents.addMemberRow.enterStudentIdOrEmail")}
-          className={cn(
-            "h-10 w-full text-sm",
-            isDuplicate && "border-red-500 bg-red-50",
-          )}
-          onChange={(e) => onChange(index, "id", e.target.value)}
-          title={
-            isDuplicate ? t("groupComponents.addMemberRow.duplicateEntry") : ""
-          }
-          onPaste={(e) => {
-            const pasted = e.clipboardData.getData("text");
-            const rows = pasted
-              .split("\n")
-              .map((r) => r.trim())
-              .filter(Boolean);
-            if (rows.length > 1) {
-              e.preventDefault();
-              const newMembers = rows.map((r) => ({
-                id: r,
-                roleName: assignableRoles[0]?.roleName ?? "",
-              }));
-              onAddBatch(newMembers);
+        {/* ✅ Wrapper div for relative positioning */}
+        <div style={{ position: "relative" }}>
+          <Input
+            value={query || id}
+            disabled={isInputDisabled}
+            placeholder={t(
+              "groupComponents.addMemberRow.enterStudentIdOrEmail",
+            )}
+            className={cn(
+              "h-10 w-full text-sm",
+              isDuplicate && "border-red-500 bg-red-50",
+            )}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              onChange(index, "id", e.target.value);
+            }}
+            title={
+              isDuplicate
+                ? t("groupComponents.addMemberRow.duplicateEntry")
+                : ""
             }
-          }}
-        />
+            onPaste={(e) => {
+              const pasted = e.clipboardData.getData("text");
+              const rows = pasted
+                .split("\n")
+                .map((r) => r.trim())
+                .filter(Boolean);
+              if (rows.length > 1) {
+                e.preventDefault();
+                const newMembers = rows.map((r) => ({
+                  id: r,
+                  roleName: assignableRoles[0]?.roleName ?? "",
+                }));
+                onAddBatch(newMembers);
+              }
+            }}
+          />
+
+          {showSuggestions && suggestions.length > 0 && (
+            <ul className="absolute z-10 bg-white border w-full max-h-40 overflow-y-auto">
+              {suggestions.map((user) => (
+                <li
+                  key={typeof user === "string" ? user : user.id}
+                  className="px-2 py-1 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => {
+                    handleSelect(user);
+                    onChange(
+                      index,
+                      "id",
+                      typeof user === "string" ? user : user.id,
+                    );
+                  }}
+                >
+                  {typeof user === "string"
+                    ? user
+                    : `${user.name} (${user.email})`}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </td>
 
       <td className="py-2 px-2">
