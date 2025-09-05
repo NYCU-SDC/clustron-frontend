@@ -61,7 +61,7 @@ export default function BindLoginForm() {
         toast.success(t("bindLoginForm.bindSuccessToast"));
         queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
       } else if (event.data?.type === "BIND_FAIL") {
-        toast.success(t("bindLoginForm.bindFailToast"));
+        toast.error(t("bindLoginForm.bindFailToast"));
       }
     };
     window.addEventListener("message", listener);
