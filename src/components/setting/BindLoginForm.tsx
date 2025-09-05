@@ -60,8 +60,8 @@ export default function BindLoginForm() {
 
   useEffect(() => {
     const listener = (event: MessageEvent) => {
-      setDialogOpen(false);
       if (event.data?.type === "BIND_SUCCESS") {
+        setDialogOpen(false);
         toast.success(t("bindLoginForm.bindSuccessToast"));
         queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
       } else if (event.data?.type === "BIND_CONFLICT") {
