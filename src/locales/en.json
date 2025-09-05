@@ -262,7 +262,7 @@
     "googleLoginNote": "Not an NYCU student? Log in via Google account",
     "googleLoginBtn": "Login with Google",
     "bindFailToast": "Fail to connect to another account",
-    "bindConflictToast": "You have already connect to that account!",
+    "bindConflictToast": "You have already connected to that account",
     "bindSuccessToast": "Connect Successful",
     "popupBlockedToast": "The binding popup was blocked by your browser. Please allow pop-ups and try again."
   }
