@@ -25,3 +25,5 @@ dist-ssr
 
 .env
 .env.devlocal
+*storybook.log
+storybook-static
