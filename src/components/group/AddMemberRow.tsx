@@ -102,6 +102,7 @@ export default function AddMemberRow({
           />
 
           {showSuggestions && suggestions.length > 0 && (
+            //Infinite query
             <ul className="absolute z-10 bg-white border w-full max-h-40 overflow-y-auto">
               {suggestions.map((user) => (
                 <li

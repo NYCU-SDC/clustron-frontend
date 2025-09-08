@@ -25,9 +25,8 @@ export const useUserAutocomplete = <T = string>(
 
     const fetchSuggestions = async () => {
       try {
-        // 👇 build request with query param
         const response = await fetch(
-          `${apiEndpoint}?q=${encodeURIComponent(query)}`,
+          `/api/searchUser?query=${encodeURIComponent(query)}`,
         );
         if (!response.ok) throw new Error("Network response was not ok");
 
