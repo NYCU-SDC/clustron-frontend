@@ -296,5 +296,10 @@
     "commandPreviewTitle": "指令預覽",
     "commandPlaceholder": "指令",
     "submitButton": "提交"
+  },
+  "jobsSideBar": {
+    "title": "工作任務",
+    "ListNavLink": "清單",
+    "SubmitNavLink": "提交"
   }
 }
