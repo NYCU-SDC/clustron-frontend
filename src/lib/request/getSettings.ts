@@ -1,6 +1,6 @@
 import { api } from "@/lib/request/api";
-import type { fullSettings } from "@/types/settings";
+import type { Settings, BoundLoginMethods } from "@/types/settings";
 
-export async function getSettings(): Promise<fullSettings> {
+export async function getSettings(): Promise<Settings & BoundLoginMethods> {
   return api("/api/settings");
 }

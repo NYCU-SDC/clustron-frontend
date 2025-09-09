@@ -1,9 +1,9 @@
 import { api } from "@/lib/request/api";
-import { BindLoginRespose } from "@/types/settings";
+import { BoundLoginRespose } from "@/types/settings";
 
 export async function createBindMethods(
   provider: "nycu" | "google",
-): Promise<BindLoginRespose> {
+): Promise<BoundLoginRespose> {
   const callbackUrl = `${window.location.protocol}//${window.location.host}/callback/bind`;
   const params = new URLSearchParams({ c: callbackUrl });
   return api(`/api/bind/oauth/${provider}?${params.toString()}`, {
