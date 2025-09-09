@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -22,11 +22,11 @@ import { createBindMethods } from "@/lib/request/bindLoginMethod";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LoginMethodIcon } from "@/components/setting/LoginMethodIcon";
 import { toast } from "sonner";
+const PROFILE_QUERY_KEY = ["connectedAccounts"];
 
 export default function BindLoginForm() {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const { t } = useTranslation();
-  const PROFILE_QUERY_KEY = useMemo(() => ["connectedAccounts"], []);
   const queryClient = useQueryClient();
 
   const { data, isSuccess, isLoading, isError } = useQuery({
@@ -72,7 +72,7 @@ export default function BindLoginForm() {
     };
     window.addEventListener("message", listener);
     return () => window.removeEventListener("message", listener);
-  }, [PROFILE_QUERY_KEY, queryClient, t]);
+  }, [queryClient, t]);
 
   return (
     <Card className="flex flex-col gap-6">
