@@ -1,4 +1,4 @@
-import { type JobState } from "@/types/settings";
+import { type JobState } from "@/types/jobs";
 import { Badge } from "@/components/jobs/Badge.tsx";
 
 type Job = {

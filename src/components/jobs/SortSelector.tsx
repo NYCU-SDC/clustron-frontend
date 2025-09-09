@@ -13,7 +13,7 @@ import {
   ArrowUpNarrowWide,
   ArrowDownWideNarrow,
 } from "lucide-react";
-import type { SortBy } from "@/types/settings";
+import type { SortBy } from "@/types/jobs";
 
 const sortOptions: { key: SortBy; label: string }[] = [
   { key: "id", label: "ID" },
