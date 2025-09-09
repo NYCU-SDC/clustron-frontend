@@ -1,5 +1,8 @@
 import { api } from "@/lib/request/api";
-import { BoundLoginRespose } from "@/types/settings";
+
+type BoundLoginRespose = {
+  url: string;
+};
 
 export async function createBindMethods(
   provider: "nycu" | "google",

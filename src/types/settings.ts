@@ -34,7 +34,3 @@ export type BoundLoginMethods = {
     email: string;
   }[];
 };
-
-export type BoundLoginRespose = {
-  url: string;
-};
