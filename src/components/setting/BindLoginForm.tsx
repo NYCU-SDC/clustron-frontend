@@ -18,13 +18,13 @@ import {
 import { useTranslation } from "react-i18next";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getSettings } from "@/lib/request/getSettings";
-import { createBindMethods } from "@/lib/request/createBindMethods";
+import { createBindMethods } from "@/lib/request/bindLoginMethod";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LoginMethodIcon } from "@/components/setting/LoginMethodIcon";
 import { toast } from "sonner";
 
 export default function BindLoginForm() {
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [isDialogOpen, setDialogOpen] = useState(false);
   const { t } = useTranslation();
   const PROFILE_QUERY_KEY = useMemo(() => ["connectedAccounts"], []);
   const queryClient = useQueryClient();
@@ -38,8 +38,8 @@ export default function BindLoginForm() {
     mutationFn: (provider: "nycu" | "google") => createBindMethods(provider),
     onSuccess: (data) => {
       const url = data.url;
-      const width = 1200;
-      const height = 1800;
+      const width = 600;
+      const height = 800;
       const left = window.screenX + (window.outerWidth - width) / 2;
       const top = window.screenY + (window.outerHeight - height) / 2;
 
@@ -115,7 +115,7 @@ export default function BindLoginForm() {
         </div>
       </CardContent>
       <Separator />
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
         <Button
           className="px-7 py-5 ml-5 w-fit cursor-pointer"
           onClick={() => setDialogOpen(true)}
