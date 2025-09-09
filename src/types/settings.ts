@@ -27,10 +27,3 @@ export type Settings = {
   fullName: string;
   linuxUsername: string;
 };
-
-export type BoundLoginMethods = {
-  boundLoginMethods: {
-    provider: "google" | "nycu";
-    email: string;
-  }[];
-};

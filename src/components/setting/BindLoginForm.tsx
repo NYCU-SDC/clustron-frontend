@@ -18,7 +18,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getSettings } from "@/lib/request/getSettings";
-import { createBindMethods } from "@/lib/request/bindLoginMethod";
+import { bindLoginMethods } from "@/lib/request/bindLoginMethods";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LoginMethodIcon } from "@/components/setting/LoginMethodIcon";
 import { toast } from "sonner";
@@ -35,7 +35,7 @@ export default function BindLoginForm() {
   });
 
   const bindMutation = useMutation({
-    mutationFn: (provider: "nycu" | "google") => createBindMethods(provider),
+    mutationFn: (provider: "nycu" | "google") => bindLoginMethods(provider),
     onSuccess: (data) => {
       const url = data.url;
       const width = 600;
