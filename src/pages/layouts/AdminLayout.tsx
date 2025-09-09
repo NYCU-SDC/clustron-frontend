@@ -3,7 +3,7 @@ import AdminSideBar from "@/components/admin/AdminSidebar";
 import { jwtDecode } from "jwt-decode";
 import { getAccessToken } from "@/lib/token";
 import { useState, useEffect } from "react";
-import { AccessToken } from "@/types/type";
+import { AccessToken } from "@/types/settings";
 import { useNavigate } from "react-router";
 
 export default function AdminLayout() {

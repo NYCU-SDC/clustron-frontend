@@ -9,8 +9,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Filter as FilterIcon, ChevronDown } from "lucide-react";
-import type { FilterOptions } from "@/types/type";
-import type { JobState } from "@/types/type";
+import type { FilterOptions } from "@/types/jobs";
+import type { JobState } from "@/types/jobs";
 import { Badge } from "@/components/jobs/Badge.tsx";
 
 // Job status options

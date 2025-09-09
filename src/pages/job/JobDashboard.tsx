@@ -3,7 +3,7 @@ import JobList from "@/components/jobs/JobList";
 import SortSelector from "@/components/jobs/SortSelector";
 import FilterPanel from "@/components/jobs/FilterPanel";
 import { jobsData, JobResponse } from "@/lib/mocks/jobData"; // TODO: change real api from backend
-import type { SortBy, FilterOptions } from "@/types/type";
+import type { SortBy, FilterOptions } from "@/types/jobs";
 import CountsBar from "@/components/jobs/CountsBar";
 import {
   Pagination,

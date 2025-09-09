@@ -14,7 +14,7 @@ import ColorModeToggle from "@/components/ColorModeToggle";
 import { CircleUserRound } from "lucide-react";
 import { getAccessToken } from "@/lib/token";
 import { jwtDecode } from "jwt-decode";
-import { AccessToken } from "@/types/type";
+import { AccessToken } from "@/types/settings";
 import { LogOut } from "lucide-react";
 
 function navLinkclass(isActive: boolean) {
@@ -84,7 +84,7 @@ export default function Navbar() {
           <ColorModeToggle />
           {isLoggedIn() ? (
             <DropdownMenu>
-              <DropdownMenuTrigger>
+              <DropdownMenuTrigger className="cursor-pointer">
                 <CircleUserRound />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
