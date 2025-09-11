@@ -72,7 +72,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: "vite --mode development",
+    command: "vite --mode devlocal",
     url: "http://localhost:5173",
     reuseExistingServer: !process.env.CI,
   },
