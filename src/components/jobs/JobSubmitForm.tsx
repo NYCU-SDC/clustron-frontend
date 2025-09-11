@@ -1,38 +1,56 @@
+// Types
+type EnvVar = { key: string; value: string };
+
+interface JobSubmitFormData {
+  jobName: string;
+  comment: string;
+  scriptPath: string;
+  cwd: string;
+  partition: string;
+  tasks: number;
+  cpus: number;
+  memPerCpu: number;
+  nodes: number;
+  memPerNode: number;
+  timeLimit: number;
+  stdin: string;
+  stdout: string;
+  stderr: string;
+  command: string;
+}
+
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PlusCircledIcon, MinusCircledIcon } from "@radix-ui/react-icons";
 
 // ui components
-import { Label } from "@/components/ui/label.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { Textarea } from "@/components/ui/textarea.tsx";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select.tsx";
-import { Button } from "@/components/ui/button.tsx";
-
-// Types
-type EnvVar = { key: string; value: string };
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 export default function JobSubmitForm() {
   const { t } = useTranslation();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<JobSubmitFormData>({
     jobName: "",
     comment: "",
     scriptPath: "",
     cwd: "",
     partition: "",
-    tasks: "",
-    cpus: "",
-    memPerCpu: "",
-    nodes: "",
-    memPerNode: "",
-    timeLimit: "",
+    tasks: 0,
+    cpus: 0,
+    memPerCpu: 0,
+    nodes: 0,
+    memPerNode: 0,
+    timeLimit: 0,
     stdin: "",
     stdout: "",
     stderr: "",
@@ -45,7 +63,25 @@ export default function JobSubmitForm() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    const fieldName = name as keyof JobSubmitFormData;
+    const numberFields: (keyof JobSubmitFormData)[] = [
+      "tasks",
+      "cpus",
+      "memPerCpu",
+      "nodes",
+      "memPerNode",
+      "timeLimit",
+    ];
+
+    setFormData((prev) => ({
+      ...prev,
+      [fieldName]: numberFields.includes(fieldName)
+        ? value === ""
+          ? 0
+          : Number(value) // 清空時給 0；若想區分空值可改成 undefined 並把型別調成 number | undefined
+        : value,
+    }));
   };
 
   const handleEnvChange = (
@@ -242,6 +278,9 @@ export default function JobSubmitForm() {
               <Input
                 id="tasks"
                 name="tasks"
+                type="number"
+                min={1}
+                step={1}
                 value={formData.tasks}
                 onChange={handleChange}
                 className="w-[70%]"
@@ -256,6 +295,9 @@ export default function JobSubmitForm() {
               <Input
                 id="cpus"
                 name="cpus"
+                type="number"
+                min={1}
+                step={1}
                 value={formData.cpus}
                 onChange={handleChange}
                 className="w-[70%]"
@@ -269,6 +311,9 @@ export default function JobSubmitForm() {
               <Input
                 id="memPerCpu"
                 name="memPerCpu"
+                type="number"
+                min={1}
+                step={1}
                 value={formData.memPerCpu}
                 onChange={handleChange}
                 className="w-[70%]"
@@ -280,6 +325,9 @@ export default function JobSubmitForm() {
               <Input
                 id="nodes"
                 name="nodes"
+                type="number"
+                min={1}
+                step={1}
                 value={formData.nodes}
                 onChange={handleChange}
                 className="w-[70%]"
@@ -293,6 +341,9 @@ export default function JobSubmitForm() {
               <Input
                 id="memPerNode"
                 name="memPerNode"
+                type="number"
+                min={1}
+                step={1}
                 value={formData.memPerNode}
                 onChange={handleChange}
                 className="w-[70%]"
@@ -306,6 +357,9 @@ export default function JobSubmitForm() {
               <Input
                 id="timeLimit"
                 name="timeLimit"
+                type="number"
+                min={1}
+                step={1}
                 value={formData.timeLimit}
                 onChange={handleChange}
                 className="w-[70%]"
