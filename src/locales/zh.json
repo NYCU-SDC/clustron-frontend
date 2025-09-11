@@ -301,5 +301,20 @@
     "title": "工作任務",
     "ListNavLink": "清單",
     "SubmitNavLink": "提交"
+  },
+  "bindLoginForm": {
+    "cardTitle": "連結其他登入方式",
+    "cardDescription": "使用不同的登入方式存取同一個帳號",
+    "connectLoginMethods": "已連結登入方式：",
+    "connectLoginMethodBtn": "＋ 連結登入方式",
+    "dialogTitle": "Clustron",
+    "nycuLoginNote": "國立陽明交通大學在學生 請透過單一入口登入",
+    "nycuLoginBtn": "使用國立陽明交通大學單一入口登入",
+    "googleLoginNote": "非國立陽明交通大學在學生 請使用 Google 帳號登入",
+    "googleLoginBtn": "使用 Google 登入",
+    "bindFailToast": "綁定失敗",
+    "bindConflictToast": "該帳號已被綁定",
+    "bindSuccessToast": "綁定成功",
+    "popupBlockedToast": "你的瀏覽器阻擋了綁定視窗，請允許彈出視窗後再試一次。"
   }
 }

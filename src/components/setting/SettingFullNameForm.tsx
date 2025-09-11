@@ -23,7 +23,7 @@ import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2Icon } from "lucide-react";
-import type { Settings } from "@/types/type";
+import type { Settings } from "@/types/settings";
 
 export default function SettingFullNameForm({
   className,
@@ -35,12 +35,7 @@ export default function SettingFullNameForm({
   const queryClient = useQueryClient();
   const PROFILE_QUERY_KEY = ["username"];
 
-  const {
-    data = { fullName: "", linuxUsername: "" },
-    isSuccess,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data, isSuccess, isLoading, isError } = useQuery({
     queryKey: PROFILE_QUERY_KEY,
     queryFn: getSettings,
   });
@@ -108,7 +103,7 @@ export default function SettingFullNameForm({
                 <Button
                   className="px-7 py-5 w-24 cursor-pointer"
                   onClick={() => {
-                    addMutation.mutate({ fullName: fullName, linuxUsername });
+                    addMutation.mutate({ fullName, linuxUsername });
                   }}
                 >
                   {t("settingFullNameForm.saveBtn")}

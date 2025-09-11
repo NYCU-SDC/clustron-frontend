@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import DefaultLayout from "./pages/layouts/DefaultLayout";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
-import Callback from "@/pages/group/Callback";
+import LoginCallback from "@/pages/LoginCallback";
 import Onboarding from "@/pages/Onboarding";
 import SettingLayout from "@/pages/layouts/SettingLayout";
 import SettingGeneral from "@/pages/setting/SettingGeneral";
@@ -19,9 +19,10 @@ import AddGroupPage from "@/pages/group/CreateGroup";
 import GroupLayout from "@/pages/layouts/GroupLayout";
 import AddMemberResult from "@/pages/group/AddMemberResult";
 import JobDashboard from "@/pages/job/JobDashboard";
-import AdminLayout from "@/pages/layouts/AdminLayout.tsx";
-import RoleConfiguration from "@/pages/admin/RoleConfiguration.tsx";
-import JobSubmitPage from "@/pages/JobSubmitPage.tsx";
+import AdminLayout from "@/pages/layouts/AdminLayout";
+import RoleConfiguration from "@/pages/admin/RoleConfiguration";
+import BindCallback from "@/pages/BindCallback";
+import JobSubmitPage from "@/pages/JobSubmitPage";
 const App = () => {
   return (
     <Routes>
@@ -29,7 +30,11 @@ const App = () => {
         <Route path="/" element={<Home />} />
       </Route>
 
-      <Route path="/callback" element={<Callback />} />
+      <Route path="/callback">
+        <Route path="login" element={<LoginCallback />} />
+        <Route path="bind" element={<BindCallback />} />
+      </Route>
+
       <Route path="/health" element={<div>Health Check</div>} />
 
       <Route element={<ProtectedRoute />}>
