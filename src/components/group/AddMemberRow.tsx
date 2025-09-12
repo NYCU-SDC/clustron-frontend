@@ -15,6 +15,12 @@ import { cn } from "@/lib/utils";
 import { AccessLevelUser } from "@/types/group";
 import { useTranslation } from "react-i18next";
 import { useUserAutocomplete } from "@/hooks/useUserAutocomplete";
+import {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandItem,
+} from "@/components/ui/command";
 
 type Props = {
   index: number;
@@ -104,20 +110,21 @@ export default function AddMemberRow({
           />
 
           {showSuggestions && suggestions.length > 0 && (
-            <ul className="absolute z-10 bg-white border w-full max-h-40 overflow-y-auto ">
-              {suggestions.map((user) => (
-                <li
-                  key={user.identifier}
-                  className="px-2 py-1 hover:bg-gray-100 cursor-pointer z-40 text-black"
-                  onClick={() => {
-                    handleSelect(user);
-                    onChange(index, "id", user.identifier);
-                  }}
-                >
-                  {user.identifier}
-                </li>
-              ))}
-            </ul>
+            <Command>
+              <CommandList>
+                {suggestions.map((user) => (
+                  <CommandItem
+                    key={user.identifier}
+                    onSelect={() => {
+                      handleSelect(user);
+                      onChange(index, "id", user.identifier);
+                    }}
+                  >
+                    {user.identifier}
+                  </CommandItem>
+                ))}
+              </CommandList>
+            </Command>
           )}
         </div>
       </td>
