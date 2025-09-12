@@ -15,12 +15,7 @@ import { cn } from "@/lib/utils";
 import { AccessLevelUser } from "@/types/group";
 import { useTranslation } from "react-i18next";
 import { useUserAutocomplete } from "@/hooks/useUserAutocomplete";
-import {
-  Command,
-  CommandInput,
-  CommandList,
-  CommandItem,
-} from "@/components/ui/command";
+import { Command, CommandList, CommandItem } from "@/components/ui/command";
 
 type Props = {
   index: number;
