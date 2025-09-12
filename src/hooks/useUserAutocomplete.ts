@@ -59,8 +59,6 @@ export const useUserAutocomplete = <T = string>(
     let displayValue: string;
 
     if (typeof item === "object" && item !== null && "identifier" in item) {
-      // 修正點 1：用 as 關鍵字強制 TypeScript 相信 item 有 identifier
-      // 意思就是「把 item 當作一個有 identifier 屬性的物件」
       displayValue = String((item as { identifier: unknown }).identifier);
     } else {
       displayValue = String(item);

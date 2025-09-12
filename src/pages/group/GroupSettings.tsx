@@ -91,7 +91,7 @@ export default function GroupSettings() {
     transferOwner({ identifier: transferOwnerEmail });
   };
 
-  const { query, setQuery, suggestions, showSuggestions, handleSelect } =
+  const { setQuery, suggestions, showSuggestions, handleSelect } =
     useUserAutocomplete<{ identifier: string }>();
 
   if (!user || !group) {
