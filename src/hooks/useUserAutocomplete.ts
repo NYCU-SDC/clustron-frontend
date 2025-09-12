@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { api } from "@/lib/request/api";
 
 export interface UseAutocompleteResult<T> {
   query: string;
@@ -8,8 +9,16 @@ export interface UseAutocompleteResult<T> {
   handleSelect: (item: T) => void;
 }
 
+interface PaginatedResponse<ItemType> {
+  items: ItemType[];
+  currentPage: number;
+  hasNextPage: boolean;
+  pageSize: number;
+  totalItems: number;
+  totalPages: number;
+}
+
 export const useUserAutocomplete = <T = string>(
-  apiEndpoint: string,
   delay: number = 300,
 ): UseAutocompleteResult<T> => {
   const [query, setQuery] = useState<string>("");
@@ -25,14 +34,16 @@ export const useUserAutocomplete = <T = string>(
 
     const fetchSuggestions = async () => {
       try {
-        const response = await fetch(
+        const responseData: PaginatedResponse<T> = await api(
           `/api/searchUser?query=${encodeURIComponent(query)}`,
         );
-        if (!response.ok) throw new Error("Network response was not ok");
 
-        const data: T[] = await response.json();
-        setSuggestions(data);
-        setShowSuggestions(true);
+        setSuggestions(responseData.items);
+        if (responseData.items.length > 0) {
+          setShowSuggestions(true);
+        } else {
+          setShowSuggestions(false);
+        }
       } catch (error) {
         console.error("Fetch error:", error);
         setSuggestions([]);
@@ -42,10 +53,19 @@ export const useUserAutocomplete = <T = string>(
 
     const debounce = setTimeout(fetchSuggestions, delay);
     return () => clearTimeout(debounce);
-  }, [query, apiEndpoint, delay]);
+  }, [query, delay]);
 
   const handleSelect = (item: T) => {
-    setQuery(String(item));
+    let displayValue: string;
+
+    if (typeof item === "object" && item !== null && "identifier" in item) {
+      // 修正點 1：用 as 關鍵字強制 TypeScript 相信 item 有 identifier
+      // 意思就是「把 item 當作一個有 identifier 屬性的物件」
+      displayValue = String((item as { identifier: unknown }).identifier);
+    } else {
+      displayValue = String(item);
+    }
+    setQuery(displayValue);
     setShowSuggestions(false);
   };
 
