@@ -16,6 +16,7 @@ import {
 import { GlobalRole } from "@/lib/permission";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
 import { Button } from "@/components/ui/button";
+import { searchUser } from "@/lib/request/searchUser.tsx";
 
 export default function AddMemberPage() {
   const { id: groupId } = useParams();

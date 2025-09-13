@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { api } from "@/lib/request/api";
+import { searchUser } from "@/lib/request/searchUser.tsx";
 
 export interface UseAutocompleteResult<T> {
   query: string;
@@ -34,16 +35,9 @@ export const useUserAutocomplete = <T = string>(
 
     const fetchSuggestions = async () => {
       try {
-        const responseData: PaginatedResponse<T> = await api(
-          `/api/searchUser?query=${encodeURIComponent(query)}`,
-        );
-
+        const responseData = await searchUser<T>(query);
         setSuggestions(responseData.items);
-        if (responseData.items.length > 0) {
-          setShowSuggestions(true);
-        } else {
-          setShowSuggestions(false);
-        }
+        setShowSuggestions(responseData.items.length > 0);
       } catch (error) {
         console.error("Fetch error:", error);
         setSuggestions([]);
