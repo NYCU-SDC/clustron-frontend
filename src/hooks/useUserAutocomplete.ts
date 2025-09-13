@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { api } from "@/lib/request/api";
 import { searchUser } from "@/lib/request/searchUser.tsx";
 
 export interface UseAutocompleteResult<T> {
@@ -8,15 +7,6 @@ export interface UseAutocompleteResult<T> {
   suggestions: T[];
   showSuggestions: boolean;
   handleSelect: (item: T) => void;
-}
-
-interface PaginatedResponse<ItemType> {
-  items: ItemType[];
-  currentPage: number;
-  hasNextPage: boolean;
-  pageSize: number;
-  totalItems: number;
-  totalPages: number;
 }
 
 export const useUserAutocomplete = <T = string>(
