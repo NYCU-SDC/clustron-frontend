@@ -45,12 +45,12 @@ export default function JobSubmitForm() {
     scriptPath: "",
     cwd: "",
     partition: "",
-    tasks: 0,
-    cpus: 0,
-    memPerCpu: 0,
-    nodes: 0,
-    memPerNode: 0,
-    timeLimit: 0,
+    tasks: 1,
+    cpus: 1,
+    memPerCpu: 1,
+    nodes: 1,
+    memPerNode: 1,
+    timeLimit: 1,
     stdin: "",
     stdout: "",
     stderr: "",
@@ -62,9 +62,8 @@ export default function JobSubmitForm() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const { name, value } = e.target;
-
-    const fieldName = name as keyof JobSubmitFormData;
+    const target = e.target;
+    const fieldName = target.name as keyof JobSubmitFormData;
     const numberFields: (keyof JobSubmitFormData)[] = [
       "tasks",
       "cpus",
@@ -73,15 +72,22 @@ export default function JobSubmitForm() {
       "memPerNode",
       "timeLimit",
     ];
-
-    setFormData((prev) => ({
-      ...prev,
-      [fieldName]: numberFields.includes(fieldName)
-        ? value === ""
-          ? 0
-          : Number(value) // 清空時給 0；若想區分空值可改成 undefined 並把型別調成 number | undefined
-        : value,
-    }));
+    setFormData((prev) => {
+      if (
+        numberFields.includes(fieldName) &&
+        (target as HTMLInputElement).type === "number"
+      ) {
+        const n = (target as HTMLInputElement).valueAsNumber;
+        return {
+          ...prev,
+          [fieldName]: Number.isNaN(n) ? (NaN as unknown as number) : n,
+        };
+      }
+      return {
+        ...prev,
+        [fieldName]: (target as HTMLInputElement | HTMLTextAreaElement).value,
+      };
+    });
   };
 
   const handleEnvChange = (
@@ -110,7 +116,7 @@ export default function JobSubmitForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex min-h-screen bg-white">
+    <form onSubmit={handleSubmit} className="flex min-h-screen bg-background">
       {/* Right: Main */}
       <div className="flex-1 flex justify-center">
         <div className="w-full max-w-3xl px-6 py-10 space-y-10">
@@ -130,7 +136,7 @@ export default function JobSubmitForm() {
                 name="jobName"
                 value={formData.jobName}
                 onChange={handleChange}
-                placeholder={t("jobSubmitForm.jobNamePlaceholder") as string}
+                placeholder={t("jobSubmitForm.jobNamePlaceholder")}
                 className="w-[70%]"
                 required
               />
@@ -157,7 +163,7 @@ export default function JobSubmitForm() {
                 name="scriptPath"
                 value={formData.scriptPath}
                 onChange={handleChange}
-                placeholder={t("jobSubmitForm.scriptPathPlaceholder") as string}
+                placeholder={t("jobSubmitForm.scriptPathPlaceholder")}
                 className="min-h-24"
                 required
               />
@@ -170,7 +176,7 @@ export default function JobSubmitForm() {
                 name="cwd"
                 value={formData.cwd}
                 onChange={handleChange}
-                placeholder={t("jobSubmitForm.cwdPlaceholder") as string}
+                placeholder={t("jobSubmitForm.cwdPlaceholder")}
                 className="min-h-24"
               />
             </div>
@@ -195,14 +201,14 @@ export default function JobSubmitForm() {
                   className="grid grid-cols-3 gap-3 items-center"
                 >
                   <Input
-                    placeholder={t("jobSubmitForm.envVarPlaceholder") as string}
+                    placeholder={t("jobSubmitForm.envVarPlaceholder")}
                     value={env.key}
                     onChange={(e) =>
                       handleEnvChange(index, "key", e.target.value)
                     }
                   />
                   <Input
-                    placeholder={t("jobSubmitForm.envValPlaceholder") as string}
+                    placeholder={t("jobSubmitForm.envValPlaceholder")}
                     value={env.value}
                     onChange={(e) =>
                       handleEnvChange(index, "value", e.target.value)
@@ -255,9 +261,7 @@ export default function JobSubmitForm() {
               >
                 <SelectTrigger className="w-[40%]">
                   <SelectValue
-                    placeholder={
-                      t("jobSubmitForm.partitionPlaceholder") as string
-                    }
+                    placeholder={t("jobSubmitForm.partitionPlaceholder")}
                   />
                 </SelectTrigger>
                 <SelectContent>
@@ -281,9 +285,11 @@ export default function JobSubmitForm() {
                 type="number"
                 min={1}
                 step={1}
+                inputMode="numeric"
                 value={formData.tasks}
                 onChange={handleChange}
                 className="w-[70%]"
+                required
               />
             </div>
 
@@ -298,9 +304,11 @@ export default function JobSubmitForm() {
                 type="number"
                 min={1}
                 step={1}
+                inputMode="numeric"
                 value={formData.cpus}
                 onChange={handleChange}
                 className="w-[70%]"
+                required
               />
             </div>
 
@@ -314,6 +322,7 @@ export default function JobSubmitForm() {
                 type="number"
                 min={1}
                 step={1}
+                inputMode="numeric"
                 value={formData.memPerCpu}
                 onChange={handleChange}
                 className="w-[70%]"
@@ -328,6 +337,7 @@ export default function JobSubmitForm() {
                 type="number"
                 min={1}
                 step={1}
+                inputMode="numeric"
                 value={formData.nodes}
                 onChange={handleChange}
                 className="w-[70%]"
@@ -344,6 +354,7 @@ export default function JobSubmitForm() {
                 type="number"
                 min={1}
                 step={1}
+                inputMode="numeric"
                 value={formData.memPerNode}
                 onChange={handleChange}
                 className="w-[70%]"
@@ -360,6 +371,7 @@ export default function JobSubmitForm() {
                 type="number"
                 min={1}
                 step={1}
+                inputMode="numeric"
                 value={formData.timeLimit}
                 onChange={handleChange}
                 className="w-[70%]"
@@ -380,7 +392,7 @@ export default function JobSubmitForm() {
                 name="stdin"
                 value={formData.stdin}
                 onChange={handleChange}
-                placeholder={t("jobSubmitForm.stdinPlaceholder") as string}
+                placeholder={t("jobSubmitForm.stdinPlaceholder")}
                 className="w-[70%]"
               />
             </div>
@@ -392,7 +404,7 @@ export default function JobSubmitForm() {
                 name="stdout"
                 value={formData.stdout}
                 onChange={handleChange}
-                placeholder={t("jobSubmitForm.stdoutPlaceholder") as string}
+                placeholder={t("jobSubmitForm.stdoutPlaceholder")}
                 className="w-[70%]"
               />
             </div>
@@ -404,7 +416,7 @@ export default function JobSubmitForm() {
                 name="stderr"
                 value={formData.stderr}
                 onChange={handleChange}
-                placeholder={t("jobSubmitForm.stderrPlaceholder") as string}
+                placeholder={t("jobSubmitForm.stderrPlaceholder")}
                 className="w-[70%]"
               />
             </div>
@@ -421,7 +433,7 @@ export default function JobSubmitForm() {
               name="command"
               value={formData.command}
               onChange={handleChange}
-              placeholder={t("jobSubmitForm.commandPlaceholder") as string}
+              placeholder={t("jobSubmitForm.commandPlaceholder")}
               className="min-h-24"
             />
 

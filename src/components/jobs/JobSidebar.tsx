@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 function navLinkClass(isActive: boolean) {
@@ -21,7 +21,7 @@ export default function JobSidebar() {
       <ul className="space-y-4">
         <li>
           <NavLink
-            to={`/jobs`}
+            to="/joblist"
             className={({ isActive }) => navLinkClass(isActive)}
           >
             {t("jobsSideBar.ListNavLink")}
@@ -29,7 +29,7 @@ export default function JobSidebar() {
         </li>
         <li>
           <NavLink
-            to={`/jobform`}
+            to="/jobform"
             className={({ isActive }) => navLinkClass(isActive)}
           >
             {t("jobsSideBar.SubmitNavLink")}
