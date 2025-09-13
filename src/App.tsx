@@ -22,6 +22,8 @@ import JobDashboard from "@/pages/job/JobDashboard";
 import AdminLayout from "@/pages/layouts/AdminLayout";
 import RoleConfiguration from "@/pages/admin/RoleConfiguration";
 import BindCallback from "@/pages/BindCallback";
+import JobSubmitPage from "@/pages/JobSubmitPage";
+import JobLayout from "@/pages/layouts/JobLayout";
 const App = () => {
   return (
     <Routes>
@@ -52,7 +54,10 @@ const App = () => {
             path="/groups/:id/add-member-result"
             element={<AddMemberResult />}
           />
-          <Route path="/joblist" element={<JobDashboard />} />
+          <Route element={<JobLayout />}>
+            <Route path="/jobform" element={<JobSubmitPage />} />
+            <Route path="/joblist" element={<JobDashboard />} />
+          </Route>
           <Route element={<GroupLayout />}>
             <Route path="/groups" element={<GroupListPage />} />
             <Route path="/groups/new" element={<AddGroupPage />} />
