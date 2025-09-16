@@ -1,6 +1,39 @@
 // Types
 type EnvVar = { key: string; value: string };
 
+function shellArg(s: string) {
+  if (!s) return "";
+  return `'${s.replace(/'/g, `'"'"'`)}'`; // 單引號安全處理
+}
+
+export function buildSrunCommand(form: JobSubmitFormData) {
+  const args: string[] = [];
+
+  // 照你的指定順序逐一 push
+  if (form.jobName) args.push(`-J ${shellArg(form.jobName)}`);
+  if (form.comment) args.push(`--comment=${shellArg(form.comment)}`);
+  if (form.cwd) args.push(`-D ${shellArg(form.cwd)}`);
+  if (form.nodes) args.push(`-N ${form.nodes}`);
+  if (form.cpus) args.push(`-c ${form.cpus}`);
+  if (form.memPerCpu) args.push(`--mem-per-cpu=${form.memPerCpu}`);
+  if (form.memPerNode) args.push(`--mem=${form.memPerNode}`);
+  if (form.partition) args.push(`-p ${shellArg(form.partition)}`);
+  if (form.timeLimit) args.push(`-t ${form.timeLimit}`);
+  if (form.stdin) args.push(`-i ${shellArg(form.stdin)}`);
+  if (form.stdout) args.push(`-o ${shellArg(form.stdout)}`);
+  if (form.stderr) args.push(`-e ${shellArg(form.stderr)}`);
+
+  const script = form.scriptPath ? shellArg(form.scriptPath) : "<script>";
+
+  let result = `srun ${args[0]} \\`;
+  for (let i = 1; i < args.length; i++) {
+    result += `\n  ${args[i]} \\`;
+  }
+  result += `\n  ${script}`;
+
+  return result;
+}
+
 interface JobSubmitFormData {
   jobName: string;
   comment: string;
@@ -36,6 +69,8 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
+import { useMemo } from "react";
+
 export default function JobSubmitForm() {
   const { t } = useTranslation();
 
@@ -47,10 +82,10 @@ export default function JobSubmitForm() {
     partition: "",
     tasks: 1,
     cpus: 1,
-    memPerCpu: 1,
+    memPerCpu: 1000,
     nodes: 1,
-    memPerNode: 1,
-    timeLimit: 1,
+    memPerNode: 1000,
+    timeLimit: 1000,
     stdin: "",
     stdout: "",
     stderr: "",
@@ -114,6 +149,25 @@ export default function JobSubmitForm() {
     console.log("Form Data:", formData);
     console.log("Environment Variables:", envVars);
   };
+
+  const commandPreview = useMemo(
+    () => buildSrunCommand(formData),
+    [
+      formData.jobName,
+      formData.comment,
+      formData.cwd,
+      formData.nodes,
+      formData.cpus,
+      formData.memPerCpu,
+      formData.memPerNode,
+      formData.partition,
+      formData.timeLimit,
+      formData.stdin,
+      formData.stdout,
+      formData.stderr,
+      formData.scriptPath,
+    ],
+  );
 
   return (
     <form onSubmit={handleSubmit} className="flex min-h-screen bg-background">
@@ -431,10 +485,9 @@ export default function JobSubmitForm() {
             <Textarea
               id="command"
               name="command"
-              value={formData.command}
-              onChange={handleChange}
-              placeholder={t("jobSubmitForm.commandPlaceholder")}
-              className="min-h-24"
+              value={commandPreview}
+              readOnly
+              className="min-h-24 font-mono"
             />
 
             <div className="flex justify-end">
