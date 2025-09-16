@@ -25,11 +25,13 @@ export function buildSrunCommand(form: JobSubmitFormData) {
 
   const script = form.scriptPath ? shellArg(form.scriptPath) : "<script>";
 
-  let result = `srun ${args[0]} \\`;
-  for (let i = 1; i < args.length; i++) {
-    result += `\n  ${args[i]} \\`;
+  let result = "srun";
+  const flags = args.join(" \\\n  ");
+  if (flags) {
+    result += ` ${flags} \\\n  ${script}`;
+  } else {
+    result += ` ${script}`;
   }
-  result += `\n  ${script}`;
 
   return result;
 }
@@ -150,24 +152,7 @@ export default function JobSubmitForm() {
     console.log("Environment Variables:", envVars);
   };
 
-  const commandPreview = useMemo(
-    () => buildSrunCommand(formData),
-    [
-      formData.jobName,
-      formData.comment,
-      formData.cwd,
-      formData.nodes,
-      formData.cpus,
-      formData.memPerCpu,
-      formData.memPerNode,
-      formData.partition,
-      formData.timeLimit,
-      formData.stdin,
-      formData.stdout,
-      formData.stderr,
-      formData.scriptPath,
-    ],
-  );
+  const commandPreview = useMemo(() => buildSrunCommand(formData), [formData]);
 
   return (
     <form onSubmit={handleSubmit} className="flex min-h-screen bg-background">
