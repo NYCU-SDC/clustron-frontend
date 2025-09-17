@@ -1,15 +1,31 @@
+import { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { PlusCircledIcon, MinusCircledIcon } from "@radix-ui/react-icons";
+
+// ui components
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+
 // Types
 type EnvVar = { key: string; value: string };
 
 function shellArg(s: string) {
   if (!s) return "";
-  return `'${s.replace(/'/g, `'"'"'`)}'`; // 單引號安全處理
+  return `'${s.replace(/'/g, `'"'"'`)}'`;
 }
 
 export function buildSrunCommand(form: JobSubmitFormData) {
   const args: string[] = [];
 
-  // 照你的指定順序逐一 push
   if (form.jobName) args.push(`-J ${shellArg(form.jobName)}`);
   if (form.comment) args.push(`--comment=${shellArg(form.comment)}`);
   if (form.cwd) args.push(`-D ${shellArg(form.cwd)}`);
@@ -53,25 +69,6 @@ interface JobSubmitFormData {
   stderr: string;
   command: string;
 }
-
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { PlusCircledIcon, MinusCircledIcon } from "@radix-ui/react-icons";
-
-// ui components
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-
-import { useMemo } from "react";
 
 export default function JobSubmitForm() {
   const { t } = useTranslation();
