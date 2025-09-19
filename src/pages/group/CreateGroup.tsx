@@ -118,7 +118,7 @@ export default function AddGroupPage() {
     const linksToSubmit: GroupLinkPayload[] = [
       ...links,
       ...(newLink.title.trim() && newLink.url.trim()
-        ? [{ title: newLink.title.trim(), url: newLink.url.trim() }]
+        ? [{ title: newLink.title.trim(), url: normalizeUrl(newLink.url) }]
         : []),
     ]
       .filter((l) => l.title.trim() && l.url.trim())
