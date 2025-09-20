@@ -1,55 +1,111 @@
 import { useState, useEffect } from "react";
-import { searchUser } from "@/lib/request/searchUser.tsx";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { searchUser, PaginatedResponse } from "@/lib/request/searchUser";
+
+export interface SearchUserItem {
+  identifier: string;
+}
 
 export interface UseAutocompleteResult<T> {
   query: string;
   setQuery: (q: string) => void;
+  debouncedQuery: string;
   suggestions: T[];
   showSuggestions: boolean;
   handleSelect: (item: T) => void;
+
+  fetchNextPage: () => Promise<any>;
+  hasNextPage: boolean | undefined;
+  isFetchingNextPage: boolean;
+  isLoadingSuggestions: boolean;
+  isError: boolean;
+  error: Error | null;
 }
 
-export const useUserAutocomplete = <T = string>(
+export const useUserAutocomplete = <T extends SearchUserItem = SearchUserItem>(
   delay: number = 300,
 ): UseAutocompleteResult<T> => {
   const [query, setQuery] = useState<string>("");
-  const [suggestions, setSuggestions] = useState<T[]>([]);
-  const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
+  const [debouncedQuery, setDebouncedQuery] = useState<string>("");
+  const [showSuggestionsInternal, setShowSuggestionsInternal] =
+    useState<boolean>(false);
 
+  // 防抖 (Debounce) 邏輯
   useEffect(() => {
-    if (!query) {
-      setSuggestions([]);
-      setShowSuggestions(false);
-      return;
-    }
-
-    const fetchSuggestions = async () => {
-      try {
-        const responseData = await searchUser<T>(query);
-        setSuggestions(responseData.items);
-        setShowSuggestions(responseData.items.length > 0);
-      } catch (error) {
-        console.error("Fetch error:", error);
-        setSuggestions([]);
-        setShowSuggestions(false);
+    const handler = setTimeout(() => {
+      setDebouncedQuery(query);
+      if (query) {
+        setShowSuggestionsInternal(true);
+      } else {
+        setShowSuggestionsInternal(false);
       }
-    };
+    }, delay);
 
-    const debounce = setTimeout(fetchSuggestions, delay);
-    return () => clearTimeout(debounce);
+    return () => {
+      clearTimeout(handler);
+    };
   }, [query, delay]);
 
-  const handleSelect = (item: T) => {
-    let displayValue: string;
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading: isInitialLoading,
+    isError,
+    error,
+  } = useInfiniteQuery<
+    PaginatedResponse<T>,
+    Error,
+    PaginatedResponse<T>,
+    (string | number)[],
+    number
+  >({
+    queryKey: ["userAutocomplete", debouncedQuery],
 
-    if (typeof item === "object" && item !== null && "identifier" in item) {
-      displayValue = String((item as { identifier: unknown }).identifier);
-    } else {
-      displayValue = String(item);
-    }
-    setQuery(displayValue);
-    setShowSuggestions(false);
+    queryFn: ({ queryKey, pageParam }) => {
+      const [, currentQuery] = queryKey;
+      return searchUser<T>(currentQuery as string, pageParam as number);
+    },
+
+    initialPageParam: 0,
+
+    getNextPageParam: (lastPage) => {
+      return lastPage.hasNextPage ? lastPage.currentPage + 1 : undefined;
+    },
+
+    enabled: !!debouncedQuery,
+
+    staleTime: 60 * 1000,
+    cacheTime: 5 * 60 * 1000,
+  });
+
+  const suggestions = data?.pages?.flatMap((page) => page.items) || [];
+
+  const showSuggestions =
+    showSuggestionsInternal &&
+    ((isInitialLoading && !suggestions.length) ||
+      suggestions.length > 0 ||
+      isFetchingNextPage);
+
+  const handleSelect = (item: T) => {
+    setQuery(item.identifier);
+    setDebouncedQuery(item.identifier);
+    setShowSuggestionsInternal(false);
   };
 
-  return { query, setQuery, suggestions, showSuggestions, handleSelect };
+  return {
+    query,
+    setQuery,
+    debouncedQuery,
+    suggestions,
+    showSuggestions,
+    handleSelect,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoadingSuggestions: isInitialLoading,
+    isError,
+    error,
+  };
 };

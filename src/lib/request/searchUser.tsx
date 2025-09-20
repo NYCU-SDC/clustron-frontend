@@ -11,9 +11,24 @@ export interface PaginatedResponse<ItemType> {
 
 export const searchUser = async <T,>(
   query: string,
+  page?: number,
 ): Promise<PaginatedResponse<T>> => {
-  const responseData: PaginatedResponse<T> = await api(
-    `/api/searchUser?query=${encodeURIComponent(query)}`,
-  );
+  if (!query) {
+    return {
+      items: [],
+      currentPage: 0,
+      hasNextPage: false,
+      pageSize: 0,
+      totalItems: 0,
+      totalPages: 0,
+    } as PaginatedResponse<T>;
+  }
+  let url = `/api/searchUser?query=${encodeURIComponent(query)}`;
+
+  if (page !== undefined) {
+    url += `&page=${page}`;
+  }
+
+  const responseData: PaginatedResponse<T> = await api(url);
   return responseData;
 };
