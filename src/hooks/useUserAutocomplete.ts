@@ -54,33 +54,34 @@ export const useUserAutocomplete = <T extends SearchUserItem = SearchUserItem>(
     isLoading: isInitialLoading,
     isError,
     error,
-  } = useInfiniteQuery<
-    PaginatedResponse<T>,
-    Error,
-    PaginatedResponse<T>,
-    (string | number)[],
-    number
-  >({
+  } = useInfiniteQuery({
     queryKey: ["userAutocomplete", debouncedQuery],
 
-    queryFn: ({ queryKey, pageParam }) => {
+    queryFn: ({
+      queryKey,
+      pageParam = 0,
+    }: {
+      queryKey: readonly (string | number)[];
+      pageParam?: number;
+    }) => {
       const [, currentQuery] = queryKey;
-      return searchUser<T>(currentQuery as string, pageParam as number);
+      return searchUser<T>(currentQuery as string, pageParam);
     },
 
     initialPageParam: 0,
 
-    getNextPageParam: (lastPage) => {
+    getNextPageParam: (lastPage: PaginatedResponse<T>) => {
       return lastPage.hasNextPage ? lastPage.currentPage + 1 : undefined;
     },
 
     enabled: !!debouncedQuery,
 
     staleTime: 60 * 1000,
-    cacheTime: 5 * 60 * 1000,
+    gcTime: 5 * 60 * 1000, // Changed from cacheTime to gcTime
   });
 
-  const suggestions = data?.pages?.flatMap((page) => page.items) || [];
+  const suggestions: T[] =
+    data?.pages?.flatMap((page: PaginatedResponse<T>) => page.items) || [];
 
   const showSuggestions =
     showSuggestionsInternal &&
