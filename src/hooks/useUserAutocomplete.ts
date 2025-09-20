@@ -14,7 +14,7 @@ export interface UseAutocompleteResult<T> {
   showSuggestions: boolean;
   handleSelect: (item: T) => void;
 
-  fetchNextPage: () => Promise<any>;
+  fetchNextPage: ReturnType<typeof useInfiniteQuery>["fetchNextPage"];
   hasNextPage: boolean | undefined;
   isFetchingNextPage: boolean;
   isLoadingSuggestions: boolean;
