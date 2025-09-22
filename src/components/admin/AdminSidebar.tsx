@@ -1,10 +1,9 @@
 import { useTranslation } from "react-i18next";
-import SideBar, { NavItem } from "@/components/ui/sidebar.tsx"; // Adjust path
+import SideBar, { NavItem } from "@/components/ui/sidebar.tsx";
 
 export function AdminSideBarContainer() {
   const { t } = useTranslation();
 
-  // Prepare the data
   const adminNavItems: NavItem[] = [
     {
       to: "#",
