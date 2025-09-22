@@ -2,9 +2,9 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { getAccessToken } from "@/lib/token";
 import { useState, useEffect } from "react";
+import { AccessToken } from "@/types/settings";
+import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
-import { AccessToken } from "@/types/type";
-
 import SideBar, { NavItem } from "@/components/ui/sidebar.tsx";
 
 export default function AdminLayout() {
