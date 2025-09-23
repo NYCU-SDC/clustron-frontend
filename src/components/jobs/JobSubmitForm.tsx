@@ -1,6 +1,9 @@
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { PlusCircledIcon, MinusCircledIcon } from "@radix-ui/react-icons";
+import { useCreateJob } from "@/hooks/useCreateJob";
+import { useGetPartitions } from "@/hooks/useGetPartitions";
+import type { JobCreatePayload } from "@/lib/request/jobs";
 
 // ui components
 import { Label } from "@/components/ui/label";
@@ -73,6 +76,9 @@ interface JobSubmitFormData {
 export default function JobSubmitForm() {
   const { t } = useTranslation();
 
+  const createJob = useCreateJob(); // NEW: POST /api/jobs 用
+  const partsQ = useGetPartitions(); // NEW: 取得 partitions 下拉用
+
   const [formData, setFormData] = useState<JobSubmitFormData>({
     jobName: "",
     comment: "",
@@ -143,10 +149,38 @@ export default function JobSubmitForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: wire to API
-    // For now, log
-    console.log("Form Data:", formData);
-    console.log("Environment Variables:", envVars);
+
+    const environment = envVars
+      .filter((ev) => ev.key.trim() !== "")
+      .map((ev) => `${ev.key}=${ev.value ?? ""}`);
+
+    const payload: JobCreatePayload = {
+      name: formData.jobName,
+      comment: formData.comment,
+      current_working_directory: formData.cwd,
+      script: formData.scriptPath,
+      environment,
+      partition: formData.partition,
+      tasks: Number.isFinite(formData.tasks) ? formData.tasks : undefined,
+      cpus_per_task: Number.isFinite(formData.cpus) ? formData.cpus : undefined,
+      memory_per_cpu: Number.isFinite(formData.memPerCpu)
+        ? formData.memPerCpu
+        : undefined,
+      nodes: Number.isFinite(formData.nodes)
+        ? String(formData.nodes)
+        : undefined, // Swagger: string
+      memory_per_node: Number.isFinite(formData.memPerNode)
+        ? formData.memPerNode
+        : undefined,
+      time_limit: Number.isFinite(formData.timeLimit)
+        ? formData.timeLimit
+        : undefined,
+      standard_input: formData.stdin || undefined,
+      standard_output: formData.stdout || undefined,
+      standard_error: formData.stderr || undefined,
+    };
+
+    createJob.mutate(payload);
   };
 
   const commandPreview = useMemo(() => buildSrunCommand(formData), [formData]);
@@ -301,9 +335,9 @@ export default function JobSubmitForm() {
                   />
                 </SelectTrigger>
                 <SelectContent>
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <SelectItem key={i + 1} value={String(i + 1)}>
-                      {i + 1}
+                  {(partsQ.data?.partitions ?? []).map((name) => (
+                    <SelectItem key={name} value={name}>
+                      {name}
                     </SelectItem>
                   ))}
                 </SelectContent>

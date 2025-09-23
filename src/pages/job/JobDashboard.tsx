@@ -1,9 +1,10 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import JobList from "@/components/jobs/JobList";
 import SortSelector from "@/components/jobs/SortSelector";
 import FilterPanel from "@/components/jobs/FilterPanel";
-import { jobsData, JobResponse } from "@/lib/mocks/jobData"; // TODO: change real api from backend
-import type { SortBy, FilterOptions } from "@/types/jobs";
+import { useGetJobs } from "@/hooks/useGetJobs";
+import type { Job as ApiJob } from "@/lib/request/jobs";
+import type { SortBy, FilterOptions, JobState } from "@/types/jobs";
 import CountsBar from "@/components/jobs/CountsBar";
 import {
   Pagination,
@@ -26,52 +27,31 @@ const JobDashboard: React.FC = () => {
   });
   const [currentPage, setCurrentPage] = useState(0);
 
-  //  TODO: use usestate to get /api/jobs data
-  const sortedAndFilteredJobs = useMemo(() => {
-    let data = [...jobsData]; //
+  const { data } = useGetJobs(
+    {
+      page: currentPage + 1,
+      size: PAGE_SIZE,
+      sortBy: sortBy,
+      sort: sortOrder,
+      ...(filters.partition.length === 1
+        ? { filterBy: "partition", filterValue: filters.partition[0] }
+        : {}),
+      ...(filters.status.length === 1
+        ? { filterBy: "status", filterValue: filters.status[0] }
+        : {}),
+    },
+    true,
+  );
 
-    //  only in mock: filter data based on param handle in backend
-    if (filters.partition.length)
-      data = data.filter((job) => filters.partition.includes(job.partition));
-    if (filters.status.length)
-      data = data.filter((job) => filters.status.includes(job.status));
-    if (filters.resource.length)
-      data = data.filter((job) =>
-        filters.resource.some((res) => job.resources[res] > 0),
-      );
-
-    //  only in mock: sort logic handle in backend
-    data.sort((a: JobResponse, b: JobResponse) => {
-      const isResourceKey = (key: string): key is keyof typeof a.resources => {
-        return key === "cpu" || key === "gpu" || key === "memory";
-      };
-
-      const aVal = isResourceKey(sortBy)
-        ? a.resources[sortBy]
-        : a[sortBy as keyof JobResponse];
-      const bVal = isResourceKey(sortBy)
-        ? b.resources[sortBy]
-        : b[sortBy as keyof JobResponse];
-
-      const dir = sortOrder === "asc" ? 1 : -1;
-
-      if (typeof aVal === "string" || typeof bVal === "string") {
-        return String(aVal).localeCompare(String(bVal)) * dir;
-      }
-
-      return (Number(aVal) - Number(bVal)) * dir;
-    });
-
-    return data;
-  }, [filters, sortBy, sortOrder]);
-
-  // TODO: pagination handle in backend
-  const totalPages = Math.ceil(sortedAndFilteredJobs.length / PAGE_SIZE);
-  const paginatedJobs = useMemo(() => {
-    const start = currentPage * PAGE_SIZE;
-    const end = start + PAGE_SIZE;
-    return sortedAndFilteredJobs.slice(start, end);
-  }, [sortedAndFilteredJobs, currentPage]);
+  const jobs =
+    (data?.items as ApiJob[] | undefined)?.map((j) => ({
+      id: j.id,
+      status: j.status as JobState, // ← 關鍵：把較寬的 string union 縮成 JobState
+      user: j.user,
+      partition: j.partition,
+      resources: j.resources, // { cpu, gpu, memory }
+    })) ?? [];
+  const totalPages = data?.totalPages ?? 0;
 
   const maxPages = 4;
   let startPage = Math.max(currentPage - 1, 0);
@@ -96,7 +76,7 @@ const JobDashboard: React.FC = () => {
           <FilterPanel filters={filters} setFilters={setFilters} />
         </div>
         {/* Job list */}
-        <JobList jobs={paginatedJobs} />{" "}
+        <JobList jobs={jobs} />
         {/*  TODO: use /api/jobs API returned from backend  */}
         {/* Pagination */}
         {totalPages > 1 && (
