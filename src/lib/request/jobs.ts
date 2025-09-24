@@ -22,7 +22,7 @@ export type Job = {
   };
 };
 
-// response of GET /api/jobs
+// response envelope of GET /api/jobs
 export type JobsPage = {
   items: Job[];
   totalPages: number;
