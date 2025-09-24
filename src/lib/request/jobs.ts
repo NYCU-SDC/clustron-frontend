@@ -99,7 +99,13 @@ export async function getJobCounts(status?: Job["status"]): Promise<JobCounts> {
 
 // GET /api/jobs/partitions
 export async function getPartitions(): Promise<Partitions> {
-  return api("/api/jobs/partitions");
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        partitions: ["abc", "123"],
+      });
+    }, 50);
+  });
 }
 
 // POST /api/jobs
