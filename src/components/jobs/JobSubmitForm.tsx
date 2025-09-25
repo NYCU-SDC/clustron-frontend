@@ -1,8 +1,8 @@
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { PlusCircledIcon, MinusCircledIcon } from "@radix-ui/react-icons";
-import { useCreateJob } from "@/hooks/useCreateJob";
-import { useGetPartitions } from "@/hooks/useGetPartitions";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createJob, getPartitions } from "@/lib/request/jobs";
 import type { JobCreatePayload } from "@/lib/request/jobs";
 
 // ui components
@@ -75,9 +75,21 @@ interface JobSubmitFormData {
 
 export default function JobSubmitForm() {
   const { t } = useTranslation();
+  const qc = useQueryClient();
 
-  const createJob = useCreateJob(); // NEW: POST /api/jobs 用
-  const partsQ = useGetPartitions(); // NEW: 取得 partitions 下拉用
+  const partsQ = useQuery({
+    queryKey: ["partitions"],
+    queryFn: () => getPartitions(),
+    staleTime: 60_000,
+  });
+
+  const createJobMutation = useMutation({
+    mutationFn: (payload: JobCreatePayload) => createJob(payload),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["jobs"] });
+      qc.invalidateQueries({ queryKey: ["job-counts"] });
+    },
+  });
 
   const [formData, setFormData] = useState<JobSubmitFormData>({
     jobName: "",
@@ -168,7 +180,7 @@ export default function JobSubmitForm() {
         : undefined,
       nodes: Number.isFinite(formData.nodes)
         ? String(formData.nodes)
-        : undefined, // Swagger: string
+        : undefined,
       memory_per_node: Number.isFinite(formData.memPerNode)
         ? formData.memPerNode
         : undefined,
@@ -180,7 +192,7 @@ export default function JobSubmitForm() {
       standard_error: formData.stderr || undefined,
     };
 
-    createJob.mutate(payload);
+    createJobMutation.mutate(payload);
   };
 
   const commandPreview = useMemo(() => buildSrunCommand(formData), [formData]);

@@ -21,7 +21,7 @@ export default function JobSidebar() {
       <ul className="space-y-4">
         <li>
           <NavLink
-            to="/joblist"
+            to="/jobs"
             className={({ isActive }) => navLinkClass(isActive)}
           >
             {t("jobsSideBar.ListNavLink")}
@@ -29,7 +29,7 @@ export default function JobSidebar() {
         </li>
         <li>
           <NavLink
-            to="/jobform"
+            to="/jobs/submit"
             className={({ isActive }) => navLinkClass(isActive)}
           >
             {t("jobsSideBar.SubmitNavLink")}

@@ -42,7 +42,7 @@ export type JobCounts = {
   cancelled: number;
 };
 
-// shape of GET /api/jobs/partitions
+// shape of GET /api/partitions
 export type Partitions = {
   partitions: string[];
 };
@@ -97,15 +97,9 @@ export async function getJobCounts(status?: Job["status"]): Promise<JobCounts> {
   return api(path);
 }
 
-// GET /api/jobs/partitions
+// GET /api/partitions
 export async function getPartitions(): Promise<Partitions> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        partitions: ["abc", "123"],
-      });
-    }, 50);
-  });
+  return api("/api/partitions");
 }
 
 // POST /api/jobs

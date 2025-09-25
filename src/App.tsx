@@ -58,11 +58,7 @@ const App = () => {
             <Route index element={<JobDashboard />} />
             <Route path="submit" element={<JobSubmitPage />} />
           </Route>
-          <Route path="/joblist" element={<Navigate to="/jobs" replace />} />
-          <Route
-            path="/jobform"
-            element={<Navigate to="/jobs/submit" replace />}
-          />
+
           <Route element={<GroupLayout />}>
             <Route path="/groups" element={<GroupListPage />} />
             <Route path="/groups/new" element={<AddGroupPage />} />
