@@ -68,15 +68,17 @@ export type JobCreatePayload = {
   standard_error?: string;
 };
 
-// GET /api/jobs
-export async function getJobs(params?: {
+export type GetJobsParams = {
   page?: number;
   size?: number;
   sort?: "asc" | "desc";
   sortBy?: string;
   filterBy?: string;
   filterValue?: string;
-}): Promise<JobsPage> {
+};
+
+// GET /api/jobs
+export async function getJobs(params?: GetJobsParams): Promise<JobsPage> {
   const q = new URLSearchParams();
   if (params?.page != null) q.set("page", String(params.page));
   if (params?.size != null) q.set("size", String(params.size));

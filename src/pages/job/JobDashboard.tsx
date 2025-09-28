@@ -3,8 +3,7 @@ import JobList from "@/components/jobs/JobList";
 import SortSelector from "@/components/jobs/SortSelector";
 import FilterPanel from "@/components/jobs/FilterPanel";
 import { useQuery } from "@tanstack/react-query";
-import { getJobs, JobsPage } from "@/lib/request/jobs";
-import type { Job as APIJob } from "@/lib/request/jobs";
+import { getJobs, type GetJobsParams } from "@/lib/request/jobs";
 import type { SortBy, FilterOptions, JobState } from "@/types/jobs";
 import CountsBar from "@/components/jobs/CountsBar";
 import {
@@ -28,7 +27,6 @@ const JobDashboard: React.FC = () => {
   });
   const [currentPage, setCurrentPage] = useState(0);
 
-  type GetJobsParams = NonNullable<Parameters<typeof getJobs>[0]>;
   const listParams = useMemo<GetJobsParams>(() => {
     const base: GetJobsParams = {
       page: currentPage + 1,
@@ -46,7 +44,7 @@ const JobDashboard: React.FC = () => {
     return base;
   }, [currentPage, sortBy, sortOrder, filters]);
 
-  const { data } = useQuery<JobsPage>({
+  const { data } = useQuery({
     queryKey: ["jobs", listParams],
     queryFn: () => getJobs(listParams),
     placeholderData: (prev) => prev,
@@ -54,7 +52,7 @@ const JobDashboard: React.FC = () => {
   });
 
   const jobs =
-    (data?.items as APIJob[] | undefined)?.map((j) => ({
+    data?.items?.map((j) => ({
       id: j.id,
       status: j.status as JobState,
       user: j.user,

@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { PlusCircledIcon, MinusCircledIcon } from "@radix-ui/react-icons";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { createJob, getPartitions } from "@/lib/request/jobs";
 import type { JobCreatePayload } from "@/lib/request/jobs";
 
@@ -75,20 +75,14 @@ interface JobSubmitFormData {
 
 export default function JobSubmitForm() {
   const { t } = useTranslation();
-  const qc = useQueryClient();
 
-  const partsQ = useQuery({
+  const { data: partitions } = useQuery({
     queryKey: ["partitions"],
-    queryFn: () => getPartitions(),
-    staleTime: 60_000,
+    queryFn: getPartitions,
   });
 
   const createJobMutation = useMutation({
-    mutationFn: (payload: JobCreatePayload) => createJob(payload),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["jobs"] });
-      qc.invalidateQueries({ queryKey: ["job-counts"] });
-    },
+    mutationFn: createJob,
   });
 
   const [formData, setFormData] = useState<JobSubmitFormData>({
@@ -347,7 +341,7 @@ export default function JobSubmitForm() {
                   />
                 </SelectTrigger>
                 <SelectContent>
-                  {(partsQ.data?.partitions ?? []).map((name) => (
+                  {(partitions?.partitions ?? []).map((name) => (
                     <SelectItem key={name} value={name}>
                       {name}
                     </SelectItem>

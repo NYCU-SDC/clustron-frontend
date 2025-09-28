@@ -13,12 +13,12 @@ export default function CountsBar() {
   }
 
   const counts = data ?? {
-    running: undefined,
-    pending: undefined,
-    completed: undefined,
-    failed: undefined,
-    timeout: undefined,
-    cancelled: undefined,
+    running: 0,
+    pending: 0,
+    completed: 0,
+    failed: 0,
+    timeout: 0,
+    cancelled: 0,
   };
 
   return (
