@@ -5,7 +5,7 @@ function navLinkClass(isActive: boolean): string {
   return [
     "text-base",
     "w-full block",
-    "pl-1 py-2 rounded-lg",
+    "px-2 py-2 rounded-lg",
     !isActive && "text-gray-500 dark:text-gray-400 hover:bg-gray-200",
   ]
     .filter(Boolean)
