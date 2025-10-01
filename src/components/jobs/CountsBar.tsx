@@ -2,7 +2,7 @@ import StateCard from "@/components/jobs/StateCard";
 import { useJobCounts } from "@/hooks/useJobCounts";
 
 export default function CountsBar() {
-  const { data, isError } = useJobCounts(); //TODO: use GET /api/jobs/counts here
+  const { data, isError } = useJobCounts();
 
   if (isError) {
     return (
@@ -12,14 +12,9 @@ export default function CountsBar() {
     );
   }
 
-  const counts = data ?? {
-    running: 0,
-    pending: 0,
-    completed: 0,
-    failed: 0,
-    timeout: 0,
-    cancelled: 0,
-  };
+  if (!data) return null;
+
+  const counts = data;
 
   return (
     <div className="mb-4 flex flex-wrap gap-6">

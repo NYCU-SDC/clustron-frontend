@@ -29,7 +29,7 @@ const JobDashboard: React.FC = () => {
 
   const listParams = useMemo<GetJobsParams>(() => {
     const base: GetJobsParams = {
-      page: currentPage + 1,
+      page: currentPage,
       size: PAGE_SIZE,
       sortBy,
       sort: sortOrder,

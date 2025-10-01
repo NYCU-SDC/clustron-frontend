@@ -1,9 +1,13 @@
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { PlusCircledIcon, MinusCircledIcon } from "@radix-ui/react-icons";
+import {
+  PlusCircledIcon,
+  MinusCircledIcon,
+  CheckCircledIcon,
+} from "@radix-ui/react-icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createJob, getPartitions } from "@/lib/request/jobs";
-import type { JobCreatePayload } from "@/lib/request/jobs";
+import type { JobCreatePayload, Job } from "@/lib/request/jobs";
 
 // ui components
 import { Label } from "@/components/ui/label";
@@ -81,11 +85,16 @@ export default function JobSubmitForm() {
     queryFn: getPartitions,
   });
 
+  const [successJobId, setSuccessJobId] = useState<number | null>(null);
+
   const createJobMutation = useMutation({
     mutationFn: createJob,
+    onSuccess: (job: Job) => {
+      setSuccessJobId(job.id);
+    },
   });
 
-  const [formData, setFormData] = useState<JobSubmitFormData>({
+  const initialForm: JobSubmitFormData = {
     jobName: "",
     comment: "",
     scriptPath: "",
@@ -101,7 +110,9 @@ export default function JobSubmitForm() {
     stdout: "",
     stderr: "",
     command: "",
-  });
+  };
+
+  const [formData, setFormData] = useState<JobSubmitFormData>(initialForm);
 
   const [envVars, setEnvVars] = useState<EnvVar[]>([{ key: "", value: "" }]);
 
@@ -189,7 +200,52 @@ export default function JobSubmitForm() {
     createJobMutation.mutate(payload);
   };
 
+  const resetForm = () => {
+    setFormData(initialForm);
+    setEnvVars([{ key: "", value: "" }]);
+    setSuccessJobId(null);
+  };
+
   const commandPreview = useMemo(() => buildSrunCommand(formData), [formData]);
+
+  if (successJobId !== null) {
+    return (
+      <div className="flex min-h-screen bg-background">
+        <div className="flex-1 flex justify-center">
+          <div className="w-full max-w-3xl px-6 py-10 space-y-6">
+            {/* submit successfully */}
+            <div className="rounded-xl border border-green-300 bg-green-50 text-green-800 p-6 flex items-center gap-3">
+              <CheckCircledIcon className="h-6 w-6" />
+              <div>
+                <div className="font-semibold">
+                  {t(
+                    "jobSubmitForm.submitSuccessTitle",
+                    "Job Submit Successfully",
+                  )}
+                </div>
+                <div className="text-sm">
+                  {t("jobSubmitForm.submitSuccessId", "ID #{{id}}", {
+                    id: successJobId,
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* button: submit another job */}
+            <div className="flex gap-3">
+              <Button
+                variant="secondary"
+                onClick={resetForm}
+                className="h-11 px-6"
+              >
+                {t("jobSubmitForm.submitAnother", "Submit Another Job")}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className="flex min-h-screen bg-background">
@@ -513,8 +569,14 @@ export default function JobSubmitForm() {
             />
 
             <div className="flex justify-end">
-              <Button type="submit" className="h-11 px-6">
-                {t("jobSubmitForm.submitButton")}
+              <Button
+                type="submit"
+                className="h-11 px-6"
+                disabled={createJobMutation.isPending}
+              >
+                {createJobMutation.isPending
+                  ? t("jobSubmitForm.submitting", "Submitting…")
+                  : t("jobSubmitForm.submitButton")}
               </Button>
             </div>
           </section>

@@ -1,13 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { mockCountJobs } from "@/lib/mocks/jobLogic.ts";
+import { getJobCounts } from "@/lib/request/jobs";
+import type { Job, JobCounts } from "@/lib/request/jobs";
 
-export function useJobCounts(extra?: {
-  //TODO: unused, wait for backend
-  filterBy?: string;
-  filterValue?: string;
-}) {
-  return useQuery({
-    queryKey: ["job-counts", extra?.filterBy, extra?.filterValue],
-    queryFn: () => mockCountJobs(extra),
+export function useJobCounts(status?: Job["status"]) {
+  return useQuery<JobCounts>({
+    queryKey: ["jobs", "counts", status],
+    queryFn: () => getJobCounts(status),
   });
 }
