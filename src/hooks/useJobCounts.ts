@@ -6,5 +6,9 @@ export function useJobCounts(status?: Job["status"]) {
   return useQuery<JobCounts>({
     queryKey: ["jobs", "counts", status],
     queryFn: () => getJobCounts(status),
+    refetchInterval: 5000,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    placeholderData: (prev) => prev,
   });
 }

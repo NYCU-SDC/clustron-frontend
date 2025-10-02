@@ -20,6 +20,10 @@ export default function CountsBar() {
     <div className="mb-4 flex flex-wrap gap-6">
       <StateCard value={counts.running} label="Jobs running" />
       <StateCard value={counts.pending} label="Jobs pending" />
+      <StateCard value={counts.completed} label="Jobs completed" />
+      <StateCard value={counts.failed} label="Jobs failed" />
+      <StateCard value={counts.timeout} label="Jobs timeout" />
+      <StateCard value={counts.cancelled} label="Jobs cancelled" />
     </div>
   );
 }
