@@ -1,17 +1,19 @@
 import { useParams } from "react-router-dom";
-import SideBar, { NavItem } from "@/components/ui/sidebar.tsx";
+import SideBar, { NavItem } from "@/components/sidebar";
+import { useTranslation } from "react-i18next";
 
 export default function GroupSideBarContainer({ title }: { title: string }) {
   const { id } = useParams();
+  const { t } = useTranslation();
 
   const groupNavItems: NavItem[] = [
     {
       to: `/groups/${id}`,
-      labelKey: "groupComponents.groupSideBar.overview",
+      label: t("groupComponents.groupSideBar.overview"),
     },
     {
       to: `/groups/${id}/settings`,
-      labelKey: "groupComponents.groupSideBar.groupSettings",
+      label: t("groupComponents.groupSideBar.groupSettings"),
     },
   ];
 

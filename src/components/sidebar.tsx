@@ -14,7 +14,7 @@ function navLinkClass(isActive: boolean): string {
 
 export interface NavItem {
   to: string;
-  labelKey: string;
+  label: string;
 }
 
 interface SideBarProps {
@@ -39,7 +39,7 @@ export default function SideBar({ title, navItems, className }: SideBarProps) {
               end
               className={({ isActive }) => navLinkClass(isActive)}
             >
-              {t(item.labelKey)}
+              {t(item.label)}
             </NavLink>
           </li>
         ))}

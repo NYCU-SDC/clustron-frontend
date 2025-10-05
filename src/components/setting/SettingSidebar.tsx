@@ -1,23 +1,22 @@
-import SideBar, { NavItem } from "@/components/ui/sidebar.tsx";
+import SideBar, { NavItem } from "@/components/sidebar";
+import { useTranslation } from "react-i18next";
 
-interface SettingSideBarContainerProps {
-  title: string;
-}
+export default function SettingSideBarContainer({ title }: { title: string }) {
+  console.log("setting sidebar rendering");
 
-export function SettingSideBarContainer({
-  title,
-}: SettingSideBarContainerProps) {
+  const { t } = useTranslation();
+
   const settingNavItems: NavItem[] = [
     {
       to: "/setting/general",
-      labelKey: "settingSideBar.GeneralNavLink",
+      label: t("settingSideBar.GeneralNavLink"),
     },
     {
       to: "/setting/ssh",
-      labelKey: "settingSideBar.SSHNavLink",
+      label: t("settingSideBar.SSHNavLink"),
     },
   ];
-
+  console.log("傳遞給 SideBar 的 navItems:", settingNavItems);
   return (
     <SideBar title={title} navItems={settingNavItems} className="min-w-36" />
   );

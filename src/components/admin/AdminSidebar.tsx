@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import SideBar, { NavItem } from "@/components/ui/sidebar.tsx";
+import SideBar, { NavItem } from "@/components/sidebar";
 
 export function AdminSideBarContainer() {
   const { t } = useTranslation();
@@ -7,7 +7,7 @@ export function AdminSideBarContainer() {
   const adminNavItems: NavItem[] = [
     {
       to: "#",
-      labelKey: "adminSidebar.roleAccessConfigLink",
+      label: "adminSidebar.roleAccessConfigLink",
     },
   ];
 

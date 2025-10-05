@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import SideBar, { NavItem } from "@/components/ui/sidebar.tsx";
+import SideBar, { NavItem } from "@/components/sidebar.tsx";
 
 export default function SettingLayout() {
   const { t } = useTranslation();
@@ -9,11 +9,11 @@ export default function SettingLayout() {
   const settingNavItems: NavItem[] = [
     {
       to: "/setting/general",
-      labelKey: "settingSideBar.GeneralNavLink",
+      label: "settingSideBar.GeneralNavLink",
     },
     {
       to: "/setting/ssh",
-      labelKey: "settingSideBar.SSHNavLink",
+      label: "settingSideBar.SSHNavLink",
     },
   ];
 

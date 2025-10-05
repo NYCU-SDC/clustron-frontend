@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { AccessToken } from "@/types/settings";
 // import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
-import SideBar, { NavItem } from "@/components/ui/sidebar.tsx";
+import SideBar, { NavItem } from "@/components/sidebar";
 
 export default function AdminLayout() {
   const accessToken = getAccessToken();
@@ -28,7 +28,7 @@ export default function AdminLayout() {
   const adminNavItems: NavItem[] = [
     {
       to: "/admin/role-access",
-      labelKey: "adminSidebar.roleAccessConfigLink",
+      label: t("adminSidebar.roleAccessConfigLink"),
     },
   ];
 
