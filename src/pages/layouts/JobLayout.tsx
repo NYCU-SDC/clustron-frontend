@@ -25,7 +25,6 @@ export default function JobLayout() {
           navItems={jobNavItems}
           className="min-w-36"
         />
-        ;
       </div>
       <main className="flex-1 flex justify-center">
         <Outlet />

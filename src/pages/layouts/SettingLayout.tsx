@@ -24,7 +24,6 @@ export default function SettingLayout() {
           navItems={settingNavItems}
           className="min-w-36"
         />
-        ;
       </div>
       <main className="flex-1 flex justify-center">
         <Outlet />

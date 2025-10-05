@@ -26,14 +26,13 @@ export default function GroupLayout() {
     <div className="flex w-full">
       <div className="min-w-xs border-r">
         <SideBar
-          title={t("group.title")}
+          title={group.title}
           navItems={groupNavItems}
           className="min-w-36"
         />
-        ;
       </div>
       <main className="flex-1 flex justify-center">
-        <Outlet />
+        <Outlet context={{ group, groupId: id }} />
       </main>
     </div>
 
