@@ -92,7 +92,7 @@ export default function GroupSettings() {
   };
 
   const { setQuery, suggestions, showSuggestions, handleSelect } =
-    useUserAutocomplete<{ identifier: string }>();
+    useUserAutocomplete();
 
   if (!user || !group) {
     return (
