@@ -37,8 +37,11 @@ export default function AdminLayout() {
   return (
     <div className="flex w-full">
       <div className="min-w-xs border-r px-4">
-        {" "}
-        <SideBar title={t("adminSidebar.title")} navItems={adminNavItems} />
+        <SideBar
+          title={t("adminSidebar.title")}
+          navItems={adminNavItems}
+          className="min-w-36"
+        />
       </div>
       <main className="flex-1 flex justify-center">
         <Outlet />

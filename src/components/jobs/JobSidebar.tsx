@@ -13,6 +13,6 @@ export default function GroupSideBarContainer({ title }: { title: string }) {
       label: t("jobsSideBar.SubmitNavLink"),
     },
   ];
-  console.log("傳遞給 SideBar 的 navItems:", jobNavItems);
+  // console.log("傳遞給 SideBar 的 navItems:", jobNavItems);
   return <SideBar title={title} navItems={jobNavItems} className="min-w-36" />;
 }
