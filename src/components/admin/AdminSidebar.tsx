@@ -15,7 +15,7 @@ export function AdminSideBarContainer() {
     <SideBar
       title={t("adminSidebar.title")}
       navItems={adminNavItems}
-      className="min-w-48"
+      className="min-w-36"
     />
   );
 }

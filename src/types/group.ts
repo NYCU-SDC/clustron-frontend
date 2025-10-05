@@ -211,3 +211,15 @@ export type GroupLinkResponse = {
   title: string;
   url: string;
 };
+
+// =========================
+// PaginatedResponse
+// =========================
+export interface PaginatedResponse<ItemType> {
+  items: ItemType[];
+  currentPage: number;
+  hasNextPage: boolean;
+  pageSize: number;
+  totalItems: number;
+  totalPages: number;
+}

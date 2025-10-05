@@ -1,4 +1,5 @@
 import { api } from "@/lib/request/api";
+import type { PaginatedResponse } from "@/types/group.ts";
 
 export interface User {
   id: string;
@@ -7,14 +8,14 @@ export interface User {
   identifier: string;
 }
 
-export interface PaginatedResponse<ItemType> {
-  items: ItemType[];
-  currentPage: number;
-  hasNextPage: boolean;
-  pageSize: number;
-  totalItems: number;
-  totalPages: number;
-}
+// export interface PaginatedResponse<ItemType> {
+//   items: ItemType[];
+//   currentPage: number;
+//   hasNextPage: boolean;
+//   pageSize: number;
+//   totalItems: number;
+//   totalPages: number;
+// }
 
 export const searchUser = async (
   query: string,
