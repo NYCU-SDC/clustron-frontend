@@ -1,9 +1,12 @@
-import { useTranslation } from "react-i18next";
 import SideBar, { NavItem } from "@/components/ui/sidebar.tsx";
 
-export function SettingSideBarContainer() {
-  const { t } = useTranslation();
+interface SettingSideBarContainerProps {
+  title: string;
+}
 
+export function SettingSideBarContainer({
+  title,
+}: SettingSideBarContainerProps) {
   const settingNavItems: NavItem[] = [
     {
       to: "/setting/general",
@@ -16,10 +19,6 @@ export function SettingSideBarContainer() {
   ];
 
   return (
-    <SideBar
-      title={t("settingSideBar.title")}
-      navItems={settingNavItems}
-      className="min-w-48"
-    />
+    <SideBar title={title} navItems={settingNavItems} className="min-w-36" />
   );
 }

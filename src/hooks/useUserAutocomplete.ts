@@ -6,13 +6,13 @@ export interface SearchUserItem {
   identifier: string;
 }
 
-export interface UseAutocompleteResult<T> {
+export interface UseAutocompleteResult {
   query: string;
   setQuery: (q: string) => void;
   debouncedQuery: string;
-  suggestions: T[];
+  suggestions: SearchUserItem[];
   showSuggestions: boolean;
-  handleSelect: (item: T) => void;
+  handleSelect: (item: SearchUserItem) => void;
 
   fetchNextPage: ReturnType<typeof useInfiniteQuery>["fetchNextPage"];
   hasNextPage: boolean | undefined;
@@ -22,9 +22,9 @@ export interface UseAutocompleteResult<T> {
   error: Error | null;
 }
 
-export const useUserAutocomplete = <T extends SearchUserItem = SearchUserItem>(
+export const useUserAutocomplete = (
   delay: number = 300,
-): UseAutocompleteResult<T> => {
+): UseAutocompleteResult => {
   const [query, setQuery] = useState<string>("");
   const [debouncedQuery, setDebouncedQuery] = useState<string>("");
   const [showSuggestionsInternal, setShowSuggestionsInternal] =
@@ -65,23 +65,25 @@ export const useUserAutocomplete = <T extends SearchUserItem = SearchUserItem>(
       pageParam?: number;
     }) => {
       const [, currentQuery] = queryKey;
-      return searchUser<T>(currentQuery as string, pageParam);
+      return searchUser(currentQuery as string, pageParam);
     },
 
     initialPageParam: 0,
 
-    getNextPageParam: (lastPage: PaginatedResponse<T>) => {
+    getNextPageParam: (lastPage: PaginatedResponse<SearchUserItem>) => {
       return lastPage.hasNextPage ? lastPage.currentPage + 1 : undefined;
     },
 
     enabled: !!debouncedQuery,
 
     staleTime: 60 * 1000,
-    gcTime: 5 * 60 * 1000, // Changed from cacheTime to gcTime
+    gcTime: 5 * 60 * 1000,
   });
 
-  const suggestions: T[] =
-    data?.pages?.flatMap((page: PaginatedResponse<T>) => page.items) || [];
+  const suggestions: SearchUserItem[] =
+    data?.pages?.flatMap(
+      (page: PaginatedResponse<SearchUserItem>) => page.items,
+    ) || [];
 
   const showSuggestions =
     showSuggestionsInternal &&
@@ -89,7 +91,7 @@ export const useUserAutocomplete = <T extends SearchUserItem = SearchUserItem>(
       suggestions.length > 0 ||
       isFetchingNextPage);
 
-  const handleSelect = (item: T) => {
+  const handleSelect = (item: SearchUserItem) => {
     setQuery(item.identifier);
     setDebouncedQuery(item.identifier);
     setShowSuggestionsInternal(false);

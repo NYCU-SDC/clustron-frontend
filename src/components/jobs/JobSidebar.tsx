@@ -7,7 +7,7 @@ export default function GroupSideBarContainer({ title }: { title: string }) {
       labelKey: "jobsSideBar.ListNavLink",
     },
     {
-      to: `/jobform"`,
+      to: `/jobform`,
       labelKey: "jobsSideBar.SubmitNavLink",
     },
   ];

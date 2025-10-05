@@ -1,5 +1,12 @@
 import { api } from "@/lib/request/api";
 
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  identifier: string;
+}
+
 export interface PaginatedResponse<ItemType> {
   items: ItemType[];
   currentPage: number;
@@ -9,10 +16,10 @@ export interface PaginatedResponse<ItemType> {
   totalPages: number;
 }
 
-export const searchUser = async <T,>(
+export const searchUser = async (
   query: string,
   page?: number,
-): Promise<PaginatedResponse<T>> => {
+): Promise<PaginatedResponse<User>> => {
   if (!query) {
     return {
       items: [],
@@ -21,7 +28,7 @@ export const searchUser = async <T,>(
       pageSize: 0,
       totalItems: 0,
       totalPages: 0,
-    } as PaginatedResponse<T>;
+    };
   }
   let url = `/api/searchUser?query=${encodeURIComponent(query)}`;
 
@@ -29,6 +36,6 @@ export const searchUser = async <T,>(
     url += `&page=${page}`;
   }
 
-  const responseData: PaginatedResponse<T> = await api(url);
+  const responseData: PaginatedResponse<User> = await api(url);
   return responseData;
 };
