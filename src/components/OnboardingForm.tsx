@@ -80,13 +80,14 @@ export default function OnboardingForm({
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-6">
+            {/* Full Name */}
             <div className="grid gap-2">
               <Label className="ml-2 font-medium">
                 {t("onboardingForm.labelForInputFullName")}
                 <span className="text-red-400">*</span>
               </Label>
               <Input
-                className="mx-2 w-auto"
+                className="mx-2 w-auto placeholder:text-muted-foreground/70"
                 id="fullname"
                 type="name"
                 placeholder={t("onboardingForm.placeHolderForInputFullName")}
@@ -94,13 +95,14 @@ export default function OnboardingForm({
                 onChange={(e) => setFullName(e.target.value)}
               />
             </div>
+            {/* Linux Username */}
             <div className="grid gap-2">
               <Label className="ml-2 font-medium">
                 {t("onboardingForm.labelForInputLinuxUsername")}
                 <span className="text-red-400">*</span>
               </Label>
               <Input
-                className="mx-2 w-auto"
+                className="mx-2 w-auto placeholder:text-muted-foreground/70"
                 id="linuxUsername"
                 type="name"
                 placeholder="alice"
