@@ -257,8 +257,7 @@ export default function JobSubmitForm() {
 
   const commandPreview = useMemo(() => buildSrunCommand(formData), [formData]);
 
-  if (true) {
-    // (successJobId !== null) -> (true) to test successfully view
+  if (successJobId !== null) {
     return <SubmitSuccess jobId={successJobId} onReset={resetForm} />;
   }
 
