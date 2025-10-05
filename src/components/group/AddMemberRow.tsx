@@ -53,7 +53,7 @@ export default function AddMemberRow({
   const { t } = useTranslation();
   const { getRolesByAccessLevel } = useRoleMapper();
   const { query, setQuery, suggestions, showSuggestions, handleSelect } =
-    useUserAutocomplete<{ identifier: string }>();
+    useUserAutocomplete();
 
   const effectiveAccessLevel =
     globalRole === "admin" ? AccessLevelOwner : accessLevel;
@@ -66,7 +66,6 @@ export default function AddMemberRow({
   return (
     <tr className={`hover:bg-muted ${isPending ? "opacity-50" : ""}`}>
       <td className="py-2 px-2">
-        {/* ✅ Wrapper div for relative positioning */}
         <div style={{ position: "relative" }}>
           <Input
             value={query || id}

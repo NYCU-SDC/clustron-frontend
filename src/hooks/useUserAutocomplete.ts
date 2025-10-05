@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { searchUser, PaginatedResponse } from "@/lib/request/searchUser";
+import { searchUser } from "@/lib/request/searchUser";
+import type { PaginatedResponse } from "@/types/group.ts";
 
 export interface SearchUserItem {
   identifier: string;
@@ -30,7 +31,6 @@ export const useUserAutocomplete = (
   const [showSuggestionsInternal, setShowSuggestionsInternal] =
     useState<boolean>(false);
 
-  // 防抖 (Debounce) 邏輯
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedQuery(query);
@@ -57,7 +57,7 @@ export const useUserAutocomplete = (
   } = useInfiniteQuery({
     queryKey: ["userAutocomplete", debouncedQuery],
 
-    queryFn: ({
+    queryFn: async ({
       queryKey,
       pageParam = 0,
     }: {
@@ -65,7 +65,7 @@ export const useUserAutocomplete = (
       pageParam?: number;
     }) => {
       const [, currentQuery] = queryKey;
-      return searchUser(currentQuery as string, pageParam);
+      return await searchUser(currentQuery as string, pageParam);
     },
 
     initialPageParam: 0,
