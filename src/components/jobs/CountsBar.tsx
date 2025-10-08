@@ -1,8 +1,18 @@
 import StateCard from "@/components/jobs/StateCard";
-import { useJobCounts } from "@/hooks/useJobCounts";
+import { useQuery } from "@tanstack/react-query";
+import { getJobCounts } from "@/lib/request/jobs";
 
 export default function CountsBar() {
-  const { data, isError } = useJobCounts();
+  const { data, isError } = useQuery(
+    /*<JobCounts>*/ {
+      queryKey: ["jobs", "counts"],
+      queryFn: () => getJobCounts(),
+      refetchInterval: 5000,
+      refetchOnWindowFocus: true,
+      refetchOnReconnect: true,
+      placeholderData: (prev) => prev,
+    },
+  );
 
   if (isError) {
     return (
