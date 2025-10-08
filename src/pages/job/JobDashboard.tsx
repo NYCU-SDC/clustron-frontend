@@ -15,7 +15,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 10;
 
 const JobDashboard: React.FC = () => {
   const [sortBy, setSortBy] = useState<SortBy>("id");
