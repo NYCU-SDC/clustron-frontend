@@ -83,44 +83,37 @@ function SubmitSuccess({ jobId, onReset }: SubmitSuccessProps) {
   const { t } = useTranslation();
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <div className="flex-1 flex justify-center">
-        <div className="w-full max-w-none px-0 py-10">
-          {/* submit successfully */}
-          <div className="mx-auto w-md rounded-md border-2 border-emerald-400 bg-white dark:bg-neutral-900 px-8 py-3">
-            <div className="flex items-center justify-center gap-4">
-              <CircleCheckBig
-                className="h-12 w-12 text-emerald-500"
-                strokeWidth={1}
-              />
-              <div className="leading-tight">
-                <div className="font-semibold text-foreground text-xl tracking-tight">
-                  {t(
-                    "jobSubmitForm.submitSuccessTitle",
-                    "Job Submit Successfully",
-                  )}
-                </div>
-                <div className="font-semibold text-foreground text-lg leading-none">
-                  {t("jobSubmitForm.submitSuccessId", "ID #{{id}}", {
-                    id: jobId ?? "",
-                  })}
-                </div>
-              </div>
+    <div className="w-full max-w-md mx-auto p-6">
+      {/* submit successfully */}
+      <div className="rounded-md border-2 border-emerald-400 bg-white dark:bg-neutral-900 px-8 py-3">
+        <div className="flex items-center justify-center gap-4">
+          <CircleCheckBig
+            className="h-12 w-12 text-emerald-500"
+            strokeWidth={1}
+          />
+          <div className="leading-tight">
+            <div className="font-semibold text-foreground text-xl tracking-tight">
+              {t("jobSubmitForm.submitSuccessTitle", "Job Submit Successfully")}
+            </div>
+            <div className="font-semibold text-foreground text-lg leading-none">
+              {t("jobSubmitForm.submitSuccessId", "ID #{{id}}", {
+                id: jobId ?? "",
+              })}
             </div>
           </div>
-
-          {/* button: submit another job */}
-          <div className="mt-3 mx-auto w-full max-w-[640px] flex justify-end">
-            <Button
-              variant="outline"
-              onClick={onReset}
-              className="h-9 px-4 rounded-md text-sm"
-            >
-              {t("jobSubmitForm.submitAnother", "Submit Another Job")}
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </div>
         </div>
+      </div>
+
+      {/* button: submit another job */}
+      <div className="mt-3 flex justify-end">
+        <Button
+          variant="outline"
+          onClick={onReset}
+          className="h-9 px-4 rounded-md text-sm"
+        >
+          {t("jobSubmitForm.submitAnother", "Submit Another Job")}
+          <ArrowRight className="h-4 w-4" />
+        </Button>
       </div>
     </div>
   );
@@ -257,7 +250,8 @@ export default function JobSubmitForm() {
 
   const commandPreview = useMemo(() => buildSrunCommand(formData), [formData]);
 
-  if (successJobId !== null) {
+  if (true) {
+    //successJobId !== null
     return <SubmitSuccess jobId={successJobId} onReset={resetForm} />;
   }
 
