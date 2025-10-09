@@ -2,17 +2,26 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
 import AddMemberRow from "./AddMemberRow";
+import { ComponentProps } from "react";
 
 // [MOCK] 把 shadcn 的 Input/Button/Select 簡化成原生元素（避免 Radix 複雜度）
 vi.mock("@/components/ui/input", () => ({
-  Input: (p: any) => <input {...p} />,
+  Input: (p: ComponentProps<"input">) => <input {...p} />,
 })); // [VITEST MOCK]
 vi.mock("@/components/ui/button", () => ({
-  Button: (p: any) => <button {...p} />,
+  Button: (p: ComponentProps<"button">) => <button {...p} />,
 })); // [VITEST MOCK]
 vi.mock("@/components/ui/select", () => ({
   // [VITEST MOCK]
-  Select: ({ value, disabled, onValueChange, children }: any) => (
+  Select: ({
+    value,
+    disabled,
+    onValueChange,
+    children,
+  }: ComponentProps<"select"> & {
+    onValueChange?: (v: string) => void;
+    children?: import("react").ReactNode;
+  }) => (
     <select
       aria-label="role-select"
       value={value}
@@ -22,12 +31,22 @@ vi.mock("@/components/ui/select", () => ({
       {children}
     </select>
   ),
-  SelectTrigger: ({ children }: any) => <>{children}</>,
-  SelectValue: ({ children }: any) => <>{children}</>,
-  SelectContent: ({ children }: any) => <>{children}</>,
-  SelectItem: ({ value, children }: any) => (
-    <option value={value}>{children}</option>
+  SelectTrigger: ({ children }: { children?: import("react").ReactNode }) => (
+    <>{children}</>
   ),
+  SelectValue: ({ children }: { children?: import("react").ReactNode }) => (
+    <>{children}</>
+  ),
+  SelectContent: ({ children }: { children?: import("react").ReactNode }) => (
+    <>{children}</>
+  ),
+  SelectItem: ({
+    value,
+    children,
+  }: {
+    value?: string;
+    children?: import("react").ReactNode;
+  }) => <option value={value}>{children}</option>,
 }));
 
 // [MOCK] 把 hook 改成回傳固定的角色清單
@@ -43,7 +62,7 @@ vi.mock("@/hooks/useRoleMapper", () => ({
 
 describe("AddMemberRow", () => {
   const setup = (
-    override: Partial<React.ComponentProps<typeof AddMemberRow>> = {},
+    override: Partial<ComponentProps<typeof AddMemberRow>> = {},
   ) => {
     // [VITEST] 建立 spy 函式，之後用 expect 驗證被呼叫
     const onChange = vi.fn(); // [VITEST]

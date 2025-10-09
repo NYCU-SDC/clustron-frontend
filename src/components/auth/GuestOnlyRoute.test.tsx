@@ -9,8 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // mock react-cookie to control cookie state in tests to test the logged-in and logged-out scenarios
 vi.mock("react-cookie", async () => {
-  const mod =
-    await vi.importActual<typeof import("react-cookie")>("react-cookie");
+  const mod = await vi.importActual("react-cookie");
   return {
     ...mod,
     useCookies: vi.fn(),
@@ -26,8 +25,7 @@ vi.mock("sonner", () => ({
 // mock react-router to track navigation calls
 const mockNavigate = vi.fn();
 vi.mock("react-router", async () => {
-  const actual =
-    await vi.importActual<typeof import("react-router")>("react-router");
+  const actual = await vi.importActual("react-router");
   return { ...actual, useNavigate: () => mockNavigate };
 });
 

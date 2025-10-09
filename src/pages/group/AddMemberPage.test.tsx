@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { ComponentProps } from "react";
 import AddMemberPage from "./AddMemberPage";
 // import React from "react";
 
@@ -31,19 +32,20 @@ vi.mock("react-i18next", () => ({
  * --------- 需要的 hooks / 元件 mock ----------
  */
 const mutateMock = vi.fn();
-let onSuccessFromHook: ((...args: any[]) => void) | undefined;
+let onSuccessFromHook: ((...args: unknown[]) => void) | undefined;
 
 vi.mock("@/hooks/useAddMember", () => ({
   useAddMember: (
     _groupId: string,
-    opts: { onSuccess?: (...args: any[]) => void },
+    opts: { onSuccess?: (...args: unknown[]) => void },
   ) => {
     onSuccessFromHook = opts?.onSuccess;
     return { mutate: mutateMock, isPending: false };
   },
 }));
 
-let getGroupResult: { data: any; isLoading: boolean } = {
+type GroupData = { id: string; me: { role: { accessLevel: number } } } | null;
+let getGroupResult: { data: GroupData; isLoading: boolean } = {
   data: {
     id: "g1",
     me: { role: { accessLevel: 1 } }, // AccessLevelUser 類似數值就好
@@ -71,15 +73,17 @@ vi.mock("@/lib/permission", () => ({
 }));
 
 vi.mock("@/components/ui/table", () => ({
-  Table: (p: any) => <table {...p} />,
-  TableHeader: (p: any) => <thead {...p} />,
-  TableRow: (p: any) => <tr {...p} />,
-  TableHead: (p: any) => <th {...p} />,
-  TableBody: (p: any) => <tbody {...p} />,
+  Table: (p: ComponentProps<"table">) => <table {...p} />,
+  TableHeader: (p: ComponentProps<"thead">) => <thead {...p} />,
+  TableRow: (p: ComponentProps<"tr">) => <tr {...p} />,
+  TableHead: (p: ComponentProps<"th">) => <th {...p} />,
+  TableBody: (p: ComponentProps<"tbody">) => <tbody {...p} />,
 }));
 
 vi.mock("@/components/ui/button", () => ({
-  Button: ({ children, ...rest }: any) => <button {...rest}>{children}</button>,
+  Button: ({ children, ...rest }: ComponentProps<"button">) => (
+    <button {...rest}>{children}</button>
+  ),
 }));
 
 vi.mock("@/components/group/AddMemberRow", () => ({
@@ -93,7 +97,17 @@ vi.mock("@/components/group/AddMemberRow", () => ({
     isLast,
     onAddBatch,
     isDuplicate,
-  }: any) {
+  }: {
+    index: number;
+    id: string;
+    roleName: string;
+    onChange: (index: number, field: "id" | "roleName", value: string) => void;
+    onAdd: () => void;
+    onRemove: (index: number) => void;
+    isLast?: boolean;
+    onAddBatch?: (items: Array<{ id: string; roleName: string }>) => void;
+    isDuplicate?: boolean;
+  }) {
     return (
       <tr data-testid={`row-${index}`}>
         <td>

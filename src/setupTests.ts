@@ -12,7 +12,7 @@ vi.mock("react-i18next", async () => {
       t: (key: string) => key, // 測試不關心翻譯文案，直接回 key
       i18n: { changeLanguage: () => Promise.resolve() },
     }),
-    Trans: ({ children }: any) => children,
+    Trans: ({ children }: { children?: import("react").ReactNode }) => children,
   };
 });
 
@@ -36,11 +36,13 @@ class ResizeObserver {
   unobserve() {}
   disconnect() {}
 }
-(window as any).ResizeObserver = ResizeObserver;
+
+// Ensure typing for the global ResizeObserver in the test environment
+window.ResizeObserver = ResizeObserver;
 
 // 避免 NaN
-Element.prototype.getBoundingClientRect = function () {
-  return {
+Element.prototype.getBoundingClientRect = function (): DOMRectReadOnly {
+  const rect: Partial<DOMRectReadOnly> = {
     x: 0,
     y: 0,
     top: 0,
@@ -52,5 +54,6 @@ Element.prototype.getBoundingClientRect = function () {
     toJSON() {
       return {};
     },
-  } as any;
+  };
+  return rect as DOMRectReadOnly;
 };
