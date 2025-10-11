@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { searchUser } from "@/lib/request/searchUser";
-import type { PaginatedResponse } from "@/types/group.ts";
+import type { PaginatedResponse } from "@/types/generic";
 
 export interface SearchUserItem {
   identifier: string;
