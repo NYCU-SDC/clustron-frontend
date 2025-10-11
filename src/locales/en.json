@@ -288,7 +288,10 @@
     "stderrPlaceholder": "stderr path",
     "commandPreviewTitle": "Command Preview",
     "commandPlaceholder": "Command",
-    "submitButton": "Submit"
+    "submitButton": "Submit",
+    "submitSuccessTitle": "Job Submit Successfully",
+    "submitSuccessId": "ID #{{id}}",
+    "submitAnother": "Submit Another Job"
   },
   "jobsSideBar": {
     "title": "Jobs",

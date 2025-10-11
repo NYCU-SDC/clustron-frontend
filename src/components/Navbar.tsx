@@ -57,7 +57,7 @@ export default function Navbar() {
                   {t("navbar.groupLink")}
                 </NavLink>
                 <NavLink
-                  to="/joblist"
+                  to="/jobs"
                   className={({ isActive }) => navLinkclass(isActive)}
                 >
                   {t("navbar.jobsLink")}

@@ -15,13 +15,20 @@ export interface Resources {
 
 export interface Job {
   id: number;
-  state: JobState;
+  status: JobState;
   user: string;
   partition: string;
   resources: Resources;
 }
 
-export type SortBy = keyof Job | keyof Resources;
+export type SortBy =
+  | "id"
+  | "user"
+  | "partition"
+  | "status"
+  | "cpu"
+  | "gpu"
+  | "memory";
 
 export interface FilterOptions {
   status: JobState[];

@@ -54,10 +54,11 @@ const App = () => {
             path="/groups/:id/add-member-result"
             element={<AddMemberResult />}
           />
-          <Route element={<JobLayout />}>
-            <Route path="/jobform" element={<JobSubmitPage />} />
-            <Route path="/joblist" element={<JobDashboard />} />
+          <Route path="/jobs" element={<JobLayout />}>
+            <Route index element={<JobDashboard />} />
+            <Route path="submit" element={<JobSubmitPage />} />
           </Route>
+
           <Route element={<GroupLayout />}>
             <Route path="/groups" element={<GroupListPage />} />
             <Route path="/groups/new" element={<AddGroupPage />} />
