@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
-// import JobSidebar from "@/components/jobs/JobSidebar";
 import { useTranslation } from "react-i18next";
-import SideBar, { NavItem } from "@/components/sidebar";
+import SideBar, { NavItem } from "@/components/Sidebar";
 
 export default function JobLayout() {
   const { t } = useTranslation();

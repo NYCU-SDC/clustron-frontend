@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import SideBar, { NavItem } from "@/components/sidebar.tsx";
+import SideBar, { NavItem } from "@/components/Sidebar";
 
 export default function SettingLayout() {
   const { t } = useTranslation();

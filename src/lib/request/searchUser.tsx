@@ -1,5 +1,5 @@
 import { api } from "@/lib/request/api";
-import type { PaginatedResponse } from "@/types/group.ts";
+import type { PaginatedResponse } from "@/types/generic";
 
 export interface User {
   id: string;
@@ -7,15 +7,6 @@ export interface User {
   email: string;
   identifier: string;
 }
-
-// export interface PaginatedResponse<ItemType> {
-//   items: ItemType[];
-//   currentPage: number;
-//   hasNextPage: boolean;
-//   pageSize: number;
-//   totalItems: number;
-//   totalPages: number;
-// }
 
 export const searchUser = async (
   query: string,

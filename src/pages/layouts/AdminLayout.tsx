@@ -3,9 +3,8 @@ import { jwtDecode } from "jwt-decode";
 import { getAccessToken } from "@/lib/token";
 import { useState, useEffect } from "react";
 import { AccessToken } from "@/types/settings";
-// import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
-import SideBar, { NavItem } from "@/components/sidebar";
+import SideBar, { NavItem } from "@/components/Sidebar";
 
 export default function AdminLayout() {
   const accessToken = getAccessToken();

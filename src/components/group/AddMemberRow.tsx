@@ -61,8 +61,6 @@ export default function AddMemberRow({
   const assignableRoles = getRolesByAccessLevel(effectiveAccessLevel);
   const isInputDisabled = disabled || isPending;
 
-  console.log({ query, showSuggestions, suggestions });
-
   return (
     <tr className={`hover:bg-muted ${isPending ? "opacity-50" : ""}`}>
       <td className="py-2 px-2">

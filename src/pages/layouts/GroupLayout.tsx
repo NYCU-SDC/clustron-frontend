@@ -1,7 +1,6 @@
 import { Outlet, useParams } from "react-router-dom";
-// import GroupSideBar from "@/components/group/GroupSideBar";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
-import SideBar, { NavItem } from "@/components/sidebar";
+import SideBar, { NavItem } from "@/components/Sidebar";
 import { useTranslation } from "react-i18next";
 
 export default function GroupLayout() {
