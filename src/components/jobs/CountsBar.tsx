@@ -3,16 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { getJobCounts } from "@/lib/request/jobs";
 
 export default function CountsBar() {
-  const { data, isError } = useQuery(
-    /*<JobCounts>*/ {
-      queryKey: ["jobs", "counts"],
-      queryFn: () => getJobCounts(),
-      refetchInterval: 5000,
-      refetchOnWindowFocus: true,
-      refetchOnReconnect: true,
-      placeholderData: (prev) => prev,
-    },
-  );
+  const { data, isError } = useQuery({
+    queryKey: ["jobs", "counts"],
+    queryFn: () => getJobCounts(),
+    refetchInterval: 5000,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    placeholderData: (prev) => prev,
+  });
 
   if (isError) {
     return (

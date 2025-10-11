@@ -427,7 +427,7 @@ export default function JobSubmitForm() {
                 inputMode="numeric"
                 value={formData.tasks}
                 onChange={handleChange}
-                className="w-[70%]"
+                className="w-[70%] [color-scheme:light] dark:[color-scheme:dark]"
                 required
               />
             </div>
@@ -446,7 +446,7 @@ export default function JobSubmitForm() {
                 inputMode="numeric"
                 value={formData.cpus}
                 onChange={handleChange}
-                className="w-[70%]"
+                className="w-[70%] [color-scheme:light] dark:[color-scheme:dark]"
                 required
               />
             </div>
@@ -464,7 +464,7 @@ export default function JobSubmitForm() {
                 inputMode="numeric"
                 value={formData.memPerCpu}
                 onChange={handleChange}
-                className="w-[70%]"
+                className="w-[70%] [color-scheme:light] dark:[color-scheme:dark]"
               />
             </div>
 
@@ -479,7 +479,7 @@ export default function JobSubmitForm() {
                 inputMode="numeric"
                 value={formData.nodes}
                 onChange={handleChange}
-                className="w-[70%]"
+                className="w-[70%] [color-scheme:light] dark:[color-scheme:dark]"
               />
             </div>
 
@@ -496,7 +496,7 @@ export default function JobSubmitForm() {
                 inputMode="numeric"
                 value={formData.memPerNode}
                 onChange={handleChange}
-                className="w-[70%]"
+                className="w-[70%] [color-scheme:light] dark:[color-scheme:dark]"
               />
             </div>
 
@@ -513,7 +513,7 @@ export default function JobSubmitForm() {
                 inputMode="numeric"
                 value={formData.timeLimit}
                 onChange={handleChange}
-                className="w-[70%]"
+                className="w-[70%] [color-scheme:light] dark:[color-scheme:dark]"
               />
             </div>
           </section>
