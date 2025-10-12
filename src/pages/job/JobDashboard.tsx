@@ -5,14 +5,6 @@ import FilterPanel from "@/components/jobs/FilterPanel";
 import { jobsData, JobResponse } from "@/lib/mocks/jobData"; // TODO: change real api from backend
 import type { SortBy, FilterOptions } from "@/types/jobs";
 import CountsBar from "@/components/jobs/CountsBar";
-// import {
-//   Pagination,
-//   PaginationContent,
-//   PaginationItem,
-//   PaginationLink,
-//   PaginationNext,
-//   PaginationPrevious,
-// } from "@/components/ui/pagination";
 import PaginationControls from "@/components/PaginationControls";
 
 const PAGE_SIZE = 3;
@@ -73,14 +65,6 @@ const JobDashboard: React.FC = () => {
     const end = start + PAGE_SIZE;
     return sortedAndFilteredJobs.slice(start, end);
   }, [sortedAndFilteredJobs, currentPage]);
-
-  // const maxPages = 4;
-  // let startPage = Math.max(currentPage - 1, 0);
-  // let endPage = startPage + maxPages - 1;
-  // if (endPage >= totalPages) {
-  //   endPage = totalPages - 1;
-  //   startPage = Math.max(endPage - maxPages + 1, 0);
-  // }
 
   return (
     <main className="flex-1 flex justify-center">
