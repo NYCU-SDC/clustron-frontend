@@ -34,10 +34,5 @@ export default function GroupLayout() {
         <Outlet context={{ group, groupId: id }} />
       </main>
     </div>
-
-    // <GroupSideBar title={group.title} />
-    // <main className=" flex-1 flex justify-center ">
-    //   <Outlet context={{ group, groupId: id }} />
-    // </main>
   );
 }

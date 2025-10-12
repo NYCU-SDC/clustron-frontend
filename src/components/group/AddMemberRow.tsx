@@ -64,7 +64,7 @@ export default function AddMemberRow({
   return (
     <tr className={`hover:bg-muted ${isPending ? "opacity-50" : ""}`}>
       <td className="py-2 px-2">
-        <div style={{ position: "relative" }}>
+        <div className="relative">
           <Input
             value={query || id}
             disabled={isInputDisabled}
@@ -130,16 +130,15 @@ export default function AddMemberRow({
         >
           <SelectTrigger className="h-10 w-full text-sm">
             <SelectValue placeholder="Select Role" />
-          </SelectTrigger>{" "}
+          </SelectTrigger>
           <SelectContent>
-            {" "}
             {assignableRoles.map((r) => (
               <SelectItem key={r.id} value={r.roleName}>
                 {r.roleName}
               </SelectItem>
             ))}
           </SelectContent>
-        </Select>{" "}
+        </Select>
       </td>
       <td className="py-2 px-2 text-center">
         {isLast ? (
