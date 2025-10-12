@@ -6,14 +6,15 @@ import { useQuery } from "@tanstack/react-query";
 import { getJobs, type GetJobsParams } from "@/lib/request/jobs";
 import type { SortBy, FilterOptions, JobState } from "@/types/jobs";
 import CountsBar from "@/components/jobs/CountsBar";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+// import {
+//   Pagination,
+//   PaginationContent,
+//   PaginationItem,
+//   PaginationLink,
+//   PaginationNext,
+//   PaginationPrevious,
+// } from "@/components/ui/pagination";
+import PaginationControls from "@/components/PaginationControls";
 
 const PAGE_SIZE = 10;
 
@@ -61,13 +62,13 @@ const JobDashboard: React.FC = () => {
     })) ?? [];
   const totalPages = data?.totalPages ?? 0;
 
-  const maxPages = 4;
-  let startPage = Math.max(currentPage - 1, 0);
-  let endPage = startPage + maxPages - 1;
-  if (endPage >= totalPages) {
-    endPage = totalPages - 1;
-    startPage = Math.max(endPage - maxPages + 1, 0);
-  }
+  // const maxPages = 4;
+  // let startPage = Math.max(currentPage - 1, 0);
+  // let endPage = startPage + maxPages - 1;
+  // if (endPage >= totalPages) {
+  //   endPage = totalPages - 1;
+  //   startPage = Math.max(endPage - maxPages + 1, 0);
+  // }
 
   return (
     <main className="flex-1 flex justify-center">
@@ -88,53 +89,11 @@ const JobDashboard: React.FC = () => {
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="mt-6 flex justify-center">
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    onClick={() => setCurrentPage((p) => Math.max(p - 1, 0))}
-                    className={
-                      currentPage === 0 ? "opacity-50 pointer-events-none" : ""
-                    }
-                  />
-                </PaginationItem>
-                {startPage > 0 && (
-                  <PaginationItem>
-                    <span className="px-2">...</span>
-                  </PaginationItem>
-                )}
-                {Array.from(
-                  { length: endPage - startPage + 1 },
-                  (_, i) => startPage + i,
-                ).map((page) => (
-                  <PaginationItem key={page}>
-                    <PaginationLink
-                      isActive={page === currentPage}
-                      onClick={() => setCurrentPage(page)}
-                    >
-                      {page + 1}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))}
-                {endPage < totalPages - 1 && (
-                  <PaginationItem>
-                    <span className="px-2">...</span>
-                  </PaginationItem>
-                )}
-                <PaginationItem>
-                  <PaginationNext
-                    onClick={() =>
-                      setCurrentPage((p) => Math.min(p + 1, totalPages - 1))
-                    }
-                    className={
-                      currentPage === totalPages - 1
-                        ? "opacity-50 pointer-events-none"
-                        : ""
-                    }
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+            <PaginationControls
+              currentPage={currentPage}
+              totalPages={totalPages}
+              setCurrentPage={setCurrentPage}
+            />
           </div>
         )}
       </div>
