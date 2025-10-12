@@ -7,14 +7,6 @@ import {
   TableHead,
   TableBody,
 } from "@/components/ui/table";
-// import {
-//   Pagination,
-//   PaginationContent,
-//   PaginationItem,
-//   PaginationLink,
-//   PaginationNext,
-//   PaginationPrevious,
-// } from "@/components/ui/pagination";
 import PaginationControls from "@/components/PaginationControls";
 import { Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -73,14 +65,6 @@ export default function GroupMemberTable({
       roleId: newRoldId,
     });
   };
-
-  // const maxPages = 4;
-  // let startPage = Math.max(currentPage - 1, 0);
-  // let endPage = startPage + maxPages - 1;
-  // if (endPage >= totalPages) {
-  //   endPage = totalPages - 1;
-  //   startPage = Math.max(endPage - maxPages + 1, 0);
-  // }
 
   return (
     <Card>
