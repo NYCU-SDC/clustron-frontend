@@ -6,13 +6,15 @@ import {
   within,
 } from "@testing-library/react";
 import OnboardingForm from "./OnboardingForm";
-import { AuthProvider } from "@/components/auth/AuthProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as sonner from "sonner";
 import { CookiesProvider } from "react-cookie";
 import { describe, it, vi, afterEach, expect } from "vitest";
 import { MemoryRouter, Routes, Route } from "react-router";
 import { saveOnboardingInfo } from "@/lib/request/saveOnboardingInfo";
+import { authContext, AuthContextType } from "@/lib/auth/authContext";
+import type { UseMutationResult } from "@tanstack/react-query";
+import type { AuthCookie } from "@/types/type";
 
 // mock react-i18next so labels/placeholders are deterministic in tests
 vi.mock("react-i18next", () => ({
@@ -60,15 +62,37 @@ describe("OnboardingForm", () => {
 
   function renderForm() {
     const queryClient = new QueryClient();
+    const mockRefreshMutation = {
+      mutateAsync: vi.fn(
+        async () =>
+          ({
+            accessToken: "mock-access-token",
+            refreshToken: "mock-refresh-token",
+            expirationTime: Math.floor(Date.now() / 1000) + 3600,
+          }) as AuthCookie,
+      ),
+      isPending: false,
+      mutate: vi.fn(),
+      reset: vi.fn(),
+    } as unknown as UseMutationResult<AuthCookie, Error, void, unknown>;
+
+    const mockAuthContextValue: AuthContextType = {
+      login: vi.fn(),
+      setCookiesForAuthToken: vi.fn(),
+      handleLogout: vi.fn(),
+      isLoggedIn: () => true,
+      refreshMutation: mockRefreshMutation,
+    };
+
     return render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter initialEntries={["/"]}>
           <CookiesProvider>
-            <AuthProvider>
+            <authContext.Provider value={mockAuthContextValue}>
               <Routes>
                 <Route path="/" element={<OnboardingForm />} />
               </Routes>
-            </AuthProvider>
+            </authContext.Provider>
           </CookiesProvider>
         </MemoryRouter>
       </QueryClientProvider>,
