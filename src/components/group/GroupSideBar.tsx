@@ -1,4 +1,4 @@
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router";
 import { useTranslation } from "react-i18next";
 
 function navLinkClass(isActive: boolean) {
