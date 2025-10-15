@@ -23,8 +23,6 @@ import { GlobalRole } from "@/lib/permission";
 import { GroupDetail } from "@/types/group";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { useUserAutocomplete } from "@/hooks/useUserAutocomplete.ts";
-import { Command, CommandList, CommandItem } from "@/components/ui/command";
 
 type GroupContextType = {
   group: GroupDetail;
@@ -90,9 +88,6 @@ export default function GroupSettings() {
   const handleTransfer = () => {
     transferOwner({ identifier: transferOwnerEmail });
   };
-
-  const { setQuery, suggestions, showSuggestions, handleSelect } =
-    useUserAutocomplete();
 
   if (!user || !group) {
     return (
@@ -183,38 +178,15 @@ export default function GroupSettings() {
             <p className="text-sm text-red-500 font-medium mb-2">
               {t("groupSettings.transferOwnership.notice")}
             </p>
-            <div style={{ position: "relative" }}>
-              <Input
-                type="email"
-                placeholder="example@email.com"
-                value={transferOwnerEmail}
-                onChange={(e) => {
-                  setTransferOwnerEmail(e.target.value);
-                  setQuery(e.target.value);
-                }}
-                className="mb-4 placeholder:text-gray-400"
-                disabled={isToggling}
-              />
 
-              {showSuggestions && suggestions.length > 0 && (
-                <Command>
-                  <CommandList>
-                    {suggestions.map((user) => (
-                      <CommandItem
-                        key={user.identifier}
-                        onSelect={() => {
-                          handleSelect(user);
-                          setTransferOwnerEmail(user.identifier); // update input
-                          setQuery(user.identifier);
-                        }}
-                      >
-                        {user.identifier}
-                      </CommandItem>
-                    ))}
-                  </CommandList>
-                </Command>
-              )}
-            </div>
+            <Input
+              type="email"
+              placeholder="example@email.com"
+              value={transferOwnerEmail}
+              onChange={(e) => setTransferOwnerEmail(e.target.value)}
+              className="mb-4 placeholder:text-gray-400"
+              disabled={isToggling}
+            />
 
             <div className="flex gap-2">
               <Button
