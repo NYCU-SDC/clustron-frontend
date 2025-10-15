@@ -1,7 +1,6 @@
 import { getAccessToken } from "@/lib/token";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
-// import.meta.env.VITE_BACKEND_BASE_URL. read env variable
 
 export async function api<T>(
   path: string,
