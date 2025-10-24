@@ -25,26 +25,6 @@ vi.mock("@/lib/token", () => ({
   getAccessToken: vi.fn(() => "mock-access-token"),
 }));
 
-// Mock react-i18next
-vi.mock("react-i18next", () => ({
-  useTranslation: () => ({
-    t: (key: string) => {
-      const translations: Record<string, string> = {
-        "navbar.groupLink": "Groups",
-        "navbar.jobsLink": "Jobs",
-        "navbar.settingLink": "Settings",
-        "navbar.adminLink": "Admin",
-        "navbar.logoutBtn": "Logout",
-      };
-      return translations[key] || key;
-    },
-    i18n: {
-      language: "en",
-      changeLanguage: vi.fn(),
-    },
-  }),
-}));
-
 // Mock logout to avoid side effects
 vi.mock("@/lib/request/logout", () => ({
   logout: vi.fn(),
