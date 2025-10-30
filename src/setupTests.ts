@@ -16,7 +16,7 @@ vi.mock("react-i18next", async () => {
   };
 });
 
-// Radix/shadcn 常見 polyfills（避免 jsdom 環境崩）
+// Radix/shadcn 常見 polyfills（避免 jsdom 環境 crash）
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: (q: string) => ({
