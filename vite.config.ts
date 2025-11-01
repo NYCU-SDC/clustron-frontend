@@ -1,6 +1,5 @@
 /// <reference types="vitest" />
 import path from "path";
-// ⬇️ 改這行：從 vitest/config 匯入
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
