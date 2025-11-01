@@ -30,6 +30,7 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reporter: ["text", "lcov", "html"],
+      exclude: ["src/components/ui/*"],
     },
   },
 });
