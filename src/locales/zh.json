@@ -295,7 +295,10 @@
     "stderrPlaceholder": "stderr 路徑",
     "commandPreviewTitle": "指令預覽",
     "commandPlaceholder": "指令",
-    "submitButton": "提交"
+    "submitButton": "提交",
+    "submitSuccessTitle": "提交成功",
+    "submitSuccessId": "ID #{{id}}",
+    "submitAnother": "再送出一個工作"
   },
   "jobsSideBar": {
     "title": "工作任務",
