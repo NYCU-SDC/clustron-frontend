@@ -3,6 +3,8 @@ import { updatePendingMember } from "@/lib/request/groupPendingMembers";
 import type { UpdatePendingMemberInput } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { getErrMessage } from "@/lib/errors";
+import { pickIdPart } from "@/lib/pickId";
 
 type Ctx = { toastId: string };
 type TResp = Awaited<ReturnType<typeof updatePendingMember>>;
@@ -15,13 +17,7 @@ export function useUpdatePendingMember(groupId: string) {
     mutationFn: (params: UpdatePendingMemberInput) =>
       updatePendingMember(params),
     onMutate: (params) => {
-      const idPart =
-        (params as any)?.id ??
-        (params as any)?.memberId ??
-        (params as any)?.email ??
-        "target";
-      const toastId = `update-pending-${groupId}-${String(idPart)}`;
-
+      const toastId = `update-pending-${groupId}-${pickIdPart(params)}`;
       toast.loading(
         t("groupPages.pendingMembers.updatingToast", "Updating..."),
         { id: toastId },
@@ -41,13 +37,13 @@ export function useUpdatePendingMember(groupId: string) {
       });
     },
     onError: (err, _vars, ctx) => {
-      const msg =
-        (err as any)?.detail ||
-        (err as Error)?.message ||
+      const msg = getErrMessage(
+        err,
         t(
           "groupPages.pendingMembers.updateFailToast",
           "Failed to update pending member",
-        );
+        ),
+      );
       toast.error(msg, { id: ctx?.toastId });
     },
   });

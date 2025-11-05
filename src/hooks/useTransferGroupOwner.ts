@@ -5,6 +5,7 @@ import {
 } from "@/lib/request/transferGroupOwner";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { getErrMessage } from "@/lib/errors";
 
 type Ctx = { toastId: string };
 
@@ -25,7 +26,7 @@ export function useTransferGroupOwner(
     mutationFn: (data: TransferGroupOwnershipRequest) =>
       transferGroupOwner(groupId, data),
 
-    onMutate: (_vars) => {
+    onMutate: () => {
       const toastId = `transfer-owner-${groupId}`;
       toast.loading(
         t("groupSettings.transferOwnership.transferring", "Transferring..."),
@@ -46,13 +47,13 @@ export function useTransferGroupOwner(
     },
 
     onError: (err, vars, ctx) => {
-      const msg =
-        (err as any)?.detail ||
-        (err as Error)?.message ||
+      const msg = getErrMessage(
+        err,
         t(
           "groupSettings.transferOwnership.failed",
           "Failed to transfer ownership.",
-        );
+        ),
+      );
       toast.error(msg, { id: ctx?.toastId });
       options?.onError?.(err, vars, ctx);
     },

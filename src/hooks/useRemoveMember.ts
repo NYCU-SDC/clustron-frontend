@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { removeMember } from "@/lib/request/removeMember";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { getErrMessage } from "@/lib/errors";
 
 type UseRemoveMemberOptions = {
   onSuccess?: () => void | Promise<void>;
@@ -38,15 +39,9 @@ export function useRemoveMember(
       await options?.onSuccess?.();
       queryClient.invalidateQueries({ queryKey: ["group-members", groupId] });
     },
-    onError: (err, _memberId, ctx) => {
-      const msg =
-        (err as any)?.detail ||
-        (err as Error)?.message ||
-        t(
-          "groupComponents.memberDeleteButton.removeFailToast",
-          "Failed to remove member",
-        );
-      toast.error(msg, { id: ctx?.toastId });
+    onError: (err) => {
+      const msg = getErrMessage(err, "Failed to remove member");
+      toast.error(msg, { id: "remove-member-error" });
       options?.onError?.(err);
     },
   });

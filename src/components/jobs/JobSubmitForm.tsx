@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 import { toast } from "sonner";
+import { getErrMessage } from "@/lib/errors";
 
 // Types
 type EnvVar = { key: string; value: string };
@@ -136,13 +137,13 @@ export default function JobSubmitForm() {
 
   useEffect(() => {
     if (!partErr) return;
-    const msg =
-      (partError as any)?.detail ||
-      (partError as Error)?.message ||
+    const msg = getErrMessage(
+      partError,
       t(
         "jobSubmitForm.sidebarList.partitionsLoadFail",
         "Failed to load partitions.",
-      );
+      ),
+    );
     toast.error(msg, { id: "partitions-load-error" });
   }, [partErr, partError, t]);
 
@@ -152,10 +153,10 @@ export default function JobSubmitForm() {
     mutationFn: createJob,
     onSuccess: (job: Job) => setSuccessJobId(job.id),
     onError: (err: unknown) => {
-      const msg =
-        (err as any)?.detail ||
-        (err as Error)?.message ||
-        t("jobSubmitForm.sidebarList.submitFailToast", "Failed to submit job.");
+      const msg = getErrMessage(
+        err,
+        t("jobSubmitForm.sidebarList.submitFailToast", "Failed to submit job."),
+      );
       toast.error(msg, { id: "create-job-error" });
     },
   });

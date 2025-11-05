@@ -22,6 +22,7 @@ import { bindLoginMethods } from "@/lib/request/bindLoginMethods";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LoginMethodIcon } from "@/components/setting/LoginMethodIcon";
 import { toast } from "sonner";
+import { getErrMessage } from "@/lib/errors";
 const PROFILE_QUERY_KEY = ["connectedAccounts"];
 
 export default function BindLoginForm() {
@@ -43,10 +44,10 @@ export default function BindLoginForm() {
 
   useEffect(() => {
     if (!isError) return;
-    const msg =
-      (settingsError as any)?.detail ||
-      (settingsError as Error)?.message ||
-      t("bindLoginForm.getFailToast", "Failed to load connected accounts");
+    const msg = getErrMessage(
+      settingsError,
+      t("bindLoginForm.getFailToast", "Failed to load connected accounts"),
+    );
     toast.error(msg, { id: "bind-get-settings-error" });
   }, [isError, settingsError, t]);
 

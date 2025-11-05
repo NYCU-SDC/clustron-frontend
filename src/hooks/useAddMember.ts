@@ -6,6 +6,7 @@ import type {
 } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { getErrMessage } from "@/lib/errors";
 
 type UseAddMemberOptions = {
   onSuccess?: (data: AddGroupMemberResponse[]) => void | Promise<void>;
@@ -13,12 +14,17 @@ type UseAddMemberOptions = {
 };
 
 function summarize(data: AddGroupMemberResponse[]) {
-  const norm = (r: any) => {
-    const s = (r?.status ?? r?.result ?? (r?.ok ? "success" : undefined)) as
-      | string
-      | undefined;
-    return (s ?? "success").toLowerCase();
-  };
+  function readStatus(r: unknown): string {
+    if (r && typeof r === "object") {
+      const obj = r as { status?: unknown; result?: unknown; ok?: unknown };
+      const status = typeof obj.status === "string" ? obj.status : undefined;
+      const result = typeof obj.result === "string" ? obj.result : undefined;
+      const ok = typeof obj.ok === "boolean" ? obj.ok : undefined;
+      const val = status ?? result ?? (ok ? "success" : undefined);
+      return (val ?? "success").toLowerCase();
+    }
+    return "success";
+  }
 
   const total = data.length;
   let success = 0;
@@ -26,7 +32,7 @@ function summarize(data: AddGroupMemberResponse[]) {
   let fail = 0;
 
   for (const r of data) {
-    const s = norm(r);
+    const s = readStatus(r);
     if (s === "success") success++;
     else if (s === "warning" || s === "pending") warning++;
     else fail++;
@@ -76,10 +82,10 @@ export function useAddMember(groupId: string, options?: UseAddMemberOptions) {
       queryClient.invalidateQueries({ queryKey: ["group-members", groupId] });
     },
     onError: (err) => {
-      const msg =
-        (err as any)?.detail ||
-        (err as Error)?.message ||
-        t("groupPages.addMemberPage.toastFail", "Failed to add members");
+      const msg = getErrMessage(
+        err,
+        t("groupPages.addMemberPage.toastFail", "Failed to add members"),
+      );
       toast.error(msg, { id: "add-member-error" });
       options?.onError?.(err);
     },

@@ -1,8 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { removePendingMember } from "@/lib/request/groupPendingMembers";
 import type { RemovePendingMemberParams } from "@/types/group";
-import { toast } from "sonner"; // [ADDED]
+import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { getErrMessage } from "@/lib/errors";
+import { pickIdPart } from "@/lib/pickId";
 
 type Ctx = { toastId: string };
 
@@ -14,13 +16,8 @@ export function useRemovePendingMember(groupId: string) {
     mutationFn: (params: RemovePendingMemberParams) =>
       removePendingMember(params),
     onMutate: (params) => {
-      const idPart =
-        (params as any)?.id ??
-        (params as any)?.memberId ??
-        (params as any)?.email ??
-        "target";
-      const toastId = `remove-pending-${groupId}-${String(idPart)}`;
-
+      const idPart = pickIdPart(params);
+      const toastId = `remove-pending-${groupId}-${idPart}`;
       toast.loading(
         t("groupPages.pendingMembers.removingToast", "Removing..."),
         { id: toastId },
@@ -40,13 +37,13 @@ export function useRemovePendingMember(groupId: string) {
       });
     },
     onError: (err, _vars, ctx) => {
-      const msg =
-        (err as any)?.detail ||
-        (err as Error)?.message ||
+      const msg = getErrMessage(
+        err,
         t(
           "groupPages.pendingMembers.removeFailToast",
           "Failed to remove pending member",
-        );
+        ),
+      );
       toast.error(msg, { id: ctx?.toastId });
     },
   });

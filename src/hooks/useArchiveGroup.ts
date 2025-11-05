@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { archiveGroup } from "@/lib/request/archiveGroup";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { getErrMessage } from "@/lib/errors";
 
 type UseArchiveGroupOptions = {
   onSuccess?: () => void | Promise<void>;
@@ -36,13 +37,13 @@ export function useArchiveGroup(
       queryClient.invalidateQueries({ queryKey: ["groups"] as const });
     },
     onError: (err) => {
-      const msg =
-        (err as any)?.detail ||
-        (err as Error)?.message ||
+      const msg = getErrMessage(
+        err,
         t(
           "groupPages.groupSettings.archiveFailToast",
           "Failed to archive group",
-        );
+        ),
+      );
       toast.error(msg, { id: toastId });
       options?.onError?.(err);
     },

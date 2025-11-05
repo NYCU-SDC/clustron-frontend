@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { unarchiveGroup } from "@/lib/request/unarchiveGroup";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { getErrMessage } from "@/lib/errors";
 
 type UseUnarchiveGroupOptions = {
   onSuccess?: () => void | Promise<void>;
@@ -41,13 +42,13 @@ export function useUnarchiveGroup(
       queryClient.invalidateQueries({ queryKey: ["groups"] as const });
     },
     onError: (err, _vars, ctx) => {
-      const msg =
-        (err as any)?.detail ||
-        (err as Error)?.message ||
+      const msg = getErrMessage(
+        err,
         t(
           "groupPages.groupSettings.unarchiveFailToast",
           "Failed to unarchive group",
-        );
+        ),
+      );
       toast.error(msg, { id: ctx?.toastId });
       options?.onError?.(err);
     },

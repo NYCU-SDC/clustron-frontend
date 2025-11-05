@@ -3,6 +3,7 @@ import { createGroup } from "@/lib/request/createGroup";
 import type { CreateGroupInput, CreateGroupResponse } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { getErrMessage } from "@/lib/errors";
 
 export function useCreateGroup(options?: {
   onSuccess?: (data: CreateGroupResponse) => void;
@@ -31,10 +32,10 @@ export function useCreateGroup(options?: {
       options?.onSuccess?.(data);
     },
     onError: (err) => {
-      const msg =
-        (err as any)?.detail ||
-        (err as Error)?.message ||
-        t("groupPages.createGroup.createFailToast", "Failed to create group");
+      const msg = getErrMessage(
+        err,
+        t("groupPages.createGroup.createFailToast", "Failed to create group"),
+      );
       toast.error(msg, { id: toastId });
       options?.onError?.(err);
     },

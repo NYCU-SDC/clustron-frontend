@@ -3,6 +3,7 @@ import { createGroupLink } from "@/lib/request/groupLinks";
 import type { GroupLinkPayload, GroupLinkResponse } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { getErrMessage } from "@/lib/errors";
 
 type Vars = { groupId: string; payload: GroupLinkPayload };
 
@@ -38,10 +39,10 @@ export function useCreateGroupLink(options?: {
       options?.onSuccess?.(data);
     },
     onError: (err, _vars, ctx) => {
-      const msg =
-        (err as any)?.detail ||
-        (err as Error)?.message ||
-        t("groupPages.groupLinks.createFailToast", "Failed to create link");
+      const msg = getErrMessage(
+        err,
+        t("groupPages.groupLinks.createFailToast", "Failed to create link"),
+      );
       toast.error(msg, { id: ctx?.toastId });
       options?.onError?.(err);
     },

@@ -3,6 +3,8 @@ import { updateMember } from "@/lib/request/updateMember";
 import type { UpdateGroupMemberInput } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { getErrMessage } from "@/lib/errors";
+import { pickIdPart } from "@/lib/pickId";
 
 type Ctx = { toastId: string };
 
@@ -15,12 +17,8 @@ export function useUpdateMember(groupId: string) {
   return useMutation<TResp, unknown, UpdateGroupMemberInput, Ctx>({
     mutationFn: (params: UpdateGroupMemberInput) => updateMember(params),
     onMutate: (params) => {
-      const idPart =
-        (params as any)?.memberId ??
-        (params as any)?.id ??
-        (params as any)?.email ??
-        "target";
-      const toastId = `update-member-${groupId}-${String(idPart)}`;
+      const idPart = pickIdPart(params);
+      const toastId = `update-member-${groupId}-${idPart}`;
       toast.loading(
         t("groupComponents.memberUpdate.updatingToast", "Updating..."),
         { id: toastId },
@@ -40,13 +38,13 @@ export function useUpdateMember(groupId: string) {
       });
     },
     onError: (err, _vars, ctx) => {
-      const msg =
-        (err as any)?.detail ||
-        (err as Error)?.message ||
+      const msg = getErrMessage(
+        err,
         t(
           "groupComponents.memberUpdate.updateFailToast",
           "Failed to update member",
-        );
+        ),
+      );
       toast.error(msg, { id: ctx?.toastId });
     },
   });
