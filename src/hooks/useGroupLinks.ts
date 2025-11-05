@@ -1,24 +1,48 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createGroupLink } from "@/lib/request/groupLinks";
 import type { GroupLinkPayload, GroupLinkResponse } from "@/types/group";
+import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 type Vars = { groupId: string; payload: GroupLinkPayload };
+
+type Ctx = { toastId: string };
 
 export function useCreateGroupLink(options?: {
   onSuccess?: (data: GroupLinkResponse) => void;
   onError?: (err: unknown) => void;
 }) {
   const qc = useQueryClient();
+  const { t } = useTranslation();
 
-  return useMutation<GroupLinkResponse, unknown, Vars>({
+  return useMutation<GroupLinkResponse, unknown, Vars, Ctx>({
     mutationFn: createGroupLink,
     mutationKey: ["GroupLinks", "create"],
-    onSuccess: (data, vars) => {
+    onMutate: (vars) => {
+      const toastId = `create-group-link-${vars.groupId}`;
+      toast.loading(
+        t("groupPages.groupLinks.creatingToast", "Creating link..."),
+        { id: toastId },
+      );
+      return { toastId };
+    },
+    onSuccess: (data, vars, ctx) => {
+      toast.success(
+        t(
+          "groupPages.groupLinks.createSuccessToast",
+          "Link created successfully",
+        ),
+        { id: ctx?.toastId },
+      );
       qc.invalidateQueries({ queryKey: ["GroupLinks", vars.groupId] });
       options?.onSuccess?.(data);
     },
-    onError: (err) => {
-      console.error("Failed to create group link:", err);
+    onError: (err, _vars, ctx) => {
+      const msg =
+        (err as any)?.detail ||
+        (err as Error)?.message ||
+        t("groupPages.groupLinks.createFailToast", "Failed to create link");
+      toast.error(msg, { id: ctx?.toastId });
       options?.onError?.(err);
     },
   });

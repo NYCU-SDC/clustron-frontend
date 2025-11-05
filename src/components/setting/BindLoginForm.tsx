@@ -29,10 +29,26 @@ export default function BindLoginForm() {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
-  const { data, isSuccess, isLoading, isError } = useQuery({
+  const {
+    data,
+    isSuccess,
+    isLoading,
+    isError,
+    error: settingsError,
+  } = useQuery({
     queryKey: PROFILE_QUERY_KEY,
     queryFn: getSettings,
+    retry: 1,
   });
+
+  useEffect(() => {
+    if (!isError) return;
+    const msg =
+      (settingsError as any)?.detail ||
+      (settingsError as Error)?.message ||
+      t("bindLoginForm.getFailToast", "Failed to load connected accounts");
+    toast.error(msg, { id: "bind-get-settings-error" });
+  }, [isError, settingsError, t]);
 
   const bindMutation = useMutation({
     mutationFn: (provider: "nycu" | "google") => bindLoginMethods(provider),
@@ -50,11 +66,13 @@ export default function BindLoginForm() {
       );
 
       if (!popup) {
-        toast.error(t("bindLoginForm.popupBlockedToast"));
+        toast.error(t("bindLoginForm.popupBlockedToast"), {
+          id: "bind-popup-blocked",
+        });
       }
     },
     onError: () => {
-      toast.error(t("bindLoginForm.bindFailToast"));
+      toast.error(t("bindLoginForm.bindFailToast"), { id: "bind-fail" });
     },
   });
 
@@ -62,12 +80,16 @@ export default function BindLoginForm() {
     const listener = (event: MessageEvent) => {
       if (event.data?.type === "BIND_SUCCESS") {
         setDialogOpen(false);
-        toast.success(t("bindLoginForm.bindSuccessToast"));
+        toast.success(t("bindLoginForm.bindSuccessToast"), {
+          id: "bind-success",
+        });
         queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
       } else if (event.data?.type === "BIND_CONFLICT") {
-        toast.error(t("bindLoginForm.bindConflictToast"));
+        toast.error(t("bindLoginForm.bindConflictToast"), {
+          id: "bind-conflict",
+        });
       } else if (event.data?.type === "BIND_FAIL") {
-        toast.error(t("bindLoginForm.bindFailToast"));
+        toast.error(t("bindLoginForm.bindFailToast"), { id: "bind-fail" });
       }
     };
     window.addEventListener("message", listener);
