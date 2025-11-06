@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router";
 import { jwtDecode } from "jwt-decode";
 import { getAccessToken } from "@/lib/token";
 import { useState, useEffect } from "react";

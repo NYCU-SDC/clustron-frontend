@@ -60,6 +60,19 @@ vi.mock("@/hooks/useRoleMapper", () => ({
   }),
 }));
 
+// [MOCK] Mock the useUserAutocomplete hook to avoid QueryClient requirement
+vi.mock("@/hooks/useUserAutocomplete", () => ({
+  useUserAutocomplete: () => ({
+    data: { pages: [] },
+    isLoading: false,
+    isError: false,
+    error: null,
+    hasNextPage: false,
+    fetchNextPage: vi.fn(),
+    isFetchingNextPage: false,
+  }),
+}));
+
 describe("AddMemberRow", () => {
   const setup = (
     override: Partial<ComponentProps<typeof AddMemberRow>> = {},

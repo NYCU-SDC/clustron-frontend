@@ -130,11 +130,8 @@ describe("LoginForm", () => {
     const svgIcon = googleButton.querySelector("svg");
 
     expect(svgIcon).toBeInTheDocument();
-    expect(svgIcon).toHaveAttribute("viewBox", "0 0 24 24");
-    expect(svgIcon?.querySelector("path")).toHaveAttribute(
-      "fill",
-      "currentColor",
-    );
+    expect(svgIcon).toHaveAttribute("viewBox", "0 0 48 48");
+    expect(svgIcon?.querySelector("path")).toHaveAttribute("fill", "#FFC107");
   });
 
   it("should have proper button styling", () => {
