@@ -13,12 +13,12 @@ import {
   ArrowUpNarrowWide,
   ArrowDownWideNarrow,
 } from "lucide-react";
-import type { SortBy } from "@/types/type";
+import type { SortBy } from "@/types/jobs";
 
 const sortOptions: { key: SortBy; label: string }[] = [
   { key: "id", label: "ID" },
   { key: "user", label: "User" },
-  { key: "state", label: "Status" },
+  { key: "status", label: "Status" },
   { key: "cpu", label: "CPU" },
   { key: "gpu", label: "GPU" },
   { key: "memory", label: "Mem" },

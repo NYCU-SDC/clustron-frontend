@@ -1,5 +1,5 @@
 import { api } from "@/lib/request/api";
-import { AuthCookie } from "@/types/type";
+import { AuthCookie } from "@/types/settings";
 
 export async function refreshAuthToken(
   refreshToken: string,

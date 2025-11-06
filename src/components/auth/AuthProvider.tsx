@@ -5,7 +5,7 @@ import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { AccessToken, AuthCookie } from "@/types/type";
+import { AccessToken, AuthCookie } from "@/types/settings";
 import { refreshAuthToken } from "@/lib/request/refreshAuthToken";
 import { authContext } from "@/lib/auth/authContext";
 import { logout } from "@/lib/request/logout";
@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = useCallback((provider: "google" | "nycu") => {
-    const callbackUrl = `${window.location.protocol}//${window.location.host}/callback`;
+    const callbackUrl = `${window.location.protocol}//${window.location.host}/callback/login`;
     const redirectUrl = `${window.location.protocol}//${window.location.host}/`;
     const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 

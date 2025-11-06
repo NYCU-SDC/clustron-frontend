@@ -250,5 +250,67 @@
       "success": "Transfer successful",
       "fail": "Transfer fail"
     }
+  },
+  "jobSubmitForm": {
+    "sidebarTitle": "Jobs",
+    "sidebarList": {
+      "list": "List",
+      "submit": "Submit"
+    },
+    "basicInfoTitle": "Basic Job Information",
+    "jobNameLabel": "Job Name",
+    "jobNamePlaceholder": "Enter job name",
+    "commentLabel": "Comment",
+    "scriptPathLabel": "Script Path",
+    "scriptPathPlaceholder": "Enter script path",
+    "cwdLabel": "Current Working Directory",
+    "cwdPlaceholder": "Enter current working directory",
+    "envSettingTitle": "Environment Setting",
+    "envVariable": "Variable",
+    "envValue": "Value",
+    "envVarPlaceholder": "VAR",
+    "envValPlaceholder": "VAL",
+    "resourcesTitle": "Resources Setting",
+    "partitionLabel": "Partition",
+    "partitionPlaceholder": "Select Partition...",
+    "tasksLabel": "Tasks",
+    "cpusLabel": "CPUs per Task",
+    "memPerCpuLabel": "Memory per CPU",
+    "nodesLabel": "Nodes",
+    "memPerNodeLabel": "Memory per Node",
+    "timeLimitLabel": "Time Limit",
+    "ioSettingTitle": "I/O Setting",
+    "stdinLabel": "Standard Input",
+    "stdinPlaceholder": "stdin path",
+    "stdoutLabel": "Standard Output",
+    "stdoutPlaceholder": "stdout path",
+    "stderrLabel": "Standard Error",
+    "stderrPlaceholder": "stderr path",
+    "commandPreviewTitle": "Command Preview",
+    "commandPlaceholder": "Command",
+    "submitButton": "Submit",
+    "submitSuccessTitle": "Job Submit Successfully",
+    "submitSuccessId": "ID #{{id}}",
+    "submitAnother": "Submit Another Job"
+  },
+  "jobsSideBar": {
+    "title": "Jobs",
+    "ListNavLink": "List",
+    "SubmitNavLink": "Submit"
+  },
+  "bindLoginForm": {
+    "cardTitle": "Connect Another Login Method",
+    "cardDescription": "Use a different login method to access the same account",
+    "connectLoginMethods": "Connected login methods:",
+    "connectLoginMethodBtn": "＋ Connect Login Method",
+    "dialogTitle": "Clustron",
+    "nycuLoginNote": "NYCU students log in via NYCU Portal",
+    "nycuLoginBtn": "Login with NYCU Portal",
+    "googleLoginNote": "Not an NYCU student? Log in via Google account",
+    "googleLoginBtn": "Login with Google",
+    "bindFailToast": "Fail to connect to another account",
+    "bindConflictToast": "You have already connected to that account",
+    "bindSuccessToast": "Connect Successful",
+    "popupBlockedToast": "The binding popup was blocked by your browser. Please allow pop-ups and try again."
   }
 }

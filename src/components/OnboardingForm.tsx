@@ -18,7 +18,7 @@ import { authContext } from "@/lib/auth/authContext";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
 import { z } from "zod";
-import type { Settings } from "@/types/type";
+import type { Settings } from "@/types/settings";
 
 export default function OnboardingForm({
   className,
@@ -99,6 +99,7 @@ export default function OnboardingForm({
                 onChange={(e) => setFullName(e.target.value)}
               />
             </div>
+            {/* Linux Username */}
             <div className="grid gap-2">
               <Label className="ml-2 font-medium">
                 {t("onboardingForm.labelForInputLinuxUsername")}

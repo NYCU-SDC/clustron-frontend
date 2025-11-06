@@ -2,26 +2,26 @@ import { Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import SideBar, { NavItem } from "@/components/Sidebar";
 
-export default function SettingLayout() {
+export default function JobLayout() {
   const { t } = useTranslation();
 
-  const settingNavItems: NavItem[] = [
+  const jobNavItems: NavItem[] = [
     {
-      to: "/setting/general",
-      label: "settingSideBar.GeneralNavLink",
+      to: `/joblist`,
+      label: t("jobsSideBar.ListNavLink"),
     },
     {
-      to: "/setting/ssh",
-      label: "settingSideBar.SSHNavLink",
+      to: `/jobform`,
+      label: t("jobsSideBar.SubmitNavLink"),
     },
   ];
 
   return (
     <div className="flex w-full">
-      <div className="min-w-xs border-r px-4">
+      <div className="min-w-xs border-r">
         <SideBar
-          title={t("settingSideBar.title")}
-          navItems={settingNavItems}
+          title={t("jobsSideBar.title")}
+          navItems={jobNavItems}
           className="min-w-36"
         />
       </div>
