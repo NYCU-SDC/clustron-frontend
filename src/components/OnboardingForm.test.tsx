@@ -14,7 +14,7 @@ import { MemoryRouter, Routes, Route } from "react-router";
 import { saveOnboardingInfo } from "@/lib/request/saveOnboardingInfo";
 import { authContext, AuthContextType } from "@/lib/auth/authContext";
 import type { UseMutationResult } from "@tanstack/react-query";
-import type { AuthCookie } from "@/types/type";
+import type { AuthCookie } from "@/types/settings";
 
 // mock react-i18next so labels/placeholders are deterministic in tests
 vi.mock("react-i18next", () => ({

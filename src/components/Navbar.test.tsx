@@ -9,7 +9,7 @@ import App from "@/App";
 import { authContext } from "@/lib/auth/authContext";
 import type { AuthContextType } from "@/lib/auth/authContext";
 import type { UseMutationResult } from "@tanstack/react-query";
-import type { AuthCookie } from "@/types/type";
+import type { AuthCookie } from "@/types/settings";
 
 // Mock jwt-decode to return admin role token
 vi.mock("jwt-decode", () => ({
