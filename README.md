@@ -19,17 +19,17 @@ Clustron Frontend provides a comprehensive web portal for managing computational
 
 ## Tech Stack
 
-| Technology            | Version         | Purpose                   |
-| --------------------- | --------------- | ------------------------- |
-| React                 | 19.0.0          | UI framework              |
-| TypeScript            | 5.7.2           | Type-safe development     |
-| Vite                  | 6.3.1           | Build tool and dev server |
-| Tailwind CSS          | 4.1.13          | Styling                   |
-| React Router          | 7.5.1           | Client-side routing       |
-| TanStack Query        | 5.76.2          | Server state management   |
-| Radix UI              | Various         | Accessible UI primitives  |
-| react-hook-form + zod | 7.56.1 / 3.24.3 | Form validation           |
-| react-i18next         | 15.4.1          | Internationalization      |
+| Technology            | Purpose                   |
+| --------------------- | ------------------------- |
+| React                 | UI framework              |
+| TypeScript            | Type-safe development     |
+| Vite                  | Build tool and dev server |
+| Tailwind CSS          | Styling                   |
+| React Router          | Client-side routing       |
+| TanStack Query        | Server state management   |
+| ShadCN                | Component library         |
+| react-hook-form + zod | Form validation           |
+| react-i18next         | Internationalization      |
 
 ## Getting Started
 
@@ -140,8 +140,8 @@ This project is maintained by NYCU Software Development Club (NYCU-SDC).<cite />
 
 The application uses a sophisticated multi-environment deployment strategy with n8n webhook orchestration for domain management and Discord notifications. The frontend communicates with a separate backend API for all data operations. The project emphasizes accessibility through Radix UI primitives and maintains comprehensive internationalization support.
 
-Wiki pages you might want to explore:
+Pages you might want to explore:
 
-- [Overview (NYCU-SDC/clustron-frontend)](/wiki/NYCU-SDC/clustron-frontend#1)
-- [Development and Deployment (NYCU-SDC/clustron-frontend)](/wiki/NYCU-SDC/clustron-frontend#7)
-- [Clustron Backend](/wiki/NYCU-SDC/clustron-backend)
+- [NYCU Software Development Club](https://sdc.nycu.club)
+- [NYCU Software Development Club GitHub](https://github.com/NYCU-SDC)
+- [Clustron Backend](https://deepwiki.com/NYCU-SDC/clustron-backend/)
