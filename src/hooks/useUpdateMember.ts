@@ -4,7 +4,6 @@ import type { UpdateGroupMemberInput } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { getErrMessage } from "@/lib/errors";
-import { pickIdPart } from "@/lib/pickId";
 
 type Ctx = { toastId: string };
 
@@ -17,8 +16,7 @@ export function useUpdateMember(groupId: string) {
   return useMutation<TResp, unknown, UpdateGroupMemberInput, Ctx>({
     mutationFn: (params: UpdateGroupMemberInput) => updateMember(params),
     onMutate: (params) => {
-      const idPart = pickIdPart(params);
-      const toastId = `update-member-${groupId}-${idPart}`;
+      const toastId = `update-member-${groupId}-${String(params.memberId)}`;
       toast.loading(
         t("groupComponents.memberUpdate.updatingToast", "Updating..."),
         { id: toastId },

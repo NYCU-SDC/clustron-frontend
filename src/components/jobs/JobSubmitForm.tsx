@@ -127,8 +127,8 @@ export default function JobSubmitForm() {
 
   const {
     data: partitions,
-    isError: partErr,
-    error: partError,
+    isError: isPartitionsError,
+    error: partitionsError,
   } = useQuery({
     queryKey: ["partitions"],
     queryFn: getPartitions,
@@ -136,16 +136,16 @@ export default function JobSubmitForm() {
   });
 
   useEffect(() => {
-    if (!partErr) return;
+    if (!isPartitionsError) return;
     const msg = getErrMessage(
-      partError,
+      partitionsError,
       t(
         "jobSubmitForm.sidebarList.partitionsLoadFail",
         "Failed to load partitions.",
       ),
     );
     toast.error(msg, { id: "partitions-load-error" });
-  }, [partErr, partError, t]);
+  }, [isPartitionsError, partitionsError, t]);
 
   const [successJobId, setSuccessJobId] = useState<number | null>(null);
 

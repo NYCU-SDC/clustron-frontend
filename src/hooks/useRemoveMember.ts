@@ -34,7 +34,7 @@ export function useRemoveMember(
           "groupComponents.memberDeleteButton.removeSuccessToast",
           "Member removed",
         ),
-        { id: ctx?.toastId }, // 用同一個 id 取代 loading
+        { id: ctx?.toastId },
       );
       await options?.onSuccess?.();
       queryClient.invalidateQueries({ queryKey: ["group-members", groupId] });

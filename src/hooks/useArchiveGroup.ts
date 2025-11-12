@@ -33,8 +33,8 @@ export function useArchiveGroup(
         { id: toastId },
       );
       await options?.onSuccess?.();
-      queryClient.invalidateQueries({ queryKey: ["group", groupId] as const });
-      queryClient.invalidateQueries({ queryKey: ["groups"] as const });
+      queryClient.invalidateQueries({ queryKey: ["group", groupId] });
+      queryClient.invalidateQueries({ queryKey: ["groups"] });
     },
     onError: (err) => {
       const msg = getErrMessage(

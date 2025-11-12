@@ -4,7 +4,6 @@ import type { UpdatePendingMemberInput } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { getErrMessage } from "@/lib/errors";
-import { pickIdPart } from "@/lib/pickId";
 
 type Ctx = { toastId: string };
 type TResp = Awaited<ReturnType<typeof updatePendingMember>>;
@@ -17,7 +16,7 @@ export function useUpdatePendingMember(groupId: string) {
     mutationFn: (params: UpdatePendingMemberInput) =>
       updatePendingMember(params),
     onMutate: (params) => {
-      const toastId = `update-pending-${groupId}-${pickIdPart(params)}`;
+      const toastId = `update-pending:${groupId}:${String(params.id)}`;
       toast.loading(
         t("groupPages.pendingMembers.updatingToast", "Updating..."),
         { id: toastId },

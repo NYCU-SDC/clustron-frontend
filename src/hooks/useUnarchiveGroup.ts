@@ -11,8 +11,6 @@ type UseUnarchiveGroupOptions = {
 
 type Ctx = { toastId: string };
 
-type TResp = Awaited<ReturnType<typeof unarchiveGroup>>;
-
 export function useUnarchiveGroup(
   groupId: string,
   options?: UseUnarchiveGroupOptions,
@@ -20,7 +18,7 @@ export function useUnarchiveGroup(
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
-  return useMutation<TResp, unknown, void, Ctx>({
+  return useMutation<unknown, unknown, void, Ctx>({
     mutationFn: () => unarchiveGroup(groupId),
     onMutate: () => {
       const toastId = `unarchive-group-${groupId}`;

@@ -4,7 +4,6 @@ import type { RemovePendingMemberParams } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { getErrMessage } from "@/lib/errors";
-import { pickIdPart } from "@/lib/pickId";
 
 type Ctx = { toastId: string };
 
@@ -16,8 +15,7 @@ export function useRemovePendingMember(groupId: string) {
     mutationFn: (params: RemovePendingMemberParams) =>
       removePendingMember(params),
     onMutate: (params) => {
-      const idPart = pickIdPart(params);
-      const toastId = `remove-pending-${groupId}-${idPart}`;
+      const toastId = `remove-pending-${groupId}-${String(params.id)}`;
       toast.loading(
         t("groupPages.pendingMembers.removingToast", "Removing..."),
         { id: toastId },
@@ -33,7 +31,7 @@ export function useRemovePendingMember(groupId: string) {
         { id: ctx?.toastId },
       );
       queryClient.invalidateQueries({
-        queryKey: ["pendingMembers", groupId] as const,
+        queryKey: ["pendingMembers", groupId],
       });
     },
     onError: (err, _vars, ctx) => {

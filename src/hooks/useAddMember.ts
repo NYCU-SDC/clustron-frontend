@@ -1,44 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addMember } from "@/lib/request/addMember";
-import type {
-  AddGroupMemberInput,
-  AddGroupMemberResponse,
-} from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { getErrMessage } from "@/lib/errors";
+import type { AddGroupMemberInput, GroupMember } from "@/types/group";
 
 type UseAddMemberOptions = {
-  onSuccess?: (data: AddGroupMemberResponse[]) => void | Promise<void>;
+  onSuccess?: (data: GroupMember[]) => void | Promise<void>;
   onError?: (err: unknown) => void;
 };
-
-function summarize(data: AddGroupMemberResponse[]) {
-  function readStatus(r: unknown): string {
-    if (r && typeof r === "object") {
-      const obj = r as { status?: unknown; result?: unknown; ok?: unknown };
-      const status = typeof obj.status === "string" ? obj.status : undefined;
-      const result = typeof obj.result === "string" ? obj.result : undefined;
-      const ok = typeof obj.ok === "boolean" ? obj.ok : undefined;
-      const val = status ?? result ?? (ok ? "success" : undefined);
-      return (val ?? "success").toLowerCase();
-    }
-    return "success";
-  }
-
-  const total = data.length;
-  let success = 0;
-  let warning = 0;
-  let fail = 0;
-
-  for (const r of data) {
-    const s = readStatus(r);
-    if (s === "success") success++;
-    else if (s === "warning" || s === "pending") warning++;
-    else fail++;
-  }
-  return { total, success, warning, fail };
-}
 
 export function useAddMember(groupId: string, options?: UseAddMemberOptions) {
   const queryClient = useQueryClient();
@@ -48,36 +18,15 @@ export function useAddMember(groupId: string, options?: UseAddMemberOptions) {
     mutationFn: (members: AddGroupMemberInput[]) => addMember(groupId, members),
 
     onSuccess: async (data) => {
-      const { total, success, warning, fail } = summarize(data);
-
-      if (fail === 0 && warning === 0) {
-        toast.success(
-          t(
-            "groupPages.addMemberPage.toastAllSuccess",
-            "{{success}}/{{total}} members added successfully",
-            { success, total },
-          ),
-          { id: "add-member-summary" },
-        );
-      } else if (fail > 0 && success === 0 && warning === 0) {
-        toast.error(
-          t(
-            "groupPages.addMemberPage.toastAllFail",
-            "Adding members failed ({{fail}}/{{total}} failed)",
-            { fail, total },
-          ),
-          { id: "add-member-summary" },
-        );
-      } else {
-        toast.warning(
-          t(
-            "groupPages.addMemberPage.toastPartial",
-            "{{success}} success, {{warning}} pending, {{fail}} failed (total {{total}})",
-            { success, warning, fail, total },
-          ),
-          { id: "add-member-summary" },
-        );
-      }
+      const total = data.length;
+      toast.success(
+        t(
+          "groupPages.addMemberPage.toastAllSuccess",
+          "{{success}}/{{total}} members added successfully",
+          { success: total, total },
+        ),
+        { id: "add-member-summary" },
+      );
       await options?.onSuccess?.(data);
       queryClient.invalidateQueries({ queryKey: ["group-members", groupId] });
     },
