@@ -1,3 +1,5 @@
+// This helper is intended for places where the error type is unknown.
+
 export function getErrMessage(err: unknown, fallback: string): string {
   if (typeof err === "string") return err;
   if (err instanceof Error) return err.message;

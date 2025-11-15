@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addMember } from "@/lib/request/addMember";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { getErrMessage } from "@/lib/errors";
 import type { AddGroupMemberInput, GroupMember } from "@/types/group";
 
 type UseAddMemberOptions = {
@@ -31,10 +30,9 @@ export function useAddMember(groupId: string, options?: UseAddMemberOptions) {
       queryClient.invalidateQueries({ queryKey: ["group-members", groupId] });
     },
     onError: (err) => {
-      const msg = getErrMessage(
-        err,
-        t("groupPages.addMemberPage.toastFail", "Failed to add members"),
-      );
+      const msg =
+        err.message ||
+        t("groupPages.addMemberPage.toastFail", "Failed to add members");
       toast.error(msg, { id: "add-member-error" });
       options?.onError?.(err);
     },
