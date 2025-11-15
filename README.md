@@ -134,7 +134,7 @@ VITE_BACKEND_BASE_URL=https://api.dev.clustron.sdc.nycu.club
 
 ## License
 
-This project is maintained by NYCU Software Development Club (NYCU-SDC).<cite />
+This project is maintained by NYCU Software Development Club (NYCU-SDC).
 
 ## Notes
 
