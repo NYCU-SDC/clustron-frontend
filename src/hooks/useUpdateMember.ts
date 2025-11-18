@@ -3,9 +3,8 @@ import { updateMember } from "@/lib/request/updateMember";
 import type { UpdateGroupMemberInput } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { getErrMessage } from "@/lib/errors";
 
-type Ctx = { toastId: string };
+type Ctx = string;
 
 type TResp = Awaited<ReturnType<typeof updateMember>>;
 
@@ -13,7 +12,7 @@ export function useUpdateMember(groupId: string) {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
-  return useMutation<TResp, unknown, UpdateGroupMemberInput, Ctx>({
+  return useMutation<TResp, Error, UpdateGroupMemberInput, Ctx>({
     mutationFn: (params: UpdateGroupMemberInput) => updateMember(params),
     onMutate: (params) => {
       const toastId = `update-member-${groupId}-${String(params.memberId)}`;
@@ -21,12 +20,12 @@ export function useUpdateMember(groupId: string) {
         t("groupComponents.memberUpdate.updatingToast", "Updating..."),
         { id: toastId },
       );
-      return { toastId };
+      return toastId;
     },
     onSuccess: (_data, _vars, ctx) => {
       toast.success(
         t("groupComponents.memberUpdate.updateSuccessToast", "Member updated"),
-        { id: ctx?.toastId },
+        { id: ctx },
       );
       queryClient.invalidateQueries({
         queryKey: ["GroupMember", groupId] as const,
@@ -36,14 +35,13 @@ export function useUpdateMember(groupId: string) {
       });
     },
     onError: (err, _vars, ctx) => {
-      const msg = getErrMessage(
-        err,
+      const msg =
+        err.message ||
         t(
           "groupComponents.memberUpdate.updateFailToast",
           "Failed to update member",
-        ),
-      );
-      toast.error(msg, { id: ctx?.toastId });
+        );
+      toast.error(msg, { id: ctx });
     },
   });
 }

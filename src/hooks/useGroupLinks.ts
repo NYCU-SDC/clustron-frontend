@@ -3,7 +3,6 @@ import { createGroupLink } from "@/lib/request/groupLinks";
 import type { GroupLinkPayload, GroupLinkResponse } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { getErrMessage } from "@/lib/errors";
 
 type Vars = { groupId: string; payload: GroupLinkPayload };
 
@@ -11,12 +10,12 @@ type Ctx = { toastId: string };
 
 export function useCreateGroupLink(options?: {
   onSuccess?: (data: GroupLinkResponse) => void;
-  onError?: (err: unknown) => void;
+  onError?: (err: Error) => void;
 }) {
   const qc = useQueryClient();
   const { t } = useTranslation();
 
-  return useMutation<GroupLinkResponse, unknown, Vars, Ctx>({
+  return useMutation<GroupLinkResponse, Error, Vars, Ctx>({
     mutationFn: createGroupLink,
     mutationKey: ["GroupLinks", "create"],
     onMutate: (vars) => {
@@ -39,10 +38,9 @@ export function useCreateGroupLink(options?: {
       options?.onSuccess?.(data);
     },
     onError: (err, _vars, ctx) => {
-      const msg = getErrMessage(
-        err,
-        t("groupPages.groupLinks.createFailToast", "Failed to create link"),
-      );
+      const msg =
+        err.message ||
+        t("groupPages.groupLinks.createFailToast", "Failed to create link");
       toast.error(msg, { id: ctx?.toastId });
       options?.onError?.(err);
     },

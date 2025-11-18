@@ -6,7 +6,7 @@ import {
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
-type Ctx = { toastId: string };
+type Ctx = string;
 
 export function useTransferGroupOwner(
   groupId: string,
@@ -31,7 +31,7 @@ export function useTransferGroupOwner(
         t("groupSettings.transferOwnership.transferring", "Transferring..."),
         { id: toastId },
       );
-      return { toastId };
+      return toastId;
     },
 
     onSuccess: (data, vars, ctx) => {
@@ -40,18 +40,19 @@ export function useTransferGroupOwner(
           "groupSettings.transferOwnership.success",
           "Ownership transferred successfully.",
         ),
-        { id: ctx?.toastId },
+        { id: ctx },
       );
       options?.onSuccess?.(data, vars, ctx);
     },
 
     onError: (err, vars, ctx) => {
-      const msg = err.message;
-      t(
-        "groupSettings.transferOwnership.failed",
-        "Failed to transfer ownership.",
-      );
-      toast.error(msg, { id: ctx?.toastId });
+      const msg =
+        err.message ||
+        t(
+          "groupSettings.transferOwnership.failed",
+          "Failed to transfer ownership.",
+        );
+      toast.error(msg, { id: ctx });
       options?.onError?.(err, vars, ctx);
     },
   });

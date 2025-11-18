@@ -3,17 +3,16 @@ import { createGroup } from "@/lib/request/createGroup";
 import type { CreateGroupInput, CreateGroupResponse } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { getErrMessage } from "@/lib/errors";
 
 export function useCreateGroup(options?: {
   onSuccess?: (data: CreateGroupResponse) => void;
-  onError?: (err: unknown) => void;
+  onError?: (err: Error) => void;
 }) {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
   const toastId = "create-group";
 
-  return useMutation<CreateGroupResponse, unknown, CreateGroupInput>({
+  return useMutation<CreateGroupResponse, Error, CreateGroupInput>({
     mutationFn: createGroup,
     onMutate: () => {
       toast.loading(t("groupPages.createGroup.creatingToast", "Creating..."), {
@@ -32,10 +31,9 @@ export function useCreateGroup(options?: {
       options?.onSuccess?.(data);
     },
     onError: (err) => {
-      const msg = getErrMessage(
-        err,
-        t("groupPages.createGroup.createFailToast", "Failed to create group"),
-      );
+      const msg =
+        err.message ||
+        t("groupPages.createGroup.createFailToast", "Failed to create group");
       toast.error(msg, { id: toastId });
       options?.onError?.(err);
     },

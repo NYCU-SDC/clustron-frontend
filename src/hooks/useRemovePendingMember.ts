@@ -3,7 +3,6 @@ import { removePendingMember } from "@/lib/request/groupPendingMembers";
 import type { RemovePendingMemberParams } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { getErrMessage } from "@/lib/errors";
 
 type Ctx = { toastId: string };
 
@@ -11,7 +10,7 @@ export function useRemovePendingMember(groupId: string) {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
-  return useMutation<void, unknown, RemovePendingMemberParams, Ctx>({
+  return useMutation<void, Error, RemovePendingMemberParams, Ctx>({
     mutationFn: (params: RemovePendingMemberParams) =>
       removePendingMember(params),
     onMutate: (params) => {
@@ -35,13 +34,12 @@ export function useRemovePendingMember(groupId: string) {
       });
     },
     onError: (err, _vars, ctx) => {
-      const msg = getErrMessage(
-        err,
+      const msg =
+        err.message ||
         t(
           "groupPages.pendingMembers.removeFailToast",
           "Failed to remove pending member",
-        ),
-      );
+        );
       toast.error(msg, { id: ctx?.toastId });
     },
   });

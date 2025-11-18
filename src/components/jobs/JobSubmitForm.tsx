@@ -20,7 +20,6 @@ import {
 import { Button } from "@/components/ui/button";
 
 import { toast } from "sonner";
-import { getErrMessage } from "@/lib/errors";
 
 // Types
 type EnvVar = { key: string; value: string };
@@ -136,14 +135,13 @@ export default function JobSubmitForm() {
   });
 
   useEffect(() => {
-    if (!isPartitionsError) return;
-    const msg = getErrMessage(
-      partitionsError,
+    if (!isPartitionsError || !partitionsError) return;
+    const msg =
+      partitionsError.message ||
       t(
         "jobSubmitForm.sidebarList.partitionsLoadFail",
         "Failed to load partitions.",
-      ),
-    );
+      );
     toast.error(msg, { id: "partitions-load-error" });
   }, [isPartitionsError, partitionsError, t]);
 
@@ -152,11 +150,10 @@ export default function JobSubmitForm() {
   const createJobMutation = useMutation({
     mutationFn: createJob,
     onSuccess: (job: Job) => setSuccessJobId(job.id),
-    onError: (err: unknown) => {
-      const msg = getErrMessage(
-        err,
-        t("jobSubmitForm.sidebarList.submitFailToast", "Failed to submit job."),
-      );
+    onError: (err) => {
+      const msg =
+        err.message ||
+        t("jobSubmitForm.sidebarList.submitFailToast", "Failed to submit job.");
       toast.error(msg, { id: "create-job-error" });
     },
   });
