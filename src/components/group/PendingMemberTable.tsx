@@ -18,7 +18,7 @@ import type { GroupRoleAccessLevel, GroupMemberRoleName } from "@/types/group";
 import { GlobalRole } from "@/lib/permission";
 import { AccessLevelUser } from "@/types/group";
 import { Loader2 } from "lucide-react";
-import PaginationControls from "@/components/PaginationControls";
+import PaginationControls from "@/components/PaginationControl";
 type Props = {
   groupId: string;
   accessLevel?: GroupRoleAccessLevel;

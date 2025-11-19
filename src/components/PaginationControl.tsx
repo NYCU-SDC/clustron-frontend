@@ -7,20 +7,59 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { usePaginationRange } from "@/hooks/usePaginationRange";
 
-type Props = {
+import { useMemo } from "react";
+
+type PaginationProps = {
   currentPage: number;
   totalPages: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const PaginationControls: React.FC<Props> = ({
+type PaginationRangeResult = {
+  range: number[];
+  showStartEllipsis: boolean;
+  showEndEllipsis: boolean;
+};
+
+// calc Pagination's Range
+const PaginationRange = (
+  currentPage: number,
+  totalPages: number,
+  maxVisiblePages: number = 4,
+): PaginationRangeResult => {
+  return useMemo(() => {
+    if (totalPages <= 1) {
+      return { range: [], showStartEllipsis: false, showEndEllipsis: false };
+    }
+
+    let startPage = Math.max(currentPage - 1, 0);
+    let endPage = startPage + maxVisiblePages - 1;
+
+    if (endPage >= totalPages) {
+      endPage = totalPages - 1;
+      startPage = Math.max(endPage - maxVisiblePages + 1, 0);
+    }
+
+    const range = Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i,
+    );
+
+    return {
+      range,
+      showStartEllipsis: startPage > 0,
+      showEndEllipsis: endPage < totalPages - 1,
+    };
+  }, [currentPage, totalPages, maxVisiblePages]);
+};
+
+const PaginationControls = ({
   currentPage,
   totalPages,
   setCurrentPage,
-}) => {
-  const { range, showStartEllipsis, showEndEllipsis } = usePaginationRange(
+}: PaginationProps) => {
+  const { range, showStartEllipsis, showEndEllipsis } = PaginationRange(
     currentPage,
     totalPages,
   );

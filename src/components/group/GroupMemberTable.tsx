@@ -7,7 +7,7 @@ import {
   TableHead,
   TableBody,
 } from "@/components/ui/table";
-import PaginationControls from "@/components/PaginationControls";
+import PaginationControls from "@/components/PaginationControl";
 import { Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getGroupPermissions } from "@/lib/groupPermissions";

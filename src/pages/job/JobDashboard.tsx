@@ -5,7 +5,7 @@ import FilterPanel from "@/components/jobs/FilterPanel";
 import { jobsData, JobResponse } from "@/lib/mocks/jobData"; // TODO: change real api from backend
 import type { SortBy, FilterOptions } from "@/types/jobs";
 import CountsBar from "@/components/jobs/CountsBar";
-import PaginationControls from "@/components/PaginationControls";
+import PaginationControls from "@/components/PaginationControl";
 
 const PAGE_SIZE = 3;
 
