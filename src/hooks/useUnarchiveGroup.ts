@@ -8,8 +8,6 @@ type UseUnarchiveGroupOptions = {
   onError?: (err: Error) => void;
 };
 
-type Ctx = string;
-
 export function useUnarchiveGroup(
   groupId: string,
   options?: UseUnarchiveGroupOptions,
@@ -17,7 +15,7 @@ export function useUnarchiveGroup(
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
-  return useMutation<unknown, Error, void, Ctx>({
+  return useMutation<unknown, Error, void, string>({
     mutationFn: () => unarchiveGroup(groupId),
     onMutate: () => {
       const toastId = `unarchive-group-${groupId}`;

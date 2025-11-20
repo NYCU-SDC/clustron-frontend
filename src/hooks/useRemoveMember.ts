@@ -9,7 +9,7 @@ type UseRemoveMemberOptions = {
   onError?: (err: unknown) => void;
 };
 
-type Ctx = { toastId: string };
+type Ctx = string;
 
 export function useRemoveMember(
   groupId: string,
@@ -26,7 +26,7 @@ export function useRemoveMember(
         t("groupComponents.memberDeleteButton.removingToast", "Removing..."),
         { id: toastId },
       );
-      return { toastId };
+      return toastId;
     },
     onSuccess: async (_data, _memberId, ctx) => {
       toast.success(
@@ -34,7 +34,7 @@ export function useRemoveMember(
           "groupComponents.memberDeleteButton.removeSuccessToast",
           "Member removed",
         ),
-        { id: ctx?.toastId },
+        { id: ctx },
       );
       await options?.onSuccess?.();
       queryClient.invalidateQueries({ queryKey: ["group-members", groupId] });

@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 type Vars = { groupId: string; payload: GroupLinkPayload };
 
-type Ctx = { toastId: string };
+type Ctx = string;
 
 export function useCreateGroupLink(options?: {
   onSuccess?: (data: GroupLinkResponse) => void;
@@ -24,7 +24,7 @@ export function useCreateGroupLink(options?: {
         t("groupPages.groupLinks.creatingToast", "Creating link..."),
         { id: toastId },
       );
-      return { toastId };
+      return toastId;
     },
     onSuccess: (data, vars, ctx) => {
       toast.success(
@@ -32,7 +32,7 @@ export function useCreateGroupLink(options?: {
           "groupPages.groupLinks.createSuccessToast",
           "Link created successfully",
         ),
-        { id: ctx?.toastId },
+        { id: ctx },
       );
       qc.invalidateQueries({ queryKey: ["GroupLinks", vars.groupId] });
       options?.onSuccess?.(data);
@@ -41,7 +41,7 @@ export function useCreateGroupLink(options?: {
       const msg =
         err.message ||
         t("groupPages.groupLinks.createFailToast", "Failed to create link");
-      toast.error(msg, { id: ctx?.toastId });
+      toast.error(msg, { id: ctx });
       options?.onError?.(err);
     },
   });

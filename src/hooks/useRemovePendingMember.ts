@@ -4,7 +4,7 @@ import type { RemovePendingMemberParams } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
-type Ctx = { toastId: string };
+type Ctx = string;
 
 export function useRemovePendingMember(groupId: string) {
   const queryClient = useQueryClient();
@@ -19,7 +19,7 @@ export function useRemovePendingMember(groupId: string) {
         t("groupPages.pendingMembers.removingToast", "Removing..."),
         { id: toastId },
       );
-      return { toastId };
+      return toastId;
     },
     onSuccess: (_data, _vars, ctx) => {
       toast.success(
@@ -27,7 +27,7 @@ export function useRemovePendingMember(groupId: string) {
           "groupPages.pendingMembers.removeSuccessToast",
           "Removed from pending list",
         ),
-        { id: ctx?.toastId },
+        { id: ctx },
       );
       queryClient.invalidateQueries({
         queryKey: ["pendingMembers", groupId],
@@ -40,7 +40,7 @@ export function useRemovePendingMember(groupId: string) {
           "groupPages.pendingMembers.removeFailToast",
           "Failed to remove pending member",
         );
-      toast.error(msg, { id: ctx?.toastId });
+      toast.error(msg, { id: ctx });
     },
   });
 }

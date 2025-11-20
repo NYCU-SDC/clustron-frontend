@@ -6,20 +6,18 @@ import {
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
-type Ctx = string;
-
 export function useTransferGroupOwner(
   groupId: string,
   options?: UseMutationOptions<
     unknown,
     Error,
     TransferGroupOwnershipRequest,
-    Ctx
+    string
   >,
 ) {
   const { t } = useTranslation();
 
-  return useMutation<unknown, Error, TransferGroupOwnershipRequest, Ctx>({
+  return useMutation<unknown, Error, TransferGroupOwnershipRequest, string>({
     ...options,
 
     mutationFn: (data: TransferGroupOwnershipRequest) =>
