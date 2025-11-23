@@ -6,8 +6,6 @@ import { useTranslation } from "react-i18next";
 
 type Vars = { groupId: string; payload: GroupLinkPayload };
 
-type Ctx = string;
-
 export function useCreateGroupLink(options?: {
   onSuccess?: (data: GroupLinkResponse) => void;
   onError?: (err: Error) => void;
@@ -15,7 +13,7 @@ export function useCreateGroupLink(options?: {
   const qc = useQueryClient();
   const { t } = useTranslation();
 
-  return useMutation<GroupLinkResponse, Error, Vars, Ctx>({
+  return useMutation<GroupLinkResponse, Error, Vars, string>({
     mutationFn: createGroupLink,
     mutationKey: ["GroupLinks", "create"],
     onMutate: (vars) => {

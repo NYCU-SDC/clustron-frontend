@@ -4,13 +4,11 @@ import type { RemovePendingMemberParams } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
-type Ctx = string;
-
 export function useRemovePendingMember(groupId: string) {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
-  return useMutation<void, Error, RemovePendingMemberParams, Ctx>({
+  return useMutation<void, Error, RemovePendingMemberParams, string>({
     mutationFn: (params: RemovePendingMemberParams) =>
       removePendingMember(params),
     onMutate: (params) => {

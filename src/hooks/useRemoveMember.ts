@@ -9,8 +9,6 @@ type UseRemoveMemberOptions = {
   onError?: (err: unknown) => void;
 };
 
-type Ctx = string;
-
 export function useRemoveMember(
   groupId: string,
   options?: UseRemoveMemberOptions,
@@ -18,7 +16,7 @@ export function useRemoveMember(
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
-  return useMutation<void, unknown, string, Ctx>({
+  return useMutation<void, unknown, string, string>({
     mutationFn: (memberId: string) => removeMember(groupId, memberId),
     onMutate: (memberId) => {
       const toastId = `remove-member-${groupId}-${memberId}`;
