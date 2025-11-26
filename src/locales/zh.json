@@ -151,7 +151,10 @@
       "deleteUserConfirm": "確認刪除使用者",
       "deleteConfirmation": "您確定要刪除這個使用者嗎？此操作無法復原。",
       "cancel": "取消",
-      "delete": "刪除"
+      "delete": "刪除",
+      "removingToast": "正在移除...",
+      "removeSuccessToast": "已移除成員",
+      "removeFailToast": "移除成員失敗"
     },
     "addMemberRow": {
       "enterStudentIdOrEmail": "輸入學號或電子信箱",
@@ -163,6 +166,11 @@
       "teacher_assistant": "助教",
       "student": "學生",
       "auditor": "旁聽生"
+    },
+    "memberUpdate": {
+      "updatingToast": "正在更新...",
+      "updateSuccessToast": "成員已更新",
+      "updateFailToast": "更新成員失敗"
     }
   },
   "groupPages": {
@@ -173,7 +181,11 @@
       "loading": "載入中...",
       "courseNotFound": "找不到課程。",
       "cancel": "取消",
-      "save": "儲存"
+      "save": "儲存",
+      "toastAllSuccess": "新增完成：{{success}} / {{total}}",
+      "toastAllFail": "新增成員失敗（{{fail}} / {{total}} 失敗）",
+      "toastPartial": "新增結果：成功 {{success}}、待處理 {{warning}}、失敗 {{fail}}（共 {{total}}）",
+      "toastFail": "新增成員失敗"
     },
     "createGroup": {
       "courseTitle": "群組名稱",
@@ -187,7 +199,10 @@
       "studentIdOrEmail": "學號或電子信箱",
       "role": "角色",
       "cancel": "取消",
-      "create": "建立"
+      "create": "建立",
+      "creatingToast": "建立中...",
+      "createSuccessToast": "群組建立成功",
+      "createFailToast": "群組建立失敗"
     },
     "groupList": {
       "newGroup": "+ 新群組",
@@ -209,7 +224,11 @@
       "archiveDescription": "這將把群組轉為封存狀態，在重新啟用前無法進行更動。",
       "saving": "儲存中...",
       "unarchive": "解除封存",
-      "archive": "封存"
+      "archive": "封存",
+      "archiveSuccessToast": "群組已封存",
+      "archiveFailToast": "封存群組失敗",
+      "unarchiveSuccessToast": "群組已解除封存",
+      "unarchiveFailToast": "解除封存群組失敗"
     },
     "addMemberResult": {
       "title": "新增成員結果",
@@ -231,7 +250,21 @@
       "next": "下一頁",
       "previous": "上一頁"
     },
-    "pendingMember": "待定成員"
+    "pendingMembers": {
+      "pendingMember": "待定成員",
+      "removingToast": "正在移除...",
+      "removeSuccessToast": "已從待定清單移除",
+      "removeFailToast": "移除待定成員失敗",
+      "updatingToast": "正在更新...",
+      "updateSuccessToast": "已更新待定成員",
+      "updateFailToast": "更新待定成員失敗"
+    },
+    "groupLinks": {
+      "creatingToast": "正在建立連結...",
+      "createSuccessToast": "連結建立成功",
+      "createFailToast": "建立連結失敗",
+      "loadFailToast": "載入連結失敗"
+    }
   },
   "groupSettings": {
     "transferOwnership": {
@@ -255,7 +288,10 @@
     "sidebarTitle": "工作",
     "sidebarList": {
       "list": "列表",
-      "submit": "提交"
+      "submit": "提交",
+      "partitionsLoadFail": "載入分區失敗",
+      "submitFailToast": "提交工作失敗",
+      "submitting": "提交中…"
     },
     "basicInfoTitle": "基本工作資訊",
     "jobNameLabel": "工作名稱",
@@ -318,6 +354,7 @@
     "bindFailToast": "綁定失敗",
     "bindConflictToast": "該帳號已被綁定",
     "bindSuccessToast": "綁定成功",
-    "popupBlockedToast": "你的瀏覽器阻擋了綁定視窗，請允許彈出視窗後再試一次。"
+    "popupBlockedToast": "你的瀏覽器阻擋了綁定視窗，請允許彈出視窗後再試一次。",
+    "getFailToast": "無法載入已連結的登入方式"
   }
 }

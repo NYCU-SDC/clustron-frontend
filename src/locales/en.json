@@ -151,7 +151,10 @@
       "deleteUserConfirm": "Delete User Confirm",
       "deleteConfirmation": "Are you sure to delete this user? This action is not recoverable.",
       "cancel": "Cancel",
-      "delete": "Delete"
+      "delete": "Delete",
+      "removingToast": "Removing...",
+      "removeSuccessToast": "Member removed",
+      "removeFailToast": "Failed to remove member"
     },
     "addMemberRow": {
       "enterStudentIdOrEmail": "Enter StudentID or Email",
@@ -163,6 +166,11 @@
       "teacher_assistant": "TA",
       "student": "Student",
       "auditor": "Auditor"
+    },
+    "memberUpdate": {
+      "updatingToast": "Updating...",
+      "updateSuccessToast": "Member updated",
+      "updateFailToast": "Failed to update member"
     }
   },
   "groupPages": {
@@ -173,7 +181,11 @@
       "loading": "Loading...",
       "courseNotFound": "Course not found.",
       "cancel": "Cancel",
-      "save": "Save"
+      "save": "Save",
+      "toastAllSuccess": "{{success}}/{{total}} members added successfully",
+      "toastAllFail": "Adding members failed ({{fail}}/{{total}} failed)",
+      "toastPartial": "{{success}} success, {{warning}} pending, {{fail}} failed (total {{total}})",
+      "toastFail": "Failed to add members"
     },
     "createGroup": {
       "courseTitle": "Group Title",
@@ -187,7 +199,10 @@
       "studentIdOrEmail": "Student ID or Email",
       "role": "Role",
       "cancel": "Cancel",
-      "create": "Create"
+      "create": "Create",
+      "creatingToast": "Creating...",
+      "createSuccessToast": "Group created successfully",
+      "createFailToast": "Failed to create group"
     },
     "groupList": {
       "newGroup": "+ New Group",
@@ -209,7 +224,11 @@
       "archiveDescription": "This will turn the group into archive state, no update can be made before it is activated again.",
       "saving": "Saving...",
       "unarchive": "Unarchive",
-      "archive": "Archive"
+      "archive": "Archive",
+      "archiveSuccessToast": "Group archived successfully",
+      "archiveFailToast": "Failed to archive group",
+      "unarchiveSuccessToast": "Group unarchived successfully",
+      "unarchiveFailToast": "Failed to unarchive group"
     },
     "addMemberResult": {
       "title": "Add Member Results",
@@ -231,7 +250,21 @@
       "next": "Next",
       "previous": "Previous"
     },
-    "pendingMember": "Pending members"
+    "pendingMembers": {
+      "pendingMember": "Pending members",
+      "removingToast": "Removing...",
+      "removeSuccessToast": "Removed from pending list",
+      "removeFailToast": "Failed to remove pending member",
+      "updatingToast": "Updating...",
+      "updateSuccessToast": "Pending member updated",
+      "updateFailToast": "Failed to update pending member"
+    },
+    "groupLinks": {
+      "creatingToast": "Creating link...",
+      "createSuccessToast": "Link created successfully",
+      "createFailToast": "Failed to create link",
+      "loadFailToast": "Failed to load links"
+    }
   },
   "groupSettings": {
     "transferOwnership": {
@@ -255,7 +288,10 @@
     "sidebarTitle": "Jobs",
     "sidebarList": {
       "list": "List",
-      "submit": "Submit"
+      "submit": "Submit",
+      "partitionsLoadFail": "Failed to load partitions.",
+      "submitFailToast": "Failed to submit job.",
+      "submitting": "Submitting…"
     },
     "basicInfoTitle": "Basic Job Information",
     "jobNameLabel": "Job Name",
@@ -311,6 +347,7 @@
     "bindFailToast": "Fail to connect to another account",
     "bindConflictToast": "You have already connected to that account",
     "bindSuccessToast": "Connect Successful",
-    "popupBlockedToast": "The binding popup was blocked by your browser. Please allow pop-ups and try again."
+    "popupBlockedToast": "The binding popup was blocked by your browser. Please allow pop-ups and try again.",
+    "getFailToast": "Failed to load connected accounts"
   }
 }
