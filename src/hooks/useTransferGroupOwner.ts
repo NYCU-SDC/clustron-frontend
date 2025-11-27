@@ -32,7 +32,7 @@ export function useTransferGroupOwner(
       return toastId;
     },
 
-    onSuccess: (data, vars, ctx) => {
+    onSuccess: (data, vars, ctx, _) => {
       toast.success(
         t(
           "groupSettings.transferOwnership.success",
@@ -40,10 +40,10 @@ export function useTransferGroupOwner(
         ),
         { id: ctx },
       );
-      options?.onSuccess?.(data, vars, ctx);
+      options?.onSuccess?.(data, vars, ctx, _);
     },
 
-    onError: (err, vars, ctx) => {
+    onError: (err, vars, ctx, _) => {
       const msg =
         err.message ||
         t(
@@ -51,7 +51,7 @@ export function useTransferGroupOwner(
           "Failed to transfer ownership.",
         );
       toast.error(msg, { id: ctx });
-      options?.onError?.(err, vars, ctx);
+      options?.onError?.(err, vars, ctx, _);
     },
   });
 }
