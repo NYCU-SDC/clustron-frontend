@@ -2,7 +2,7 @@ FROM node:23-alpine AS builder
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+RUN pnpm install
 
 COPY . .
 ARG VITE_BUILD_MODE
