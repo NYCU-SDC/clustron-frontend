@@ -1,10 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createGroupLink } from "@/lib/request/groupLinks";
-import type { GroupLinkPayload, GroupLinkResponse } from "@/types/group";
+import type { GroupLinkResponse } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-
-type Vars = { groupId: string; payload: GroupLinkPayload };
 
 export function useCreateGroupLink(options?: {
   onSuccess?: (data: GroupLinkResponse) => void;
@@ -13,7 +11,7 @@ export function useCreateGroupLink(options?: {
   const qc = useQueryClient();
   const { t } = useTranslation();
 
-  return useMutation<GroupLinkResponse, Error, Vars, string>({
+  return useMutation({
     mutationFn: createGroupLink,
     mutationKey: ["GroupLinks", "create"],
     onMutate: (vars) => {
