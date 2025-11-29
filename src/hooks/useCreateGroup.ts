@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createGroup } from "@/lib/request/createGroup";
-import type { CreateGroupInput, CreateGroupResponse } from "@/types/group";
+import type { CreateGroupResponse } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
@@ -12,7 +12,7 @@ export function useCreateGroup(options?: {
   const { t } = useTranslation();
   const toastId = "create-group";
 
-  return useMutation<CreateGroupResponse, Error, CreateGroupInput>({
+  return useMutation({
     mutationFn: createGroup,
     onMutate: () => {
       toast.loading(t("groupPages.createGroup.creatingToast", "Creating..."), {

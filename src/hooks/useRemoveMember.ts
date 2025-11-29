@@ -16,7 +16,7 @@ export function useRemoveMember(
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
-  return useMutation<void, unknown, string, string>({
+  return useMutation({
     mutationFn: (memberId: string) => removeMember(groupId, memberId),
     onMutate: (memberId) => {
       const toastId = `remove-member-${groupId}-${memberId}`;

@@ -15,7 +15,7 @@ export function useUnarchiveGroup(
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
-  return useMutation<unknown, Error, void, string>({
+  return useMutation({
     mutationFn: () => unarchiveGroup(groupId),
     onMutate: () => {
       const toastId = `unarchive-group-${groupId}`;
