@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { authContext } from "@/lib/auth/authContext";
 import { useContext, useEffect } from "react";
 import { Button } from "@/components/ui/button";

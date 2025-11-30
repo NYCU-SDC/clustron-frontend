@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -79,15 +79,19 @@ export default function OnboardingForm({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col gap-6">
-            {/* Full Name */}
+          <div
+            className="flex flex-col gap-6"
+            role="form"
+            aria-label="onboarding form"
+          >
             <div className="grid gap-2">
               <Label className="ml-2 font-medium">
                 {t("onboardingForm.labelForInputFullName")}
                 <span className="text-red-400">*</span>
               </Label>
               <Input
-                className="mx-2 w-auto placeholder:text-muted-foreground/70"
+                aria-label={t("onboardingForm.labelForInputFullName")}
+                className="mx-2 w-auto"
                 id="fullname"
                 type="name"
                 placeholder={t("onboardingForm.placeHolderForInputFullName")}
@@ -102,7 +106,8 @@ export default function OnboardingForm({
                 <span className="text-red-400">*</span>
               </Label>
               <Input
-                className="mx-2 w-auto placeholder:text-muted-foreground/70"
+                aria-label={t("onboardingForm.labelForInputLinuxUsername")}
+                className="mx-2 w-auto"
                 id="linuxUsername"
                 type="name"
                 placeholder="alice"

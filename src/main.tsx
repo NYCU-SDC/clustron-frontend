@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { CookiesProvider } from "react-cookie";
 import { AuthProvider } from "@/components/auth/AuthProvider";
