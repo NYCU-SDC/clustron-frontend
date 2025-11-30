@@ -7,11 +7,11 @@ export default function JobLayout() {
 
   const jobNavItems: NavItem[] = [
     {
-      to: `/joblist`,
+      to: `/jobs`,
       label: t("jobsSideBar.ListNavLink"),
     },
     {
-      to: `/jobform`,
+      to: `/jobs/submit`,
       label: t("jobsSideBar.SubmitNavLink"),
     },
   ];
