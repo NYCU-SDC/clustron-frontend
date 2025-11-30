@@ -110,9 +110,6 @@ describe("Navbar", () => {
 
     // Test each link
     for (const link of navigationLinks) {
-      const href = link.getAttribute("href");
-      const linkText = link.textContent;
-
       // Click the link
       await user.click(link);
 
@@ -121,8 +118,6 @@ describe("Navbar", () => {
         const notFoundText = screen.queryByText(/404 Not Found/i);
         expect(notFoundText).not.toBeInTheDocument();
       });
-
-      console.log(`✓ Link "${linkText}" (${href}) navigates to a valid route`);
     }
   });
 
