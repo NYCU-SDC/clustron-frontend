@@ -23,11 +23,11 @@ type PaginationRangeResult = {
 };
 
 // calc Pagination's Range
-const PaginationRange = (
+export function usePaginationRange(
   currentPage: number,
   totalPages: number,
   maxVisiblePages: number = 4,
-): PaginationRangeResult => {
+): PaginationRangeResult {
   return useMemo(() => {
     if (totalPages <= 1) {
       return { range: [], showStartEllipsis: false, showEndEllipsis: false };
@@ -52,14 +52,14 @@ const PaginationRange = (
       showEndEllipsis: endPage < totalPages - 1,
     };
   }, [currentPage, totalPages, maxVisiblePages]);
-};
+}
 
-const PaginationControls = ({
+export default function PaginationControls({
   currentPage,
   totalPages,
   setCurrentPage,
-}: PaginationProps) => {
-  const { range, showStartEllipsis, showEndEllipsis } = PaginationRange(
+}: PaginationProps) {
+  const { range, showStartEllipsis, showEndEllipsis } = usePaginationRange(
     currentPage,
     totalPages,
   );
@@ -119,6 +119,4 @@ const PaginationControls = ({
       </Pagination>
     </div>
   );
-};
-
-export default PaginationControls;
+}
