@@ -21,6 +21,7 @@ import AddMemberResult from "@/pages/group/AddMemberResult";
 // import JobDashboard from "@/pages/job/JobDashboard";
 import AdminLayout from "@/pages/layouts/AdminLayout";
 import RoleConfiguration from "@/pages/admin/RoleConfiguration";
+import UserConfiguration from "@/pages/admin/UserConfiguration";
 import BindCallback from "@/pages/BindCallback";
 // import JobSubmitPage from "@/pages/JobSubmitPage";
 // import JobLayout from "@/pages/layouts/JobLayout";
@@ -75,6 +76,7 @@ const App = () => {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Navigate to="config" replace />} />
             <Route path="config" element={<RoleConfiguration />}></Route>
+            <Route path="users" element={<UserConfiguration />}></Route>
           </Route>
         </Route>
       </Route>
