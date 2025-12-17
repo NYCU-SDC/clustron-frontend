@@ -123,9 +123,16 @@
     "deleteFailToast": "Failed to delete role",
     "loadFailToast": "Failed to load roles"
   },
+  "userConfigTable": {
+    "cardTitle": "Users",
+    "tableHeadName": "Name",
+    "tableHeadId": "Student ID or Email",
+    "tableHeadRole": "Role"
+  },
   "adminSidebar": {
     "title": "Admin",
-    "roleAccessConfigLink": "Role Access Configuration"
+    "roleAccessConfigLink": "Role Access Configuration",
+    "userConfigLink": "User Management"
   },
   "groupComponents": {
     "addMemberButton": {

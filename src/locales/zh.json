@@ -123,9 +123,16 @@
     "deleteFailToast": "角色刪除失敗",
     "loadFailToast": "角色載入失敗"
   },
+  "userConfigTable": {
+    "cardTitle": "使用者",
+    "tableHeadName": "姓名",
+    "tableHeadId": "學號或電子信箱",
+    "tableHeadRole": "角色"
+  },
   "adminSidebar": {
     "title": "管理",
-    "roleAccessConfigLink": "權限配置"
+    "roleAccessConfigLink": "權限配置",
+    "userConfigLink": "使用者管理"
   },
   "groupComponents": {
     "addMemberButton": {
