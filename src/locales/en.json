@@ -125,9 +125,24 @@
   },
   "userConfigTable": {
     "cardTitle": "Users",
+    "loadingUsers": "Loading users...",
+    "failedToLoadUsers": "Failed to load users.",
+    "noUsersFound": "No users found.",
     "tableHeadName": "Name",
     "tableHeadId": "Student ID or Email",
-    "tableHeadRole": "Role"
+    "tableHeadRole": "Role",
+    "loadingMore": "Loading more...",
+    "loadMore": "Load more",
+    "roles": {
+      "group_owner": "Group Owner",
+      "teacher_assistant": "TA",
+      "student": "Student",
+      "auditor": "Auditor"
+    },
+    "pagination": {
+      "next": "Next",
+      "previous": "Previous"
+    }
   },
   "adminSidebar": {
     "title": "Admin",
