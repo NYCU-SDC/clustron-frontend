@@ -14,7 +14,7 @@ Clustron Frontend provides a comprehensive web portal for managing computational
 - **Job Submission**: Submit and monitor batch jobs on HPC clusters via SLURM integration
 - **User Settings**: Configure profiles, SSH keys, and login method bindings
 - **Administration**: Configure role access levels and system-wide permissions
-- **OAuth Authentication**: Support for NYCU Portal and Google login
+- **OAuth Authentication**: Support for NYCU Portal, Google and GitHub login
 - **Internationalization**: Full support for English and Traditional Chinese
 
 ## Tech Stack
