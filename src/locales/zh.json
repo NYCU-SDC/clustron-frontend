@@ -17,10 +17,11 @@
   },
   "login": {
     "loginTitle": "登入",
-    "nycuLoginNote": "國立陽明交通大學在學生 請透過單一入口登入",
+    "nycuLoginNote": "國立陽明交通大學在學生登入",
     "nycuLoginBtn": "使用國立陽明交通大學單一入口登入",
-    "googleLoginNote": "非國立陽明交通大學在學生 請使用 Google 帳號登入",
-    "googleLoginBtn": "使用 Google 登入"
+    "googleLoginNote": "非國立陽明交通大學在學生登入",
+    "googleLoginBtn": "使用 Google 登入",
+    "githubLoginBtn": "使用 Github 登入"
   },
   "navbar": {
     "loginBtn": "登入",
@@ -347,10 +348,11 @@
     "connectLoginMethods": "已連結登入方式：",
     "connectLoginMethodBtn": "＋ 連結登入方式",
     "dialogTitle": "Clustron",
-    "nycuLoginNote": "國立陽明交通大學在學生 請透過單一入口登入",
+    "nycuLoginNote": "國立陽明交通大學在學生登入",
     "nycuLoginBtn": "使用國立陽明交通大學單一入口登入",
-    "googleLoginNote": "非國立陽明交通大學在學生 請使用 Google 帳號登入",
+    "googleLoginNote": "非國立陽明交通大學在學生登入",
     "googleLoginBtn": "使用 Google 登入",
+    "githubLoginBtn": "使用 Github 登入",
     "bindFailToast": "綁定失敗",
     "bindConflictToast": "該帳號已被綁定",
     "bindSuccessToast": "綁定成功",

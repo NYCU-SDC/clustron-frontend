@@ -20,7 +20,8 @@
     "nycuLoginNote": "NYCU students log in via NYCU Portal",
     "nycuLoginBtn": "Login with NYCU Portal",
     "googleLoginNote": "Not an NYCU student? Log in via Google account",
-    "googleLoginBtn": "Login with Google"
+    "googleLoginBtn": "Login with Google",
+    "githubLoginBtn": "Login with Github"
   },
   "navbar": {
     "logoutBtn": "Logout",
