@@ -24,14 +24,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     clearTimeout(refreshTimer);
   }, []);
 
-  const login = useCallback((provider: "google" | "nycu") => {
+  const login = useCallback((provider: "google" | "nycu" | "github") => {
     const callbackUrl = `${window.location.protocol}//${window.location.host}/callback/login`;
     const redirectUrl = `${window.location.protocol}//${window.location.host}/`;
     const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
-    const urlMap: Record<"google" | "nycu", string> = {
+    const urlMap: Record<"google" | "nycu" | "github", string> = {
       google: `${baseUrl}/api/login/oauth/google?c=${callbackUrl}&r=${redirectUrl}`,
       nycu: `${baseUrl}/api/login/oauth/nycu?c=${callbackUrl}&r=${redirectUrl}`,
+      github: `${baseUrl}/api/login/oauth/github?c=${callbackUrl}&r=${redirectUrl}`,
     };
     window.location.href = urlMap[provider];
   }, []);

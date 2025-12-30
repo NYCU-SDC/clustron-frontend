@@ -50,7 +50,8 @@ export default function BindLoginForm() {
   }, [isError, settingsError, t]);
 
   const bindMutation = useMutation({
-    mutationFn: (provider: "nycu" | "google") => bindLoginMethods(provider),
+    mutationFn: (provider: "nycu" | "google" | "github") =>
+      bindLoginMethods(provider),
     onSuccess: (data) => {
       const url = data.url;
       const width = 600;
@@ -123,7 +124,12 @@ export default function BindLoginForm() {
                   className="flex items-center gap-2"
                 >
                   <LoginMethodIcon
-                    type={method.provider.toLowerCase() as "nycu" | "google"}
+                    type={
+                      method.provider.toLowerCase() as
+                        | "nycu"
+                        | "google"
+                        | "github"
+                    }
                   />
                   <span className="text-gray-500 dark:text-gray-300">
                     {method.email}
@@ -181,6 +187,16 @@ export default function BindLoginForm() {
               >
                 <LoginMethodIcon type="google" />
                 {t("bindLoginForm.googleLoginBtn")}
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full p-6 cursor-pointer mt-3"
+                onClick={() => {
+                  bindMutation.mutate("github");
+                }}
+              >
+                <LoginMethodIcon type="github" />
+                {t("bindLoginForm.githubLoginBtn")}
               </Button>
             </div>
           </div>

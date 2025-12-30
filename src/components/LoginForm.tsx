@@ -50,6 +50,14 @@ export default function LoginForm({
                 <LoginMethodIcon type="google" />
                 {t("login.googleLoginBtn")}
               </Button>
+              <Button
+                variant="outline"
+                className="w-full p-6 cursor-pointer mt-3"
+                onClick={() => login("github")}
+              >
+                <LoginMethodIcon type="github" />
+                {t("login.githubLoginBtn")}
+              </Button>
             </div>
           </div>
         </CardContent>

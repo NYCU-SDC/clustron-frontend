@@ -5,7 +5,7 @@ type BoundLoginMethodsRespose = {
 };
 
 export async function bindLoginMethods(
-  provider: "nycu" | "google",
+  provider: "nycu" | "google" | "github",
 ): Promise<BoundLoginMethodsRespose> {
   const callbackUrl = `${window.location.protocol}//${window.location.host}/callback/bind`;
   const params = new URLSearchParams({ c: callbackUrl });
