@@ -21,7 +21,7 @@
     "nycuLoginBtn": "Login with NYCU Portal",
     "googleLoginNote": "Not an NYCU student? Log in via Google account",
     "googleLoginBtn": "Login with Google",
-    "githubLoginBtn": "Login with Github"
+    "githubLoginBtn": "Login with GitHub"
   },
   "navbar": {
     "logoutBtn": "Logout",
@@ -345,6 +345,7 @@
     "nycuLoginBtn": "Login with NYCU Portal",
     "googleLoginNote": "Not an NYCU student? Log in via Google account",
     "googleLoginBtn": "Login with Google",
+    "githubLoginBtn": "Login with GitHub",
     "bindFailToast": "Fail to connect to another account",
     "bindConflictToast": "You have already connected to that account",
     "bindSuccessToast": "Connect Successful",

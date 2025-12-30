@@ -21,7 +21,7 @@
     "nycuLoginBtn": "使用國立陽明交通大學單一入口登入",
     "googleLoginNote": "非國立陽明交通大學在學生登入",
     "googleLoginBtn": "使用 Google 登入",
-    "githubLoginBtn": "使用 Github 登入"
+    "githubLoginBtn": "使用 GitHub 登入"
   },
   "navbar": {
     "loginBtn": "登入",
@@ -352,7 +352,7 @@
     "nycuLoginBtn": "使用國立陽明交通大學單一入口登入",
     "googleLoginNote": "非國立陽明交通大學在學生登入",
     "googleLoginBtn": "使用 Google 登入",
-    "githubLoginBtn": "使用 Github 登入",
+    "githubLoginBtn": "使用 GitHub 登入",
     "bindFailToast": "綁定失敗",
     "bindConflictToast": "該帳號已被綁定",
     "bindSuccessToast": "綁定成功",
