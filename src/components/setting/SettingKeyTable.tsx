@@ -37,7 +37,7 @@ export default function SettingKeyTable() {
   const length = 30;
   const PUBLIC_KEYS_QUERY_KEY = ["publicKeys", length] as const;
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     const importedCount = searchParams.get("imported");
@@ -79,7 +79,7 @@ export default function SettingKeyTable() {
 
       navigate({ search: newParams.toString() }, { replace: true });
     }
-  }, [searchParams, navigate]);
+  }, [searchParams, navigate, t]);
 
   const {
     data: keys = [],
