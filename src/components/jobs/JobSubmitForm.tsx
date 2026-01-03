@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { PlusCircledIcon, MinusCircledIcon } from "@radix-ui/react-icons";
 import { CircleCheckBig, ArrowRight } from "lucide-react";
@@ -18,6 +18,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+
+import { toast } from "sonner";
 
 // Types
 type EnvVar = { key: string; value: string };
@@ -122,17 +124,37 @@ function SubmitSuccess({ jobId, onReset }: SubmitSuccessProps) {
 export default function JobSubmitForm() {
   const { t } = useTranslation();
 
-  const { data: partitions } = useQuery({
+  const {
+    data: partitions,
+    isError: isPartitionsError,
+    error: partitionsError,
+  } = useQuery({
     queryKey: ["partitions"],
     queryFn: getPartitions,
+    retry: 1,
   });
+
+  useEffect(() => {
+    if (!isPartitionsError || !partitionsError) return;
+    const msg =
+      partitionsError.message ||
+      t(
+        "jobSubmitForm.sidebarList.partitionsLoadFail",
+        "Failed to load partitions.",
+      );
+    toast.error(msg, { id: "partitions-load-error" });
+  }, [isPartitionsError, partitionsError, t]);
 
   const [successJobId, setSuccessJobId] = useState<number | null>(null);
 
   const createJobMutation = useMutation({
     mutationFn: createJob,
-    onSuccess: (job: Job) => {
-      setSuccessJobId(job.id);
+    onSuccess: (job: Job) => setSuccessJobId(job.id),
+    onError: (err) => {
+      const msg =
+        err.message ||
+        t("jobSubmitForm.sidebarList.submitFailToast", "Failed to submit job.");
+      toast.error(msg, { id: "create-job-error" });
     },
   });
 
@@ -582,7 +604,7 @@ export default function JobSubmitForm() {
                 disabled={createJobMutation.isPending}
               >
                 {createJobMutation.isPending
-                  ? t("jobSubmitForm.submitting", "Submitting…")
+                  ? t("jobSubmitForm.sidebarList.submitting", "Submitting…")
                   : t("jobSubmitForm.submitButton")}
               </Button>
             </div>
