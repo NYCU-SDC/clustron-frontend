@@ -85,7 +85,9 @@ export default function PendingMemberTable({
     <Card>
       <CardContent className="p-6">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="font-bold text-lg">{t("groupPages.pendingMember")}</h3>
+          <h3 className="font-bold text-lg">
+            {t("groupPages.pendingMembers.pendingMember")}
+          </h3>
         </div>
 
         {isLoading ? (
