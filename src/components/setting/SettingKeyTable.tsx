@@ -133,14 +133,14 @@ export default function SettingKeyTable() {
                 } else {
                   toast.error(
                     t("settingKeyTable.importFromGitHubError") ??
-                      "Failed to import keys from GitHub."
+                      "Failed to import keys from GitHub.",
                   );
                 }
               } catch (error) {
                 console.error("Failed to import public keys:", error);
                 toast.error(
                   t("settingKeyTable.importFromGitHubError") ??
-                    "Failed to import keys from GitHub."
+                    "Failed to import keys from GitHub.",
                 );
               }
             }}
