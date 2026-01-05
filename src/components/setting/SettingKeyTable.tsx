@@ -126,9 +126,23 @@ export default function SettingKeyTable() {
           <Button
             className="py-5 cursor-pointer"
             onClick={async () => {
-              const response = await importPublicKeys();
-
-              window.location.href = response.url;
+              try {
+                const response = await importPublicKeys();
+                if (response && response.url) {
+                  window.location.href = response.url;
+                } else {
+                  toast.error(
+                    t("settingKeyTable.importFromGitHubError") ??
+                      "Failed to import keys from GitHub."
+                  );
+                }
+              } catch (error) {
+                console.error("Failed to import public keys:", error);
+                toast.error(
+                  t("settingKeyTable.importFromGitHubError") ??
+                    "Failed to import keys from GitHub."
+                );
+              }
             }}
           >
             <svg
