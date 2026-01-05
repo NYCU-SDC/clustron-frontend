@@ -95,6 +95,7 @@
     "importSuccessMsg": "成功匯入 {{success}} 個金鑰！",
     "importWithDuplicateMsg": "{{success}} 個新增，{{duplicate}} 個重複 (已跳過)。",
     "importWithAllDuplicateMsg": "沒有新增任何金鑰，{{duplicate}} 個金鑰已存在。",
+    "importFromGitHubError": "發生錯誤！ 無法連接至 GitHub!",
     "importNothingMsg": "未找到任何金鑰",
     "addNewKeyBtn": "＋ 新增 SSH 公鑰",
     "tableHeadForTitle": "標題",

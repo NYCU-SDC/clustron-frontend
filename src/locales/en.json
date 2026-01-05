@@ -96,6 +96,7 @@
     "importWithDuplicateMsg": "Success: {{success}}, Duplicated: {{duplicate}}.",
     "importWithAllDuplicateMsg": "All {{duplicate}} key{{moreThanOne}} are duplicated.",
     "importNothingMsg": "No keys were found.",
+    "importFromGitHubError": "Error! can't connect to GitHub!",
     "addNewKeyBtn": "＋ New SSH Keys",
     "tableHeadForTitle": "Title",
     "tableHeadForKey": "Key",
