@@ -1,6 +1,10 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { PlusCircledIcon, MinusCircledIcon } from "@radix-ui/react-icons";
+import { CircleCheckBig, ArrowRight } from "lucide-react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { createJob, getPartitions } from "@/lib/request/jobs";
+import type { JobCreatePayload, Job } from "@/lib/request/jobs";
 
 // ui components
 import { Label } from "@/components/ui/label";
@@ -14,6 +18,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+
+import { toast } from "sonner";
 
 // Types
 type EnvVar = { key: string; value: string };
@@ -70,10 +76,89 @@ interface JobSubmitFormData {
   command: string;
 }
 
+type SubmitSuccessProps = {
+  jobId: number | null;
+  onReset: () => void;
+};
+
+function SubmitSuccess({ jobId, onReset }: SubmitSuccessProps) {
+  const { t } = useTranslation();
+
+  return (
+    <div className="w-full max-w-md mx-auto p-6">
+      {/* submit successfully */}
+      <div className="rounded-md border-2 border-emerald-400 bg-white dark:bg-neutral-900 px-8 py-3">
+        <div className="flex items-center justify-center gap-4">
+          <CircleCheckBig
+            className="h-12 w-12 text-emerald-500"
+            strokeWidth={1}
+          />
+          <div className="leading-tight">
+            <div className="font-semibold text-foreground text-xl tracking-tight">
+              {t("jobSubmitForm.submitSuccessTitle", "Job Submit Successfully")}
+            </div>
+            <div className="font-semibold text-foreground text-lg leading-none">
+              {t("jobSubmitForm.submitSuccessId", "ID #{{id}}", {
+                id: jobId ?? "",
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* button: submit another job */}
+      <div className="mt-3 flex justify-end">
+        <Button
+          variant="outline"
+          onClick={onReset}
+          className="h-9 px-4 rounded-md text-sm"
+        >
+          {t("jobSubmitForm.submitAnother", "Submit Another Job")}
+          <ArrowRight className="h-4 w-4" />
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 export default function JobSubmitForm() {
   const { t } = useTranslation();
 
-  const [formData, setFormData] = useState<JobSubmitFormData>({
+  const {
+    data: partitions,
+    isError: isPartitionsError,
+    error: partitionsError,
+  } = useQuery({
+    queryKey: ["partitions"],
+    queryFn: getPartitions,
+    retry: 1,
+  });
+
+  useEffect(() => {
+    if (!isPartitionsError || !partitionsError) return;
+    const msg =
+      partitionsError.message ||
+      t(
+        "jobSubmitForm.sidebarList.partitionsLoadFail",
+        "Failed to load partitions.",
+      );
+    toast.error(msg, { id: "partitions-load-error" });
+  }, [isPartitionsError, partitionsError, t]);
+
+  const [successJobId, setSuccessJobId] = useState<number | null>(null);
+
+  const createJobMutation = useMutation({
+    mutationFn: createJob,
+    onSuccess: (job: Job) => setSuccessJobId(job.id),
+    onError: (err) => {
+      const msg =
+        err.message ||
+        t("jobSubmitForm.sidebarList.submitFailToast", "Failed to submit job.");
+      toast.error(msg, { id: "create-job-error" });
+    },
+  });
+
+  const initialForm: JobSubmitFormData = {
     jobName: "",
     comment: "",
     scriptPath: "",
@@ -89,7 +174,9 @@ export default function JobSubmitForm() {
     stdout: "",
     stderr: "",
     command: "",
-  });
+  };
+
+  const [formData, setFormData] = useState<JobSubmitFormData>(initialForm);
 
   const [envVars, setEnvVars] = useState<EnvVar[]>([{ key: "", value: "" }]);
 
@@ -143,13 +230,51 @@ export default function JobSubmitForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: wire to API
-    // For now, log
-    console.log("Form Data:", formData);
-    console.log("Environment Variables:", envVars);
+
+    const environment = envVars
+      .filter((ev) => ev.key.trim() !== "")
+      .map((ev) => `${ev.key}=${ev.value ?? ""}`);
+
+    const payload: JobCreatePayload = {
+      name: formData.jobName,
+      comment: formData.comment,
+      current_working_directory: formData.cwd,
+      script: formData.scriptPath,
+      environment,
+      partition: formData.partition,
+      tasks: Number.isFinite(formData.tasks) ? formData.tasks : undefined,
+      cpus_per_task: Number.isFinite(formData.cpus) ? formData.cpus : undefined,
+      memory_per_cpu: Number.isFinite(formData.memPerCpu)
+        ? formData.memPerCpu
+        : undefined,
+      nodes: Number.isFinite(formData.nodes)
+        ? String(formData.nodes)
+        : undefined,
+      memory_per_node: Number.isFinite(formData.memPerNode)
+        ? formData.memPerNode
+        : undefined,
+      time_limit: Number.isFinite(formData.timeLimit)
+        ? formData.timeLimit
+        : undefined,
+      standard_input: formData.stdin || undefined,
+      standard_output: formData.stdout || undefined,
+      standard_error: formData.stderr || undefined,
+    };
+
+    createJobMutation.mutate(payload);
+  };
+
+  const resetForm = () => {
+    setFormData(initialForm);
+    setEnvVars([{ key: "", value: "" }]);
+    setSuccessJobId(null);
   };
 
   const commandPreview = useMemo(() => buildSrunCommand(formData), [formData]);
+
+  if (successJobId !== null) {
+    return <SubmitSuccess jobId={successJobId} onReset={resetForm} />;
+  }
 
   return (
     <form onSubmit={handleSubmit} className="flex min-h-screen bg-background">
@@ -301,9 +426,9 @@ export default function JobSubmitForm() {
                   />
                 </SelectTrigger>
                 <SelectContent>
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <SelectItem key={i + 1} value={String(i + 1)}>
-                      {i + 1}
+                  {(partitions?.partitions ?? []).map((name) => (
+                    <SelectItem key={name} value={name}>
+                      {name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -324,7 +449,7 @@ export default function JobSubmitForm() {
                 inputMode="numeric"
                 value={formData.tasks}
                 onChange={handleChange}
-                className="w-[70%]"
+                className="w-[70%] [color-scheme:light] dark:[color-scheme:dark]"
                 required
               />
             </div>
@@ -343,7 +468,7 @@ export default function JobSubmitForm() {
                 inputMode="numeric"
                 value={formData.cpus}
                 onChange={handleChange}
-                className="w-[70%]"
+                className="w-[70%] [color-scheme:light] dark:[color-scheme:dark]"
                 required
               />
             </div>
@@ -361,7 +486,7 @@ export default function JobSubmitForm() {
                 inputMode="numeric"
                 value={formData.memPerCpu}
                 onChange={handleChange}
-                className="w-[70%]"
+                className="w-[70%] [color-scheme:light] dark:[color-scheme:dark]"
               />
             </div>
 
@@ -376,7 +501,7 @@ export default function JobSubmitForm() {
                 inputMode="numeric"
                 value={formData.nodes}
                 onChange={handleChange}
-                className="w-[70%]"
+                className="w-[70%] [color-scheme:light] dark:[color-scheme:dark]"
               />
             </div>
 
@@ -393,7 +518,7 @@ export default function JobSubmitForm() {
                 inputMode="numeric"
                 value={formData.memPerNode}
                 onChange={handleChange}
-                className="w-[70%]"
+                className="w-[70%] [color-scheme:light] dark:[color-scheme:dark]"
               />
             </div>
 
@@ -410,7 +535,7 @@ export default function JobSubmitForm() {
                 inputMode="numeric"
                 value={formData.timeLimit}
                 onChange={handleChange}
-                className="w-[70%]"
+                className="w-[70%] [color-scheme:light] dark:[color-scheme:dark]"
               />
             </div>
           </section>
@@ -473,8 +598,14 @@ export default function JobSubmitForm() {
             />
 
             <div className="flex justify-end">
-              <Button type="submit" className="h-11 px-6">
-                {t("jobSubmitForm.submitButton")}
+              <Button
+                type="submit"
+                className="h-11 px-6"
+                disabled={createJobMutation.isPending}
+              >
+                {createJobMutation.isPending
+                  ? t("jobSubmitForm.sidebarList.submitting", "Submitting…")
+                  : t("jobSubmitForm.submitButton")}
               </Button>
             </div>
           </section>
