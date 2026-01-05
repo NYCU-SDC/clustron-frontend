@@ -92,7 +92,7 @@
   "settingKeyTable": {
     "cardTitleForKeyTable": "SSH Keys",
     "importFromGitHubBtn": "Import From GitHub",
-    "importSuccessMsg": "Successfully import {{success}} key{{moreThanOne}}.",
+    "importSuccessMsg": "Successfully imported {{success}} key{{moreThanOne}}.",
     "importWithDuplicateMsg": "Success: {{success}}, Duplicated: {{duplicate}}.",
     "importWithAllDuplicateMsg": "All {{duplicate}} key{{moreThanOne}} are duplicated.",
     "importNothingMsg": "No Key are found.",
