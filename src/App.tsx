@@ -18,12 +18,13 @@ import AddMemberPage from "@/pages/group/AddMemberPage";
 import AddGroupPage from "@/pages/group/CreateGroup";
 import GroupLayout from "@/pages/layouts/GroupLayout";
 import AddMemberResult from "@/pages/group/AddMemberResult";
-import JobDashboard from "@/pages/job/JobDashboard";
+// import JobDashboard from "@/pages/job/JobDashboard";
 import AdminLayout from "@/pages/layouts/AdminLayout";
 import RoleConfiguration from "@/pages/admin/RoleConfiguration";
 import BindCallback from "@/pages/BindCallback";
-import JobSubmitPage from "@/pages/JobSubmitPage";
-import JobLayout from "@/pages/layouts/JobLayout";
+// import JobSubmitPage from "@/pages/JobSubmitPage";
+// import JobLayout from "@/pages/layouts/JobLayout";
+
 const App = () => {
   return (
     <Routes>
@@ -54,10 +55,10 @@ const App = () => {
             path="/groups/:id/add-member-result"
             element={<AddMemberResult />}
           />
-          <Route path="/jobs" element={<JobLayout />}>
+          {/* <Route path="/jobs" element={<JobLayout />}>
             <Route index element={<JobDashboard />} />
             <Route path="submit" element={<JobSubmitPage />} />
-          </Route>
+          </Route> */}
 
           <Route element={<GroupLayout />}>
             <Route path="/groups" element={<GroupListPage />} />
@@ -75,7 +76,6 @@ const App = () => {
             <Route index element={<Navigate to="config" replace />} />
             <Route path="config" element={<RoleConfiguration />}></Route>
           </Route>
-          {/*  end*/}
         </Route>
       </Route>
 
@@ -84,6 +84,19 @@ const App = () => {
           <Route path="/login" element={<Login />} />
         </Route>
       </Route>
+
+      <Route
+        path="*"
+        element={
+          <div>
+            404 Not Found. Click{" "}
+            <a className="text-blue-500" href="/">
+              here
+            </a>
+            to go back home.
+          </div>
+        }
+      />
     </Routes>
   );
 };
