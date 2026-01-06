@@ -1,4 +1,4 @@
-name: Lint, Build and Deploy
+name: Lint, Test, Build and Deploy
 
 on:
   push:
@@ -42,6 +42,24 @@ jobs:
       - name: Run Prettier
 
         run: npx prettier . --check
+
+  Test:
+    name: Run Tests with Vitest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+
+      - name: Install dependencies
+        run: npm install -g pnpm && pnpm install
+
+      - name: Run Tests
+        run: npx vitest run --coverage
 
   Build-Push-Image:
     name: Build Docker image

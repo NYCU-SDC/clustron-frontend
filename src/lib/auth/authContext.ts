@@ -2,7 +2,7 @@ import { createContext } from "react";
 import { UseMutationResult } from "@tanstack/react-query";
 import { AuthCookie } from "@/types/settings";
 
-type AuthContextType = {
+export type AuthContextType = {
   login: (provider: "google" | "nycu") => void;
   setCookiesForAuthToken: (data: AuthCookie) => void;
   handleLogout: () => void;

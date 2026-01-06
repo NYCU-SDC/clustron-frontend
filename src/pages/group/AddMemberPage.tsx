@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router";
 import { useTranslation } from "react-i18next";
 import AddMemberRow from "@/components/group/AddMemberRow";
 import { useAddMember } from "@/hooks/useAddMember";

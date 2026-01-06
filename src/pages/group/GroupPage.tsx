@@ -1,4 +1,4 @@
-import { Outlet, useOutletContext } from "react-router-dom";
+import { Outlet, useOutletContext } from "react-router";
 import GroupDescription from "@/components/group/GroupDescription.tsx";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { getGroupPermissions } from "@/lib/groupPermissions";

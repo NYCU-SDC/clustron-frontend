@@ -1,5 +1,5 @@
 // import { useTranslation } from "react-i18next";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router";
 import GroupDescription from "@/components/group/GroupDescription.tsx";
 import GroupMemberTable from "@/components/group/GroupMemberTable";
 import type { GroupDetail } from "@/types/group";

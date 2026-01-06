@@ -1,5 +1,6 @@
+/// <reference types="vitest" />
 import path from "path";
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
@@ -16,8 +17,19 @@ export default defineConfig({
       "^/api/.*": {
         target: "https://api.dev.clustron.sdc.nycu.club",
         changeOrigin: true,
-        // rewrite: (path) => path.replace(/^\/api/, ""),
       },
+    },
+  },
+  test: {
+    include: ["src/**/*.{test,spec}.{ts,tsx}"],
+    environment: "jsdom",
+    globals: true,
+    setupFiles: "./src/setupTests.ts",
+    css: true,
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "lcov", "html"],
+      exclude: ["src/components/ui/*"],
     },
   },
 });

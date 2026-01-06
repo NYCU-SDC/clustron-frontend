@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router";
 import DefaultLayout from "./pages/layouts/DefaultLayout";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
@@ -84,6 +84,19 @@ const App = () => {
           <Route path="/login" element={<Login />} />
         </Route>
       </Route>
+
+      <Route
+        path="*"
+        element={
+          <div>
+            404 Not Found. Click{" "}
+            <a className="text-blue-500" href="/">
+              here
+            </a>{" "}
+            to go back home.
+          </div>
+        }
+      />
     </Routes>
   );
 };
