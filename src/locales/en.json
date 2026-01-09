@@ -66,7 +66,7 @@
   },
   "settingFullNameForm": {
     "cardTitleForFullName": "Full Name",
-    "cardDescriptionForFullName": "Your full name to let the group administrator recognize you",
+    "cardDescriptionForFullName": "Enter your full name to let the group administrator recognize you",
     "saveBtn": "Save",
     "placeHolderForInputFullName": "Jammy Wang",
     "successToast": "Name saved successfully",
@@ -91,6 +91,12 @@
   },
   "settingKeyTable": {
     "cardTitleForKeyTable": "SSH Keys",
+    "importFromGitHubBtn": "Import From GitHub",
+    "importSuccessMsg": "Successfully imported {{success}} key{{moreThanOne}}.",
+    "importWithDuplicateMsg": "Success: {{success}}, Duplicated: {{duplicate}}.",
+    "importWithAllDuplicateMsg": "All {{duplicate}} key{{moreThanOne}} are duplicated.",
+    "importNothingMsg": "No keys were found.",
+    "importFromGitHubError": "Error! can't connect to GitHub!",
     "addNewKeyBtn": "＋ New SSH Keys",
     "tableHeadForTitle": "Title",
     "tableHeadForKey": "Key",
