@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 function navLinkClass(isActive: boolean): string {
@@ -15,6 +15,8 @@ function navLinkClass(isActive: boolean): string {
 export interface NavItem {
   to: string;
   label: string;
+  end?: boolean;
+  activePaths?: string[];
 }
 
 interface SideBarProps {
@@ -25,6 +27,7 @@ interface SideBarProps {
 
 export default function SideBar({ title, navItems, className }: SideBarProps) {
   const { t } = useTranslation();
+  const { pathname } = useLocation();
 
   return (
     <aside
@@ -36,8 +39,12 @@ export default function SideBar({ title, navItems, className }: SideBarProps) {
           <li key={item.to}>
             <NavLink
               to={item.to}
-              end
-              className={({ isActive }) => navLinkClass(isActive)}
+              end={item.end ?? true}
+              className={({ isActive }) =>
+                navLinkClass(
+                  isActive || (item.activePaths?.includes(pathname) ?? false),
+                )
+              }
             >
               {t(item.label)}
             </NavLink>

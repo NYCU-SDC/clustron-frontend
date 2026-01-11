@@ -13,6 +13,8 @@ export default function SettingLayout() {
     {
       to: "/setting/ssh",
       label: "settingSideBar.SSHNavLink",
+      end: false,
+      activePaths: ["/setting/add-new-key"],
     },
   ];
 
