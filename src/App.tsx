@@ -45,7 +45,7 @@ const App = () => {
             <Route index element={<Navigate to="general" replace />} />
             <Route path="general" element={<SettingGeneral />} />
             <Route path="ssh" element={<SettingSSH />} />
-            <Route path="add-new-key" element={<SettingAddKey />} />
+            <Route path="ssh/new" element={<SettingAddKey />} />
           </Route>
           <Route path="/groups" element={<GroupListPage />} />
           <Route path="/groups/new" element={<AddGroupPage />} />
