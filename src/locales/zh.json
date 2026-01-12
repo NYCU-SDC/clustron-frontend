@@ -125,6 +125,9 @@
   },
   "userConfigTable": {
     "cardTitle": "使用者",
+    "loadingUsers": "正在載入使用者...",
+    "failedToLoadUsers": "載入使用者失敗。",
+    "noUsersFound": "找不到使用者。",
     "tableHeadName": "姓名",
     "tableHeadId": "學號或電子信箱",
     "tableHeadRole": "角色"

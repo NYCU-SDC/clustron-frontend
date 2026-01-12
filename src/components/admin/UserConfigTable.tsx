@@ -8,13 +8,15 @@ import {
   TableBody,
 } from "@/components/ui/table";
 import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import PaginationControls from "@/components/PaginationControl";
 import { ChevronDown, Loader2, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getGroupPermissions } from "@/lib/groupPermissions";
@@ -32,15 +34,6 @@ import {
 } from "@/types/admin";
 import type { GlobalRole, GroupRoleAccessLevel } from "@/lib/permission";
 import { AccessLevelUser } from "@/types/group";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 
 const MOCK_GLOBAL_USERS: User[] = [
   {
@@ -110,19 +103,11 @@ export default function UserConfigTable({
 }: Props) {
   const { t } = useTranslation();
   const payload = useJwtPayload();
-  const effectiveGlobalRole = globalRole ?? (payload?.Role as GlobalRole);
 
-  // 1. 強制讓你有編輯權限 (不然 Admin 進來按鈕會是灰的或不見)
-  // const { canEditMembers } = getGroupPermissions(...);
-  const canEditMembers = true;
-
-  // const { canEditMembers } = getGroupPermissions(
-  //   accessLevel,
-  //   effectiveGlobalRole,
-  // );
   const [currentPage, setCurrentPage] = useState(0);
   const [resultsPerPage, setResultsPerPage] = useState(20);
   const [currentRole, setCurrentRole] = useState("User");
+
   // 假裝 Loading 已經結束，沒有錯誤
   const isLoading = false;
   const isError = false;
@@ -207,7 +192,7 @@ export default function UserConfigTable({
           {isLoading ? (
             <div className="text-sm text-gray-500 flex items-center gap-2">
               <Loader2 className="w-4 h-4 animate-spin" />
-              {t("userConfigTable.loadingMembers")}
+              {t("userConfigTable.loadingUsers")}
             </div>
           ) : isError ? (
             <p className="text-sm text-red-500">
@@ -247,63 +232,12 @@ export default function UserConfigTable({
                   ))}
                 </TableBody>
               </Table>
-
               <div className="mt-6 flex justify-between items-center">
-                <Pagination className="w-fit mx-0">
-                  <PaginationContent>
-                    <PaginationItem>
-                      <PaginationPrevious
-                        onClick={() =>
-                          setCurrentPage((p) => Math.max(p - 1, 0))
-                        }
-                        className={
-                          currentPage === 0
-                            ? "opacity-50 pointer-events-none"
-                            : ""
-                        }
-                      />
-                    </PaginationItem>
-
-                    {startPage > 0 && (
-                      <PaginationItem>
-                        <span className="px-2">...</span>
-                      </PaginationItem>
-                    )}
-
-                    {Array.from(
-                      { length: endPage - startPage + 1 },
-                      (_, i) => startPage + i,
-                    ).map((page) => (
-                      <PaginationItem key={page}>
-                        <PaginationLink
-                          isActive={page === currentPage}
-                          onClick={() => setCurrentPage(page)}
-                        >
-                          {page + 1}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ))}
-
-                    {endPage < totalPages - 1 && (
-                      <PaginationItem>
-                        <span className="px-2">...</span>
-                      </PaginationItem>
-                    )}
-
-                    <PaginationItem>
-                      <PaginationNext
-                        onClick={() =>
-                          setCurrentPage((p) => Math.min(p + 1, totalPages - 1))
-                        }
-                        className={
-                          currentPage === totalPages - 1
-                            ? "opacity-50 pointer-events-none"
-                            : ""
-                        }
-                      />
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
+                <PaginationControls
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  setCurrentPage={setCurrentPage}
+                />
                 <div>
                   <div className="flex justify-between items-center gap-2">
                     <p>Result per page:</p>
