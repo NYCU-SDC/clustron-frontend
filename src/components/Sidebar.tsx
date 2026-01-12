@@ -15,6 +15,14 @@ function navLinkClass(isActive: boolean): string {
 export interface NavItem {
   to: string;
   label: string;
+
+  /**
+   * Controls NavLink active matching behavior.
+   * - true: exact match only ("/setting/ssh" is active only on "/setting/ssh")
+   * - false: prefix match ("/setting/ssh" is also active on "/setting/ssh/new")
+   *
+   * Default: true (keep existing behavior for other sidebars).
+   */
   end?: boolean;
 }
 
