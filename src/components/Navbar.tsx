@@ -16,7 +16,14 @@ import { getAccessToken } from "@/lib/token";
 import { jwtDecode } from "jwt-decode";
 import { AccessToken } from "@/types/settings";
 import { LogOut } from "lucide-react";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
+// 🧨 這是一個專門用來爆炸的小組件
+const Bomb = () => {
+  throw new Error("💥 測試：只有這個小零件壞掉，Navbar 應該要活著！");
+};
+//
+//
 function navLinkclass(isActive: boolean) {
   return [
     "text-base px-3 py-2 rounded-lg",
@@ -50,55 +57,68 @@ export default function Navbar() {
           <>
             {(role == "user" || role == "admin") && (
               <>
-                <NavLink
-                  to="/groups"
-                  className={({ isActive }) => navLinkclass(isActive)}
-                >
-                  {t("navbar.groupLink")}
-                </NavLink>
-                <NavLink
-                  to="/jobs"
-                  className={({ isActive }) => navLinkclass(isActive)}
-                >
-                  {t("navbar.jobsLink")}
-                </NavLink>
-                <NavLink
-                  to="/setting"
-                  className={({ isActive }) => navLinkclass(isActive)}
-                >
-                  {t("navbar.settingLink")}
-                </NavLink>
+                <ErrorBoundary>
+                  <NavLink
+                    to="/groups"
+                    className={({ isActive }) => navLinkclass(isActive)}
+                  >
+                    {t("navbar.groupLink")}
+                  </NavLink>
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <NavLink
+                    to="/jobs"
+                    className={({ isActive }) => navLinkclass(isActive)}
+                  >
+                    {t("navbar.jobsLink")}
+                  </NavLink>
+                  <NavLink
+                    to="/setting"
+                    className={({ isActive }) => navLinkclass(isActive)}
+                  >
+                    {t("navbar.settingLink")}
+                    <Bomb />
+                  </NavLink>
+                </ErrorBoundary>
               </>
             )}
             {role == "admin" && (
-              <NavLink
-                to="/admin"
-                className={({ isActive }) => navLinkclass(isActive)}
-              >
-                {t("navbar.adminLink")}
-              </NavLink>
+              <ErrorBoundary>
+                <NavLink
+                  to="/admin"
+                  className={({ isActive }) => navLinkclass(isActive)}
+                >
+                  {t("navbar.adminLink")}
+                </NavLink>
+              </ErrorBoundary>
             )}
           </>
         </div>
         <div className="flex items-center space-x-4">
-          <ColorModeToggle />
-          {isLoggedIn() ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger className="cursor-pointer">
-                <CircleUserRound />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel className="text-gray-600 dark:text-gray-400">
-                  {email}
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout}>
-                  <LogOut />
-                  {t("navbar.logoutBtn")}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : null}
+          <ErrorBoundary>
+            <ColorModeToggle />
+            <Bomb />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            {isLoggedIn() ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger className="cursor-pointer">
+                  <CircleUserRound />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel className="text-gray-600 dark:text-gray-400">
+                    {email}
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut />
+                    {t("navbar.logoutBtn")}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : null}
+            <Bomb />
+          </ErrorBoundary>
         </div>
       </div>
     </nav>

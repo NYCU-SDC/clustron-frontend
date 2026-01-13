@@ -1,30 +1,27 @@
-// import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
-// import Link from "next/link";
-import { ErrorBoundary, FallbackProps } from "react-error-boundary";
+import { FallbackProps } from "react-error-boundary";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
 export default function ErrorFallBack({
   error,
   resetErrorBoundary,
 }: FallbackProps) {
   return (
-    // <div className="flex h-full w-full flex-col items-center justify-center rounded-md bg-red-200 p-2">
-    //     <ExclamationTriangleIcon className="size-32 text-red-500" />
-    //     <div className="text-4xl font-bold text-red-500">Error</div>
-    //     <div className="font-medium text-red-500">請嘗試重新整理頁面</div>
-    //     <div className="font-medium text-red-500">
-    //         若錯誤持續發生，請
-    //         <Link
-    //             href="mailto:contact@commonground.tw"
-    //             className="inline underline decoration-solid decoration-2"
-    //         >
-    //             聯繫我們
-    //         </Link>
-    //     </div>
-    // </div>
+    <div
+      role="alert"
+      className="flex items-center gap-2 p-2 text-sm text-red-500 bg-red-50 border border-red-200 rounded-md"
+    >
+      <ExclamationTriangleIcon className="w-4 h-4" />
 
-    <div role="alert">
-      <p>Something went wrong:</p>
-      <pre style={{ color: "red" }}>{error.message}</pre>
+      <span className="font-medium">載入失敗</span>
+
+      <button
+        onClick={resetErrorBoundary}
+        className="px-2 py-0.5 text-xs text-white bg-red-500 rounded hover:bg-red-600"
+      >
+        重試
+      </button>
+
+      <span className="hidden">{error.message}</span>
     </div>
   );
 }
