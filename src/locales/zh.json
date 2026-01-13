@@ -130,7 +130,10 @@
     "noUsersFound": "找不到使用者。",
     "tableHeadName": "姓名",
     "tableHeadId": "學號或電子信箱",
-    "tableHeadRole": "角色"
+    "tableHeadRole": "角色",
+    "updatingToast": "正在更新...",
+    "updateSuccessToast": "角色更新成功",
+    "updateFailToast": "角色更新失敗"
   },
   "adminSidebar": {
     "title": "管理",

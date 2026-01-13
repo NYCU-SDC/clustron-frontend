@@ -130,7 +130,10 @@
     "noUsersFound": "No users found.",
     "tableHeadName": "Name",
     "tableHeadId": "Student ID or Email",
-    "tableHeadRole": "Role"
+    "tableHeadRole": "Role",
+    "updatingToast": "Updating...",
+    "updateSuccessToast": "Role updated",
+    "updateFailToast": "Failed to update role"
   },
   "adminSidebar": {
     "title": "Admin",

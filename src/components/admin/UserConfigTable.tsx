@@ -39,35 +39,35 @@ const MOCK_GLOBAL_USERS: User[] = [
   {
     id: "uuid-1",
     fullName: "王小明",
-    studentId: "113999321",
+    studentID: "113999321",
     email: "liam@gmail.com",
     role: GlobalRoleUser,
   },
   {
     id: "uuid-2",
     fullName: "Olivia Smith",
-    studentId: "",
+    studentID: "",
     email: "olivia@gmail.com",
     role: GlobalRoleUser,
   },
   {
     id: "uuid-3",
     fullName: "陳小美",
-    studentId: "110345678",
+    studentID: "110345678",
     email: "noah@gmail.com",
     role: GlobalRoleUser,
   },
   {
     id: "uuid-4",
     fullName: "Emma Brown",
-    studentId: "111000111",
+    studentID: "111000111",
     email: "emma@gmail.com",
     role: GlobalRoleOrganizer,
   },
   {
     id: "uuid-5",
     fullName: "SDC",
-    studentId: "",
+    studentID: "",
     email: "admin@sdc.nycu.club",
     role: GlobalRoleAdmin,
   },
@@ -76,7 +76,7 @@ const MOCK_GLOBAL_USERS: User[] = [
 const useMockGlobalUsers = (page: number) => {
   return {
     data: {
-      items: MOCK_USERS_DATA,
+      items: MOCK_GLOBAL_USERS,
       totalPages: 5, // 假裝有 5 頁
     },
     isLoading: false, // 假裝已經讀取完畢
@@ -217,7 +217,7 @@ export default function UserConfigTable({
                     <UserConfigRow
                       key={m.id}
                       name={m.fullName}
-                      id={m.studentId}
+                      id={m.studentID}
                       email={m.email}
                       currentRole={m.role}
                       // 這裡連接你之前寫好的 Mock Update function

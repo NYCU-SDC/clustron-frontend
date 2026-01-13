@@ -15,12 +15,13 @@ export const GLOBAL_ROLE_OPTIONS: { id: GlobalRole; label: string }[] = [
 ];
 
 export type GlobalRole = (typeof GlobalRoles)[number];
+
 // global user
 export type User = {
   id: string;
   fullName: string;
   email: string;
-  studentId: string;
+  studentID: string;
   role: GlobalRole;
 };
 
@@ -28,14 +29,15 @@ export type User = {
 // 🔹 GET /api/users
 // =========================
 
-// 對應後端的 PaginatedParams + SearchUserParams
 export type GetUsersParams = {
   page?: number;
-  pageSize?: number;
-  search?: string; // 搜尋框用的參數
+  size?: number;
+  sort?: "asc" | "desc";
+  sortBy?: "fullName" | "studentID" | "email";
+  search?: string;
+  role?: GlobalRole | "";
 };
 
-// 對應後端的 PaginatedResponse<UserResponse>
 export type GetUsersResponse = {
   items: User[];
   totalPages: number;
@@ -46,10 +48,9 @@ export type GetUsersResponse = {
 };
 
 // =========================
-// 🔹 PUT /api/users/{id}/role
+// 🔹 PUT /api/users/{id}/globalRole
 // =========================
 
-// 對應後端 UpdateUserRoleRequest
 export type UpdateUserRoleInput = {
   id: string;
   role: GlobalRole;
