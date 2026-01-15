@@ -25,10 +25,6 @@ export type GroupMember = {
   role: GroupRole;
 };
 
-// =========================
-// 🔹 GET /api/groups
-// =========================
-
 export type GroupSummary = {
   id: string;
   title: string;
@@ -47,10 +43,6 @@ export type GetGroupsResponse = {
   hasNextPage: boolean;
 };
 
-// =========================
-// 🔹 GET /api/groups/{id}
-// =========================
-
 export type GroupDetail = GroupSummary & {
   me: {
     type: string;
@@ -58,10 +50,6 @@ export type GroupDetail = GroupSummary & {
   };
   links?: GroupLinkResponse[];
 };
-
-// =========================
-// 🔹 POST /api/groups
-// =========================
 
 export type CreateGroupInput = {
   title: string;
@@ -89,10 +77,6 @@ export type CreateGroupResponse = GroupDetail & {
   addedResult: CreateGroupResultData;
 };
 
-// =========================
-// 🔹 GET /api/groups/{id}/members
-// =========================
-
 export type GetGroupMembersResponse = {
   items: GroupMember[];
   totalPages: number;
@@ -102,10 +86,6 @@ export type GetGroupMembersResponse = {
   hasNextPage: boolean;
 };
 
-// =========================
-// 🔹 POST /api/groups/{id}/members
-// =========================
-
 export type AddGroupMemberInput = {
   member: string;
   roleId: string;
@@ -113,18 +93,10 @@ export type AddGroupMemberInput = {
 
 export type AddGroupMemberResponse = GroupMember;
 
-// =========================
-// 🔹 DELETE /api/groups/{id}/members/{memberId}
-// =========================
-
 export type RemoveMemberParams = {
   id: string;
   memberId: string;
 };
-
-// =========================
-// 🔹 PUT /api/groups/{id}/members/{memberId}
-// =========================
 
 export type UpdateGroupMemberInput = {
   groupId: string;
@@ -134,28 +106,14 @@ export type UpdateGroupMemberInput = {
 
 export type UpdateGroupMemberResponse = GroupMember;
 
-// =========================
-// 🔹 POST /api/groups/{id}/archive
-// 🔹 POST /api/groups/{id}/unarchive
-// =========================
-
 export type ArchiveGroupParams = {
   id: string;
 };
-
-// =========================
-// 🔹 POST /api/roles
-// 🔹 PUT /api/roles/{id}
-// =========================
 
 export type RoleConfigInput = {
   role: GroupMemberRoleName;
   accessLevel: GroupRoleAccessLevel;
 };
-
-// =========================
-// 🔹 Pending Member Types
-// =========================
 
 export type PendingMember = {
   id: string;
@@ -192,10 +150,6 @@ export type RemovePendingMemberParams = {
   id: string;
   pendingId: string;
 };
-
-// =========================
-// 🔹 Group Link Types
-// =========================
 
 // POST /api/groups/{id}/link
 // PUT  /api/groups/{id}/link/{linkId}
