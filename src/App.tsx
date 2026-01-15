@@ -27,6 +27,10 @@ import JobLayout from "@/pages/layouts/JobLayout";
 import ErrorBoundary from "./components/ErrorBoundary";
 import TestCrashComponent from "./components/TestErrorBoundary";
 
+const Bomb = () => {
+  throw new Error("💥 測試：只有這個小零件壞掉，Navbar 應該要活著！");
+};
+
 const App = () => {
   return (
     <ErrorBoundary>
@@ -36,8 +40,22 @@ const App = () => {
         </Route>
 
         <Route path="/callback">
-          <Route path="login" element={<LoginCallback />} />
-          <Route path="bind" element={<BindCallback />} />
+          <Route
+            path="login"
+            element={
+              <ErrorBoundary>
+                <LoginCallback />
+              </ErrorBoundary>
+            }
+          />
+          <Route
+            path="bind"
+            element={
+              <ErrorBoundary>
+                <BindCallback />
+              </ErrorBoundary>
+            }
+          />
         </Route>
 
         <Route path="/health" element={<div>Health Check</div>} />

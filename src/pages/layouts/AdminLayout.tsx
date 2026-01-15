@@ -5,7 +5,11 @@ import { useState, useEffect } from "react";
 import { AccessToken } from "@/types/settings";
 import { useTranslation } from "react-i18next";
 import SideBar, { NavItem } from "@/components/Sidebar";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
+const Bomb = () => {
+  throw new Error("💥 測試：只有這個小零件壞掉，Navbar 應該要活著！");
+};
 export default function AdminLayout() {
   const accessToken = getAccessToken();
   const [role, setRole] = useState<string>("");
@@ -36,14 +40,20 @@ export default function AdminLayout() {
   return (
     <div className="flex w-full">
       <div className="min-w-xs border-r px-4">
-        <SideBar
-          title={t("adminSidebar.title")}
-          navItems={adminNavItems}
-          className="min-w-36"
-        />
+        <ErrorBoundary>
+          <SideBar
+            title={t("adminSidebar.title")}
+            navItems={adminNavItems}
+            className="min-w-36"
+          />
+          <Bomb />
+        </ErrorBoundary>
       </div>
       <main className="flex-1 flex justify-center">
-        <Outlet />
+        <ErrorBoundary>
+          <Outlet />
+          <Bomb />
+        </ErrorBoundary>
       </main>
     </div>
   );
