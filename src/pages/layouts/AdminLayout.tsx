@@ -27,7 +27,7 @@ export default function AdminLayout() {
 
   const adminNavItems: NavItem[] = [
     {
-      to: "/admin/role-access",
+      to: "/admin/config",
       label: t("adminSidebar.roleAccessConfigLink"),
     },
   ];

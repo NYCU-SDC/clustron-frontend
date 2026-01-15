@@ -18,7 +18,7 @@ import AddMemberPage from "@/pages/group/AddMemberPage";
 import AddGroupPage from "@/pages/group/CreateGroup";
 import GroupLayout from "@/pages/layouts/GroupLayout";
 import AddMemberResult from "@/pages/group/AddMemberResult";
-import JobDashboard from "@/pages/job/JobDashboard";
+// import JobDashboard from "@/pages/job/JobDashboard";
 import AdminLayout from "@/pages/layouts/AdminLayout";
 import RoleConfiguration from "@/pages/admin/RoleConfiguration";
 import BindCallback from "@/pages/BindCallback";
@@ -105,11 +105,21 @@ const App = () => {
             <Route path="/login" element={<Login />} />
           </Route>
         </Route>
+      </Route>
 
-        {/* This route is to test the Error Boundary */}
-        <Route path="/crash-test" element={<TestCrashComponent />} />
-      </Routes>
-    </ErrorBoundary>
+      <Route
+        path="*"
+        element={
+          <div>
+            404 Not Found. Click{" "}
+            <a className="text-blue-500" href="/">
+              here
+            </a>
+            to go back home.
+          </div>
+        }
+      />
+    </Routes>
   );
 };
 
