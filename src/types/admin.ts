@@ -25,10 +25,6 @@ export type User = {
   role: GlobalRole;
 };
 
-// =========================
-// 🔹 GET /api/users
-// =========================
-
 export type GetUsersParams = {
   page?: number;
   size?: number;
@@ -47,20 +43,12 @@ export type GetUsersResponse = {
   hasNextPage: boolean;
 };
 
-// =========================
-// 🔹 PUT /api/users/{id}/globalRole
-// =========================
-
 export type UpdateUserRoleInput = {
   id: string;
   role: GlobalRole;
 };
 
 export type UpdateUserRoleResponse = User;
-
-// =========================
-// 🔹 GET /api/globalRoles
-// =========================
 
 export type GetGlobalRolesResponse = {
   roles: GlobalRole[];

@@ -17,12 +17,11 @@ export default function AdminLayout() {
       navigate("/", { replace: true });
       return;
     }
-    // const decodedRole = jwtDecode<AccessToken>(accessToken).Role;
-    // setRole(decodedRole);
-    // if (decodedRole !== "admin") {
-    //   navigate("/", { replace: true });
-    // }
-    setRole("admin");
+    const decodedRole = jwtDecode<AccessToken>(accessToken).Role;
+    setRole(decodedRole);
+    if (decodedRole !== "admin") {
+      navigate("/", { replace: true });
+    }
   }, [accessToken, navigate]);
 
   const adminNavItems: NavItem[] = [
@@ -36,7 +35,7 @@ export default function AdminLayout() {
     },
   ];
 
-  // if (role !== "admin") return null;
+  if (role !== "admin") return null;
 
   return (
     <div className="flex w-full">
