@@ -27,10 +27,6 @@ import JobLayout from "@/pages/layouts/JobLayout";
 import ErrorBoundary from "./components/ErrorBoundary";
 import TestCrashComponent from "./components/TestErrorBoundary";
 
-const Bomb = () => {
-  throw new Error("💥 測試：只有這個小零件壞掉，Navbar 應該要活著！");
-};
-
 const App = () => {
   return (
     <ErrorBoundary>

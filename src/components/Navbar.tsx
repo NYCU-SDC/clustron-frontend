@@ -18,10 +18,6 @@ import { AccessToken } from "@/types/settings";
 import { LogOut } from "lucide-react";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
-const Bomb = () => {
-  throw new Error("💥 測試：只有這個小零件壞掉，Navbar 應該要活著！");
-};
-
 function navLinkclass(isActive: boolean) {
   return [
     "text-base px-3 py-2 rounded-lg",
