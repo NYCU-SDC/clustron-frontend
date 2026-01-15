@@ -25,7 +25,6 @@ import BindCallback from "@/pages/BindCallback";
 import JobSubmitPage from "@/pages/JobSubmitPage";
 import JobLayout from "@/pages/layouts/JobLayout";
 import ErrorBoundary from "./components/ErrorBoundary";
-import TestCrashComponent from "./components/TestErrorBoundary";
 
 const App = () => {
   return (
