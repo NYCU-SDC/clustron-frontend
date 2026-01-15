@@ -128,6 +128,7 @@
     "loadingUsers": "Loading users...",
     "failedToLoadUsers": "Failed to load users.",
     "noUsersFound": "No users found.",
+    "searchPlaceholder": "Search users...",
     "tableHeadName": "Name",
     "tableHeadId": "Student ID or Email",
     "tableHeadRole": "Role",

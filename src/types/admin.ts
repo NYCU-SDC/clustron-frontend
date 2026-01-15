@@ -21,7 +21,7 @@ export type User = {
   id: string;
   fullName: string;
   email: string;
-  studentID: string;
+  studentId: string;
   role: GlobalRole;
 };
 
@@ -33,7 +33,7 @@ export type GetUsersParams = {
   page?: number;
   size?: number;
   sort?: "asc" | "desc";
-  sortBy?: "fullName" | "studentID" | "email";
+  sortBy?: "fullName" | "studentId" | "email";
   search?: string;
   role?: GlobalRole | "";
 };

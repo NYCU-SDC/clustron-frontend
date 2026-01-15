@@ -19,133 +19,43 @@ import { Input } from "@/components/ui/input";
 import PaginationControls from "@/components/PaginationControl";
 import { ChevronDown, Loader2, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { getGroupPermissions } from "@/lib/groupPermissions";
-import { useJwtPayload } from "@/hooks/useJwtPayload";
-import { useGetMembers } from "@/hooks/useGetMembers";
-import { useUpdateMember } from "@/hooks/useUpdateMember";
-import AddMemberButton from "@/components/group/AddMemberButton";
+import { useGetUsers } from "@/hooks/useGetUsers";
+import { useUpdateGlobalRole } from "@/hooks/useUpdateGlobalRole";
 import UserConfigRow from "@/components/admin/UserConfigRow";
-import {
-  GlobalRoleUser,
-  GlobalRoleOrganizer,
-  GlobalRoleAdmin,
-  GLOBAL_ROLE_OPTIONS,
-  User,
-} from "@/types/admin";
-import type { GlobalRole, GroupRoleAccessLevel } from "@/lib/permission";
-import { AccessLevelUser } from "@/types/group";
+import { GLOBAL_ROLE_OPTIONS, type GlobalRole } from "@/types/admin";
 
-const MOCK_GLOBAL_USERS: User[] = [
-  {
-    id: "uuid-1",
-    fullName: "王小明",
-    studentID: "113999321",
-    email: "liam@gmail.com",
-    role: GlobalRoleUser,
-  },
-  {
-    id: "uuid-2",
-    fullName: "Olivia Smith",
-    studentID: "",
-    email: "olivia@gmail.com",
-    role: GlobalRoleUser,
-  },
-  {
-    id: "uuid-3",
-    fullName: "陳小美",
-    studentID: "110345678",
-    email: "noah@gmail.com",
-    role: GlobalRoleUser,
-  },
-  {
-    id: "uuid-4",
-    fullName: "Emma Brown",
-    studentID: "111000111",
-    email: "emma@gmail.com",
-    role: GlobalRoleOrganizer,
-  },
-  {
-    id: "uuid-5",
-    fullName: "SDC",
-    studentID: "",
-    email: "admin@sdc.nycu.club",
-    role: GlobalRoleAdmin,
-  },
-];
-// 模擬一個 Hook，長得跟原本的 useGetMembers 一模一樣
-const useMockGlobalUsers = (page: number) => {
-  return {
-    data: {
-      items: MOCK_GLOBAL_USERS,
-      totalPages: 5, // 假裝有 5 頁
-    },
-    isLoading: false, // 假裝已經讀取完畢
-    isError: false, // 假裝沒有錯誤
-  };
-};
-
-type Props = {
-  groupId: string;
-  accessLevel?: GroupRoleAccessLevel;
-  globalRole?: GlobalRole;
-  onRemove?: (memberId: string) => void;
-  isArchived?: boolean;
-  isOverview?: boolean;
-};
-
-export default function UserConfigTable({
-  groupId,
-  accessLevel = AccessLevelUser,
-  globalRole,
-  onRemove,
-  isArchived = false,
-  isOverview = false,
-}: Props) {
+export default function UserConfigTable() {
   const { t } = useTranslation();
-  const payload = useJwtPayload();
 
   const [currentPage, setCurrentPage] = useState(0);
   const [resultsPerPage, setResultsPerPage] = useState(20);
-  const [currentRole, setCurrentRole] = useState("User");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [roleFilter, setRoleFilter] = useState<GlobalRole | "">("");
 
-  // 假裝 Loading 已經結束，沒有錯誤
-  const isLoading = false;
-  const isError = false;
+  const currentRoleLabel = GLOBAL_ROLE_OPTIONS.find(
+    (r) => r.id === roleFilter,
+  )?.label;
 
-  // 直接塞入假資料
-  const members = MOCK_GLOBAL_USERS;
-  const totalPages = 5; // 假裝有 5 頁
-
-  // const { data, isLoading, isError } = useGetMembers(groupId, currentPage);
-  // const members = data?.items ?? [];
-  // const totalPages = data?.totalPages ?? 1;
+  const { data, isLoading, isError } = useGetUsers({
+    page: currentPage,
+    size: resultsPerPage,
+    search: searchQuery,
+    role: roleFilter,
+    sortBy: "fullName",
+    sort: "asc",
+  });
+  const users = data?.items ?? [];
+  const totalPages = data?.totalPages ?? 1;
 
   const {
-    mutate: updateMember,
-    isPending: isUpdatingMember,
+    mutate: updateRole,
+    isPending: isUpdating,
     variables,
-  } = useUpdateMember(groupId);
+  } = useUpdateGlobalRole();
 
-  const updateMemberRole = (memberId: string, newRoldId: string) => {
-    if (!newRoldId) {
-      console.error(`Invalid role `);
-      return;
-    }
-
-    updateMember({
-      memberId: memberId,
-      groupId: groupId,
-      roleId: newRoldId,
-    });
+  const handleRoleUpdate = (userId: string, newRole: GlobalRole) => {
+    updateRole({ id: userId, role: newRole });
   };
-
-  const maxPages = 4;
-  let startPage = Math.max(currentPage - 1, 0);
-  let endPage = startPage + maxPages - 1;
-  if (endPage >= totalPages) {
-    endPage = totalPages - 1;
-    startPage = Math.max(endPage - maxPages + 1, 0);
-  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -154,9 +64,13 @@ export default function UserConfigTable({
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="Search users..."
+            placeholder={t("userConfigTable.searchPlaceholder")}
             className="pl-8"
-            // onChange={(e) => setSearch(e.target.value)} // 之後這裡接你的搜尋邏輯
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setCurrentPage(0);
+            }}
           />
         </div>
         <DropdownMenu>
@@ -165,16 +79,19 @@ export default function UserConfigTable({
               variant="outline"
               className="flex items-center gap-1 font-medium text-sm px-2 py-1 h-8 hover:bg-muted"
             >
-              Role: {currentRole}
+              {roleFilter ? `Role: ${currentRoleLabel}` : "Role"}
               <ChevronDown className="w-4 h-4 opacity-50" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
             {GLOBAL_ROLE_OPTIONS.map((role) => (
               <DropdownMenuCheckboxItem
-                key={role.label}
-                checked={role.label === currentRole}
-                onCheckedChange={() => setCurrentRole(role.label)}
+                key={role.id}
+                checked={role.id === currentRoleLabel}
+                onCheckedChange={() => {
+                  setRoleFilter(role.id);
+                  setCurrentPage(0);
+                }}
               >
                 {role.label}
               </DropdownMenuCheckboxItem>
@@ -198,7 +115,7 @@ export default function UserConfigTable({
             <p className="text-sm text-red-500">
               {t("userConfigTable.failedToLoadUsers")}
             </p>
-          ) : members.length === 0 ? (
+          ) : users.length === 0 ? (
             <p className="text-sm text-gray-500">
               {t("userConfigTable.noUsersFound")}
             </p>
@@ -213,21 +130,17 @@ export default function UserConfigTable({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {members.map((m) => (
+                  {users.map((user) => (
                     <UserConfigRow
-                      key={m.id}
-                      name={m.fullName}
-                      id={m.studentID}
-                      email={m.email}
-                      currentRole={m.role}
-                      // 這裡連接你之前寫好的 Mock Update function
+                      key={user.id}
+                      name={user.fullName}
+                      id={user.studentId}
+                      email={user.email}
+                      currentRole={user.role}
                       onUpdateRole={(newRole) =>
-                        updateMemberRole(m.id, newRole)
+                        handleRoleUpdate(user.id, newRole)
                       }
-                      // 之後接上 API 可以用這個控制 loading
-                      isPending={
-                        isUpdatingMember && variables?.memberId === m.id
-                      }
+                      isPending={isUpdating && variables?.id === user.id}
                     />
                   ))}
                 </TableBody>
@@ -255,7 +168,10 @@ export default function UserConfigTable({
                         {[20, 40, 80, 100].map((size) => (
                           <DropdownMenuItem
                             key={size}
-                            onClick={() => setResultsPerPage(size)}
+                            onClick={() => {
+                              setResultsPerPage(size);
+                              setCurrentPage(0);
+                            }}
                           >
                             {size}
                           </DropdownMenuItem>
