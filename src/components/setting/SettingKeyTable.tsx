@@ -49,7 +49,7 @@ export default function SettingKeyTable() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: string) => deletePublicKey(id),
+    mutationFn: (fingerprint: string) => deletePublicKey(fingerprint),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: PUBLIC_KEYS_QUERY_KEY });
       toast.success(t("settingKeyTable.successToast"));
@@ -102,7 +102,7 @@ export default function SettingKeyTable() {
               </TableRow>
             ) : (
               keys.map((key) => (
-                <TableRow key={key.id}>
+                <TableRow key={key.fingerprint}>
                   <TableCell>{key.title}</TableCell>
                   <TableCell>
                     {key.publicKey.length < length
@@ -143,7 +143,9 @@ export default function SettingKeyTable() {
                           ) : (
                             <AlertDialogAction
                               className="cursor-pointer mx-2 bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
-                              onClick={() => deleteMutation.mutate(key.id)}
+                              onClick={() =>
+                                deleteMutation.mutate(key.fingerprint)
+                              }
                             >
                               {t("settingKeyTable.confirmBtn")}
                             </AlertDialogAction>
