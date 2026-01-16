@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { AccessToken } from "@/types/settings";
 import { useTranslation } from "react-i18next";
 import SideBar, { NavItem } from "@/components/Sidebar";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 export default function AdminLayout() {
   const accessToken = getAccessToken();
@@ -36,14 +37,18 @@ export default function AdminLayout() {
   return (
     <div className="flex w-full">
       <div className="min-w-xs border-r px-4">
-        <SideBar
-          title={t("adminSidebar.title")}
-          navItems={adminNavItems}
-          className="min-w-36"
-        />
+        <ErrorBoundary>
+          <SideBar
+            title={t("adminSidebar.title")}
+            navItems={adminNavItems}
+            className="min-w-36"
+          />
+        </ErrorBoundary>
       </div>
       <main className="flex-1 flex justify-center">
-        <Outlet />
+        <ErrorBoundary>
+          <Outlet />
+        </ErrorBoundary>
       </main>
     </div>
   );

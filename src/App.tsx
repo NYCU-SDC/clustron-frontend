@@ -24,80 +24,101 @@ import RoleConfiguration from "@/pages/admin/RoleConfiguration";
 import BindCallback from "@/pages/BindCallback";
 // import JobSubmitPage from "@/pages/JobSubmitPage";
 // import JobLayout from "@/pages/layouts/JobLayout";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const App = () => {
   return (
-    <Routes>
-      <Route element={<ProtectedRoute showLoginRequiredToast={false} />}>
-        <Route path="/" element={<Home />} />
-      </Route>
+    <ErrorBoundary>
+      <Routes>
+        <Route element={<ProtectedRoute showLoginRequiredToast={false} />}>
+          <Route path="/" element={<Home />} />
+        </Route>
 
-      <Route path="/callback">
-        <Route path="login" element={<LoginCallback />} />
-        <Route path="bind" element={<BindCallback />} />
-      </Route>
-
-      <Route path="/health" element={<div>Health Check</div>} />
-
-      <Route element={<ProtectedRoute />}>
-        <Route element={<DefaultLayout />}>
-          <Route path="/onboarding" element={<Onboarding />} />
-          <Route path="/setting" element={<SettingLayout />}>
-            <Route index element={<Navigate to="general" replace />} />
-            <Route path="general" element={<SettingGeneral />} />
-            <Route path="ssh" element={<SettingSSH />} />
-            <Route path="ssh/new" element={<SettingAddKey />} />
-          </Route>
-          <Route path="/groups" element={<GroupListPage />} />
-          <Route path="/groups/new" element={<AddGroupPage />} />
-          <Route path="/add-group" element={<AddGroupPage />} />
+        <Route path="/callback">
           <Route
-            path="/groups/:id/add-member-result"
-            element={<AddMemberResult />}
+            path="login"
+            element={
+              <ErrorBoundary>
+                <LoginCallback />
+              </ErrorBoundary>
+            }
           />
-          {/* <Route path="/jobs" element={<JobLayout />}>
-            <Route index element={<JobDashboard />} />
-            <Route path="submit" element={<JobSubmitPage />} />
-          </Route> */}
+          <Route
+            path="bind"
+            element={
+              <ErrorBoundary>
+                <BindCallback />
+              </ErrorBoundary>
+            }
+          />
+        </Route>
 
-          <Route element={<GroupLayout />}>
+        <Route path="/health" element={<div>Health Check</div>} />
+
+        <Route element={<ProtectedRoute />}>
+          <Route element={<DefaultLayout />}>
+            <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/setting" element={<SettingLayout />}>
+              <Route index element={<Navigate to="general" replace />} />
+              <Route path="general" element={<SettingGeneral />} />
+              <Route path="ssh" element={<SettingSSH />} />
+              <Route path="add-new-key" element={<SettingAddKey />} />
+            </Route>
             <Route path="/groups" element={<GroupListPage />} />
             <Route path="/groups/new" element={<AddGroupPage />} />
-            <Route path="/groups/:id/add-member" element={<AddMemberPage />} />
             <Route path="/add-group" element={<AddGroupPage />} />
-            <Route path="/groups/:id" element={<GroupPage />}>
-              <Route index element={<GroupOverview />} />
-              <Route path="settings" element={<GroupSettings />} />
-              <Route path="add-member" element={<AddMemberPage />} />
+            <Route
+              path="/groups/:id/add-member-result"
+              element={<AddMemberResult />}
+            />
+            {/*<Route path="/jobs" element={<JobLayout />}>
+              <Route index element={<JobDashboard />} />
+              <Route path="submit" element={<JobSubmitPage />} />
+            </Route>*/}
+
+            <Route element={<GroupLayout />}>
+              <Route path="/groups" element={<GroupListPage />} />
+              <Route path="/groups/new" element={<AddGroupPage />} />
+              <Route
+                path="/groups/:id/add-member"
+                element={<AddMemberPage />}
+              />
+              <Route path="/add-group" element={<AddGroupPage />} />
+              <Route path="/groups/:id" element={<GroupPage />}>
+                <Route index element={<GroupOverview />} />
+                <Route path="settings" element={<GroupSettings />} />
+                <Route path="add-member" element={<AddMemberPage />} />
+              </Route>
             </Route>
-          </Route>
 
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<Navigate to="config" replace />} />
-            <Route path="config" element={<RoleConfiguration />}></Route>
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Navigate to="config" replace />} />
+              <Route path="config" element={<RoleConfiguration />}></Route>
+            </Route>
+            {/*  end*/}
           </Route>
         </Route>
-      </Route>
 
-      <Route element={<GuestOnlyRoute />}>
-        <Route element={<DefaultLayout />}>
-          <Route path="/login" element={<Login />} />
+        <Route element={<GuestOnlyRoute />}>
+          <Route element={<DefaultLayout />}>
+            <Route path="/login" element={<Login />} />
+          </Route>
         </Route>
-      </Route>
 
-      <Route
-        path="*"
-        element={
-          <div>
-            404 Not Found. Click{" "}
-            <a className="text-blue-500" href="/">
-              here
-            </a>
-            to go back home.
-          </div>
-        }
-      />
-    </Routes>
+        <Route
+          path="*"
+          element={
+            <div>
+              404 Not Found. Click{" "}
+              <a className="text-blue-500" href="/">
+                here
+              </a>
+              to go back home.
+            </div>
+          }
+        />
+      </Routes>
+    </ErrorBoundary>
   );
 };
 
