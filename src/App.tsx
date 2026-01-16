@@ -18,14 +18,17 @@ import AddMemberPage from "@/pages/group/AddMemberPage";
 import AddGroupPage from "@/pages/group/CreateGroup";
 import GroupLayout from "@/pages/layouts/GroupLayout";
 import AddMemberResult from "@/pages/group/AddMemberResult";
-import JobDashboard from "@/pages/job/JobDashboard";
+// import JobDashboard from "@/pages/job/JobDashboard";
 import AdminLayout from "@/pages/layouts/AdminLayout";
 import RoleConfiguration from "@/pages/admin/RoleConfiguration";
 import BindCallback from "@/pages/BindCallback";
-import JobSubmitPage from "@/pages/JobSubmitPage";
-import JobLayout from "@/pages/layouts/JobLayout";
+// import JobSubmitPage from "@/pages/JobSubmitPage";
+// import JobLayout from "@/pages/layouts/JobLayout";
 import ErrorBoundary from "./components/ErrorBoundary";
-
+const Bomb = () => {
+  throw new Error("💥 The bomb has exploded!");
+  return null; // This line will never be reached
+};
 const App = () => {
   return (
     <ErrorBoundary>
@@ -71,10 +74,10 @@ const App = () => {
               path="/groups/:id/add-member-result"
               element={<AddMemberResult />}
             />
-            <Route path="/jobs" element={<JobLayout />}>
+            {/*<Route path="/jobs" element={<JobLayout />}>
               <Route index element={<JobDashboard />} />
               <Route path="submit" element={<JobSubmitPage />} />
-            </Route>
+            </Route>*/}
 
             <Route element={<GroupLayout />}>
               <Route path="/groups" element={<GroupListPage />} />

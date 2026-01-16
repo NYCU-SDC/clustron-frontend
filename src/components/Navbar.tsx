@@ -51,34 +51,40 @@ export default function Navbar() {
           <>
             {(role == "user" || role == "admin") && (
               <>
-                <NavLink
-                  to="/groups"
-                  className={({ isActive }) => navLinkclass(isActive)}
-                >
-                  {t("navbar.groupLink")}
-                </NavLink>
+                <ErrorBoundary>
+                  <NavLink
+                    to="/groups"
+                    className={({ isActive }) => navLinkclass(isActive)}
+                  >
+                    {t("navbar.groupLink")}
+                  </NavLink>
+                </ErrorBoundary>
                 {/* <NavLink
                   to="/jobs"
                   className={({ isActive }) => navLinkclass(isActive)}
                 >
                   {t("navbar.jobsLink")}
                 </NavLink> */}
-                <NavLink
-                  to="/setting"
-                  className={({ isActive }) => navLinkclass(isActive)}
-                >
-                  {t("navbar.settingLink")}
-                </NavLink>
+                <ErrorBoundary>
+                  <NavLink
+                    to="/setting"
+                    className={({ isActive }) => navLinkclass(isActive)}
+                  >
+                    {t("navbar.settingLink")}
+                  </NavLink>
+                </ErrorBoundary>
               </>
             )}
-            {role == "admin" && (
-              <NavLink
-                to="/admin"
-                className={({ isActive }) => navLinkclass(isActive)}
-              >
-                {t("navbar.adminLink")}
-              </NavLink>
-            )}
+            <ErrorBoundary>
+              {role == "admin" && (
+                <NavLink
+                  to="/admin"
+                  className={({ isActive }) => navLinkclass(isActive)}
+                >
+                  {t("navbar.adminLink")}
+                </NavLink>
+              )}
+            </ErrorBoundary>
           </>
         </div>
         <div className="flex items-center space-x-4">
