@@ -9,10 +9,12 @@ export default function SettingLayout() {
     {
       to: "/setting/general",
       label: "settingSideBar.GeneralNavLink",
+      end: true,
     },
     {
       to: "/setting/ssh",
       label: "settingSideBar.SSHNavLink",
+      end: false,
     },
   ];
 
