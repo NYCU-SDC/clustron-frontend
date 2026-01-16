@@ -25,10 +25,7 @@ import BindCallback from "@/pages/BindCallback";
 // import JobSubmitPage from "@/pages/JobSubmitPage";
 // import JobLayout from "@/pages/layouts/JobLayout";
 import ErrorBoundary from "./components/ErrorBoundary";
-const Bomb = () => {
-  throw new Error("💥 The bomb has exploded!");
-  return null; // This line will never be reached
-};
+
 const App = () => {
   return (
     <ErrorBoundary>

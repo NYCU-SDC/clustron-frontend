@@ -51,7 +51,7 @@ export default function Navbar() {
           <>
             {(role == "user" || role == "admin") && (
               <>
-                <ErrorBoundary>
+                <ErrorBoundary isInline>
                   <NavLink
                     to="/groups"
                     className={({ isActive }) => navLinkclass(isActive)}
@@ -65,7 +65,7 @@ export default function Navbar() {
                 >
                   {t("navbar.jobsLink")}
                 </NavLink> */}
-                <ErrorBoundary>
+                <ErrorBoundary isInline>
                   <NavLink
                     to="/setting"
                     className={({ isActive }) => navLinkclass(isActive)}
@@ -75,7 +75,7 @@ export default function Navbar() {
                 </ErrorBoundary>
               </>
             )}
-            <ErrorBoundary>
+            <ErrorBoundary isInline>
               {role == "admin" && (
                 <NavLink
                   to="/admin"
@@ -88,10 +88,10 @@ export default function Navbar() {
           </>
         </div>
         <div className="flex items-center space-x-4">
-          <ErrorBoundary>
+          <ErrorBoundary isInline>
             <ColorModeToggle />
           </ErrorBoundary>
-          <ErrorBoundary>
+          <ErrorBoundary isInline>
             {isLoggedIn() ? (
               <DropdownMenu>
                 <DropdownMenuTrigger className="cursor-pointer">
