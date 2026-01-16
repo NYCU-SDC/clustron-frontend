@@ -73,7 +73,7 @@ export default function SettingKeyTable() {
         </CardTitle>
         <Button
           className="px-7 py-5 cursor-pointer"
-          onClick={() => navigate("/setting/add-new-key")}
+          onClick={() => navigate("/setting/ssh/new")}
         >
           {t("settingKeyTable.addNewKeyBtn")}
         </Button>
