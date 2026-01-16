@@ -26,6 +26,8 @@ export default function OnboardingForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const [fullName, setFullName] = useState("");
   const [linuxUsername, setLinuxUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
   const { refreshMutation } = useContext(authContext);
   const { t } = useTranslation();
@@ -35,8 +37,15 @@ export default function OnboardingForm({
     .min(1)
     .regex(/^[a-z_][a-z0-9_-]*\$?$/);
 
+  const passwordSchema = z
+    .string()
+    .min(8)
+    .regex(/[A-Za-z]/)
+    .regex(/[0-9]/);
+
   const addMutation = useMutation({
     mutationFn: async (payload: Settings) => {
+      console.log("Onboarding Payload:", payload);
       await saveOnboardingInfo(payload);
       await refreshMutation.mutateAsync();
     },
@@ -113,6 +122,44 @@ export default function OnboardingForm({
                 {t("onboardingForm.warningTextForLinuxUsername")}
               </p>
             </div>
+            {/* Linux Password */}
+            <div className="grid gap-2">
+              <Label className="ml-2 font-medium">
+                {t("onboardingForm.labelForInputPassword")}
+                <span className="text-red-400">*</span>
+              </Label>
+              <Input
+                className="mx-2 w-auto placeholder:text-muted-foreground/70"
+                id="password"
+                type="password"
+                placeholder={t("onboardingForm.placeHolderForInputPassword")}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <p className="ml-2 text-sm text-muted-foreground">
+                {t("onboardingForm.passwordFormatError")}
+              </p>
+              <p className="ml-2 text-sm text-destructive">
+                {t("onboardingForm.passwordNote")}
+              </p>
+            </div>
+            {/* Confirm Password */}
+            <div className="grid gap-2">
+              <Label className="ml-2 font-medium">
+                {t("onboardingForm.labelForInputConfirmPassword")}
+                <span className="text-red-400">*</span>
+              </Label>
+              <Input
+                className="mx-2 w-auto placeholder:text-muted-foreground/70"
+                id="confirmPassword"
+                type="password"
+                placeholder={t(
+                  "onboardingForm.placeHolderForInputConfirmPassword",
+                )}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </div>
             <TooltipProvider>
               <div className="flex justify-end">
                 {addMutation.isPending ? (
@@ -120,7 +167,7 @@ export default function OnboardingForm({
                     <Loader2Icon className="animate-spin" />
                     {t("onboardingForm.loadingBtn")}
                   </Button>
-                ) : fullName && linuxUsername ? (
+                ) : fullName && linuxUsername && password && confirmPassword ? (
                   <Button
                     className="px-7 py-5 w-16 cursor-pointer"
                     onClick={() => {
@@ -130,7 +177,19 @@ export default function OnboardingForm({
                         toast.error(t("onboardingForm.formatErrorToast"));
                         return;
                       }
-                      addMutation.mutate({ fullName, linuxUsername });
+                      if (!passwordSchema.safeParse(password).success) {
+                        toast.error(t("onboardingForm.passwordFormatError"));
+                        return;
+                      }
+                      if (password !== confirmPassword) {
+                        toast.error(t("onboardingForm.passwordMismatchError"));
+                        return;
+                      }
+                      addMutation.mutate({
+                        fullName,
+                        linuxUsername,
+                        password,
+                      });
                     }}
                   >
                     {t("onboardingForm.saveBtn")}
