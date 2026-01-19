@@ -49,64 +49,58 @@ export default function Navbar() {
         <div className="flex items-center space-x-4">
           <div className="text-2xl font-bold px-3 py-2">Clustron</div>
           <>
-            <ErrorBoundary isInline>
-              {(role == "user" || role == "admin") && (
-                <>
-                  <NavLink
-                    to="/groups"
-                    className={({ isActive }) => navLinkclass(isActive)}
-                  >
-                    {t("navbar.groupLink")}
-                  </NavLink>
-                  {/* <NavLink
-                  to="/jobs"
-                  className={({ isActive }) => navLinkclass(isActive)}
-                >
-                  {t("navbar.jobsLink")}
-                </NavLink> */}
-                  <NavLink
-                    to="/setting"
-                    className={({ isActive }) => navLinkclass(isActive)}
-                  >
-                    {t("navbar.settingLink")}
-                  </NavLink>
-                </>
-              )}
-              {role == "admin" && (
+            {(role == "user" || role == "admin") && (
+              <>
                 <NavLink
-                  to="/admin"
+                  to="/groups"
                   className={({ isActive }) => navLinkclass(isActive)}
                 >
-                  {t("navbar.adminLink")}
+                  {t("navbar.groupLink")}
                 </NavLink>
-              )}
-            </ErrorBoundary>
+                {/* <NavLink
+                          to="/jobs"
+                          className={({ isActive }) => navLinkclass(isActive)}
+                        >
+                          {t("navbar.jobsLink")}
+                        </NavLink> */}
+                <NavLink
+                  to="/setting"
+                  className={({ isActive }) => navLinkclass(isActive)}
+                >
+                  {t("navbar.settingLink")}
+                </NavLink>
+              </>
+            )}
+            {role == "admin" && (
+              <NavLink
+                to="/admin"
+                className={({ isActive }) => navLinkclass(isActive)}
+              >
+                {t("navbar.adminLink")}
+              </NavLink>
+            )}
           </>
         </div>
         <div className="flex items-center space-x-4">
-          <ErrorBoundary isInline>
-            <ColorModeToggle />
-          </ErrorBoundary>
-          <ErrorBoundary isInline>
-            {isLoggedIn() ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger className="cursor-pointer">
-                  <CircleUserRound />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel className="text-gray-600 dark:text-gray-400">
-                    {email}
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout}>
-                    <LogOut />
-                    {t("navbar.logoutBtn")}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : null}
-          </ErrorBoundary>
-        </div>
+          <ColorModeToggle />
+          {isLoggedIn() ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="cursor-pointer">
+                <CircleUserRound />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel className="text-gray-600 dark:text-gray-400">
+                  {email}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>
+                  <LogOut />
+                  {t("navbar.logoutBtn")}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : null}
+        </div>{" "}
       </div>
     </nav>
   );

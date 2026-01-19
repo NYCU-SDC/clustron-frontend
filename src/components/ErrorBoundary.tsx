@@ -3,16 +3,12 @@ import ErrorFallBack from "./ErrorFallBack";
 
 export default function ErrorBoundary({
   children,
-  isInline = false,
 }: {
   children: React.ReactNode;
-  isInline?: boolean;
 }) {
   return (
     <ReactErrorBoundary
-      fallbackRender={(props) => (
-        <ErrorFallBack {...props} isInline={isInline} />
-      )}
+      fallbackRender={(props) => <ErrorFallBack {...props} />}
     >
       {children}
     </ReactErrorBoundary>

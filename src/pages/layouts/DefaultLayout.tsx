@@ -5,7 +5,9 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 export default function DefaultLayout() {
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+      <ErrorBoundary>
+        <Navbar />
+      </ErrorBoundary>
       <main className="flex-1 flex">
         <ErrorBoundary>
           <Outlet />
