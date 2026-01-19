@@ -16,7 +16,6 @@ import { getAccessToken } from "@/lib/token";
 import { jwtDecode } from "jwt-decode";
 import { AccessToken } from "@/types/settings";
 import { LogOut } from "lucide-react";
-import ErrorBoundary from "@/components/ErrorBoundary";
 
 function navLinkclass(isActive: boolean) {
   return [

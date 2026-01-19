@@ -2,12 +2,10 @@ import { FallbackProps } from "react-error-boundary";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { Button } from "@/components/ui/button";
 
-interface ErrorFallBackProps extends FallbackProps {}
-
 export default function ErrorFallBack({
   error,
   resetErrorBoundary,
-}: ErrorFallBackProps) {
+}: FallbackProps) {
   return (
     <div
       role="alert"
