@@ -9,6 +9,8 @@ import App from "./App";
 import "./i18n";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallBack from "@/components/ErrorFallBack";
 
 const queryClient = new QueryClient();
 
@@ -20,7 +22,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <AuthProvider>
             <ThemeProvider storageKey="vite-ui-theme">
               <Toaster />
-              <App />
+              <ErrorBoundary
+                FallbackComponent={ErrorFallBack}
+                onReset={() => window.location.replace("/")}
+              >
+                <App />
+              </ErrorBoundary>
             </ThemeProvider>
           </AuthProvider>
         </CookiesProvider>

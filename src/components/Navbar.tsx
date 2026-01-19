@@ -49,33 +49,29 @@ export default function Navbar() {
         <div className="flex items-center space-x-4">
           <div className="text-2xl font-bold px-3 py-2">Clustron</div>
           <>
-            {(role == "user" || role == "admin") && (
-              <>
-                <ErrorBoundary isInline>
+            <ErrorBoundary isInline>
+              {(role == "user" || role == "admin") && (
+                <>
                   <NavLink
                     to="/groups"
                     className={({ isActive }) => navLinkclass(isActive)}
                   >
                     {t("navbar.groupLink")}
                   </NavLink>
-                </ErrorBoundary>
-                {/* <NavLink
+                  {/* <NavLink
                   to="/jobs"
                   className={({ isActive }) => navLinkclass(isActive)}
                 >
                   {t("navbar.jobsLink")}
                 </NavLink> */}
-                <ErrorBoundary isInline>
                   <NavLink
                     to="/setting"
                     className={({ isActive }) => navLinkclass(isActive)}
                   >
                     {t("navbar.settingLink")}
                   </NavLink>
-                </ErrorBoundary>
-              </>
-            )}
-            <ErrorBoundary isInline>
+                </>
+              )}
               {role == "admin" && (
                 <NavLink
                   to="/admin"
