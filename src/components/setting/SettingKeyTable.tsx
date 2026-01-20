@@ -106,6 +106,26 @@ export default function SettingKeyTable() {
     },
   });
 
+  const handleGithubKeysImport = async () => {
+    try {
+      const response = await importPublicKeys();
+      if (response && response.url) {
+        window.location.href = response.url;
+      } else {
+        toast.error(
+          t("settingKeyTable.importFromGitHubError") ??
+            "Failed to import keys from GitHub.",
+        );
+      }
+    } catch (error) {
+      console.error("Failed to import public keys:", error);
+      toast.error(
+        t("settingKeyTable.importFromGitHubError") ??
+          "Failed to import keys from GitHub.",
+      );
+    }
+  };
+
   useEffect(() => {
     if (isError) {
       toast.error(t("settingKeyTable.getFailToast"));
@@ -127,25 +147,7 @@ export default function SettingKeyTable() {
           </Button>
           <Button
             className="py-5 cursor-pointer"
-            onClick={async () => {
-              try {
-                const response = await importPublicKeys();
-                if (response && response.url) {
-                  window.location.href = response.url;
-                } else {
-                  toast.error(
-                    t("settingKeyTable.importFromGitHubError") ??
-                      "Failed to import keys from GitHub.",
-                  );
-                }
-              } catch (error) {
-                console.error("Failed to import public keys:", error);
-                toast.error(
-                  t("settingKeyTable.importFromGitHubError") ??
-                    "Failed to import keys from GitHub.",
-                );
-              }
-            }}
+            onClick={handleGithubKeysImport}
           >
             <img
               src={GitHubBlackImg}
