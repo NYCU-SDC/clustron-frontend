@@ -11,6 +11,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { useMutation } from "@tanstack/react-query";
 import { saveOnboardingInfo } from "@/lib/request/saveOnboardingInfo";
@@ -123,36 +124,34 @@ export default function OnboardingForm({
               </p>
             </div>
             {/* Linux Password */}
-            <div className="grid gap-2">
-              <Label className="ml-2 font-medium">
+            <div className="grid gap-2 px-2">
+              <Label className="font-medium">
                 {t("onboardingForm.labelForInputPassword")}
                 <span className="text-red-400">*</span>
               </Label>
-              <Input
-                className="mx-2 w-auto placeholder:text-muted-foreground/70"
+              <PasswordInput
+                className="placeholder:text-muted-foreground/70"
                 id="password"
-                type="password"
                 placeholder={t("onboardingForm.placeHolderForInputPassword")}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <p className="ml-2 text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 {t("onboardingForm.passwordFormatError")}
               </p>
-              <p className="ml-2 text-sm text-destructive">
+              <p className="text-sm text-destructive">
                 {t("onboardingForm.passwordNote")}
               </p>
             </div>
             {/* Confirm Password */}
-            <div className="grid gap-2">
-              <Label className="ml-2 font-medium">
+            <div className="grid gap-2 px-2">
+              <Label className="font-medium">
                 {t("onboardingForm.labelForInputConfirmPassword")}
                 <span className="text-red-400">*</span>
               </Label>
-              <Input
-                className="mx-2 w-auto placeholder:text-muted-foreground/70"
+              <PasswordInput
+                className="placeholder:text-muted-foreground/70"
                 id="confirmPassword"
-                type="password"
                 placeholder={t(
                   "onboardingForm.placeHolderForInputConfirmPassword",
                 )}

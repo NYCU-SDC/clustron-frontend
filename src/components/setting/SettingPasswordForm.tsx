@@ -15,7 +15,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { useMutation } from "@tanstack/react-query";
 import { updatePassword } from "@/lib/request/updatePassword";
 import { toast } from "sonner";
@@ -62,9 +62,8 @@ export default function SettingPasswordForm({
         <CardContent>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
-              <Input
+              <PasswordInput
                 id="newPassword"
-                type="password"
                 placeholder={t("settingPasswordForm.newPassword")}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
@@ -74,9 +73,8 @@ export default function SettingPasswordForm({
               </p>
             </div>
             <div className="grid gap-2">
-              <Input
+              <PasswordInput
                 id="confirmPassword"
-                type="password"
                 placeholder={t("settingPasswordForm.confirmPassword")}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
