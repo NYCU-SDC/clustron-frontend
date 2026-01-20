@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ChevronDown, Loader2, Search } from "lucide-react";
@@ -23,101 +24,18 @@ import {
 import PaginationControls from "@/components/PaginationControl";
 import UserConfigRow from "@/components/admin/UserConfigRow";
 import { updateGlobalRole } from "@/lib/request/updateGlobalRole";
-// import { getUsers } from "@/lib/request/getUsers";
+import { getUsers } from "@/lib/request/getUsers";
 import {
   GLOBAL_ROLE_OPTIONS,
   type GlobalRole,
-  type User,
-  type GetUsersResponse,
-  type GetUsersParams,
   type UpdateUserRoleInput,
-  GlobalRoleUser,
-  GlobalRoleOrganizer,
-  GlobalRoleAdmin,
 } from "@/types/admin";
-// import { useGetUsers } from "@/hooks/useGetUsers";
-// import { useUpdateGlobalRole } from "@/hooks/useUpdateGlobalRole";
-
-// TODO: Remove mock data when backend is ready
-const roles: GlobalRole[] = [
-  GlobalRoleUser,
-  GlobalRoleOrganizer,
-  GlobalRoleAdmin,
-];
-const firstNames = [
-  "王",
-  "陳",
-  "李",
-  "張",
-  "林",
-  "James",
-  "Alice",
-  "Robert",
-  "Grace",
-  "Kevin",
-];
-const lastNames = [
-  "小明",
-  "志強",
-  "雅婷",
-  "美惠",
-  "Smith",
-  "Johnson",
-  "Williams",
-  "Brown",
-  "Lee",
-];
-
-const MOCK_GLOBAL_USERS: User[] = Array.from({ length: 50 }).map((_, index) => {
-  const id = `uuid-${index + 1}`;
-  const firstName = firstNames[index % firstNames.length];
-  const lastName = lastNames[index % lastNames.length];
-  const fullName = `${firstName}${lastName}`;
-  const studentId = index % 7 === 0 ? "" : (110000000 + index).toString();
-
-  return {
-    id,
-    fullName,
-    studentId,
-    email: `${id}@example.com`,
-    role: roles[index % roles.length],
-  };
-});
-
-const getMockUsers = async (
-  params: GetUsersParams,
-): Promise<GetUsersResponse> => {
-  const { page = 0, size = 20, search = "", role = "" } = params;
-
-  const filtered = MOCK_GLOBAL_USERS.filter((user) => {
-    const matchesSearch =
-      user.fullName.toLowerCase().includes(search.toLowerCase()) ||
-      user.studentId.includes(search);
-    const matchesRole = role === "" || user.role === role;
-    return matchesSearch && matchesRole;
-  });
-
-  const totalItems = filtered.length;
-  const totalPages = Math.ceil(totalItems / size);
-  const startIndex = page * size;
-  const endIndex = startIndex + size;
-  const paginatedItems = filtered.slice(startIndex, endIndex);
-
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  return {
-    items: paginatedItems,
-    totalItems,
-    totalPages,
-    currentPage: page,
-    pageSize: size,
-    hasNextPage: page < totalPages,
-  };
-};
 
 export default function UserConfigTable() {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
+  const payload = useJwtPayload();
+  const currentUserId = payload?.ID;
 
   const [currentPage, setCurrentPage] = useState(0);
   const [resultsPerPage, setResultsPerPage] = useState(20);
@@ -136,9 +54,8 @@ export default function UserConfigTable() {
       searchQuery,
       roleFilter,
     ],
-    // queryFn: () => getUsers(params),
     queryFn: () =>
-      getMockUsers({
+      getUsers({
         page: currentPage,
         size: resultsPerPage,
         search: searchQuery,
@@ -269,6 +186,7 @@ export default function UserConfigTable() {
                       id={user.studentId}
                       email={user.email}
                       currentRole={user.role}
+                      isSelf={user.id === currentUserId}
                       onUpdateRole={(newRole) =>
                         handleRoleUpdate(user.id, newRole)
                       }

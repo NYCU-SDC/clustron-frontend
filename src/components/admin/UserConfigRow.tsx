@@ -17,6 +17,7 @@ type Props = {
   currentRole: GlobalRole;
   onUpdateRole: (newRole: GlobalRole) => void;
   isPending?: boolean;
+  isSelf?: boolean;
 };
 
 export default function UserConfigRow({
@@ -26,13 +27,21 @@ export default function UserConfigRow({
   currentRole,
   onUpdateRole,
   isPending = false,
+  isSelf = false,
 }: Props) {
   const roleLabel =
     GLOBAL_ROLE_OPTIONS.find((r) => r.id === currentRole)?.label || currentRole;
 
   return (
     <TableRow className="hover:bg-muted/50 transition-colors">
-      <TableCell className="font-medium">{name}</TableCell>
+      <TableCell className="font-medium">
+        {name}
+        {isSelf && (
+          <span className="text-[10px] ml-2 bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-full font-bold">
+            YOU
+          </span>
+        )}
+      </TableCell>
       <TableCell>
         <div className="flex flex-col">
           <span className="font-medium">{id}</span>
@@ -47,26 +56,28 @@ export default function UserConfigRow({
           </div>
         ) : (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger asChild disabled={isSelf}>
               <Button
                 variant="ghost"
                 className="flex items-center gap-1 font-medium text-sm px-2 py-1 h-8 hover:bg-muted"
               >
                 {roleLabel}
-                <ChevronDown className="w-4 h-4 opacity-50" />
+                {!isSelf && <ChevronDown className="w-4 h-4 opacity-50" />}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-              {GLOBAL_ROLE_OPTIONS.map((role) => (
-                <DropdownMenuCheckboxItem
-                  key={role.id}
-                  checked={role.id === currentRole}
-                  onCheckedChange={() => onUpdateRole(role.id)}
-                >
-                  {role.label}
-                </DropdownMenuCheckboxItem>
-              ))}
-            </DropdownMenuContent>
+            {!isSelf && (
+              <DropdownMenuContent align="start">
+                {GLOBAL_ROLE_OPTIONS.map((role) => (
+                  <DropdownMenuCheckboxItem
+                    key={role.id}
+                    checked={role.id === currentRole}
+                    onCheckedChange={() => onUpdateRole(role.id)}
+                  >
+                    {role.label}
+                  </DropdownMenuCheckboxItem>
+                ))}
+              </DropdownMenuContent>
+            )}
           </DropdownMenu>
         )}
       </TableCell>
