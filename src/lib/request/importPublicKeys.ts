@@ -5,5 +5,5 @@ interface ImportResponse {
 }
 
 export const importPublicKeys = () => {
-  return api<ImportResponse>(`/api/publickey/import?r=${window.location.href}`);
+  return api<ImportResponse>(`/api/publickey/import?c=${window.location.href}`);
 };
