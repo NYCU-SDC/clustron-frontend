@@ -121,7 +121,7 @@ export default function SettingKeyTable() {
         <div className="flex gap-4">
           <Button
             className="py-5 cursor-pointer"
-            onClick={() => navigate("/setting/add-new-key")}
+            onClick={() => navigate("/setting/ssh/new")}
           >
             {t("settingKeyTable.addNewKeyBtn")}
           </Button>

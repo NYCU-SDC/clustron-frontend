@@ -8,7 +8,7 @@ export function useRemovePendingMember(groupId: string) {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
-  return useMutation<void, Error, RemovePendingMemberParams, string>({
+  return useMutation({
     mutationFn: (params: RemovePendingMemberParams) =>
       removePendingMember(params),
     onMutate: (params) => {
