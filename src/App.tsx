@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import DefaultLayout from "./pages/layouts/DefaultLayout";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
+import SetupPage from "@/pages/auth/setup.tsx";
 import LoginCallback from "@/pages/LoginCallback";
 import Onboarding from "@/pages/Onboarding";
 import SettingLayout from "@/pages/layouts/SettingLayout";
@@ -82,6 +83,7 @@ const App = () => {
       <Route element={<GuestOnlyRoute />}>
         <Route element={<DefaultLayout />}>
           <Route path="/login" element={<Login />} />
+          <Route path="/system-setup" element={<SetupPage />} />
         </Route>
       </Route>
     </Routes>

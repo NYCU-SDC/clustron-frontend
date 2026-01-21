@@ -6,10 +6,15 @@ import { authContext } from "@/lib/auth/authContext";
 import { useTranslation } from "react-i18next";
 import { LoginMethodIcon } from "@/components/setting/LoginMethodIcon";
 
+interface LoginFormProps extends React.ComponentPropsWithoutRef<"div"> {
+  isSetupMode?: boolean;
+}
+
 export default function LoginForm({
   className,
+  isSetupMode = false, // 預設為 false，不影響原本登入頁
   ...props
-}: React.ComponentProps<"div">) {
+}: LoginFormProps) {
   const { login } = useContext(authContext);
   const { t } = useTranslation();
 
@@ -17,7 +22,9 @@ export default function LoginForm({
     <div className={cn("", className)} {...props}>
       <Card className="p-5">
         <CardHeader>
-          <CardTitle className="text-2xl">{t("login.loginTitle")}</CardTitle>
+          <CardTitle className="text-2xl">
+            {isSetupMode ? "Register admin account" : t("login.loginTitle")}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-5 pb-10">
