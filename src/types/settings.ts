@@ -12,7 +12,7 @@ export type AccessToken = {
 };
 
 export type PublicKeyInfo = {
-  id: string;
+  fingerprint: string;
   title: string;
   publicKey: string;
 };
