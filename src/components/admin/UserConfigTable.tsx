@@ -186,6 +186,7 @@ export default function UserConfigTable() {
                       id={user.studentId}
                       email={user.email}
                       currentRole={user.role}
+                      isOnBoarding={user.role == "ROLE_NOT_SETUP"}
                       isSelf={user.id === currentUserId}
                       onUpdateRole={(newRole) =>
                         handleRoleUpdate(user.id, newRole)

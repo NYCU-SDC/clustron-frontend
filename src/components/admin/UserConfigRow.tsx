@@ -8,7 +8,11 @@ import {
   DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
 
-import { GLOBAL_ROLE_OPTIONS, type GlobalRole } from "@/types/admin";
+import {
+  GLOBAL_ROLE_OPTIONS,
+  GlobalRoleNotSetup,
+  type GlobalRole,
+} from "@/types/admin";
 
 type Props = {
   name: string;
@@ -16,6 +20,7 @@ type Props = {
   email: string;
   currentRole: GlobalRole;
   onUpdateRole: (newRole: GlobalRole) => void;
+  isOnBoarding?: boolean;
   isPending?: boolean;
   isSelf?: boolean;
 };
@@ -26,6 +31,7 @@ export default function UserConfigRow({
   email,
   currentRole,
   onUpdateRole,
+  isOnBoarding = false,
   isPending = false,
   isSelf = false,
 }: Props) {
@@ -56,18 +62,22 @@ export default function UserConfigRow({
           </div>
         ) : (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild disabled={isSelf}>
+            <DropdownMenuTrigger asChild disabled={isSelf || isOnBoarding}>
               <Button
                 variant="ghost"
                 className="flex items-center gap-1 font-medium text-sm px-2 py-1 h-8 hover:bg-muted"
               >
                 {roleLabel}
-                {!isSelf && <ChevronDown className="w-4 h-4 opacity-50" />}
+                {!isOnBoarding && !isSelf && (
+                  <ChevronDown className="w-4 h-4 opacity-50" />
+                )}
               </Button>
             </DropdownMenuTrigger>
-            {!isSelf && (
+            {!isOnBoarding && !isSelf && (
               <DropdownMenuContent align="start">
-                {GLOBAL_ROLE_OPTIONS.map((role) => (
+                {GLOBAL_ROLE_OPTIONS.filter(
+                  (role) => role.id !== GlobalRoleNotSetup,
+                ).map((role) => (
                   <DropdownMenuCheckboxItem
                     key={role.id}
                     checked={role.id === currentRole}

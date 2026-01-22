@@ -1,17 +1,20 @@
 export const GlobalRoleUser = "USER";
 export const GlobalRoleOrganizer = "ORGANIZER";
 export const GlobalRoleAdmin = "ADMIN";
+export const GlobalRoleNotSetup = "ROLE_NOT_SETUP";
 
 export const GlobalRoles = [
   GlobalRoleAdmin,
   GlobalRoleOrganizer,
   GlobalRoleUser,
+  GlobalRoleNotSetup,
 ] as const;
 
 export const GLOBAL_ROLE_OPTIONS: { id: GlobalRole; label: string }[] = [
   { id: GlobalRoleUser, label: "User" },
   { id: GlobalRoleOrganizer, label: "Organizer" },
   { id: GlobalRoleAdmin, label: "Admin" },
+  { id: GlobalRoleNotSetup, label: "Not Setup" },
 ];
 
 export type GlobalRole = (typeof GlobalRoles)[number];
