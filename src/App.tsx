@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import DefaultLayout from "./pages/layouts/DefaultLayout";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
+import SystemSetupGate from "@/components/system/SystemSetupGate";
 import SetupPage from "@/pages/auth/setup.tsx";
 import LoginCallback from "@/pages/LoginCallback";
 import Onboarding from "@/pages/Onboarding";
@@ -27,66 +28,71 @@ import JobSubmitPage from "@/pages/JobSubmitPage";
 import JobLayout from "@/pages/layouts/JobLayout";
 const App = () => {
   return (
-    <Routes>
-      <Route element={<ProtectedRoute showLoginRequiredToast={false} />}>
-        <Route path="/" element={<Home />} />
-      </Route>
+    <SystemSetupGate>
+      <Routes>
+        <Route element={<ProtectedRoute showLoginRequiredToast={false} />}>
+          <Route path="/" element={<Home />} />
+        </Route>
 
-      <Route path="/callback">
-        <Route path="login" element={<LoginCallback />} />
-        <Route path="bind" element={<BindCallback />} />
-      </Route>
+        <Route path="/callback">
+          <Route path="login" element={<LoginCallback />} />
+          <Route path="bind" element={<BindCallback />} />
+        </Route>
 
-      <Route path="/health" element={<div>Health Check</div>} />
+        <Route path="/health" element={<div>Health Check</div>} />
 
-      <Route element={<ProtectedRoute />}>
-        <Route element={<DefaultLayout />}>
-          <Route path="/onboarding" element={<Onboarding />} />
-          <Route path="/setting" element={<SettingLayout />}>
-            <Route index element={<Navigate to="general" replace />} />
-            <Route path="general" element={<SettingGeneral />} />
-            <Route path="ssh" element={<SettingSSH />} />
-            <Route path="ssh/new" element={<SettingAddKey />} />
-          </Route>
-          <Route path="/groups" element={<GroupListPage />} />
-          <Route path="/groups/new" element={<AddGroupPage />} />
-          <Route path="/add-group" element={<AddGroupPage />} />
-          <Route
-            path="/groups/:id/add-member-result"
-            element={<AddMemberResult />}
-          />
-          <Route path="/jobs" element={<JobLayout />}>
-            <Route index element={<JobDashboard />} />
-            <Route path="submit" element={<JobSubmitPage />} />
-          </Route>
-
-          <Route element={<GroupLayout />}>
+        <Route element={<ProtectedRoute />}>
+          <Route element={<DefaultLayout />}>
+            <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/setting" element={<SettingLayout />}>
+              <Route index element={<Navigate to="general" replace />} />
+              <Route path="general" element={<SettingGeneral />} />
+              <Route path="ssh" element={<SettingSSH />} />
+              <Route path="ssh/new" element={<SettingAddKey />} />
+            </Route>
             <Route path="/groups" element={<GroupListPage />} />
             <Route path="/groups/new" element={<AddGroupPage />} />
-            <Route path="/groups/:id/add-member" element={<AddMemberPage />} />
             <Route path="/add-group" element={<AddGroupPage />} />
-            <Route path="/groups/:id" element={<GroupPage />}>
-              <Route index element={<GroupOverview />} />
-              <Route path="settings" element={<GroupSettings />} />
-              <Route path="add-member" element={<AddMemberPage />} />
+            <Route
+              path="/groups/:id/add-member-result"
+              element={<AddMemberResult />}
+            />
+            <Route path="/jobs" element={<JobLayout />}>
+              <Route index element={<JobDashboard />} />
+              <Route path="submit" element={<JobSubmitPage />} />
             </Route>
-          </Route>
 
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<Navigate to="config" replace />} />
-            <Route path="config" element={<RoleConfiguration />}></Route>
-          </Route>
-          {/*  end*/}
-        </Route>
-      </Route>
+            <Route element={<GroupLayout />}>
+              <Route path="/groups" element={<GroupListPage />} />
+              <Route path="/groups/new" element={<AddGroupPage />} />
+              <Route
+                path="/groups/:id/add-member"
+                element={<AddMemberPage />}
+              />
+              <Route path="/add-group" element={<AddGroupPage />} />
+              <Route path="/groups/:id" element={<GroupPage />}>
+                <Route index element={<GroupOverview />} />
+                <Route path="settings" element={<GroupSettings />} />
+                <Route path="add-member" element={<AddMemberPage />} />
+              </Route>
+            </Route>
 
-      <Route element={<GuestOnlyRoute />}>
-        <Route element={<DefaultLayout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/system-setup" element={<SetupPage />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Navigate to="config" replace />} />
+              <Route path="config" element={<RoleConfiguration />}></Route>
+            </Route>
+            {/*  end*/}
+          </Route>
         </Route>
-      </Route>
-    </Routes>
+
+        <Route element={<GuestOnlyRoute />}>
+          <Route element={<DefaultLayout />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/system-setup" element={<SetupPage />} />
+          </Route>
+        </Route>
+      </Routes>
+    </SystemSetupGate>
   );
 };
 
