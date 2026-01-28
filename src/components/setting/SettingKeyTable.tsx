@@ -109,8 +109,8 @@ export default function SettingKeyTable() {
   const handleGithubKeysImport = async () => {
     try {
       const response = await importPublicKeys();
-      if (response && response.url) {
-        window.location.href = response.url;
+      if (response && response.redirectURL) {
+        window.location.href = response.redirectURL;
       } else {
         toast.error(
           t("settingKeyTable.importFromGitHubError") ??
