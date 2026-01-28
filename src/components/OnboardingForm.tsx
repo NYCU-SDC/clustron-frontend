@@ -46,7 +46,6 @@ export default function OnboardingForm({
 
   const addMutation = useMutation({
     mutationFn: async (payload: Settings) => {
-      console.log("Onboarding Payload:", payload);
       await saveOnboardingInfo(payload);
       await refreshMutation.mutateAsync();
     },

@@ -136,7 +136,6 @@ export default function RoleConfigTable() {
     roleId: string,
     newAccessLevel: GroupRoleAccessLevel,
   ) => {
-    console.log("ID", roleId);
     const role = roleConfigs.find((r) => r.id === roleId);
     if (role) {
       updateMutation.mutate({
