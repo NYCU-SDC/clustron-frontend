@@ -1,7 +1,7 @@
 import { api } from "@/lib/request/api";
 
 interface ImportResponse {
-  url: string;
+  redirectURL: string;
 }
 
 export const importPublicKeys = () => {
