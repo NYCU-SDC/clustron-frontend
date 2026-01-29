@@ -29,6 +29,10 @@ export default function AdminLayout() {
       to: "/admin/config",
       label: t("adminSidebar.roleAccessConfigLink"),
     },
+    {
+      to: "/admin/users",
+      label: t("adminSidebar.userConfigLink"),
+    },
   ];
 
   if (role !== "admin") return null;
