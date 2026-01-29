@@ -24,6 +24,7 @@ import RoleConfiguration from "@/pages/admin/RoleConfiguration";
 import BindCallback from "@/pages/BindCallback";
 // import JobSubmitPage from "@/pages/JobSubmitPage";
 // import JobLayout from "@/pages/layouts/JobLayout";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const App = () => {
   return (
@@ -33,8 +34,22 @@ const App = () => {
       </Route>
 
       <Route path="/callback">
-        <Route path="login" element={<LoginCallback />} />
-        <Route path="bind" element={<BindCallback />} />
+        <Route
+          path="login"
+          element={
+            <ErrorBoundary>
+              <LoginCallback />
+            </ErrorBoundary>
+          }
+        />
+        <Route
+          path="bind"
+          element={
+            <ErrorBoundary>
+              <BindCallback />
+            </ErrorBoundary>
+          }
+        />
       </Route>
 
       <Route path="/health" element={<div>Health Check</div>} />
@@ -46,7 +61,7 @@ const App = () => {
             <Route index element={<Navigate to="general" replace />} />
             <Route path="general" element={<SettingGeneral />} />
             <Route path="ssh" element={<SettingSSH />} />
-            <Route path="ssh/new" element={<SettingAddKey />} />
+            <Route path="add-new-key" element={<SettingAddKey />} />
           </Route>
           <Route path="/groups" element={<GroupListPage />} />
           <Route path="/groups/new" element={<AddGroupPage />} />
@@ -55,10 +70,10 @@ const App = () => {
             path="/groups/:id/add-member-result"
             element={<AddMemberResult />}
           />
-          {/* <Route path="/jobs" element={<JobLayout />}>
-            <Route index element={<JobDashboard />} />
-            <Route path="submit" element={<JobSubmitPage />} />
-          </Route> */}
+          {/*<Route path="/jobs" element={<JobLayout />}>
+              <Route index element={<JobDashboard />} />
+              <Route path="submit" element={<JobSubmitPage />} />
+            </Route>*/}
 
           <Route element={<GroupLayout />}>
             <Route path="/groups" element={<GroupListPage />} />
@@ -76,6 +91,7 @@ const App = () => {
             <Route index element={<Navigate to="config" replace />} />
             <Route path="config" element={<RoleConfiguration />}></Route>
           </Route>
+          {/*  end*/}
         </Route>
       </Route>
 

@@ -2,6 +2,7 @@ import { Outlet, useParams } from "react-router-dom";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import SideBar, { NavItem } from "@/components/Sidebar";
 import { useTranslation } from "react-i18next";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 export default function GroupLayout() {
   const { id } = useParams<{ id: string }>();
@@ -24,14 +25,18 @@ export default function GroupLayout() {
   return (
     <div className="flex w-full">
       <div className="min-w-xs border-r">
-        <SideBar
-          title={group.title}
-          navItems={groupNavItems}
-          className="min-w-36"
-        />
+        <ErrorBoundary>
+          <SideBar
+            title={group.title}
+            navItems={groupNavItems}
+            className="min-w-36"
+          />
+        </ErrorBoundary>
       </div>
       <main className="flex-1 flex justify-center">
-        <Outlet context={{ group, groupId: id }} />
+        <ErrorBoundary>
+          <Outlet context={{ group, groupId: id }} />
+        </ErrorBoundary>
       </main>
     </div>
   );
