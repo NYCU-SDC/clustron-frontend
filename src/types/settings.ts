@@ -26,5 +26,8 @@ export type AuthCookie = {
 export type Settings = {
   fullName: string;
   linuxUsername: string;
-  password?: string;
+};
+
+export type PasswordSettings = Settings & {
+  password: string;
 };

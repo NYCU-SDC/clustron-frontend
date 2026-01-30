@@ -19,7 +19,7 @@ import { authContext } from "@/lib/auth/authContext";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
 import { z } from "zod";
-import type { Settings } from "@/types/settings";
+import type { PasswordSettings } from "@/types/settings";
 
 export default function OnboardingForm({
   className,
@@ -45,7 +45,7 @@ export default function OnboardingForm({
     .regex(/[0-9]/);
 
   const addMutation = useMutation({
-    mutationFn: async (payload: Settings) => {
+    mutationFn: async (payload: PasswordSettings) => {
       await saveOnboardingInfo(payload);
       await refreshMutation.mutateAsync();
     },
