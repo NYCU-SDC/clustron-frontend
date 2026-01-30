@@ -129,9 +129,25 @@
     "deleteFailToast": "Failed to delete role",
     "loadFailToast": "Failed to load roles"
   },
+  "userConfigTable": {
+    "cardTitle": "Users",
+    "loadingUsers": "Loading users...",
+    "failedToLoadUsers": "Failed to load users.",
+    "dataIsMissing": "Something went wrong (Data is missing).",
+    "noUsersFound": "No users found.",
+    "searchPlaceholder": "Search users...",
+    "tableHeadName": "Name",
+    "tableHeadId": "Student ID or Email",
+    "tableHeadRole": "Role",
+    "resultPerPage": "Results per page:",
+    "updatingToast": "Updating...",
+    "updateSuccessToast": "Role updated",
+    "updateFailToast": "Failed to update role"
+  },
   "adminSidebar": {
     "title": "Admin",
-    "roleAccessConfigLink": "Role Access Configuration"
+    "roleAccessConfigLink": "Role Access Configuration",
+    "userConfigLink": "User Management"
   },
   "groupComponents": {
     "addMemberButton": {
