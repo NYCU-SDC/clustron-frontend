@@ -24,7 +24,6 @@ import { z } from "zod";
 
 export default function SettingPasswordForm({
   className,
-  ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -36,7 +35,7 @@ export default function SettingPasswordForm({
     .regex(/[A-Za-z]/)
     .regex(/[0-9]/);
 
-  const addMutation = useMutation({
+  const updatePasswordMutation = useMutation({
     mutationFn: (password: string) => updatePassword(password),
     onSuccess: () => {
       setNewPassword("");
@@ -49,7 +48,7 @@ export default function SettingPasswordForm({
   });
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-6", className)}>
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">
@@ -69,7 +68,7 @@ export default function SettingPasswordForm({
                 onChange={(e) => setNewPassword(e.target.value)}
               />
               <p className="text-sm text-muted-foreground">
-                {t("onboardingForm.passwordFormatError")}
+                {t("onboardingForm.passwordFormat")}
               </p>
             </div>
             <div className="grid gap-2">
@@ -82,7 +81,7 @@ export default function SettingPasswordForm({
             </div>
             <div className="flex justify-end">
               <TooltipProvider>
-                {addMutation.isPending ? (
+                {updatePasswordMutation.isPending ? (
                   <Button className="px-7 py-5 w-44 cursor-pointer" disabled>
                     <Loader2Icon className="animate-spin" />
                     {t("settingPasswordForm.loadingBtn")}
@@ -92,14 +91,14 @@ export default function SettingPasswordForm({
                     className="px-7 py-5 w-44 cursor-pointer"
                     onClick={() => {
                       if (!passwordSchema.safeParse(newPassword).success) {
-                        toast.error(t("onboardingForm.passwordFormatError"));
+                        toast.error(t("onboardingForm.passwordFormat"));
                         return;
                       }
                       if (newPassword !== confirmPassword) {
                         toast.error(t("onboardingForm.passwordMismatchError"));
                         return;
                       }
-                      addMutation.mutate(newPassword);
+                      updatePasswordMutation.mutate(newPassword);
                     }}
                   >
                     {t("settingPasswordForm.saveBtn")}

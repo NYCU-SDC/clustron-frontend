@@ -136,7 +136,7 @@ export default function OnboardingForm({
                 onChange={(e) => setPassword(e.target.value)}
               />
               <p className="text-sm text-muted-foreground">
-                {t("onboardingForm.passwordFormatError")}
+                {t("onboardingForm.passwordFormat")}
               </p>
               <p className="text-sm text-destructive">
                 {t("onboardingForm.passwordNote")}
@@ -176,7 +176,7 @@ export default function OnboardingForm({
                         return;
                       }
                       if (!passwordSchema.safeParse(password).success) {
-                        toast.error(t("onboardingForm.passwordFormatError"));
+                        toast.error(t("onboardingForm.passwordFormat"));
                         return;
                       }
                       if (password !== confirmPassword) {

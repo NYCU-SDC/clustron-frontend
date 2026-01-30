@@ -19,7 +19,7 @@
     "labelForInputConfirmPassword": "Confirm Password",
     "placeHolderForInputConfirmPassword": "password",
     "passwordMismatchError": "Passwords do not match",
-    "passwordFormatError": "Include alphabet and numbers, at least 8 digits",
+    "passwordFormat": "Include alphabet and numbers, at least 8 digits",
     "passwordNote": "The password to login to the remote server. This is changeable in the user setting."
   },
   "settingPasswordForm": {

@@ -19,7 +19,7 @@
     "labelForInputConfirmPassword": "確認密碼",
     "placeHolderForInputConfirmPassword": "密碼",
     "passwordMismatchError": "密碼不相符",
-    "passwordFormatError": "需包含字母與數字，至少 8 個字元",
+    "passwordFormat": "需包含字母與數字，至少 8 個字元",
     "passwordNote": "用於登入遠端伺服器的密碼，可於使用者設定中修改。"
   },
   "settingPasswordForm": {
