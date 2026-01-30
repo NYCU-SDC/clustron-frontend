@@ -22,9 +22,7 @@ import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
 import { z } from "zod";
 
-export default function SettingPasswordForm({
-  className,
-}: React.ComponentPropsWithoutRef<"div">) {
+export default function SettingPasswordForm() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const { t } = useTranslation();
@@ -48,7 +46,7 @@ export default function SettingPasswordForm({
   });
 
   return (
-    <div className={cn("flex flex-col gap-6", className)}>
+    <div className={cn("flex flex-col gap-6")}>
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">
