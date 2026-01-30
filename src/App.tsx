@@ -6,6 +6,7 @@ import LoginCallback from "@/pages/LoginCallback";
 import Onboarding from "@/pages/Onboarding";
 import SettingLayout from "@/pages/layouts/SettingLayout";
 import SettingGeneral from "@/pages/setting/SettingGeneral";
+import SettingAddKey from "@/pages/setting/SettingAddKey";
 import SettingSSH from "@/pages/setting/SettingSSH";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import GuestOnlyRoute from "@/components/auth/GuestOnlyRoute";
@@ -60,6 +61,7 @@ const App = () => {
             <Route index element={<Navigate to="general" replace />} />
             <Route path="general" element={<SettingGeneral />} />
             <Route path="ssh" element={<SettingSSH />} />
+            <Route path="ssh/new" element={<SettingAddKey />} />
           </Route>
           <Route path="/groups" element={<GroupListPage />} />
           <Route path="/groups/new" element={<AddGroupPage />} />
