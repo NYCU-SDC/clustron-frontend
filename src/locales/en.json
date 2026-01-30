@@ -127,6 +127,7 @@
     "cardTitle": "Users",
     "loadingUsers": "Loading users...",
     "failedToLoadUsers": "Failed to load users.",
+    "dataIsMissing": "Something went wrong (Data is missing).",
     "noUsersFound": "No users found.",
     "searchPlaceholder": "Search users...",
     "tableHeadName": "Name",

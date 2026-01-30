@@ -50,11 +50,7 @@ export type GetUsersResponse = {
 // PUT /api/users/{id}/globalRole
 export type UpdateUserRoleInput = {
   id: string;
-  role: GlobalRole;
+  role: Exclude<GlobalRole, typeof GlobalRoleNotSetup>;
 };
 
 export type UpdateUserRoleResponse = User;
-
-export type GetGlobalRolesResponse = {
-  roles: GlobalRole[];
-};

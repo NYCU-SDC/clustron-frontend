@@ -127,6 +127,7 @@
     "cardTitle": "使用者",
     "loadingUsers": "正在載入使用者...",
     "failedToLoadUsers": "載入使用者失敗。",
+    "dataIsMissing": "資料遺失，發生錯誤。",
     "noUsersFound": "找不到使用者。",
     "searchPlaceholder": "搜尋使用者...",
     "tableHeadName": "姓名",

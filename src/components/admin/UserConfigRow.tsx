@@ -11,6 +11,7 @@ import {
 import {
   GLOBAL_ROLE_OPTIONS,
   GlobalRoleNotSetup,
+  type UpdateUserRoleInput,
   type GlobalRole,
 } from "@/types/admin";
 
@@ -19,7 +20,7 @@ type Props = {
   id: string;
   email: string;
   currentRole: GlobalRole;
-  onUpdateRole: (newRole: GlobalRole) => void;
+  onUpdateRole: (newRole: UpdateUserRoleInput["role"]) => void;
   isOnBoarding?: boolean;
   isPending?: boolean;
   isSelf?: boolean;
@@ -81,7 +82,9 @@ export default function UserConfigRow({
                   <DropdownMenuCheckboxItem
                     key={role.id}
                     checked={role.id === currentRole}
-                    onCheckedChange={() => onUpdateRole(role.id)}
+                    onCheckedChange={() =>
+                      onUpdateRole(role.id as UpdateUserRoleInput["role"])
+                    }
                   >
                     {role.label}
                   </DropdownMenuCheckboxItem>

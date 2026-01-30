@@ -4,7 +4,7 @@ import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ChevronDown, Loader2, Search } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -65,8 +65,6 @@ export default function UserConfigTable() {
       }),
     placeholderData: (prev) => prev,
   });
-  const users = data?.items ?? [];
-  const totalPages = data?.totalPages ?? 1;
 
   const {
     mutate: updateRole,
@@ -76,25 +74,56 @@ export default function UserConfigTable() {
     mutationFn: (input: UpdateUserRoleInput) => updateGlobalRole(input),
     onMutate: (input) => {
       const toastId = `update-global-role-${input.id}`;
-      toast.loading(t("userConfigTable.updatingToast", "Updating..."), {
+      toast.loading(t("userConfigTable.updatingToast"), {
         id: toastId,
       });
       return toastId;
     },
     onSuccess: (_data, _vars, ctx) => {
-      toast.success(t("userConfigTable.updateSuccessToast", "Role updated"), {
+      toast.success(t("userConfigTable.updateSuccessToast"), {
         id: ctx,
       });
       queryClient.invalidateQueries({ queryKey: ["AdminUsers"] });
     },
-    onError: (err, _vars, ctx) => {
-      toast.error(err instanceof Error ? err.message : "Failed", { id: ctx });
+    onError: (_err, _vars, ctx) => {
+      toast.error(t("userConfigTable.updateFailToast"), { id: ctx });
     },
   });
 
-  const handleRoleUpdate = (userId: string, newRole: GlobalRole) => {
+  const handleRoleUpdate = (
+    userId: string,
+    newRole: UpdateUserRoleInput["role"],
+  ) => {
     updateRole({ id: userId, role: newRole });
   };
+
+  if (isError) {
+    return (
+      <p className="text-sm text-red-500 p-10 text-center">
+        {t("userConfigTable.failedToLoadUsers")}
+      </p>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center p-20 gap-2 text-sm text-gray-500">
+        <Loader2 className="w-4 h-4 animate-spin" />
+        {t("userConfigTable.loadingUsers")}
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <p className="text-sm text-red-500 p-10 text-center">
+        {t("userConfigTable.dataIsMissing")}
+      </p>
+    );
+  }
+
+  const users = data.items;
+  const totalPages = data.totalPages;
 
   return (
     <div className="flex flex-col gap-4">
@@ -149,22 +178,13 @@ export default function UserConfigTable() {
         </DropdownMenu>
       </div>
       <Card>
-        <CardContent className="p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="font-bold text-lg">
-              {t("userConfigTable.cardTitle")}
-            </h3>
-          </div>
-          {isLoading ? (
-            <div className="text-sm text-gray-500 flex items-center gap-2">
-              <Loader2 className="w-4 h-4 animate-spin" />
-              {t("userConfigTable.loadingUsers")}
-            </div>
-          ) : isError ? (
-            <p className="text-sm text-red-500">
-              {t("userConfigTable.failedToLoadUsers")}
-            </p>
-          ) : users.length === 0 ? (
+        <CardHeader>
+          <CardTitle className="text-2xl">
+            {t("userConfigTable.cardTitle")}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {users.length === 0 ? (
             <p className="text-sm text-gray-500">
               {t("userConfigTable.noUsersFound")}
             </p>
