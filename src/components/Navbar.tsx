@@ -99,7 +99,7 @@ export default function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : null}
-        </div>{" "}
+        </div>
       </div>
     </nav>
   );

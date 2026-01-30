@@ -6,7 +6,6 @@ import LoginCallback from "@/pages/LoginCallback";
 import Onboarding from "@/pages/Onboarding";
 import SettingLayout from "@/pages/layouts/SettingLayout";
 import SettingGeneral from "@/pages/setting/SettingGeneral";
-import SettingAddKey from "@/pages/setting/SettingAddKey";
 import SettingSSH from "@/pages/setting/SettingSSH";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import GuestOnlyRoute from "@/components/auth/GuestOnlyRoute";
@@ -24,7 +23,7 @@ import RoleConfiguration from "@/pages/admin/RoleConfiguration";
 import BindCallback from "@/pages/BindCallback";
 // import JobSubmitPage from "@/pages/JobSubmitPage";
 // import JobLayout from "@/pages/layouts/JobLayout";
-import ErrorBoundary from "./components/ErrorBoundary";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const App = () => {
   return (
@@ -61,7 +60,6 @@ const App = () => {
             <Route index element={<Navigate to="general" replace />} />
             <Route path="general" element={<SettingGeneral />} />
             <Route path="ssh" element={<SettingSSH />} />
-            <Route path="add-new-key" element={<SettingAddKey />} />
           </Route>
           <Route path="/groups" element={<GroupListPage />} />
           <Route path="/groups/new" element={<AddGroupPage />} />
