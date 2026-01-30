@@ -20,13 +20,11 @@ export default function JobLayout() {
   return (
     <div className="flex w-full">
       <div className="min-w-xs border-r">
-        <ErrorBoundary>
-          <SideBar
-            title={t("jobsSideBar.title")}
-            navItems={jobNavItems}
-            className="min-w-36"
-          />
-        </ErrorBoundary>
+        <SideBar
+          title={t("jobsSideBar.title")}
+          navItems={jobNavItems}
+          className="min-w-36"
+        />
       </div>
       <main className="flex-1 flex justify-center">
         <ErrorBoundary>

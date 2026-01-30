@@ -91,7 +91,6 @@ const App = () => {
             <Route index element={<Navigate to="config" replace />} />
             <Route path="config" element={<RoleConfiguration />}></Route>
           </Route>
-          {/*  end*/}
         </Route>
       </Route>
 

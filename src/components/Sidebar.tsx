@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import ErrorBoundary from "./ErrorBoundary";
 
 function navLinkClass(isActive: boolean): string {
   return [
@@ -36,23 +37,25 @@ export default function SideBar({ title, navItems, className }: SideBarProps) {
   const { t } = useTranslation();
 
   return (
-    <aside
-      className={`sticky top-[7rem] self-start ml-15 my-8 ${className || ""}`}
-    >
-      <div className="text-4xl font-semibold mb-8">{title}</div>
-      <ul className="space-y-4">
-        {navItems.map((item) => (
-          <li key={item.to}>
-            <NavLink
-              to={item.to}
-              end={item.end ?? true}
-              className={({ isActive }) => navLinkClass(isActive)}
-            >
-              {t(item.label)}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
-    </aside>
+    <ErrorBoundary>
+      <aside
+        className={`sticky top-[7rem] self-start ml-15 my-8 ${className || ""}`}
+      >
+        <div className="text-4xl font-semibold mb-8">{title}</div>
+        <ul className="space-y-4">
+          {navItems.map((item) => (
+            <li key={item.to}>
+              <NavLink
+                to={item.to}
+                end={item.end ?? true}
+                className={({ isActive }) => navLinkClass(isActive)}
+              >
+                {t(item.label)}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    </ErrorBoundary>
   );
 }

@@ -25,13 +25,11 @@ export default function GroupLayout() {
   return (
     <div className="flex w-full">
       <div className="min-w-xs border-r">
-        <ErrorBoundary>
-          <SideBar
-            title={group.title}
-            navItems={groupNavItems}
-            className="min-w-36"
-          />
-        </ErrorBoundary>
+        <SideBar
+          title={group.title}
+          navItems={groupNavItems}
+          className="min-w-36"
+        />
       </div>
       <main className="flex-1 flex justify-center">
         <ErrorBoundary>
