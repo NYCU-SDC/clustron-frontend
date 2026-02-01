@@ -27,3 +27,7 @@ export type Settings = {
   fullName: string;
   linuxUsername: string;
 };
+
+export type PasswordSettings = Settings & {
+  password: string;
+};

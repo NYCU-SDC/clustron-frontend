@@ -13,7 +13,25 @@
     "saveBtnToolTip": "Please fill in your full name and Linux username",
     "usernameExistsErrorToast": "This Linux username is already in use",
     "reservedKeywordErrorToast": "This Linux username is a reserved system keyword and cannot be used",
-    "warningTextForLinuxUsername": "The username to login to the remote server. This is not changeable after set."
+    "warningTextForLinuxUsername": "The username to login to the remote server. This is not changeable after set.",
+    "labelForInputPassword": "Linux Password",
+    "placeHolderForInputPassword": "password",
+    "labelForInputConfirmPassword": "Confirm Password",
+    "placeHolderForInputConfirmPassword": "password",
+    "passwordMismatchError": "Passwords do not match",
+    "passwordFormat": "Include alphabet and numbers, at least 8 digits",
+    "passwordNote": "The password to login to the remote server. This is changeable in the user setting."
+  },
+  "settingPasswordForm": {
+    "cardTitle": "Linux Password",
+    "cardDescription": "The password to login to the remote server",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm",
+    "saveBtn": "Update password",
+    "successToast": "Password updated successfully",
+    "failToast": "Failed to update password",
+    "loadingBtn": "Updating...",
+    "saveBtnToolTip": "Please fill in password fields"
   },
   "login": {
     "loginTitle": "Login",
