@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import SideBar, { NavItem } from "@/components/Sidebar";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 export default function SettingLayout() {
   const { t } = useTranslation();
@@ -28,7 +29,9 @@ export default function SettingLayout() {
         />
       </div>
       <main className="flex-1 flex justify-center">
-        <Outlet />
+        <ErrorBoundary>
+          <Outlet />
+        </ErrorBoundary>
       </main>
     </div>
   );

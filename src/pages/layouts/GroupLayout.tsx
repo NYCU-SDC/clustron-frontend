@@ -2,6 +2,7 @@ import { Outlet, useParams } from "react-router-dom";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import SideBar, { NavItem } from "@/components/Sidebar";
 import { useTranslation } from "react-i18next";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 export default function GroupLayout() {
   const { id } = useParams<{ id: string }>();
@@ -31,7 +32,9 @@ export default function GroupLayout() {
         />
       </div>
       <main className="flex-1 flex justify-center">
-        <Outlet context={{ group, groupId: id }} />
+        <ErrorBoundary>
+          <Outlet context={{ group, groupId: id }} />
+        </ErrorBoundary>
       </main>
     </div>
   );
