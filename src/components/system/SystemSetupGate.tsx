@@ -13,8 +13,8 @@ export default function SystemSetupGate() {
   const pathname = location.pathname;
   const allowList =
     pathname.startsWith(SETUP_PATH) ||
-    pathname === "/callback" ||
-    pathname === "/health";
+    pathname === "/health" ||
+    ["/callback", "/callback/login", "/callback/bind"].includes(pathname);
 
   useEffect(() => {
     let cancelled = false;
