@@ -1,9 +1,9 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import DefaultLayout from "./pages/layouts/DefaultLayout";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import SystemSetupGate from "@/components/system/SystemSetupGate";
-import SetupPage from "@/pages/auth/setup.tsx";
+import SetupPage from "@/pages/auth/Setup.tsx";
 import LoginCallback from "@/pages/LoginCallback";
 import Onboarding from "@/pages/Onboarding";
 import SettingLayout from "@/pages/layouts/SettingLayout";
@@ -30,8 +30,14 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 
 const App = () => {
   return (
-    <SystemSetupGate>
-      <Routes>
+    <Routes>
+      <Route
+        element={
+          <SystemSetupGate>
+            <Outlet />
+          </SystemSetupGate>
+        }
+      >
         <Route element={<ProtectedRoute showLoginRequiredToast={false} />}>
           <Route path="/" element={<Home />} />
         </Route>
@@ -117,8 +123,8 @@ const App = () => {
             </div>
           }
         />
-      </Routes>
-    </SystemSetupGate>
+      </Route>
+    </Routes>
   );
 };
 

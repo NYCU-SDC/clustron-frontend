@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { getSetupStatus, isSetupComplete } from "@/lib/request/getSetupStatus";
+import ErrorFallBack from "@/components/ErrorFallBack";
 
 const SETUP_PATH = "/system-setup";
 
@@ -16,8 +17,8 @@ export default function SystemSetupGate({
   const pathname = location.pathname;
   const allowList =
     pathname.startsWith(SETUP_PATH) ||
-    pathname.startsWith("/callback") ||
-    pathname.startsWith("/health");
+    pathname === "/callback" ||
+    pathname === "/health";
 
   useEffect(() => {
     let cancelled = false;
@@ -43,7 +44,7 @@ export default function SystemSetupGate({
 
   if (loading) return null;
 
-  if (setupDone === null) return <>{children}</>;
+  if (setupDone === null) return <ErrorFallBack />;
 
   if (!setupDone && !allowList) {
     return <Navigate to={SETUP_PATH} replace />;
