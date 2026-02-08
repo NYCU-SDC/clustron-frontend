@@ -1,12 +1,10 @@
 import { getAccessToken } from "@/lib/token";
 
-const RAW_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
+const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
 
-if (!RAW_BASE_URL) {
+if (!BASE_URL) {
   throw new Error("VITE_BACKEND_BASE_URL is not set");
 }
-
-const BASE_URL = RAW_BASE_URL.replace(/\/+$/, "");
 
 export async function api<T>(
   path: string,
@@ -23,9 +21,7 @@ export async function api<T>(
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-
-  const url = `${BASE_URL}${normalizedPath}`;
+  const url = `${BASE_URL}${path}`;
 
   const res = await fetch(url, {
     ...options,
