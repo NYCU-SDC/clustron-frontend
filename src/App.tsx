@@ -90,7 +90,7 @@ const App = () => {
 
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<Navigate to="config" replace />} />
-              <Route path="config" element={<RoleConfiguration />}></Route>
+              <Route path="config" element={<RoleConfiguration />} />
             </Route>
           </Route>
         </Route>
