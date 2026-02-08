@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, Outlet } from "react-router-dom";
 import { getSetupStatus, isSetupComplete } from "@/lib/request/getSetupStatus";
 import ErrorFallBack from "@/components/ErrorFallBack";
 
 const SETUP_PATH = "/system-setup";
 
-export default function SystemSetupGate({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function SystemSetupGate() {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
   const [setupDone, setSetupDone] = useState<boolean | null>(null);
@@ -54,5 +50,5 @@ export default function SystemSetupGate({
     return <Navigate to="/login" replace />;
   }
 
-  return <>{children}</>;
+  return <Outlet />;
 }

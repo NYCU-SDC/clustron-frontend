@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import DefaultLayout from "./pages/layouts/DefaultLayout";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
@@ -31,13 +31,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 const App = () => {
   return (
     <Routes>
-      <Route
-        element={
-          <SystemSetupGate>
-            <Outlet />
-          </SystemSetupGate>
-        }
-      >
+      <Route element={<SystemSetupGate />}>
         <Route element={<ProtectedRoute showLoginRequiredToast={false} />}>
           <Route path="/" element={<Home />} />
         </Route>
