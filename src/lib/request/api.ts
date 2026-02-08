@@ -21,9 +21,7 @@ export async function api<T>(
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const url = `${BASE_URL}${path}`;
-
-  const res = await fetch(url, {
+  const res = await fetch(`${BASE_URL}${path}`, {
     ...options,
     headers,
   });
