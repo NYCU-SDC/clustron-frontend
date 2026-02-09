@@ -11,7 +11,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { useMutation } from "@tanstack/react-query";
 import { saveOnboardingInfo } from "@/lib/request/saveOnboardingInfo";
@@ -19,7 +18,7 @@ import { authContext } from "@/lib/auth/authContext";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
 import { z } from "zod";
-import type { PasswordSettings } from "@/types/settings";
+import type { Settings } from "@/types/settings";
 
 export default function OnboardingForm({
   className,
@@ -27,8 +26,6 @@ export default function OnboardingForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const [fullName, setFullName] = useState("");
   const [linuxUsername, setLinuxUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
   const { refreshMutation } = useContext(authContext);
   const { t } = useTranslation();
@@ -38,14 +35,8 @@ export default function OnboardingForm({
     .min(1)
     .regex(/^[a-z_][a-z0-9_-]*\$?$/);
 
-  const passwordSchema = z
-    .string()
-    .min(8)
-    .regex(/[A-Za-z]/)
-    .regex(/[0-9]/);
-
   const addMutation = useMutation({
-    mutationFn: async (payload: PasswordSettings) => {
+    mutationFn: async (payload: Settings) => {
       await saveOnboardingInfo(payload);
       await refreshMutation.mutateAsync();
     },
@@ -127,42 +118,6 @@ export default function OnboardingForm({
                 {t("onboardingForm.warningTextForLinuxUsername")}
               </p>
             </div>
-            {/* Linux Password */}
-            <div className="grid gap-2 px-2">
-              <Label className="font-medium">
-                {t("onboardingForm.labelForInputPassword")}
-                <span className="text-red-400">*</span>
-              </Label>
-              <PasswordInput
-                className="placeholder:text-muted-foreground/70"
-                id="password"
-                placeholder={t("onboardingForm.placeHolderForInputPassword")}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <p className="text-sm text-muted-foreground">
-                {t("onboardingForm.passwordFormat")}
-              </p>
-              <p className="text-sm text-destructive">
-                {t("onboardingForm.passwordNote")}
-              </p>
-            </div>
-            {/* Confirm Password */}
-            <div className="grid gap-2 px-2">
-              <Label className="font-medium">
-                {t("onboardingForm.labelForInputConfirmPassword")}
-                <span className="text-red-400">*</span>
-              </Label>
-              <PasswordInput
-                className="placeholder:text-muted-foreground/70"
-                id="confirmPassword"
-                placeholder={t(
-                  "onboardingForm.placeHolderForInputConfirmPassword",
-                )}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </div>
             <TooltipProvider>
               <div className="flex justify-end">
                 {addMutation.isPending ? (
@@ -170,7 +125,7 @@ export default function OnboardingForm({
                     <Loader2Icon className="animate-spin" />
                     {t("onboardingForm.loadingBtn")}
                   </Button>
-                ) : fullName && linuxUsername && password && confirmPassword ? (
+                ) : fullName && linuxUsername ? (
                   <Button
                     className="px-7 py-5 w-16 cursor-pointer"
                     onClick={() => {
@@ -180,19 +135,7 @@ export default function OnboardingForm({
                         toast.error(t("onboardingForm.formatErrorToast"));
                         return;
                       }
-                      if (!passwordSchema.safeParse(password).success) {
-                        toast.error(t("onboardingForm.passwordFormat"));
-                        return;
-                      }
-                      if (password !== confirmPassword) {
-                        toast.error(t("onboardingForm.passwordMismatchError"));
-                        return;
-                      }
-                      addMutation.mutate({
-                        fullName,
-                        linuxUsername,
-                        password,
-                      });
+                      addMutation.mutate({ fullName, linuxUsername });
                     }}
                   >
                     {t("onboardingForm.saveBtn")}

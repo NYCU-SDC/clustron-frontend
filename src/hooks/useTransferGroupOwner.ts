@@ -17,7 +17,7 @@ export function useTransferGroupOwner(
 ) {
   const { t } = useTranslation();
 
-  return useMutation({
+  return useMutation<unknown, Error, TransferGroupOwnershipRequest, string>({
     ...options,
 
     mutationFn: (data: TransferGroupOwnershipRequest) =>

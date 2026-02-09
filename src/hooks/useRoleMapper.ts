@@ -17,7 +17,7 @@ export function useRoleMapper() {
     data = [] as GroupRole[],
     isLoading,
     isError,
-  } = useQuery({
+  } = useQuery<GroupRole[]>({
     queryKey: ["roles"],
     queryFn: fetchRoles,
   });

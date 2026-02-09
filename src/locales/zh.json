@@ -13,25 +13,7 @@
     "saveBtnToolTip": "請填入你的姓名和Linux使用者名稱",
     "usernameExistsErrorToast": "此 Linux 使用者名稱已被使用",
     "reservedKeywordErrorToast": "此 Linux 使用者名稱為系統保留字，無法使用",
-    "warningTextForLinuxUsername": "用於登入遠端伺服器的Linux使用者名稱，設定後將無法修改。",
-    "labelForInputPassword": "Linux 密碼",
-    "placeHolderForInputPassword": "密碼",
-    "labelForInputConfirmPassword": "確認密碼",
-    "placeHolderForInputConfirmPassword": "密碼",
-    "passwordMismatchError": "密碼不相符",
-    "passwordFormat": "需包含字母與數字，至少 8 個字元",
-    "passwordNote": "用於登入遠端伺服器的密碼，可於使用者設定中修改。"
-  },
-  "settingPasswordForm": {
-    "cardTitle": "Linux 密碼",
-    "cardDescription": "用於登入遠端伺服器的密碼",
-    "newPassword": "新密碼",
-    "confirmPassword": "確認",
-    "saveBtn": "更新密碼",
-    "successToast": "密碼更新成功",
-    "failToast": "密碼更新失敗",
-    "loadingBtn": "更新中...",
-    "saveBtnToolTip": "請填寫密碼欄位"
+    "warningTextForLinuxUsername": "用於登入遠端伺服器的Linux使用者名稱，設定後將無法修改。"
   },
   "login": {
     "loginTitle": "登入",
@@ -109,12 +91,6 @@
   },
   "settingKeyTable": {
     "cardTitleForKeyTable": "SSH 金鑰",
-    "importFromGitHubBtn": "從 GitHub 匯入",
-    "importSuccessMsg": "成功匯入 {{success}} 個金鑰！",
-    "importWithDuplicateMsg": "{{success}} 個新增，{{duplicate}} 個重複 (已跳過)。",
-    "importWithAllDuplicateMsg": "沒有新增任何金鑰，{{duplicate}} 個金鑰已存在。",
-    "importFromGitHubError": "發生錯誤！ 無法連接至 GitHub！",
-    "importNothingMsg": "未找到任何金鑰",
     "addNewKeyBtn": "＋ 新增 SSH 公鑰",
     "tableHeadForTitle": "標題",
     "tableHeadForKey": "公鑰",
@@ -147,25 +123,9 @@
     "deleteFailToast": "角色刪除失敗",
     "loadFailToast": "角色載入失敗"
   },
-  "userConfigTable": {
-    "cardTitle": "使用者",
-    "loadingUsers": "正在載入使用者...",
-    "failedToLoadUsers": "載入使用者失敗。",
-    "dataIsMissing": "資料遺失，發生錯誤。",
-    "noUsersFound": "找不到使用者。",
-    "searchPlaceholder": "搜尋使用者...",
-    "tableHeadName": "姓名",
-    "tableHeadId": "學號或電子信箱",
-    "tableHeadRole": "角色",
-    "resultPerPage": "每頁顯示結果數：",
-    "updatingToast": "正在更新...",
-    "updateSuccessToast": "角色更新成功",
-    "updateFailToast": "角色更新失敗"
-  },
   "adminSidebar": {
     "title": "管理",
-    "roleAccessConfigLink": "權限配置",
-    "userConfigLink": "使用者管理"
+    "roleAccessConfigLink": "權限配置"
   },
   "groupComponents": {
     "addMemberButton": {
