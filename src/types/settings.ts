@@ -12,7 +12,7 @@ export type AccessToken = {
 };
 
 export type PublicKeyInfo = {
-  id: string;
+  fingerprint: string;
   title: string;
   publicKey: string;
 };
@@ -26,4 +26,8 @@ export type AuthCookie = {
 export type Settings = {
   fullName: string;
   linuxUsername: string;
+};
+
+export type PasswordSettings = Settings & {
+  password: string;
 };

@@ -13,7 +13,25 @@
     "saveBtnToolTip": "Please fill in your full name and Linux username",
     "usernameExistsErrorToast": "This Linux username is already in use",
     "reservedKeywordErrorToast": "This Linux username is a reserved system keyword and cannot be used",
-    "warningTextForLinuxUsername": "The username to login to the remote server. This is not changeable after set."
+    "warningTextForLinuxUsername": "The username to login to the remote server. This is not changeable after set.",
+    "labelForInputPassword": "Linux Password",
+    "placeHolderForInputPassword": "password",
+    "labelForInputConfirmPassword": "Confirm Password",
+    "placeHolderForInputConfirmPassword": "password",
+    "passwordMismatchError": "Passwords do not match",
+    "passwordFormat": "Include alphabet and numbers, at least 8 digits",
+    "passwordNote": "The password to login to the remote server. This is changeable in the user setting."
+  },
+  "settingPasswordForm": {
+    "cardTitle": "Linux Password",
+    "cardDescription": "The password to login to the remote server",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm",
+    "saveBtn": "Update password",
+    "successToast": "Password updated successfully",
+    "failToast": "Failed to update password",
+    "loadingBtn": "Updating...",
+    "saveBtnToolTip": "Please fill in password fields"
   },
   "login": {
     "loginTitle": "Login",
@@ -66,7 +84,7 @@
   },
   "settingFullNameForm": {
     "cardTitleForFullName": "Full Name",
-    "cardDescriptionForFullName": "Your full name to let the group administrator recognize you",
+    "cardDescriptionForFullName": "Enter your full name to let the group administrator recognize you",
     "saveBtn": "Save",
     "placeHolderForInputFullName": "Jammy Wang",
     "successToast": "Name saved successfully",
@@ -91,6 +109,12 @@
   },
   "settingKeyTable": {
     "cardTitleForKeyTable": "SSH Keys",
+    "importFromGitHubBtn": "Import From GitHub",
+    "importSuccessMsg": "Successfully imported {{success}} key{{moreThanOne}}.",
+    "importWithDuplicateMsg": "Success: {{success}}, Duplicated: {{duplicate}}.",
+    "importWithAllDuplicateMsg": "All {{duplicate}} key{{moreThanOne}} are duplicated.",
+    "importNothingMsg": "No keys were found.",
+    "importFromGitHubError": "Error! can't connect to GitHub!",
     "addNewKeyBtn": "＋ New SSH Keys",
     "tableHeadForTitle": "Title",
     "tableHeadForKey": "Key",
@@ -123,9 +147,25 @@
     "deleteFailToast": "Failed to delete role",
     "loadFailToast": "Failed to load roles"
   },
+  "userConfigTable": {
+    "cardTitle": "Users",
+    "loadingUsers": "Loading users...",
+    "failedToLoadUsers": "Failed to load users.",
+    "dataIsMissing": "Something went wrong (Data is missing).",
+    "noUsersFound": "No users found.",
+    "searchPlaceholder": "Search users...",
+    "tableHeadName": "Name",
+    "tableHeadId": "Student ID or Email",
+    "tableHeadRole": "Role",
+    "resultPerPage": "Results per page:",
+    "updatingToast": "Updating...",
+    "updateSuccessToast": "Role updated",
+    "updateFailToast": "Failed to update role"
+  },
   "adminSidebar": {
     "title": "Admin",
-    "roleAccessConfigLink": "Role Access Configuration"
+    "roleAccessConfigLink": "Role Access Configuration",
+    "userConfigLink": "User Management"
   },
   "groupComponents": {
     "addMemberButton": {
