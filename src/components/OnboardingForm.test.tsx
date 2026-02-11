@@ -1,10 +1,4 @@
-import {
-  render,
-  screen,
-  waitFor,
-  fireEvent,
-  within,
-} from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import OnboardingForm from "./OnboardingForm";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as sonner from "sonner";
@@ -15,6 +9,7 @@ import { saveOnboardingInfo } from "@/lib/request/saveOnboardingInfo";
 import { authContext, AuthContextType } from "@/lib/auth/authContext";
 import type { UseMutationResult } from "@tanstack/react-query";
 import type { AuthCookie } from "@/types/settings";
+import userEvent from "@testing-library/user-event";
 
 // mock react-i18next so labels/placeholders are deterministic in tests
 vi.mock("react-i18next", () => ({
@@ -24,6 +19,8 @@ vi.mock("react-i18next", () => ({
         "onboardingForm.labelForInputFullName": "Full name",
         "onboardingForm.labelForInputLinuxUsername": "Linux username",
         "onboardingForm.placeHolderForInputFullName": "Full name",
+        "onboardingForm.labelForInputPassword": "Password",
+        "onboardingForm.labelForInputConfirmPassword": "Confirm Password",
         "onboardingForm.saveBtn": "Save",
         "onboardingForm.saveBtnToolTip": "Fill required fields",
         "onboardingForm.loadingBtn": "Loading",
@@ -106,11 +103,20 @@ describe("OnboardingForm", () => {
     const { getByLabelText, getByRole } = within(form as HTMLElement);
     const fullNameInput = getByLabelText(/full name/i) as HTMLInputElement;
     const linuxInput = getByLabelText(/linux username/i) as HTMLInputElement;
+    const passwordInput = getByLabelText(
+      /^password\s*\*?$/i,
+    ) as HTMLInputElement;
+    const confirmPasswordInput = getByLabelText(
+      /^confirm password\s*\*?$/i,
+    ) as HTMLInputElement;
     let saveBtn = getByRole("button", { name: /save/i });
     expect(saveBtn).toBeDisabled();
 
-    fireEvent.change(fullNameInput, { target: { value: "Alice" } });
-    fireEvent.change(linuxInput, { target: { value: "Invalid Username!" } });
+    const user = userEvent.setup();
+    await user.type(fullNameInput, "Alice");
+    await user.type(linuxInput, "Invalid Username!");
+    await user.type(passwordInput, "password123");
+    await user.type(confirmPasswordInput, "password123");
 
     // assert inputs contain the typed values
     expect(fullNameInput).toHaveValue("Alice");
@@ -118,7 +124,121 @@ describe("OnboardingForm", () => {
 
     saveBtn = getByRole("button", { name: /save/i });
     expect(saveBtn).not.toBeDisabled();
-    fireEvent.click(saveBtn);
+    await user.click(saveBtn);
+
+    await waitFor(() => {
+      expect(saveOnboardingInfo).not.toHaveBeenCalled();
+      expect(sonner.toast.error).toHaveBeenCalled();
+    });
+  });
+
+  it("shows validation error when password and confirm password do not match", async () => {
+    renderForm();
+
+    const form = screen.getByRole("form", { name: /onboarding form/i });
+    const { getByLabelText, getByRole } = within(form as HTMLElement);
+    const fullNameInput = getByLabelText(/full name/i) as HTMLInputElement;
+    const linuxInput = getByLabelText(/linux username/i) as HTMLInputElement;
+    const passwordInput = getByLabelText(
+      /^password\s*\*?$/i,
+    ) as HTMLInputElement;
+    const confirmPasswordInput = getByLabelText(
+      /^confirm password\s*\*?$/i,
+    ) as HTMLInputElement;
+    let saveBtn = getByRole("button", { name: /save/i });
+    expect(saveBtn).toBeDisabled();
+
+    const user = userEvent.setup();
+    await user.type(fullNameInput, "Alice");
+    await user.type(linuxInput, "alice");
+    await user.type(passwordInput, "password123");
+    await user.type(confirmPasswordInput, "differentPassword");
+
+    // assert inputs contain the typed values
+    expect(fullNameInput).toHaveValue("Alice");
+    expect(linuxInput).toHaveValue("alice");
+    expect(passwordInput).toHaveValue("password123");
+    expect(confirmPasswordInput).toHaveValue("differentPassword");
+
+    saveBtn = getByRole("button", { name: /save/i });
+    expect(saveBtn).not.toBeDisabled();
+    await user.click(saveBtn);
+
+    await waitFor(() => {
+      expect(saveOnboardingInfo).not.toHaveBeenCalled();
+      expect(sonner.toast.error).toHaveBeenCalled();
+    });
+  });
+
+  it("shows validation error when password is shorter than 8 characters", async () => {
+    renderForm();
+
+    const form = screen.getByRole("form", { name: /onboarding form/i });
+    const { getByLabelText, getByRole } = within(form as HTMLElement);
+    const fullNameInput = getByLabelText(/full name/i) as HTMLInputElement;
+    const linuxInput = getByLabelText(/linux username/i) as HTMLInputElement;
+    const passwordInput = getByLabelText(
+      /^password\s*\*?$/i,
+    ) as HTMLInputElement;
+    const confirmPasswordInput = getByLabelText(
+      /^confirm password\s*\*?$/i,
+    ) as HTMLInputElement;
+    let saveBtn = getByRole("button", { name: /save/i });
+    expect(saveBtn).toBeDisabled();
+
+    const user = userEvent.setup();
+    await user.type(fullNameInput, "Alice");
+    await user.type(linuxInput, "alice");
+    await user.type(passwordInput, "short");
+    await user.type(confirmPasswordInput, "short");
+
+    // assert inputs contain the typed values
+    expect(fullNameInput).toHaveValue("Alice");
+    expect(linuxInput).toHaveValue("alice");
+    expect(passwordInput).toHaveValue("short");
+    expect(confirmPasswordInput).toHaveValue("short");
+
+    saveBtn = getByRole("button", { name: /save/i });
+    expect(saveBtn).not.toBeDisabled();
+    await user.click(saveBtn);
+
+    await waitFor(() => {
+      expect(saveOnboardingInfo).not.toHaveBeenCalled();
+      expect(sonner.toast.error).toHaveBeenCalled();
+    });
+  });
+
+  it("shows validation error when password contains only letters or numbers", async () => {
+    renderForm();
+
+    const form = screen.getByRole("form", { name: /onboarding form/i });
+    const { getByLabelText, getByRole } = within(form as HTMLElement);
+    const fullNameInput = getByLabelText(/full name/i) as HTMLInputElement;
+    const linuxInput = getByLabelText(/linux username/i) as HTMLInputElement;
+    const passwordInput = getByLabelText(
+      /^password\s*\*?$/i,
+    ) as HTMLInputElement;
+    const confirmPasswordInput = getByLabelText(
+      /^confirm password\s*\*?$/i,
+    ) as HTMLInputElement;
+    let saveBtn = getByRole("button", { name: /save/i });
+    expect(saveBtn).toBeDisabled();
+
+    const user = userEvent.setup();
+    await user.type(fullNameInput, "Alice");
+    await user.type(linuxInput, "alice");
+    await user.type(passwordInput, "password");
+    await user.type(confirmPasswordInput, "password");
+
+    // assert inputs contain the typed values
+    expect(fullNameInput).toHaveValue("Alice");
+    expect(linuxInput).toHaveValue("alice");
+    expect(passwordInput).toHaveValue("password");
+    expect(confirmPasswordInput).toHaveValue("password");
+
+    saveBtn = getByRole("button", { name: /save/i });
+    expect(saveBtn).not.toBeDisabled();
+    await user.click(saveBtn);
 
     await waitFor(() => {
       expect(saveOnboardingInfo).not.toHaveBeenCalled();
@@ -131,24 +251,38 @@ describe("OnboardingForm", () => {
 
     renderForm();
 
+    // locate form and input fields
     const form = screen.getByRole("form", { name: /onboarding form/i });
     const { getByLabelText, getByRole } = within(form as HTMLElement);
     const fullNameInput = getByLabelText(/full name/i) as HTMLInputElement;
     const linuxInput = getByLabelText(/linux username/i) as HTMLInputElement;
+    const passwordInput = getByLabelText(
+      /^password\s*\*?$/i,
+    ) as HTMLInputElement;
+    const confirmPasswordInput = getByLabelText(
+      /^confirm password\s*\*?$/i,
+    ) as HTMLInputElement;
 
-    fireEvent.change(fullNameInput, { target: { value: "Alice" } });
-    fireEvent.change(linuxInput, { target: { value: "alice" } });
-    const saveBtn = getByRole("button", { name: /save/i });
+    // fill in valid values for all required fields
+    const user = userEvent.setup();
+    await user.type(fullNameInput, "Alice");
+    await user.type(linuxInput, "alice");
+    await user.type(passwordInput, "password123");
+    await user.type(confirmPasswordInput, "password123");
+
     // assert inputs contain the typed values
     expect(fullNameInput).toHaveValue("Alice");
     expect(linuxInput).toHaveValue("alice");
-    fireEvent.click(saveBtn);
+    expect(passwordInput).toHaveValue("password123");
+    expect(confirmPasswordInput).toHaveValue("password123");
+    await user.click(getByRole("button", { name: /save/i }));
 
     // button should go into loading and then show success toast
     await waitFor(() => {
       expect(saveOnboardingInfo).toHaveBeenCalledWith({
         fullName: "Alice",
         linuxUsername: "alice",
+        password: "password123",
       });
       expect(sonner.toast.error).not.toHaveBeenCalled();
       expect(sonner.toast.success).toHaveBeenCalled();
@@ -171,18 +305,31 @@ describe("OnboardingForm", () => {
 
     renderForm();
 
+    // locate form and input fields
     const form = screen.getByRole("form", { name: /onboarding form/i });
     const { getByLabelText, getByRole } = within(form as HTMLElement);
-    const fullNameInput = getByLabelText(/full name/i) as HTMLInputElement;
-    const linuxInput = getByLabelText(/linux username/i) as HTMLInputElement;
+    const fullNameInput = getByLabelText(/^full name$/i) as HTMLInputElement;
+    const linuxInput = getByLabelText(/^linux username$/i) as HTMLInputElement;
+    const passwordInput = getByLabelText(
+      /^password\s*\*?$/i,
+    ) as HTMLInputElement;
+    const confirmPasswordInput = getByLabelText(
+      /^confirm password\s*\*?$/i,
+    ) as HTMLInputElement;
 
-    fireEvent.change(fullNameInput, { target: { value: "Alice" } });
-    fireEvent.change(linuxInput, { target: { value: "alice" } });
-    const saveBtn = getByRole("button", { name: /save/i });
+    // fill in valid values for all required fields
+    const user = userEvent.setup();
+    await user.type(fullNameInput, "Alice");
+    await user.type(linuxInput, "alice");
+    await user.type(passwordInput, "password123");
+    await user.type(confirmPasswordInput, "password123");
+
     // assert inputs contain the typed values
     expect(fullNameInput).toHaveValue("Alice");
     expect(linuxInput).toHaveValue("alice");
-    fireEvent.click(saveBtn);
+    expect(passwordInput).toHaveValue("password123");
+    expect(confirmPasswordInput).toHaveValue("password123");
+    await user.click(getByRole("button", { name: /save/i }));
 
     await waitFor(() => {
       expect(sonner.toast.error).toHaveBeenCalled();

@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
-import { Label } from "@radix-ui/react-dropdown-menu";
+import { Label } from "@/components/ui/label";
 import { useMutation } from "@tanstack/react-query";
 import { saveOnboardingInfo } from "@/lib/request/saveOnboardingInfo";
 import { authContext } from "@/lib/auth/authContext";
@@ -129,7 +129,7 @@ export default function OnboardingForm({
             </div>
             {/* Linux Password */}
             <div className="grid gap-2 px-2">
-              <Label className="font-medium">
+              <Label className="font-medium" htmlFor="password">
                 {t("onboardingForm.labelForInputPassword")}
                 <span className="text-red-400">*</span>
               </Label>
@@ -149,7 +149,7 @@ export default function OnboardingForm({
             </div>
             {/* Confirm Password */}
             <div className="grid gap-2 px-2">
-              <Label className="font-medium">
+              <Label className="font-medium" htmlFor="confirmPassword">
                 {t("onboardingForm.labelForInputConfirmPassword")}
                 <span className="text-red-400">*</span>
               </Label>
