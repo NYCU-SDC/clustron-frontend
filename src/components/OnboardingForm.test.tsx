@@ -96,11 +96,14 @@ describe("OnboardingForm", () => {
     );
   }
 
-  it("shows validation error for invalid linux username format", async () => {
-    renderForm();
-
-    const form = screen.getByRole("form", { name: /onboarding form/i });
-    const { getByLabelText, getByRole } = within(form as HTMLElement);
+  async function fillRequiredFields(
+    form: HTMLElement,
+    fullName = "Alice",
+    linuxUsername = "alice",
+    password = "password123",
+    confirmPassword = "password123",
+  ) {
+    const { getByLabelText } = within(form as HTMLElement);
     const fullNameInput = getByLabelText(/full name/i) as HTMLInputElement;
     const linuxInput = getByLabelText(/linux username/i) as HTMLInputElement;
     const passwordInput = getByLabelText(
@@ -109,21 +112,44 @@ describe("OnboardingForm", () => {
     const confirmPasswordInput = getByLabelText(
       /^confirm password\s*\*?$/i,
     ) as HTMLInputElement;
+
+    // fill in valid values for all required fields
+    const user = userEvent.setup();
+    await user.type(fullNameInput, fullName);
+    await user.type(linuxInput, linuxUsername);
+    await user.type(passwordInput, password);
+    await user.type(confirmPasswordInput, confirmPassword);
+
+    // assert inputs contain the typed values
+    expect(fullNameInput).toHaveValue(fullName);
+    expect(linuxInput).toHaveValue(linuxUsername);
+    expect(passwordInput).toHaveValue(password);
+    expect(confirmPasswordInput).toHaveValue(confirmPassword);
+  }
+
+  it("shows validation error for invalid linux username format", async () => {
+    renderForm();
+
+    // locate the form
+    const form = screen.getByRole("form", { name: /onboarding form/i });
+    const { getByRole } = within(form as HTMLElement);
+
     let saveBtn = getByRole("button", { name: /save/i });
     expect(saveBtn).toBeDisabled();
 
-    const user = userEvent.setup();
-    await user.type(fullNameInput, "Alice");
-    await user.type(linuxInput, "Invalid Username!");
-    await user.type(passwordInput, "password123");
-    await user.type(confirmPasswordInput, "password123");
-
-    // assert inputs contain the typed values
-    expect(fullNameInput).toHaveValue("Alice");
-    expect(linuxInput).toHaveValue("Invalid Username!");
+    // fill out the form
+    fillRequiredFields(
+      form,
+      "Alice",
+      "Invalid Linux Username!",
+      "password123",
+      "password123",
+    );
 
     saveBtn = getByRole("button", { name: /save/i });
     expect(saveBtn).not.toBeDisabled();
+
+    const user = userEvent.setup();
     await user.click(saveBtn);
 
     await waitFor(() => {
@@ -135,33 +161,26 @@ describe("OnboardingForm", () => {
   it("shows validation error when password and confirm password do not match", async () => {
     renderForm();
 
+    // locate the form
     const form = screen.getByRole("form", { name: /onboarding form/i });
-    const { getByLabelText, getByRole } = within(form as HTMLElement);
-    const fullNameInput = getByLabelText(/full name/i) as HTMLInputElement;
-    const linuxInput = getByLabelText(/linux username/i) as HTMLInputElement;
-    const passwordInput = getByLabelText(
-      /^password\s*\*?$/i,
-    ) as HTMLInputElement;
-    const confirmPasswordInput = getByLabelText(
-      /^confirm password\s*\*?$/i,
-    ) as HTMLInputElement;
+    const { getByRole } = within(form as HTMLElement);
+
     let saveBtn = getByRole("button", { name: /save/i });
     expect(saveBtn).toBeDisabled();
 
-    const user = userEvent.setup();
-    await user.type(fullNameInput, "Alice");
-    await user.type(linuxInput, "alice");
-    await user.type(passwordInput, "password123");
-    await user.type(confirmPasswordInput, "differentPassword");
-
-    // assert inputs contain the typed values
-    expect(fullNameInput).toHaveValue("Alice");
-    expect(linuxInput).toHaveValue("alice");
-    expect(passwordInput).toHaveValue("password123");
-    expect(confirmPasswordInput).toHaveValue("differentPassword");
+    // fill out the form with non-matching password and confirm password
+    fillRequiredFields(
+      form,
+      "Alice",
+      "alice",
+      "password123",
+      "differentPassword",
+    );
 
     saveBtn = getByRole("button", { name: /save/i });
     expect(saveBtn).not.toBeDisabled();
+
+    const user = userEvent.setup();
     await user.click(saveBtn);
 
     await waitFor(() => {
@@ -173,33 +192,20 @@ describe("OnboardingForm", () => {
   it("shows validation error when password is shorter than 8 characters", async () => {
     renderForm();
 
+    // locate the form
     const form = screen.getByRole("form", { name: /onboarding form/i });
-    const { getByLabelText, getByRole } = within(form as HTMLElement);
-    const fullNameInput = getByLabelText(/full name/i) as HTMLInputElement;
-    const linuxInput = getByLabelText(/linux username/i) as HTMLInputElement;
-    const passwordInput = getByLabelText(
-      /^password\s*\*?$/i,
-    ) as HTMLInputElement;
-    const confirmPasswordInput = getByLabelText(
-      /^confirm password\s*\*?$/i,
-    ) as HTMLInputElement;
+    const { getByRole } = within(form as HTMLElement);
+
     let saveBtn = getByRole("button", { name: /save/i });
     expect(saveBtn).toBeDisabled();
 
-    const user = userEvent.setup();
-    await user.type(fullNameInput, "Alice");
-    await user.type(linuxInput, "alice");
-    await user.type(passwordInput, "short");
-    await user.type(confirmPasswordInput, "short");
-
-    // assert inputs contain the typed values
-    expect(fullNameInput).toHaveValue("Alice");
-    expect(linuxInput).toHaveValue("alice");
-    expect(passwordInput).toHaveValue("short");
-    expect(confirmPasswordInput).toHaveValue("short");
+    // fill out the form with a short password
+    fillRequiredFields(form, "Alice", "alice", "short", "short");
 
     saveBtn = getByRole("button", { name: /save/i });
     expect(saveBtn).not.toBeDisabled();
+
+    const user = userEvent.setup();
     await user.click(saveBtn);
 
     await waitFor(() => {
@@ -208,36 +214,48 @@ describe("OnboardingForm", () => {
     });
   });
 
-  it("shows validation error when password contains only letters or numbers", async () => {
+  it("shows validation error when password contains only letters", async () => {
     renderForm();
 
+    // locate the form
     const form = screen.getByRole("form", { name: /onboarding form/i });
-    const { getByLabelText, getByRole } = within(form as HTMLElement);
-    const fullNameInput = getByLabelText(/full name/i) as HTMLInputElement;
-    const linuxInput = getByLabelText(/linux username/i) as HTMLInputElement;
-    const passwordInput = getByLabelText(
-      /^password\s*\*?$/i,
-    ) as HTMLInputElement;
-    const confirmPasswordInput = getByLabelText(
-      /^confirm password\s*\*?$/i,
-    ) as HTMLInputElement;
+    const { getByRole } = within(form as HTMLElement);
+
     let saveBtn = getByRole("button", { name: /save/i });
     expect(saveBtn).toBeDisabled();
 
-    const user = userEvent.setup();
-    await user.type(fullNameInput, "Alice");
-    await user.type(linuxInput, "alice");
-    await user.type(passwordInput, "password");
-    await user.type(confirmPasswordInput, "password");
-
-    // assert inputs contain the typed values
-    expect(fullNameInput).toHaveValue("Alice");
-    expect(linuxInput).toHaveValue("alice");
-    expect(passwordInput).toHaveValue("password");
-    expect(confirmPasswordInput).toHaveValue("password");
+    // fill out the form
+    fillRequiredFields(form, "Alice", "alice", "password", "password");
 
     saveBtn = getByRole("button", { name: /save/i });
     expect(saveBtn).not.toBeDisabled();
+
+    const user = userEvent.setup();
+    await user.click(saveBtn);
+
+    await waitFor(() => {
+      expect(saveOnboardingInfo).not.toHaveBeenCalled();
+      expect(sonner.toast.error).toHaveBeenCalled();
+    });
+  });
+
+  it("shows validation error when password contains only numbers", async () => {
+    renderForm();
+
+    // locate the form
+    const form = screen.getByRole("form", { name: /onboarding form/i });
+    const { getByRole } = within(form as HTMLElement);
+
+    let saveBtn = getByRole("button", { name: /save/i });
+    expect(saveBtn).toBeDisabled();
+
+    // fill out the form
+    fillRequiredFields(form, "Alice", "alice", "12345678", "12345678");
+
+    saveBtn = getByRole("button", { name: /save/i });
+    expect(saveBtn).not.toBeDisabled();
+
+    const user = userEvent.setup();
     await user.click(saveBtn);
 
     await waitFor(() => {
@@ -251,30 +269,14 @@ describe("OnboardingForm", () => {
 
     renderForm();
 
-    // locate form and input fields
+    // locate form
     const form = screen.getByRole("form", { name: /onboarding form/i });
-    const { getByLabelText, getByRole } = within(form as HTMLElement);
-    const fullNameInput = getByLabelText(/full name/i) as HTMLInputElement;
-    const linuxInput = getByLabelText(/linux username/i) as HTMLInputElement;
-    const passwordInput = getByLabelText(
-      /^password\s*\*?$/i,
-    ) as HTMLInputElement;
-    const confirmPasswordInput = getByLabelText(
-      /^confirm password\s*\*?$/i,
-    ) as HTMLInputElement;
+    const { getByRole } = within(form as HTMLElement);
 
-    // fill in valid values for all required fields
+    // fill out the form with valid values
+    fillRequiredFields(form, "Alice", "alice", "password123", "password123");
+
     const user = userEvent.setup();
-    await user.type(fullNameInput, "Alice");
-    await user.type(linuxInput, "alice");
-    await user.type(passwordInput, "password123");
-    await user.type(confirmPasswordInput, "password123");
-
-    // assert inputs contain the typed values
-    expect(fullNameInput).toHaveValue("Alice");
-    expect(linuxInput).toHaveValue("alice");
-    expect(passwordInput).toHaveValue("password123");
-    expect(confirmPasswordInput).toHaveValue("password123");
     await user.click(getByRole("button", { name: /save/i }));
 
     // button should go into loading and then show success toast
@@ -307,28 +309,12 @@ describe("OnboardingForm", () => {
 
     // locate form and input fields
     const form = screen.getByRole("form", { name: /onboarding form/i });
-    const { getByLabelText, getByRole } = within(form as HTMLElement);
-    const fullNameInput = getByLabelText(/^full name$/i) as HTMLInputElement;
-    const linuxInput = getByLabelText(/^linux username$/i) as HTMLInputElement;
-    const passwordInput = getByLabelText(
-      /^password\s*\*?$/i,
-    ) as HTMLInputElement;
-    const confirmPasswordInput = getByLabelText(
-      /^confirm password\s*\*?$/i,
-    ) as HTMLInputElement;
+    const { getByRole } = within(form as HTMLElement);
 
-    // fill in valid values for all required fields
+    // fill out the form with valid values (dummy values since the request will be mocked to fail)
+    fillRequiredFields(form, "Alice", "alice", "password123", "password123");
+
     const user = userEvent.setup();
-    await user.type(fullNameInput, "Alice");
-    await user.type(linuxInput, "alice");
-    await user.type(passwordInput, "password123");
-    await user.type(confirmPasswordInput, "password123");
-
-    // assert inputs contain the typed values
-    expect(fullNameInput).toHaveValue("Alice");
-    expect(linuxInput).toHaveValue("alice");
-    expect(passwordInput).toHaveValue("password123");
-    expect(confirmPasswordInput).toHaveValue("password123");
     await user.click(getByRole("button", { name: /save/i }));
 
     await waitFor(() => {
