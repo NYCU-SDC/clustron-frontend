@@ -138,7 +138,7 @@ describe("OnboardingForm", () => {
     expect(saveBtn).toBeDisabled();
 
     // fill out the form
-    fillRequiredFields(
+    await fillRequiredFields(
       form,
       "Alice",
       "Invalid Linux Username!",
@@ -169,7 +169,7 @@ describe("OnboardingForm", () => {
     expect(saveBtn).toBeDisabled();
 
     // fill out the form with non-matching password and confirm password
-    fillRequiredFields(
+    await fillRequiredFields(
       form,
       "Alice",
       "alice",
@@ -200,7 +200,7 @@ describe("OnboardingForm", () => {
     expect(saveBtn).toBeDisabled();
 
     // fill out the form with a short password
-    fillRequiredFields(form, "Alice", "alice", "short", "short");
+    await fillRequiredFields(form, "Alice", "alice", "short", "short");
 
     saveBtn = getByRole("button", { name: /save/i });
     expect(saveBtn).not.toBeDisabled();
@@ -225,7 +225,7 @@ describe("OnboardingForm", () => {
     expect(saveBtn).toBeDisabled();
 
     // fill out the form
-    fillRequiredFields(form, "Alice", "alice", "password", "password");
+    await fillRequiredFields(form, "Alice", "alice", "password", "password");
 
     saveBtn = getByRole("button", { name: /save/i });
     expect(saveBtn).not.toBeDisabled();
@@ -250,7 +250,7 @@ describe("OnboardingForm", () => {
     expect(saveBtn).toBeDisabled();
 
     // fill out the form
-    fillRequiredFields(form, "Alice", "alice", "12345678", "12345678");
+    await fillRequiredFields(form, "Alice", "alice", "12345678", "12345678");
 
     saveBtn = getByRole("button", { name: /save/i });
     expect(saveBtn).not.toBeDisabled();
@@ -274,7 +274,13 @@ describe("OnboardingForm", () => {
     const { getByRole } = within(form as HTMLElement);
 
     // fill out the form with valid values
-    fillRequiredFields(form, "Alice", "alice", "password123", "password123");
+    await fillRequiredFields(
+      form,
+      "Alice",
+      "alice",
+      "password123",
+      "password123",
+    );
 
     const user = userEvent.setup();
     await user.click(getByRole("button", { name: /save/i }));
@@ -312,7 +318,13 @@ describe("OnboardingForm", () => {
     const { getByRole } = within(form as HTMLElement);
 
     // fill out the form with valid values (dummy values since the request will be mocked to fail)
-    fillRequiredFields(form, "Alice", "alice", "password123", "password123");
+    await fillRequiredFields(
+      form,
+      "Alice",
+      "alice",
+      "password123",
+      "password123",
+    );
 
     const user = userEvent.setup();
     await user.click(getByRole("button", { name: /save/i }));
