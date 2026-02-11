@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { AccessToken } from "@/types/settings";
 import { useTranslation } from "react-i18next";
 import SideBar, { NavItem } from "@/components/Sidebar";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 export default function AdminLayout() {
   const accessToken = getAccessToken();
@@ -29,6 +30,10 @@ export default function AdminLayout() {
       to: "/admin/config",
       label: t("adminSidebar.roleAccessConfigLink"),
     },
+    {
+      to: "/admin/users",
+      label: t("adminSidebar.userConfigLink"),
+    },
   ];
 
   if (role !== "admin") return null;
@@ -43,7 +48,9 @@ export default function AdminLayout() {
         />
       </div>
       <main className="flex-1 flex justify-center">
-        <Outlet />
+        <ErrorBoundary>
+          <Outlet />
+        </ErrorBoundary>
       </main>
     </div>
   );

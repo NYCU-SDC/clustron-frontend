@@ -18,12 +18,15 @@ import AddMemberPage from "@/pages/group/AddMemberPage";
 import AddGroupPage from "@/pages/group/CreateGroup";
 import GroupLayout from "@/pages/layouts/GroupLayout";
 import AddMemberResult from "@/pages/group/AddMemberResult";
-import JobDashboard from "@/pages/job/JobDashboard";
+// import JobDashboard from "@/pages/job/JobDashboard";
 import AdminLayout from "@/pages/layouts/AdminLayout";
 import RoleConfiguration from "@/pages/admin/RoleConfiguration";
+import UserConfiguration from "@/pages/admin/UserConfiguration";
 import BindCallback from "@/pages/BindCallback";
-import JobSubmitPage from "@/pages/JobSubmitPage";
-import JobLayout from "@/pages/layouts/JobLayout";
+// import JobSubmitPage from "@/pages/JobSubmitPage";
+// import JobLayout from "@/pages/layouts/JobLayout";
+import ErrorBoundary from "@/components/ErrorBoundary";
+
 const App = () => {
   return (
     <Routes>
@@ -32,8 +35,22 @@ const App = () => {
       </Route>
 
       <Route path="/callback">
-        <Route path="login" element={<LoginCallback />} />
-        <Route path="bind" element={<BindCallback />} />
+        <Route
+          path="login"
+          element={
+            <ErrorBoundary>
+              <LoginCallback />
+            </ErrorBoundary>
+          }
+        />
+        <Route
+          path="bind"
+          element={
+            <ErrorBoundary>
+              <BindCallback />
+            </ErrorBoundary>
+          }
+        />
       </Route>
 
       <Route path="/health" element={<div>Health Check</div>} />
@@ -45,7 +62,7 @@ const App = () => {
             <Route index element={<Navigate to="general" replace />} />
             <Route path="general" element={<SettingGeneral />} />
             <Route path="ssh" element={<SettingSSH />} />
-            <Route path="add-new-key" element={<SettingAddKey />} />
+            <Route path="ssh/new" element={<SettingAddKey />} />
           </Route>
           <Route path="/groups" element={<GroupListPage />} />
           <Route path="/groups/new" element={<AddGroupPage />} />
@@ -54,10 +71,10 @@ const App = () => {
             path="/groups/:id/add-member-result"
             element={<AddMemberResult />}
           />
-          <Route path="/jobs" element={<JobLayout />}>
-            <Route index element={<JobDashboard />} />
-            <Route path="submit" element={<JobSubmitPage />} />
-          </Route>
+          {/*<Route path="/jobs" element={<JobLayout />}>
+              <Route index element={<JobDashboard />} />
+              <Route path="submit" element={<JobSubmitPage />} />
+            </Route>*/}
 
           <Route element={<GroupLayout />}>
             <Route path="/groups" element={<GroupListPage />} />
@@ -74,8 +91,8 @@ const App = () => {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Navigate to="config" replace />} />
             <Route path="config" element={<RoleConfiguration />}></Route>
+            <Route path="users" element={<UserConfiguration />}></Route>
           </Route>
-          {/*  end*/}
         </Route>
       </Route>
 

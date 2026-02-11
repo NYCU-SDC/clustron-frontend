@@ -1,8 +1,8 @@
 import { api } from "@/lib/request/api";
 
-export async function deletePublicKey(id: string): Promise<void> {
-  return api("/api/publickey", {
+export async function deletePublicKey(fingerprint: string): Promise<void> {
+  return api(`/api/publickey`, {
     method: "DELETE",
-    body: JSON.stringify({ id }),
+    body: JSON.stringify({ fingerprint }),
   });
 }
