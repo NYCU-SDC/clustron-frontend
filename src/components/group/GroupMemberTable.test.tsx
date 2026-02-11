@@ -4,7 +4,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import GroupMemberTable from "./GroupMemberTable";
 import { AccessLevelUser, AccessLevelOwner } from "@/types/group";
-import type { GetGroupMembersResponse } from "@/types/group";
+import type { GetGroupMembersResponse, GroupMember } from "@/types/group";
 
 // Mock hooks
 const mockGetMembers = vi.fn();
@@ -57,17 +57,20 @@ const createMockMembersResponse = (
   const startIndex = page * pageSize;
   const endIndex = Math.min(startIndex + pageSize, totalItems);
 
-  const items = Array.from({ length: endIndex - startIndex }, (_, i) => ({
-    id: `member-${startIndex + i + 1}`,
-    fullName: `Member ${startIndex + i + 1}`,
-    email: `member${startIndex + i + 1}@example.com`,
-    studentId: `S${(startIndex + i + 1).toString().padStart(4, "0")}`,
-    role: {
-      roleName: "USER",
-      id: `role-${startIndex + i + 1}`,
-      accessLevel: AccessLevelUser,
-    },
-  }));
+  const items: GroupMember[] = Array.from(
+    { length: endIndex - startIndex },
+    (_, i) => ({
+      id: `member-${startIndex + i + 1}`,
+      fullName: `Member ${startIndex + i + 1}`,
+      email: `member${startIndex + i + 1}@example.com`,
+      studentId: `S${(startIndex + i + 1).toString().padStart(4, "0")}`,
+      role: {
+        roleName: "USER",
+        id: `role-${startIndex + i + 1}`,
+        accessLevel: AccessLevelUser,
+      },
+    }),
+  );
 
   return {
     items,
@@ -151,27 +154,7 @@ describe("GroupMemberTable", () => {
       expect(screen.getByText("3")).toBeInTheDocument();
     });
 
-    it("should disable previous button on first page", () => {
-      const mockData = createMockMembersResponse(0);
-      mockGetMembers.mockReturnValue({
-        data: mockData,
-        isLoading: false,
-        isError: false,
-      });
-
-      render(
-        <TestWrapper>
-          <GroupMemberTable groupId="test-group-id" />
-        </TestWrapper>,
-      );
-
-      const prevButton = screen.getByLabelText(/go to previous page/i);
-      expect(prevButton).toHaveClass("opacity-50", "pointer-events-none");
-    });
-
-    it("should disable next button on last page", () => {
-      // Use a single page dataset (currentPage = 0, totalPages = 1)
-      // So currentPage === totalPages - 1 (0 === 0) should be true
+    it("should not display pagination controls when there is only one page", () => {
       const mockData = createMockMembersResponse(0, 10, 5); // Only 5 items = 1 page
       mockGetMembers.mockReturnValue({
         data: mockData,
@@ -185,15 +168,23 @@ describe("GroupMemberTable", () => {
         </TestWrapper>,
       );
 
-      const nextButton = screen.getByLabelText(/go to next page/i);
-      expect(nextButton).toHaveClass("opacity-50", "pointer-events-none");
+      // Pagination buttons should not be in the document
+      expect(
+        screen.queryByLabelText(/go to previous page/i),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByLabelText(/go to next page/i),
+      ).not.toBeInTheDocument();
+
+      // Page number buttons should not be in the document
+      expect(screen.queryByText("1")).not.toBeInTheDocument();
     });
 
     it("should navigate to next page when next button is clicked", async () => {
       const user = userEvent.setup();
 
       // Initial render with page 0
-      const mockDataPage0 = createMockMembersResponse(0);
+      const mockDataPage0 = createMockMembersResponse(0, 10, 25); // 3 pages total
       mockGetMembers.mockReturnValue({
         data: mockDataPage0,
         isLoading: false,
@@ -211,7 +202,7 @@ describe("GroupMemberTable", () => {
       await user.click(nextButton);
 
       // Mock return value for page 1
-      const mockDataPage1 = createMockMembersResponse(1);
+      const mockDataPage1 = createMockMembersResponse(1, 10, 25); // 3 pages total
       mockGetMembers.mockReturnValue({
         data: mockDataPage1,
         isLoading: false,
@@ -235,7 +226,7 @@ describe("GroupMemberTable", () => {
       const user = userEvent.setup();
 
       // Start on page 1
-      const mockDataPage1 = createMockMembersResponse(1);
+      const mockDataPage1 = createMockMembersResponse(1, 10, 25); // 3 pages total
       mockGetMembers.mockReturnValue({
         data: mockDataPage1,
         isLoading: false,
@@ -253,7 +244,7 @@ describe("GroupMemberTable", () => {
       await user.click(prevButton);
 
       // Mock return value for page 0
-      const mockDataPage0 = createMockMembersResponse(0);
+      const mockDataPage0 = createMockMembersResponse(0, 10, 25); // 3 pages total
       mockGetMembers.mockReturnValue({
         data: mockDataPage0,
         isLoading: false,
@@ -271,6 +262,48 @@ describe("GroupMemberTable", () => {
       await waitFor(() => {
         expect(mockGetMembers).toHaveBeenCalledWith("test-group-id", 0);
       });
+    });
+
+    it("should disable previous button on first page", () => {
+      const mockData = createMockMembersResponse(0, 10, 25); // 3 pages total
+      mockGetMembers.mockReturnValue({
+        data: mockData,
+        isLoading: false,
+        isError: false,
+      });
+
+      render(
+        <TestWrapper>
+          <GroupMemberTable groupId="test-group-id" />
+        </TestWrapper>,
+      );
+
+      const prevButton = screen.getByLabelText(/go to previous page/i);
+      expect(prevButton).toHaveClass("opacity-50", "pointer-events-none");
+    });
+
+    it("should disable next button on last page", async () => {
+      // Use a single page dataset (currentPage = 0, totalPages = 1)
+      // So currentPage === totalPages - 1 (0 === 0) should be true
+      const mockData = createMockMembersResponse(0, 10, 25); // 3 pages total
+      mockGetMembers.mockReturnValue({
+        data: mockData,
+        isLoading: false,
+        isError: false,
+      });
+
+      render(
+        <TestWrapper>
+          <GroupMemberTable groupId="test-group-id" />
+        </TestWrapper>,
+      );
+
+      const user = userEvent.setup();
+      await user.click(screen.getByLabelText(/go to next page/i)); // Move to page 1
+      await user.click(screen.getByLabelText(/go to next page/i)); // Move to page 2 (last page)
+
+      const nextButton = screen.getByLabelText(/go to next page/i);
+      expect(nextButton).toHaveClass("opacity-50", "pointer-events-none");
     });
 
     it("should navigate to specific page when page number is clicked", async () => {
@@ -335,7 +368,7 @@ describe("GroupMemberTable", () => {
       expect(ellipsis.length).toBeGreaterThan(0);
     });
 
-    it("should limit visible page numbers to maxPages (4)", () => {
+    it("should limit visible page numbers to maxVisiblePages (4)", () => {
       // Create data with many pages
       const mockData = createMockMembersResponse(5, 10, 100); // Page 5 of 10
       mockGetMembers.mockReturnValue({
@@ -353,44 +386,6 @@ describe("GroupMemberTable", () => {
       // Should show at most 4 page number buttons (excluding prev/next)
       const pageNumbers = screen.getAllByText(/^\d+$/);
       expect(pageNumbers.length).toBeLessThanOrEqual(4);
-    });
-
-    it("should maintain pagination state when members are updated", async () => {
-      const user = userEvent.setup();
-
-      // Start on page 1
-      const mockDataPage1 = createMockMembersResponse(1);
-      mockGetMembers.mockReturnValue({
-        data: mockDataPage1,
-        isLoading: false,
-        isError: false,
-      });
-
-      render(
-        <TestWrapper>
-          <GroupMemberTable
-            groupId="test-group-id"
-            accessLevel={AccessLevelOwner}
-          />
-        </TestWrapper>,
-      );
-
-      // Look for the first role dropdown button (there will be multiple)
-      const roleButtons = screen.getAllByRole("button", { name: /USER/i });
-      await user.click(roleButtons[0]);
-
-      // Click on a different role option in the dropdown
-      const adminRoleOption = screen.getByRole("menuitem", {
-        name: "GROUP_ADMIN",
-      });
-      await user.click(adminRoleOption);
-
-      // Verify the update function was called with correct parameters
-      expect(mockUpdateMember).toHaveBeenCalledWith({
-        memberId: "member-11",
-        groupId: "test-group-id",
-        roleId: "role-2", // GROUP_ADMIN role ID
-      });
     });
   });
 

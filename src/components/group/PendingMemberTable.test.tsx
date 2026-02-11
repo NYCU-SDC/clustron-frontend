@@ -150,27 +150,7 @@ describe("PendingMemberTable", () => {
       expect(screen.getByText("3")).toBeInTheDocument();
     });
 
-    it("should disable previous button on first page", () => {
-      const mockData = createMockPendingMembersResponse(0);
-      mockGetPendingMembers.mockReturnValue({
-        data: mockData,
-        isLoading: false,
-        isError: false,
-      });
-
-      render(
-        <TestWrapper>
-          <PendingMemberTable groupId="test-group-id" />
-        </TestWrapper>,
-      );
-
-      const prevButton = screen.getByLabelText(/go to previous page/i);
-      expect(prevButton).toHaveClass("opacity-50", "pointer-events-none");
-    });
-
-    it("should disable next button on last page", () => {
-      // Use a single page dataset (currentPage = 0, totalPages = 1)
-      // So currentPage === totalPages - 1 (0 === 0) should be true
+    it("should not display pagination controls when there is only one page", () => {
       const mockData = createMockPendingMembersResponse(0, 10, 5); // Only 5 items = 1 page
       mockGetPendingMembers.mockReturnValue({
         data: mockData,
@@ -184,15 +164,23 @@ describe("PendingMemberTable", () => {
         </TestWrapper>,
       );
 
-      const nextButton = screen.getByLabelText(/go to next page/i);
-      expect(nextButton).toHaveClass("opacity-50", "pointer-events-none");
+      // Pagination buttons should not be in the document
+      expect(
+        screen.queryByLabelText(/go to previous page/i),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByLabelText(/go to next page/i),
+      ).not.toBeInTheDocument();
+
+      // Page number buttons should not be in the document
+      expect(screen.queryByText("1")).not.toBeInTheDocument();
     });
 
     it("should navigate to next page when next button is clicked", async () => {
       const user = userEvent.setup();
 
       // Initial render with page 0
-      const mockDataPage0 = createMockPendingMembersResponse(0);
+      const mockDataPage0 = createMockPendingMembersResponse(0, 10, 25); // 3 pages total
       mockGetPendingMembers.mockReturnValue({
         data: mockDataPage0,
         isLoading: false,
@@ -210,7 +198,7 @@ describe("PendingMemberTable", () => {
       await user.click(nextButton);
 
       // Mock return value for page 1
-      const mockDataPage1 = createMockPendingMembersResponse(1);
+      const mockDataPage1 = createMockPendingMembersResponse(1, 10, 25); // 3 pages total
       mockGetPendingMembers.mockReturnValue({
         data: mockDataPage1,
         isLoading: false,
@@ -234,7 +222,7 @@ describe("PendingMemberTable", () => {
       const user = userEvent.setup();
 
       // Start on page 1
-      const mockDataPage1 = createMockPendingMembersResponse(1);
+      const mockDataPage1 = createMockPendingMembersResponse(1, 10, 25); // 3 pages total
       mockGetPendingMembers.mockReturnValue({
         data: mockDataPage1,
         isLoading: false,
@@ -252,7 +240,7 @@ describe("PendingMemberTable", () => {
       await user.click(prevButton);
 
       // Mock return value for page 0
-      const mockDataPage0 = createMockPendingMembersResponse(0);
+      const mockDataPage0 = createMockPendingMembersResponse(0, 10, 25); // 3 pages total
       mockGetPendingMembers.mockReturnValue({
         data: mockDataPage0,
         isLoading: false,
@@ -270,6 +258,48 @@ describe("PendingMemberTable", () => {
       await waitFor(() => {
         expect(mockGetPendingMembers).toHaveBeenCalledWith("test-group-id", 0);
       });
+    });
+
+    it("should disable previous button on first page", () => {
+      const mockData = createMockPendingMembersResponse(0, 10, 25); // 3 pages total
+      mockGetPendingMembers.mockReturnValue({
+        data: mockData,
+        isLoading: false,
+        isError: false,
+      });
+
+      render(
+        <TestWrapper>
+          <PendingMemberTable groupId="test-group-id" />
+        </TestWrapper>,
+      );
+
+      const prevButton = screen.getByLabelText(/go to previous page/i);
+      expect(prevButton).toHaveClass("opacity-50", "pointer-events-none");
+    });
+
+    it("should disable next button on last page", async () => {
+      // Use a single page dataset (currentPage = 0, totalPages = 1)
+      // So currentPage === totalPages - 1 (0 === 0) should be true
+      const mockData = createMockPendingMembersResponse(0, 10, 25); // 3 pages total
+      mockGetPendingMembers.mockReturnValue({
+        data: mockData,
+        isLoading: false,
+        isError: false,
+      });
+
+      render(
+        <TestWrapper>
+          <PendingMemberTable groupId="test-group-id" />
+        </TestWrapper>,
+      );
+
+      const user = userEvent.setup();
+      await user.click(screen.getByLabelText(/go to next page/i)); // Move to page 1
+      await user.click(screen.getByLabelText(/go to next page/i)); // Move to page 2 (last page)
+
+      const nextButton = screen.getByLabelText(/go to next page/i);
+      expect(nextButton).toHaveClass("opacity-50", "pointer-events-none");
     });
 
     it("should navigate to specific page when page number is clicked", async () => {
@@ -586,7 +616,9 @@ describe("PendingMemberTable", () => {
       );
 
       // Check that the table header is displayed
-      expect(screen.getByText("groupPages.pendingMember")).toBeInTheDocument();
+      expect(
+        screen.getByText("groupPages.pendingMembers.pendingMember"),
+      ).toBeInTheDocument();
 
       // Check that table headers are displayed
       expect(

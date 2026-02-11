@@ -134,8 +134,8 @@ describe("Navbar", () => {
       return href && href !== "/" && !href.startsWith("#");
     });
 
-    // Verify we have the expected number of navigation links for admin (Groups, Jobs, Settings, Admin)
-    expect(navLinks.length).toBe(4);
+    // Verify we have the expected number of navigation links for admin (Groups, Settings, Admin)
+    expect(navLinks.length).toBe(3);
 
     // Verify each link has valid href
     navLinks.forEach((link) => {
