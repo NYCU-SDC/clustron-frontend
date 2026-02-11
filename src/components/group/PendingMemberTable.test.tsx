@@ -4,7 +4,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import PendingMemberTable from "./PendingMemberTable";
 import { AccessLevelUser, AccessLevelOwner } from "@/types/group";
-import type { GetPendingMembersResponse } from "@/types/group";
+import type { GetPendingMembersResponse, PendingMember } from "@/types/group";
 
 // Mock hooks
 const mockGetPendingMembers = vi.fn();
@@ -55,15 +55,18 @@ const createMockPendingMembersResponse = (
   const startIndex = page * pageSize;
   const endIndex = Math.min(startIndex + pageSize, totalItems);
 
-  const items = Array.from({ length: endIndex - startIndex }, (_, i) => ({
-    id: `pending-${startIndex + i + 1}`,
-    userIdentifier: `pending${startIndex + i + 1}@example.com`,
-    role: {
-      id: `role-${startIndex + i + 1}`,
-      roleName: "USER",
-      accessLevel: AccessLevelUser,
-    },
-  }));
+  const items: PendingMember[] = Array.from(
+    { length: endIndex - startIndex },
+    (_, i) => ({
+      id: `pending-${startIndex + i + 1}`,
+      userIdentifier: `pending${startIndex + i + 1}@example.com`,
+      role: {
+        id: `role-${startIndex + i + 1}`,
+        roleName: "USER",
+        accessLevel: AccessLevelUser,
+      },
+    }),
+  );
 
   return {
     items,
