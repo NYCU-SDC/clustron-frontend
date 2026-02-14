@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import DefaultLayout from "./pages/layouts/DefaultLayout";
-import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import LoginCallback from "@/pages/LoginCallback";
 import Onboarding from "@/pages/Onboarding";
@@ -30,10 +29,6 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 const App = () => {
   return (
     <Routes>
-      <Route element={<ProtectedRoute showLoginRequiredToast={false} />}>
-        <Route path="/" element={<Home />} />
-      </Route>
-
       <Route path="/callback">
         <Route
           path="login"
@@ -56,6 +51,7 @@ const App = () => {
       <Route path="/health" element={<div>Health Check</div>} />
 
       <Route element={<ProtectedRoute />}>
+        <Route path="/" element={<Navigate to="/groups" replace />} />
         <Route element={<DefaultLayout />}>
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/setting" element={<SettingLayout />}>
