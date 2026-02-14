@@ -66,7 +66,7 @@
   "settingSideBar": {
     "title": "Settings",
     "GeneralNavLink": "General",
-    "SSHNavLink": "SSH"
+    "SSHNavLink": "Host Connection Information"
   },
   "settingAddKeyForm": {
     "cardTitleForTitle": "Title",

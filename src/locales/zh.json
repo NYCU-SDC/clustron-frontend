@@ -66,7 +66,7 @@
   "settingSideBar": {
     "title": "設定",
     "GeneralNavLink": "一般",
-    "SSHNavLink": "SSH"
+    "SSHNavLink": "主機連線資訊"
   },
   "settingAddKeyForm": {
     "cardTitleForTitle": "標題",
