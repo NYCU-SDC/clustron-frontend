@@ -25,6 +25,13 @@ export type GroupMember = {
   role: GroupRole;
 };
 
+export type MemberRow = {
+  rowId: string;
+  id: string;
+  roleName: GroupMemberRoleName;
+  error?: string;
+};
+
 // GET /api/groups
 export type GroupSummary = {
   id: string;
@@ -70,11 +77,7 @@ export type JoinMemberErrorResponse = {
   message: string;
 };
 
-export type CreateGroupResultData = {
-  addedSuccessNumber: number;
-  addedFailureNumber: number;
-  errors: JoinMemberErrorResponse[];
-};
+export type CreateGroupResultData = AddMembersResult;
 
 export type CreateGroupResponse = GroupDetail & {
   addedResult: CreateGroupResultData;
@@ -96,7 +99,11 @@ export type AddGroupMemberInput = {
   roleId: string;
 };
 
-export type AddGroupMemberResponse = GroupMember;
+export type AddMembersResult = {
+  addedSuccessNumber: number;
+  addedFailureNumber: number;
+  errors: JoinMemberErrorResponse[];
+};
 
 // DELETE /api/groups/{id}/members/{memberId}
 export type RemoveMemberParams = {

@@ -5,7 +5,12 @@ import AddMemberRow from "@/components/group/AddMemberRow";
 import { useAddMember } from "@/hooks/useAddMember";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
-import { AccessLevelUser, type GroupMemberRoleName } from "@/types/group";
+import {
+  AccessLevelUser,
+  MemberRow,
+  type GroupMemberRoleName,
+  type AddMembersResult,
+} from "@/types/group";
 import {
   Table,
   TableHeader,
@@ -25,12 +30,39 @@ export default function AddMemberPage() {
   const { roleNameToId } = useRoleMapper();
   const payload = useJwtPayload();
 
-  const [members, setMembers] = useState<
-    { id: string; roleName: GroupMemberRoleName }[]
-  >([{ id: "", roleName: "student" }]);
+  const [members, setMembers] = useState<MemberRow[]>([
+    { rowId: crypto.randomUUID(), id: "", roleName: "student" },
+  ]);
+
+  const syncFailureState = (data: AddMembersResult) => {
+    const errorMap = new Map(
+      data.errors.map((e) => [e.member.trim(), e.message]),
+    );
+
+    setMembers((prev) => {
+      return prev
+        .filter((m) => errorMap.has(m.id.trim()))
+        .map((m) => ({
+          ...m,
+          error: errorMap.get(m.id.trim()),
+        }));
+    });
+  };
 
   const addMember = useAddMember(groupId!, {
-    onSuccess: () => navigate(`/groups/${groupId}/settings`),
+    onSuccess: (data) => {
+      if (data.addedFailureNumber > 0) {
+        syncFailureState(data);
+      } else {
+        navigate(`/groups/${groupId}/settings`);
+      }
+    },
+    onError: (err) => {
+      const errorData = err.data as AddMembersResult;
+      if (errorData?.errors) {
+        syncFailureState(errorData);
+      }
+    },
   });
 
   if (isLoading)
@@ -43,17 +75,26 @@ export default function AddMemberPage() {
   const accessLevel = group.me.role.accessLevel ?? AccessLevelUser;
 
   const updateRow = (index: number, key: "id" | "roleName", value: string) => {
-    const next = [...members];
-    next[index][key] = value as GroupMemberRoleName;
-    setMembers(next);
+    setMembers((prev) =>
+      prev.map((m, i) =>
+        i === index ? { ...m, [key]: value, error: undefined } : m,
+      ),
+    );
   };
 
   const addRow = () =>
-    setMembers([...members, { id: "", roleName: "student" }]);
+    setMembers((prev) => [
+      ...prev,
+      { rowId: crypto.randomUUID(), id: "", roleName: "student" },
+    ]);
 
   const removeRow = (index: number) => {
-    const next = members.filter((_, i) => i !== index);
-    setMembers(next.length === 0 ? [{ id: "", roleName: "student" }] : next);
+    setMembers((prev) => {
+      const next = prev.filter((_, i) => i !== index);
+      return next.length === 0
+        ? [{ rowId: crypto.randomUUID(), id: "", roleName: "student" }]
+        : next;
+    });
   };
 
   const handleSave = () => {
@@ -76,7 +117,11 @@ export default function AddMemberPage() {
   const handleAddBatch = (
     newMembers: { id: string; roleName: GroupMemberRoleName }[],
   ) => {
-    setMembers((prev) => [...prev, ...newMembers]);
+    const batchWithIds = newMembers.map((m) => ({
+      ...m,
+      rowId: crypto.randomUUID(),
+    }));
+    setMembers((prev) => [...prev, ...batchWithIds]);
   };
 
   return (
@@ -102,10 +147,11 @@ export default function AddMemberPage() {
 
               return (
                 <AddMemberRow
-                  key={i}
+                  key={m.rowId}
                   index={i}
                   id={m.id}
                   roleName={m.roleName}
+                  error={m.error}
                   accessLevel={accessLevel}
                   globalRole={payload?.Role as GlobalRole}
                   onChange={updateRow}

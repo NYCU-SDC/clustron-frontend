@@ -224,8 +224,8 @@
       "save": "儲存",
       "toastAllSuccess": "新增完成：{{success}} / {{total}}",
       "toastAllFail": "新增成員失敗（{{fail}} / {{total}} 失敗）",
-      "toastPartial": "新增結果：成功 {{success}}、待處理 {{warning}}、失敗 {{fail}}（共 {{total}}）",
-      "toastFail": "新增成員失敗"
+      "toastPartial": "新增結果：成功 {{success}}、失敗 {{fail}}（共 {{total}}）",
+      "toastFail": "發生錯誤，新增成員失敗，請稍後再試"
     },
     "createGroup": {
       "courseTitle": "群組名稱",

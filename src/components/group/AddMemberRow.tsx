@@ -21,6 +21,7 @@ type Props = {
   index: number;
   id: string;
   roleName: string;
+  error?: string;
   isLast: boolean;
   isDuplicate?: boolean;
   disabled?: boolean;
@@ -39,6 +40,7 @@ export default function AddMemberRow({
   index,
   id,
   roleName,
+  error,
   isLast,
   isDuplicate,
   globalRole,
@@ -63,7 +65,7 @@ export default function AddMemberRow({
 
   return (
     <tr className={`hover:bg-muted ${isPending ? "opacity-50" : ""}`}>
-      <td className="py-2 px-2">
+      <td className="py-2 px-2 pb-5">
         <div className="relative">
           <Input
             value={query || id}
@@ -73,7 +75,7 @@ export default function AddMemberRow({
             )}
             className={cn(
               "h-10 w-full text-sm",
-              isDuplicate && "border-red-500 bg-red-50",
+              (isDuplicate || error) && "border-red-500 bg-red-50",
             )}
             onChange={(e) => {
               setQuery(e.target.value);
@@ -100,8 +102,12 @@ export default function AddMemberRow({
               }
             }}
           />
-
-          {showSuggestions && suggestions.length > 0 && (
+          {error && (
+            <p className="text-[10px] text-red-500 mt-1 absolute left-1">
+              {error}
+            </p>
+          )}
+          {showSuggestions && !error && suggestions.length > 0 && (
             <Command>
               <CommandList>
                 {suggestions.map((user) => (
