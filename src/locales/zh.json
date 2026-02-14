@@ -224,7 +224,7 @@
       "save": "儲存",
       "toastAllSuccess": "新增完成：{{success}} / {{total}}",
       "toastAllFail": "新增成員失敗（{{fail}} / {{total}} 失敗）",
-      "toastPartial": "新增結果：成功 {{success}}、失敗 {{fail}}（共 {{total}}）",
+      "toastPartialSuccess": "新增結果：成功 {{success}}、失敗 {{fail}}（共 {{total}}）",
       "toastFail": "發生錯誤，新增成員失敗，請稍後再試"
     },
     "createGroup": {

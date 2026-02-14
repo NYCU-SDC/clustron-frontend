@@ -224,7 +224,7 @@
       "save": "Save",
       "toastAllSuccess": "{{success}}/{{total}} members added successfully",
       "toastAllFail": "Adding members failed ({{fail}}/{{total}} failed)",
-      "toastPartial": "{{success}} success, {{fail}} failed (total {{total}})",
+      "toastPartialSuccess": "{{success}} success, {{fail}} failed (total {{total}})",
       "toastFail": "An error occurred, failed to add members, please try again later"
     },
     "createGroup": {

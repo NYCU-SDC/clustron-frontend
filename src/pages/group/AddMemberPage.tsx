@@ -7,7 +7,6 @@ import { useGetGroupById } from "@/hooks/useGetGroupById";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import {
   AccessLevelUser,
-  MemberRow,
   type GroupMemberRoleName,
   type AddMembersResult,
 } from "@/types/group";
@@ -21,6 +20,13 @@ import {
 import { GlobalRole } from "@/lib/permission";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
 import { Button } from "@/components/ui/button";
+
+type MemberRow = {
+  rowId: string;
+  id: string;
+  roleName: GroupMemberRoleName;
+  error?: string;
+};
 
 export default function AddMemberPage() {
   const { id: groupId } = useParams();

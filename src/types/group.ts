@@ -25,13 +25,6 @@ export type GroupMember = {
   role: GroupRole;
 };
 
-export type MemberRow = {
-  rowId: string;
-  id: string;
-  roleName: GroupMemberRoleName;
-  error?: string;
-};
-
 // GET /api/groups
 export type GroupSummary = {
   id: string;

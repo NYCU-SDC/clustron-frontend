@@ -34,7 +34,7 @@ export function useAddMember(groupId: string, options?: UseAddMemberOptions) {
       // partial success
       else {
         toast.error(
-          t("groupPages.addMemberPage.toastPartial", {
+          t("groupPages.addMemberPage.toastPartialSuccess", {
             success: addedSuccessNumber,
             total,
             fail: addedFailureNumber,
