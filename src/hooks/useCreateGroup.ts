@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 export function useCreateGroup(options?: {
   onSuccess?: (data: CreateGroupResponse) => void;
-  onError?: (err: unknown) => void;
+  onError?: (err: Error) => void;
 }) {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
