@@ -65,7 +65,7 @@ export default function AddMemberRow({
 
   return (
     <tr className={`hover:bg-muted ${isPending ? "opacity-50" : ""}`}>
-      <td className="py-2 px-2 pb-5">
+      <td className="pt-4 pb-6 px-2">
         <div className="relative">
           <Input
             value={query || id}
@@ -103,7 +103,7 @@ export default function AddMemberRow({
             }}
           />
           {error && (
-            <p className="text-[10px] text-red-500 mt-1 absolute left-1">
+            <p className="text-[12px] text-red-500 mt-1 absolute left-1">
               {error}
             </p>
           )}
@@ -126,7 +126,7 @@ export default function AddMemberRow({
           )}
         </div>
       </td>
-      <td className="py-2 px-2">
+      <td className="pt-4 pb-6 px-2">
         <Select
           value={roleName}
           disabled={isInputDisabled}
@@ -146,7 +146,7 @@ export default function AddMemberRow({
           </SelectContent>
         </Select>
       </td>
-      <td className="py-2 px-2 text-center">
+      <td className="pt-4 pb-6 px-2 text-center">
         {isLast ? (
           <Button
             variant="ghost"
