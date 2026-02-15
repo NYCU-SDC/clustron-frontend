@@ -3,7 +3,6 @@ import { createGroup } from "@/lib/request/createGroup";
 import type { CreateGroupResponse } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { l } from "node_modules/react-router/dist/development/index-react-server-client-rcoGPJhU.d.mts";
 
 export function useCreateGroup(options?: {
   onSuccess?: (data: CreateGroupResponse) => void;
