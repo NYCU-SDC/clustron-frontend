@@ -3,10 +3,11 @@ import { createGroup } from "@/lib/request/createGroup";
 import type { CreateGroupResponse } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { l } from "node_modules/react-router/dist/development/index-react-server-client-rcoGPJhU.d.mts";
 
 export function useCreateGroup(options?: {
   onSuccess?: (data: CreateGroupResponse) => void;
-  onError?: (err: Error) => void;
+  onError?: (err: unknown) => void;
 }) {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
@@ -31,10 +32,17 @@ export function useCreateGroup(options?: {
       options?.onSuccess?.(data);
     },
     onError: (err) => {
-      const msg =
-        err.message ||
-        t("groupPages.createGroup.createFailToast", "Failed to create group");
-      toast.error(msg, { id: toastId });
+      const status = err.name;
+      const detail = err.message.toLowerCase();
+      let message;
+      if (status === "409" || detail.includes("conflict")) {
+        message = t("groupPages.createGroup.createDuplicateToast");
+      } else if (status === "400" || detail.includes("validation")) {
+        message = t("groupPages.createGroup.createValidationToast");
+      } else {
+        message = t("groupPages.createGroup.createFailToast");
+      }
+      toast.error(message, { id: toastId });
       options?.onError?.(err);
     },
   });

@@ -242,7 +242,9 @@
       "create": "Create",
       "creatingToast": "Creating...",
       "createSuccessToast": "Group created successfully",
-      "createFailToast": "Failed to create group"
+      "createValidationToast": "Group title/description/link format is invalid, please check your input",
+      "createDuplicateToast": "Group title already exists",
+      "createFailToast": "An error occurred, failed to create group, please try again later"
     },
     "groupList": {
       "newGroup": "+ New Group",
