@@ -118,7 +118,7 @@ export default function OnboardingForm({
                 value={linuxUsername}
                 onChange={(e) => setLinuxUsername(e.target.value)}
               />
-              <p className="ml-2 text-sm text-destructive">
+              <p className="ml-2 text-sm text-muted-foreground">
                 {t("onboardingForm.warningTextForLinuxUsername")}
               </p>
             </div>
@@ -138,7 +138,7 @@ export default function OnboardingForm({
               <p className="text-sm text-muted-foreground">
                 {t("onboardingForm.passwordFormat")}
               </p>
-              <p className="text-sm text-destructive">
+              <p className="text-sm text-muted-foreground">
                 {t("onboardingForm.passwordNote")}
               </p>
             </div>
