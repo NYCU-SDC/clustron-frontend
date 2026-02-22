@@ -9,3 +9,12 @@ export interface PaginatedResponse<ItemType> {
   totalItems: number;
   totalPages: number;
 }
+
+// =========================
+// API Error
+// =========================
+export interface ApiError extends Error {
+  status: number;
+  message: string;
+  data?: unknown;
+}

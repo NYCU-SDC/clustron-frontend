@@ -224,8 +224,8 @@
       "save": "Save",
       "toastAllSuccess": "{{success}}/{{total}} members added successfully",
       "toastAllFail": "Adding members failed ({{fail}}/{{total}} failed)",
-      "toastPartial": "{{success}} success, {{warning}} pending, {{fail}} failed (total {{total}})",
-      "toastFail": "Failed to add members"
+      "toastPartialSuccess": "{{success}} success, {{fail}} failed (total {{total}})",
+      "toastFail": "An error occurred, failed to add members, please try again later"
     },
     "createGroup": {
       "courseTitle": "Group Title",
