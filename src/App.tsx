@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import DefaultLayout from "./pages/layouts/DefaultLayout";
-import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import SystemSetupGate from "@/components/system/SystemSetupGate";
 import SetupPage from "@/pages/auth/Setup.tsx";
@@ -31,43 +30,38 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 const App = () => {
   return (
     <Routes>
+      <Route path="/callback">
+        <Route
+          path="login"
+          element={
+            <ErrorBoundary>
+              <LoginCallback />
+            </ErrorBoundary>
+          }
+        />
+        <Route
+          path="bind"
+          element={
+            <ErrorBoundary>
+              <BindCallback />
+            </ErrorBoundary>
+          }
+        />
+      </Route>
+
+      <Route path="/health" element={<div>Health Check</div>} />
+
       <Route element={<SystemSetupGate />}>
-        <Route element={<ProtectedRoute showLoginRequiredToast={false} />}>
-          <Route path="/" element={<Home />} />
-        </Route>
-
-        <Route path="/callback">
-          <Route
-            path="login"
-            element={
-              <ErrorBoundary>
-                <LoginCallback />
-              </ErrorBoundary>
-            }
-          />
-          <Route
-            path="bind"
-            element={
-              <ErrorBoundary>
-                <BindCallback />
-              </ErrorBoundary>
-            }
-          />
-        </Route>
-
-        <Route path="/health" element={<div>Health Check</div>} />
-
         <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<Navigate to="/groups" replace />} />
           <Route element={<DefaultLayout />}>
             <Route path="/onboarding" element={<Onboarding />} />
-
             <Route path="/setting" element={<SettingLayout />}>
               <Route index element={<Navigate to="general" replace />} />
               <Route path="general" element={<SettingGeneral />} />
               <Route path="ssh" element={<SettingSSH />} />
               <Route path="ssh/new" element={<SettingAddKey />} />
             </Route>
-
             <Route path="/groups" element={<GroupListPage />} />
             <Route path="/groups/new" element={<AddGroupPage />} />
             <Route path="/add-group" element={<AddGroupPage />} />

@@ -31,10 +31,17 @@ export function useCreateGroup(options?: {
       options?.onSuccess?.(data);
     },
     onError: (err) => {
-      const msg =
-        err.message ||
-        t("groupPages.createGroup.createFailToast", "Failed to create group");
-      toast.error(msg, { id: toastId });
+      const status = err.name;
+      const detail = err.message.toLowerCase();
+      let message;
+      if (status === "409" || detail.includes("conflict")) {
+        message = t("groupPages.createGroup.createDuplicateToast");
+      } else if (status === "400" || detail.includes("validation")) {
+        message = t("groupPages.createGroup.createValidationToast");
+      } else {
+        message = t("groupPages.createGroup.createFailToast");
+      }
+      toast.error(message, { id: toastId });
       options?.onError?.(err);
     },
   });

@@ -70,11 +70,7 @@ export type JoinMemberErrorResponse = {
   message: string;
 };
 
-export type CreateGroupResultData = {
-  addedSuccessNumber: number;
-  addedFailureNumber: number;
-  errors: JoinMemberErrorResponse[];
-};
+export type CreateGroupResultData = AddMembersResult;
 
 export type CreateGroupResponse = GroupDetail & {
   addedResult: CreateGroupResultData;
@@ -96,7 +92,11 @@ export type AddGroupMemberInput = {
   roleId: string;
 };
 
-export type AddGroupMemberResponse = GroupMember;
+export type AddMembersResult = {
+  addedSuccessNumber: number;
+  addedFailureNumber: number;
+  errors: JoinMemberErrorResponse[];
+};
 
 // DELETE /api/groups/{id}/members/{memberId}
 export type RemoveMemberParams = {

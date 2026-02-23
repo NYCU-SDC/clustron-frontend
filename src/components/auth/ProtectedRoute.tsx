@@ -51,6 +51,14 @@ export default function ProtectedRoute({
       toast.warning(t("protectedRoute.roleNotSetupToast"));
       return;
     }
+
+    if (
+      role.current != "role_not_setup" &&
+      window.location.pathname == "/onboarding"
+    ) {
+      navigate("/");
+      return;
+    }
   }, [showLoginRequiredToast, isLoggedIn, navigate, t]);
 
   if (
@@ -58,7 +66,10 @@ export default function ProtectedRoute({
     !isLoggedIn() ||
     // logged in and role is not set up but go to protected page
     (role.current == "role_not_setup" &&
-      window.location.pathname != "/onboarding")
+      window.location.pathname != "/onboarding") ||
+    // logged in and role is set up but go to onboarding page
+    (role.current != "role_not_setup" &&
+      window.location.pathname == "/onboarding")
   ) {
     return null;
   }

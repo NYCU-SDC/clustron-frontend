@@ -2,14 +2,14 @@ import {
   // AccessLevelOwner,
   // AccessLevelUser,
   type AddGroupMemberInput,
-  type AddGroupMemberResponse,
+  type AddMembersResult,
 } from "@/types/group";
 import { api } from "@/lib/request/api";
 
 export async function addMember(
   groupId: string,
   members: AddGroupMemberInput[],
-): Promise<AddGroupMemberResponse[]> {
+): Promise<AddMembersResult> {
   return api(`/api/groups/${groupId}/members`, {
     method: "POST",
     headers: {
