@@ -34,7 +34,6 @@ export default function SystemSetupGate() {
     fetchSetupStatus();
   }, [fetchSetupStatus]);
 
-  // 【請你改動這裡：換成真正的旋轉動畫】
   if (loading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-gray-50">
