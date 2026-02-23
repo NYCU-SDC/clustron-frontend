@@ -26,9 +26,6 @@ export function useUpdateMember(groupId: string) {
       queryClient.invalidateQueries({
         queryKey: ["GroupMember", groupId] as const,
       });
-      queryClient.invalidateQueries({
-        queryKey: ["group-members", groupId] as const,
-      });
     },
     onError: (err, _vars, ctx) => {
       const msg =

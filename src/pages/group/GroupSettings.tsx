@@ -39,13 +39,7 @@ export default function GroupSettings() {
 
   const archiveMutation = useArchiveGroup(groupId);
   const unarchiveMutation = useUnarchiveGroup(groupId);
-  const removeMutation = useRemoveMember(groupId, {
-    onError: (err) =>
-      alert(
-        t("groupPages.groupSettings.deleteFailed") +
-          (err instanceof Error ? err.message : ""),
-      ),
-  });
+  const removeMutation = useRemoveMember(groupId, {});
 
   const payload = useJwtPayload();
   const globalRole = payload?.Role as GlobalRole;

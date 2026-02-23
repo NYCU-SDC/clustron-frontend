@@ -35,11 +35,11 @@ export function useRemoveMember(
         { id: ctx },
       );
       await options?.onSuccess?.();
-      queryClient.invalidateQueries({ queryKey: ["group-members", groupId] });
+      queryClient.invalidateQueries({ queryKey: ["GroupMember", groupId] });
     },
-    onError: (err) => {
+    onError: (err, _memberId, ctx) => {
       const msg = getErrMessage(err, "Failed to remove member");
-      toast.error(msg, { id: "remove-member-error" });
+      toast.error(msg, { id: ctx });
       options?.onError?.(err);
     },
   });

@@ -27,7 +27,7 @@ export function useAddMember(groupId: string, options?: UseAddMemberOptions) {
         { id: "add-member-summary" },
       );
       await options?.onSuccess?.(data);
-      queryClient.invalidateQueries({ queryKey: ["group-members", groupId] });
+      queryClient.invalidateQueries({ queryKey: ["GroupMember", groupId] });
     },
     onError: (err) => {
       const msg =
