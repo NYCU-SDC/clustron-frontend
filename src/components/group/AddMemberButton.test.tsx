@@ -16,9 +16,8 @@ beforeEach(() => {
 });
 
 describe("AddMemberButton", () => {
-  it("渲染按鈕與文案（文案=key）", () => {
+  it("Should render the button with correct text", () => {
     render(<AddMemberButton groupId="g1" />);
-    // i18n 被全域 mock → 文案= key
     expect(
       screen.getByRole("button", {
         name: "groupComponents.addMemberButton.newMembers",
@@ -26,7 +25,7 @@ describe("AddMemberButton", () => {
     ).toBeInTheDocument();
   });
 
-  it("isArchived 時 disabled 且不導頁", async () => {
+  it("Should be disabled when isArchived is true", async () => {
     const user = userEvent.setup();
     render(<AddMemberButton groupId="g1" isArchived />);
     const btn = screen.getByRole("button", {
@@ -37,7 +36,7 @@ describe("AddMemberButton", () => {
     expect(mockNavigate).not.toHaveBeenCalled();
   });
 
-  it("可點時導向正確路徑", async () => {
+  it("Should navigate to correct path when enabled", async () => {
     const user = userEvent.setup();
     render(<AddMemberButton groupId="g1" />);
     await user.click(
