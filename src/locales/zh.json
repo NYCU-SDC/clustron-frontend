@@ -66,7 +66,7 @@
   "settingSideBar": {
     "title": "設定",
     "GeneralNavLink": "一般",
-    "SSHNavLink": "SSH"
+    "SSHNavLink": "主機連線資訊"
   },
   "settingAddKeyForm": {
     "cardTitleForTitle": "標題",
@@ -224,8 +224,8 @@
       "save": "儲存",
       "toastAllSuccess": "新增完成：{{success}} / {{total}}",
       "toastAllFail": "新增成員失敗（{{fail}} / {{total}} 失敗）",
-      "toastPartial": "新增結果：成功 {{success}}、待處理 {{warning}}、失敗 {{fail}}（共 {{total}}）",
-      "toastFail": "新增成員失敗"
+      "toastPartialSuccess": "新增結果：成功 {{success}}、失敗 {{fail}}（共 {{total}}）",
+      "toastFail": "發生錯誤，新增成員失敗，請稍後再試"
     },
     "createGroup": {
       "courseTitle": "群組名稱",
@@ -242,7 +242,9 @@
       "create": "建立",
       "creatingToast": "建立中...",
       "createSuccessToast": "群組建立成功",
-      "createFailToast": "群組建立失敗"
+      "createValidationToast": "群組名稱/描述/連結資源格式無效，請檢查輸入",
+      "createDuplicateToast": "群組標題已存在",
+      "createFailToast": "發生錯誤，無法建立群組，請稍後再試"
     },
     "groupList": {
       "newGroup": "+ 新群組",
