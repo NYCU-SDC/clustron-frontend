@@ -3,11 +3,9 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ComponentProps } from "react";
 import AddMemberPage from "./AddMemberPage";
-// import React from "react";
+import { UseAddMemberOptions } from "@/hooks/useAddMember";
+import { AddMembersResult } from "@/types/group";
 
-/**
- * ---------  mock：router / i18n ----------
- */
 const navigateMock = vi.fn();
 vi.mock("react-router", async () => {
   const actual =
@@ -15,28 +13,22 @@ vi.mock("react-router", async () => {
   return {
     ...actual,
     useNavigate: () => navigateMock,
-    useParams: () => ({ id: "g1" }), // 這頁會用到 groupId
+    useParams: () => ({ id: "g1" }), // this page needs groupId param
     MemoryRouter: actual.MemoryRouter,
     Route: actual.Route,
     Routes: actual.Routes,
   };
 });
 
-vi.mock("react-i18next", () => ({
-  useTranslation: () => ({ t: (k: string) => k }), // 直接回傳 key 當文案
-}));
-
-/**
- * --------- 需要的 hooks / 元件 mock ----------
- */
 const mutateMock = vi.fn();
-let onSuccessFromHook: ((...args: unknown[]) => void) | undefined;
+
+// extract the onSuccess callback pass into the hook so tests can trigger it
+let onSuccessFromHook:
+  | ((data: AddMembersResult) => void | Promise<void>)
+  | undefined;
 
 vi.mock("@/hooks/useAddMember", () => ({
-  useAddMember: (
-    _groupId: string,
-    opts: { onSuccess?: (...args: unknown[]) => void },
-  ) => {
+  useAddMember: (_groupId: string, opts: UseAddMemberOptions) => {
     onSuccessFromHook = opts?.onSuccess;
     return { mutate: mutateMock, isPending: false };
   },
@@ -46,7 +38,7 @@ type GroupData = { id: string; me: { role: { accessLevel: number } } } | null;
 let getGroupResult: { data: GroupData; isLoading: boolean } = {
   data: {
     id: "g1",
-    me: { role: { accessLevel: 1 } }, // AccessLevelUser 類似數值就好
+    me: { role: { accessLevel: 1 } },
   },
   isLoading: false,
 };
@@ -152,9 +144,6 @@ vi.mock("@/components/group/AddMemberRow", () => ({
   },
 }));
 
-/**
- * ------------------- 測試 -------------------
- */
 const renderPage = () => render(<AddMemberPage />);
 
 beforeEach(() => {
@@ -167,7 +156,7 @@ beforeEach(() => {
 });
 
 describe("AddMemberPage", () => {
-  it("loading 時顯示 loading 文案", () => {
+  it("Should show loading text when group is loading", () => {
     getGroupResult = { data: null, isLoading: true };
     renderPage();
     expect(
@@ -175,7 +164,7 @@ describe("AddMemberPage", () => {
     ).toBeInTheDocument();
   });
 
-  it("找不到 group 時顯示 not found 文案", () => {
+  it("Should show not found text when group is not found", () => {
     getGroupResult = { data: null, isLoading: false };
     renderPage();
     expect(
@@ -183,7 +172,7 @@ describe("AddMemberPage", () => {
     ).toBeInTheDocument();
   });
 
-  it("可新增/移除列，重複成員時 Save 會被禁用", async () => {
+  it("Should show duplicate warning and disable Save button when duplicate member is added. Should be able to add/remove rows.", async () => {
     const user = userEvent.setup();
     renderPage();
 
@@ -205,7 +194,7 @@ describe("AddMemberPage", () => {
     expect(saveBtn).toBeEnabled();
   });
 
-  it("點 Save 會把 roleName 轉成 roleId 後呼叫 mutate", async () => {
+  it("Should save member data with correct role ID mapping", async () => {
     const user = userEvent.setup();
     renderPage();
 
@@ -223,7 +212,7 @@ describe("AddMemberPage", () => {
     ]);
   });
 
-  it("按 Cancel 會導向 settings", async () => {
+  it("Should cancel and redirect to settings", async () => {
     const user = userEvent.setup();
     renderPage();
 
@@ -233,7 +222,7 @@ describe("AddMemberPage", () => {
     expect(navigateMock).toHaveBeenCalledWith("/groups/g1/settings");
   });
 
-  it("批次新增(onAddBatch) 也能被加入 members 再一起送出", async () => {
+  it("Should add batch members and save them together", async () => {
     const user = userEvent.setup();
     renderPage();
 
@@ -256,7 +245,7 @@ describe("AddMemberPage", () => {
     );
   });
 
-  it("成功後 hook 觸發 onSuccess → auto redirect to settings", async () => {
+  it("Should navigate to settings after successful save", async () => {
     const user = userEvent.setup();
     renderPage();
 
@@ -266,7 +255,10 @@ describe("AddMemberPage", () => {
     );
 
     // mock useAddMember success
-    onSuccessFromHook?.();
+    onSuccessFromHook?.({
+      addedSuccessNumber: 1,
+      addedFailureNumber: 0,
+    } as AddMembersResult);
 
     expect(navigateMock).toHaveBeenCalledWith("/groups/g1/settings");
   });
