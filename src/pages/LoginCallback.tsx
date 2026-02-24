@@ -39,7 +39,6 @@ export default function LoginCallback() {
 
     navigate(redirectTo, {
       replace: true,
-      state: { setupSuccess: true },
     });
 
     toast.success(t("callback.loginSuccessToast"));
