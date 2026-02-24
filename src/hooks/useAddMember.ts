@@ -43,7 +43,7 @@ export function useAddMember(groupId: string, options?: UseAddMemberOptions) {
         );
       }
       await options?.onSuccess?.(data);
-      queryClient.invalidateQueries({ queryKey: ["group-members", groupId] });
+      queryClient.invalidateQueries({ queryKey: ["GroupMember", groupId] });
     },
     onError: (err: ApiError, variables) => {
       const errorData = err.data as AddMembersResult;
