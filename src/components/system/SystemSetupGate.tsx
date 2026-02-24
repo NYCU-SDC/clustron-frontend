@@ -51,13 +51,19 @@ export default function SystemSetupGate() {
     );
   }
 
+  const isSetupPage = location.pathname.startsWith(SETUP_PATH);
+
+  if (setupDone) {
+    if (isSetupPage) {
+      return <Navigate to="/" replace />;
+    }
+    return <Outlet />;
+  }
+
   if (!setupDone) {
+    if (isSetupPage) {
+      return <Outlet />;
+    }
     return <Navigate to={SETUP_PATH} replace />;
   }
-
-  if (setupDone && location.pathname.startsWith(SETUP_PATH)) {
-    return <Navigate to="/" replace />;
-  }
-
-  return <Outlet />;
 }
