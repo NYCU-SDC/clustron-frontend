@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import GuestOnlyRoute from "./GuestOnlyRoute";
 import { AuthProvider } from "./AuthProvider";
 import { MemoryRouter, Routes, Route } from "react-router";
-import { useCookies, CookiesProvider } from "react-cookie";
+import { useCookies, CookiesProvider, Cookies } from "react-cookie";
 import * as sonner from "sonner";
 import { describe, it, afterEach, vi, expect } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -45,9 +45,14 @@ describe("GuestOnlyRoute", () => {
   }
 
   function renderWithProviders(
-    cookieMock: [Record<string, string>, () => void, () => void],
+    cookieMock: [
+      Record<string, string>, // Cookies object
+      (name: string, value: Cookies) => void, // setCookie function
+      (name: string) => void, // removeCookie function
+      () => void, // getCookie function
+    ],
   ) {
-    (useCookies as ReturnType<typeof vi.fn>).mockReturnValue(cookieMock);
+    vi.mocked(useCookies).mockReturnValue(cookieMock);
     const queryClient = new QueryClient();
     return render(
       <QueryClientProvider client={queryClient}>
@@ -67,7 +72,7 @@ describe("GuestOnlyRoute", () => {
   }
 
   it("renders Outlet when not logged in", async () => {
-    renderWithProviders([{}, vi.fn(), vi.fn()]);
+    renderWithProviders([{}, vi.fn(), vi.fn(), vi.fn()]);
     await waitFor(() => {
       expect(screen.getByTestId("outlet")).toBeInTheDocument();
       expect(sonner.toast.warning).not.toHaveBeenCalled();
@@ -76,7 +81,12 @@ describe("GuestOnlyRoute", () => {
   });
 
   it("redirects and shows toast when logged in", async () => {
-    renderWithProviders([{ refreshToken: "mock-token" }, vi.fn(), vi.fn()]);
+    renderWithProviders([
+      { refreshToken: "mock-token" },
+      vi.fn(),
+      vi.fn(),
+      vi.fn(),
+    ]);
     await waitFor(() => {
       expect(mockNavigate).toHaveBeenCalled();
       expect(sonner.toast.warning).toHaveBeenCalled();

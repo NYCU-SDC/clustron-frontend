@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import ProtectedRoute from "./ProtectedRoute";
 import { AuthProvider } from "./AuthProvider";
 import { MemoryRouter, Routes, Route } from "react-router";
-import { useCookies, CookiesProvider } from "react-cookie";
+import { useCookies, CookiesProvider, Cookies } from "react-cookie";
 import * as sonner from "sonner";
 import { describe, it, afterEach, vi, expect } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -65,9 +65,14 @@ describe("ProtectedRoute", () => {
   }
 
   function renderWithProviders(
-    cookieMock: [Record<string, string>, () => void, () => void],
+    cookieMock: [
+      Record<string, string>, // Cookies object
+      (name: string, value: Cookies) => void, // setCookie function
+      (name: string) => void, // removeCookie function
+      () => void, // getCookie function
+    ],
   ) {
-    (useCookies as ReturnType<typeof vi.fn>).mockReturnValue(cookieMock);
+    vi.mocked(useCookies).mockReturnValue(cookieMock);
     const queryClient = new QueryClient();
     return render(
       <QueryClientProvider client={queryClient}>
@@ -88,7 +93,12 @@ describe("ProtectedRoute", () => {
 
   it("renders Outlet when logged in and role is set", async () => {
     // cookies indicate logged in
-    renderWithProviders([{ refreshToken: "mock-refresh" }, vi.fn(), vi.fn()]);
+    renderWithProviders([
+      { refreshToken: "mock-refresh" },
+      vi.fn(),
+      vi.fn(),
+      vi.fn(),
+    ]);
 
     // token exists and role is 'admin'
     (getAccessToken as ReturnType<typeof vi.fn>).mockReturnValue("mock-token");
@@ -102,7 +112,7 @@ describe("ProtectedRoute", () => {
   });
 
   it("redirects to /login and shows toast when not logged in", async () => {
-    renderWithProviders([{}, vi.fn(), vi.fn()]);
+    renderWithProviders([{}, vi.fn(), vi.fn(), vi.fn()]);
 
     // no token
     (getAccessToken as ReturnType<typeof vi.fn>).mockReturnValue(null);
@@ -115,7 +125,12 @@ describe("ProtectedRoute", () => {
   });
 
   it("redirects to /onboarding and shows toast when role is not set up", async () => {
-    renderWithProviders([{ refreshToken: "mock-refresh" }, vi.fn(), vi.fn()]);
+    renderWithProviders([
+      { refreshToken: "mock-refresh" },
+      vi.fn(),
+      vi.fn(),
+      vi.fn(),
+    ]);
 
     (getAccessToken as ReturnType<typeof vi.fn>).mockReturnValue("mock-token");
     (jwtDecode as ReturnType<typeof vi.fn>).mockReturnValue({
