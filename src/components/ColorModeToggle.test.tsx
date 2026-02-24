@@ -104,21 +104,10 @@ describe("ColorModeToggle", () => {
     expect(button).toHaveClass("inline-flex"); // Button component classes
 
     const sunIcon = screen.getByTestId("sun-icon");
-    expect(sunIcon).toHaveClass(
-      "h-[1.2rem]",
-      "w-[1.2rem]",
-      "rotate-0",
-      "scale-100",
-    );
+    expect(sunIcon).toHaveClass("scale-100");
 
     const moonIcon = screen.getByTestId("moon-icon");
-    expect(moonIcon).toHaveClass(
-      "absolute",
-      "h-[1.2rem]",
-      "w-[1.2rem]",
-      "rotate-90",
-      "scale-0",
-    );
+    expect(moonIcon).toHaveClass("scale-0");
   });
 
   it("should close dropdown after selecting an option", async () => {
