@@ -11,7 +11,7 @@ export default function GroupLayout() {
 
   const groupNavItems: NavItem[] = [
     {
-      to: `/groups/${id}`,
+      to: `/groups/${id}/`,
       label: t("groupComponents.groupSideBar.overview"),
     },
     {
