@@ -1,4 +1,5 @@
 {
+  "loading": "Loading...",
   "onboardingForm": {
     "cardTitleForName": "Enter Your Basic Information",
     "saveBtn": "Save",
