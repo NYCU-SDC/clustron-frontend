@@ -1,11 +1,10 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import GroupDescription from "@/components/group/GroupDescription.tsx";
 import { useGetGroups } from "@/hooks/useGetGroups";
 import { useGlobalPermissions } from "@/hooks/useGlobalPermissions";
 import { useContext } from "react";
 import { authContext } from "@/lib/auth/authContext";
-import { AccessLevelAdmin, AccessLevelOwner } from "@/types/group";
 import { useTranslation } from "react-i18next";
 import { Loader2 } from "lucide-react";
 
@@ -43,19 +42,13 @@ export default function GroupListPage() {
       ) : (
         <div className="space-y-4">
           {data.items.map((group) => {
-            const accessLevel = AccessLevelOwner; // TODO: wait API for providing real accessLevel
-            const isManager =
-              accessLevel === AccessLevelOwner ||
-              accessLevel === AccessLevelAdmin;
-            const path = `/groups/${group.id}/${isManager ? "" : "info"}`;
-
             return (
-              <div key={group.id} onClick={() => navigate(path)}>
+              <NavLink key={group.id} to={`/groups/${group.id}/`}>
                 <GroupDescription
                   title={group.title}
                   desc={group.description}
                 />
-              </div>
+              </NavLink>
             );
           })}
         </div>
