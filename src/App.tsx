@@ -51,11 +51,16 @@ const App = () => {
 
       <Route path="/health" element={<div>Health Check</div>} />
 
+      <Route element={<ProtectedRoute />}>
+        <Route element={<DefaultLayout />}>
+          <Route path="/onboarding" element={<Onboarding />} />
+        </Route>
+      </Route>
+
       <Route element={<SystemSetupGate />}>
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<Navigate to="/groups" replace />} />
           <Route element={<DefaultLayout />}>
-            <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/setting" element={<SettingLayout />}>
               <Route index element={<Navigate to="general" replace />} />
               <Route path="general" element={<SettingGeneral />} />
