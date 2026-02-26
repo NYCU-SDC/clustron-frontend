@@ -11,7 +11,7 @@ const SETUP_PATH = "/system-setup";
 export default function SystemSetupGate() {
   const location = useLocation();
   const { t } = useTranslation();
-  const [setupDone, setSetupDone] = useState<boolean | null>(null);
+  const [setupDone, setSetupDone] = useState(false);
 
   const {
     mutate: fetchSetupStatus,
@@ -35,7 +35,7 @@ export default function SystemSetupGate() {
     fetchSetupStatus();
   }, [fetchSetupStatus]);
 
-  if (isPending || (setupDone === null && !isError)) {
+  if (isPending) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-gray-50">
         <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
