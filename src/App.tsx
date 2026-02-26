@@ -105,20 +105,20 @@ const App = () => {
         <Route element={<DefaultLayout />}>
           <Route path="/system-setup" element={<SetupPage />} />
         </Route>
-
-        <Route
-          path="*"
-          element={
-            <div>
-              404 Not Found. Click{" "}
-              <a className="text-blue-500" href="/">
-                here
-              </a>
-              to go back home.
-            </div>
-          }
-        />
       </Route>
+
+      <Route
+        path="*"
+        element={
+          <div>
+            404 Not Found. Click{" "}
+            <a className="text-blue-500" href="/">
+              here
+            </a>
+            to go back home.
+          </div>
+        }
+      />
     </Routes>
   );
 };
