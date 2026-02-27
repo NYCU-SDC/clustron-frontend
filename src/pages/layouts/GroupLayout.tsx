@@ -24,7 +24,7 @@ export default function GroupLayout() {
 
   return (
     <div className="flex w-full">
-      <div className="min-w-xs border-r">
+      <div className="min-w-xs border-r px-4">
         <SideBar
           title={group.title}
           navItems={groupNavItems}
