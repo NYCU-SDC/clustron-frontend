@@ -21,7 +21,7 @@ import {
   ComboboxInput,
   ComboboxItem,
   ComboboxList,
-} from "../ui/combobox";
+} from "@/components/ui/combobox";
 
 type Props = {
   index: number;
