@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import type { AddGroupMemberInput, AddMembersResult } from "@/types/group";
 import { ApiError } from "@/types/generic";
 
-type UseAddMemberOptions = {
+export type UseAddMemberOptions = {
   onSuccess?: (data: AddMembersResult) => void | Promise<void>;
   onError?: (err: ApiError) => void;
 };

@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router";
 import DefaultLayout from "./pages/layouts/DefaultLayout";
 import Login from "@/pages/Login";
 import LoginCallback from "@/pages/LoginCallback";
@@ -105,7 +105,7 @@ const App = () => {
             404 Not Found. Click{" "}
             <a className="text-blue-500" href="/">
               here
-            </a>
+            </a>{" "}
             to go back home.
           </div>
         }
