@@ -10,7 +10,12 @@ import reactHooks from "eslint-plugin-react-hooks";
 
 export default defineConfig([
   {
-    ignores: ["**/*.css", "**/package-lock.json", "dist"],
+    ignores: [
+      "**/*.css",
+      "**/package-lock.json",
+      "dist",
+      "src/components/ui/*",
+    ],
   },
   {
     files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],

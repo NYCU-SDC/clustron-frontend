@@ -1,7 +1,6 @@
 import { CircleMinus, CirclePlus } from "lucide-react";
 import { GlobalRole, type GroupRoleAccessLevel } from "@/lib/permission";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectTrigger,
@@ -15,7 +14,14 @@ import { cn } from "@/lib/utils";
 import { AccessLevelUser } from "@/types/group";
 import { useTranslation } from "react-i18next";
 import { useUserAutocomplete } from "@/hooks/useUserAutocomplete";
-import { Command, CommandList, CommandItem } from "@/components/ui/command";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox";
 
 type Props = {
   index: number;
@@ -67,63 +73,68 @@ export default function AddMemberRow({
     <tr className={`hover:bg-muted ${isPending ? "opacity-50" : ""}`}>
       <td className="px-2 py-2 align-top w-[60%]">
         <div className="relative">
-          <Input
-            value={query || id}
-            disabled={isInputDisabled}
-            placeholder={t(
-              "groupComponents.addMemberRow.enterStudentIdOrEmail",
-            )}
-            className={cn(
-              "h-10 w-full text-sm",
-              (isDuplicate || error) && "border-red-500 bg-red-50",
-            )}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              onChange(index, "id", e.target.value);
-            }}
-            title={
-              isDuplicate
-                ? t("groupComponents.addMemberRow.duplicateEntry")
-                : ""
-            }
-            onPaste={(e) => {
-              const pasted = e.clipboardData.getData("text");
-              const rows = pasted
-                .split("\n")
-                .map((r) => r.trim())
-                .filter(Boolean);
-              if (rows.length > 1) {
-                e.preventDefault();
-                const newMembers = rows.map((r) => ({
-                  id: r,
-                  roleName: assignableRoles[0]?.roleName ?? "",
-                }));
-                onAddBatch(newMembers);
+          <Combobox items={suggestions}>
+            <ComboboxInput
+              showTrigger={false}
+              value={query || id}
+              disabled={isInputDisabled}
+              placeholder={t(
+                "groupComponents.addMemberRow.enterStudentIdOrEmail",
+              )}
+              className={cn(
+                "h-10 w-full text-sm",
+                (isDuplicate || error) && "border-red-500 bg-red-50",
+              )}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                onChange(index, "id", e.target.value);
+              }}
+              title={
+                isDuplicate
+                  ? t("groupComponents.addMemberRow.duplicateEntry")
+                  : ""
               }
-            }}
-          />
-          {error && (
-            <p className="text-xs text-red-500 mt-1 left-1 break-all">
-              {error}
-            </p>
-          )}
-          {showSuggestions && !error && suggestions.length > 0 && (
-            <Command>
-              <CommandList>
-                {suggestions.map((user) => (
-                  <CommandItem
-                    key={user.identifier}
-                    onSelect={() => {
-                      handleSelect(user);
-                      onChange(index, "id", user.identifier);
-                    }}
-                  >
-                    {user.identifier}
-                  </CommandItem>
-                ))}
-              </CommandList>
-            </Command>
-          )}
+              onPaste={(e) => {
+                const pasted = e.clipboardData.getData("text");
+                const rows = pasted
+                  .split("\n")
+                  .map((r) => r.trim())
+                  .filter(Boolean);
+                if (rows.length > 1) {
+                  e.preventDefault();
+                  const newMembers = rows.map((r) => ({
+                    id: r,
+                    roleName: assignableRoles[0]?.roleName ?? "",
+                  }));
+                  onAddBatch(newMembers);
+                }
+              }}
+            />
+            {error && (
+              <p className="text-xs text-red-500 mt-1 left-1 break-all">
+                {error}
+              </p>
+            )}
+            <ComboboxContent>
+              <ComboboxEmpty>No items found.</ComboboxEmpty>
+              {showSuggestions && !error && suggestions.length > 0 && (
+                <ComboboxList>
+                  {(user) => (
+                    <ComboboxItem
+                      key={user.identifier}
+                      value={user.identifier}
+                      onClick={() => {
+                        handleSelect(user);
+                        onChange(index, "id", user.identifier);
+                      }}
+                    >
+                      {user.identifier}
+                    </ComboboxItem>
+                  )}
+                </ComboboxList>
+              )}
+            </ComboboxContent>
+          </Combobox>
         </div>
       </td>
       <td className="px-2 py-2 align-top">
