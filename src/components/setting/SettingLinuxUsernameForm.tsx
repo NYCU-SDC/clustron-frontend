@@ -47,7 +47,9 @@ export default function SettingLinuxUsernameForm() {
           {isLoading ? (
             <Skeleton className="h-9 w-full border rounded-md " />
           ) : (
-            <div className="text-sm rounded-lg border p-2">{linuxUsername}</div>
+            <div className="text-sm rounded-lg border py-2 px-4 cursor-not-allowed">
+              {linuxUsername}
+            </div>
           )}
         </div>
       </CardContent>

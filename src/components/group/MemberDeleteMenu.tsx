@@ -43,7 +43,12 @@ export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" disabled={isArchived}>
+          <Button
+            variant="ghost"
+            size="icon"
+            disabled={isArchived}
+            aria-label="user-actions-menu"
+          >
             <MoreHorizontal className="w-4 h-4" />
           </Button>
         </DropdownMenuTrigger>
