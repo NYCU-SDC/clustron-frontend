@@ -398,5 +398,10 @@
     "bindSuccessToast": "綁定成功",
     "popupBlockedToast": "你的瀏覽器阻擋了綁定視窗，請允許彈出視窗後再試一次。",
     "getFailToast": "無法載入已連結的登入方式"
+  },
+  "connectionError": {
+    "title": "無法連接至伺服器",
+    "description": "無法確認系統設定狀態，請檢查您的網路連線或後端服務。",
+    "retryBtn": "重試"
   }
 }

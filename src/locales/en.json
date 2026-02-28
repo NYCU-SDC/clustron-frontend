@@ -391,5 +391,10 @@
     "bindSuccessToast": "Connect Successful",
     "popupBlockedToast": "The binding popup was blocked by your browser. Please allow pop-ups and try again.",
     "getFailToast": "Failed to load connected accounts"
+  },
+  "connectionError": {
+    "title": "Connection Error",
+    "description": "Unable to verify system setup status. Please check your network connection or backend service.",
+    "retryBtn": "Retry"
   }
 }
