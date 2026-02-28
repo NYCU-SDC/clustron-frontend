@@ -1,4 +1,4 @@
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet, useParams } from "react-router";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import SideBar, { NavItem } from "@/components/Sidebar";
 import { useTranslation } from "react-i18next";
@@ -11,7 +11,7 @@ export default function GroupLayout() {
 
   const groupNavItems: NavItem[] = [
     {
-      to: `/groups/${id}`,
+      to: `/groups/${id}/`,
       label: t("groupComponents.groupSideBar.overview"),
     },
     {
@@ -24,7 +24,7 @@ export default function GroupLayout() {
 
   return (
     <div className="flex w-full">
-      <div className="min-w-xs border-r">
+      <div className="min-w-xs border-r px-4">
         <SideBar
           title={group.title}
           navItems={groupNavItems}

@@ -1,7 +1,7 @@
 import { api } from "@/lib/request/api";
 
 type BoundLoginMethodsRespose = {
-  url: string;
+  redirectURL: string;
 };
 
 export async function bindLoginMethods(

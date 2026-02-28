@@ -66,7 +66,7 @@
   "settingSideBar": {
     "title": "Settings",
     "GeneralNavLink": "General",
-    "SSHNavLink": "SSH"
+    "SSHNavLink": "Host Connection Information"
   },
   "settingAddKeyForm": {
     "cardTitleForTitle": "Title",
@@ -224,8 +224,8 @@
       "save": "Save",
       "toastAllSuccess": "{{success}}/{{total}} members added successfully",
       "toastAllFail": "Adding members failed ({{fail}}/{{total}} failed)",
-      "toastPartial": "{{success}} success, {{warning}} pending, {{fail}} failed (total {{total}})",
-      "toastFail": "Failed to add members"
+      "toastPartialSuccess": "{{success}} success, {{fail}} failed (total {{total}})",
+      "toastFail": "An error occurred, failed to add members, please try again later"
     },
     "createGroup": {
       "courseTitle": "Group Title",
@@ -242,7 +242,9 @@
       "create": "Create",
       "creatingToast": "Creating...",
       "createSuccessToast": "Group created successfully",
-      "createFailToast": "Failed to create group"
+      "createValidationToast": "Group title/description/link format is invalid, please check your input",
+      "createDuplicateToast": "Group title already exists",
+      "createFailToast": "An error occurred, failed to create group, please try again later"
     },
     "groupList": {
       "newGroup": "+ New Group",
@@ -389,5 +391,10 @@
     "bindSuccessToast": "Connect Successful",
     "popupBlockedToast": "The binding popup was blocked by your browser. Please allow pop-ups and try again.",
     "getFailToast": "Failed to load connected accounts"
+  },
+  "connectionError": {
+    "title": "Connection Error",
+    "description": "Unable to verify system setup status. Please check your network connection or backend service.",
+    "retryBtn": "Retry"
   }
 }

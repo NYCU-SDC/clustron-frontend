@@ -1,7 +1,11 @@
 import { getAccessToken } from "@/lib/token";
+import { ApiError } from "@/types/generic";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
-// import.meta.env.VITE_BACKEND_BASE_URL. read env variable
+
+if (!BASE_URL) {
+  throw new Error("VITE_BACKEND_BASE_URL is not set");
+}
 
 export async function api<T>(
   path: string,
@@ -26,17 +30,20 @@ export async function api<T>(
   if (!res.ok) {
     let errorStatus = res.status;
     let errorMessage = `API Error (${res.status})`;
+    let errorData: unknown = null;
 
     try {
       const error = await res.json();
+      errorData = error;
       errorStatus = error.status || errorStatus;
-      errorMessage = error.detail || errorMessage;
+      errorMessage = error.detail || error.message || errorMessage;
     } catch {
       // ignore
     }
     console.error("❌ [api] Error:", errorMessage);
-    const err = new Error(errorMessage);
+    const err = new Error(errorMessage) as ApiError;
     err.name = errorStatus.toString();
+    err.data = errorData;
     throw err;
   }
 

@@ -37,7 +37,10 @@ export default function LoginCallback() {
       redirectTo = "/";
     }
 
-    navigate(redirectTo);
+    navigate(redirectTo, {
+      replace: true,
+    });
+
     toast.success(t("callback.loginSuccessToast"));
   }, [navigate, setCookiesForAuthToken, location, t]);
 
