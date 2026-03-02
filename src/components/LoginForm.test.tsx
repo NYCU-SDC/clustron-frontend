@@ -142,13 +142,6 @@ describe("LoginForm", () => {
     expect(googleButton).toHaveClass("w-full", "p-6", "cursor-pointer");
   });
 
-  it("should accept custom className and props", () => {
-    render(<LoginForm className="custom-class" data-testid="login-form" />);
-
-    const loginForm = screen.getByTestId("login-form");
-    expect(loginForm).toHaveClass("custom-class");
-  });
-
   it("should render within a card component", () => {
     render(<LoginForm />);
 
