@@ -1,4 +1,4 @@
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router";
 import { Button } from "@/components/ui/button";
 import GroupDescription from "@/components/group/GroupDescription.tsx";
 import { useGetGroups } from "@/hooks/useGetGroups";
