@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import type { AddGroupMemberInput, AddMembersResult } from "@/types/group";
 import { ApiError } from "@/types/generic";
 
-type UseAddMemberOptions = {
+export type UseAddMemberOptions = {
   onSuccess?: (data: AddMembersResult) => void | Promise<void>;
   onError?: (err: ApiError) => void;
 };
@@ -43,7 +43,7 @@ export function useAddMember(groupId: string, options?: UseAddMemberOptions) {
         );
       }
       await options?.onSuccess?.(data);
-      queryClient.invalidateQueries({ queryKey: ["group-members", groupId] });
+      queryClient.invalidateQueries({ queryKey: ["GroupMember", groupId] });
     },
     onError: (err: ApiError, variables) => {
       const errorData = err.data as AddMembersResult;

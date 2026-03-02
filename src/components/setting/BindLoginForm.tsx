@@ -52,7 +52,7 @@ export default function BindLoginForm() {
   const bindMutation = useMutation({
     mutationFn: (provider: "nycu" | "google") => bindLoginMethods(provider),
     onSuccess: (data) => {
-      const url = data.url;
+      const url = data.redirectURL;
       const width = 600;
       const height = 800;
       const left = window.screenX + (window.outerWidth - width) / 2;

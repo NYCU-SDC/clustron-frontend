@@ -2,7 +2,10 @@ import { getAccessToken } from "@/lib/token";
 import { ApiError } from "@/types/generic";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
-// import.meta.env.VITE_BACKEND_BASE_URL. read env variable
+
+if (!BASE_URL) {
+  throw new Error("VITE_BACKEND_BASE_URL is not set");
+}
 
 export async function api<T>(
   path: string,

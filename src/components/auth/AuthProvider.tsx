@@ -60,10 +60,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [clearTimers, navigate, removeCookie, t]);
 
   const isLoggedIn = useCallback(() => {
-    if (cookies.refreshToken) {
-      return true;
-    }
-    return false;
+    return !!cookies.refreshToken;
   }, [cookies.refreshToken]);
 
   const refreshMutation = useMutation({

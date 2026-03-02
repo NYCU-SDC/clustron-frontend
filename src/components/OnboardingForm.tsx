@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
-import { Label } from "@radix-ui/react-dropdown-menu";
+import { Label } from "@/components/ui/label";
 import { useMutation } from "@tanstack/react-query";
 import { saveOnboardingInfo } from "@/lib/request/saveOnboardingInfo";
 import { authContext } from "@/lib/auth/authContext";
@@ -88,15 +88,19 @@ export default function OnboardingForm({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col gap-6">
-            {/* Full Name */}
+          <div
+            className="flex flex-col gap-6"
+            role="form"
+            aria-label="onboarding form"
+          >
             <div className="grid gap-2">
               <Label className="ml-2 font-medium">
                 {t("onboardingForm.labelForInputFullName")}
                 <span className="text-red-400">*</span>
               </Label>
               <Input
-                className="mx-2 w-auto placeholder:text-muted-foreground/70"
+                aria-label={t("onboardingForm.labelForInputFullName")}
+                className="mx-2 w-auto"
                 id="fullname"
                 type="name"
                 placeholder={t("onboardingForm.placeHolderForInputFullName")}
@@ -111,7 +115,8 @@ export default function OnboardingForm({
                 <span className="text-red-400">*</span>
               </Label>
               <Input
-                className="mx-2 w-auto placeholder:text-muted-foreground/70"
+                aria-label={t("onboardingForm.labelForInputLinuxUsername")}
+                className="mx-2 w-auto"
                 id="linuxUsername"
                 type="name"
                 placeholder="alice"
@@ -124,7 +129,7 @@ export default function OnboardingForm({
             </div>
             {/* Linux Password */}
             <div className="grid gap-2 px-2">
-              <Label className="font-medium">
+              <Label className="font-medium" htmlFor="password">
                 {t("onboardingForm.labelForInputPassword")}
                 <span className="text-red-400">*</span>
               </Label>
@@ -144,7 +149,7 @@ export default function OnboardingForm({
             </div>
             {/* Confirm Password */}
             <div className="grid gap-2 px-2">
-              <Label className="font-medium">
+              <Label className="font-medium" htmlFor="confirmPassword">
                 {t("onboardingForm.labelForInputConfirmPassword")}
                 <span className="text-red-400">*</span>
               </Label>
