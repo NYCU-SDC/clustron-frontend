@@ -12,7 +12,7 @@ export function getGroupPermissions(
 ) {
   return {
     canEditMembers: canEditMembers(accessLevel, globalRole),
-    canManageGroup: canManageGroup(accessLevel),
+    canManageGroup: canManageGroup(accessLevel, globalRole),
     isReadonly: isReadonlyMember(accessLevel),
   };
 }

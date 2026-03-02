@@ -25,8 +25,11 @@ export function canEditMembers(
   );
 }
 
-export function canManageGroup(accessLevel?: GroupRoleAccessLevel) {
-  return accessLevel == AccessLevelOwner;
+export function canManageGroup(
+  accessLevel?: GroupRoleAccessLevel,
+  globalRole?: GlobalRole,
+) {
+  return globalRole === "admin" || accessLevel == AccessLevelOwner;
 }
 
 export function isReadonlyMember(
