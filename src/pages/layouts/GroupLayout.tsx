@@ -1,4 +1,4 @@
-import { Outlet, useParams } from "react-router";
+import { Outlet, useParams, Navigate } from "react-router";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import SideBar, { NavItem } from "@/components/Sidebar";
 import { useTranslation } from "react-i18next";
@@ -6,7 +6,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 
 export default function GroupLayout() {
   const { id } = useParams<{ id: string }>();
-  const { data: group, isLoading } = useGetGroupById(id!);
+  const { data: group, isLoading, isError } = useGetGroupById(id!);
   const { t } = useTranslation();
 
   const groupNavItems: NavItem[] = [
@@ -20,7 +20,13 @@ export default function GroupLayout() {
     },
   ];
 
-  if (isLoading || !group) return <div>loading...</div>;
+  if (isLoading) {
+    return <div>{t("loading")}</div>;
+  }
+
+  if (isError || !group) {
+    return <Navigate to="/groups" replace />;
+  }
 
   return (
     <div className="flex w-full">

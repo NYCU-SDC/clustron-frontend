@@ -1,4 +1,5 @@
 {
+  "loading": "載入中...",
   "onboardingForm": {
     "cardTitleForName": "輸入您的基本資料",
     "saveBtn": "儲存",
