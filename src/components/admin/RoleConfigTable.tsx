@@ -16,7 +16,13 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -151,20 +157,42 @@ export default function RoleConfigTable() {
   return (
     <>
       <Card>
-        <CardHeader className="flex justify-between">
+        <CardHeader>
           <CardTitle className="text-2xl">
             {t("roleConfigTable.cardTitle")}
           </CardTitle>
+          <CardDescription>
+            Create easy-to-read role names for different members within the
+            group and assign permissions to control group content.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-1/5 py-4 px-4 text-gray-500 dark:text-white">
+                <TableHead className="w-1/5 py-4 px-4 font-bold align-top">
                   {t("roleConfigTable.tableHeadRole")}
+                  <p className="text-muted-foreground mt-1 font-normal">
+                    ＊Display names for various roles in the group
+                  </p>
                 </TableHead>
-                <TableHead className="w-1/5 py-4 px-4 text-gray-500 dark:text-white">
+                <TableHead className="w-1/5 py-4 px-4 font-bold align-top">
                   {t("roleConfigTable.tableHeadAccess")}
+                  <p className="text-muted-foreground mt-1 font-normal">
+                    ＊Permission levels for each role
+                    <ul>
+                      <li>
+                        <strong>Group-Owner:</strong> Can archive the group and
+                        add/remove members.
+                      </li>
+                      <li>
+                        <strong>Group-Admin:</strong> Can add/remove members.
+                      </li>
+                      <li>
+                        <strong>User:</strong> Cannot make any changes.
+                      </li>
+                    </ul>
+                  </p>
                 </TableHead>
               </TableRow>
             </TableHeader>
