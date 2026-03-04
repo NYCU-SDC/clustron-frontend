@@ -167,26 +167,26 @@ export default function RoleConfigTable() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Table>
+          <Table className="table-fixed w-full">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-1/5 py-4 px-4 font-bold align-top">
+                <TableHead className="py-4 px-4 font-bold align-top break-words whitespace-normal">
                   {t("roleConfigTable.tableHeadRole")}
-                  <p className="text-muted-foreground mt-1 font-normal">
+                  <p className="text-muted-foreground mt-1 font-normal break-words whitespace-normal">
                     ＊Display names for various roles in the group
                   </p>
                 </TableHead>
-                <TableHead className="w-1/5 py-4 px-4 font-bold align-top">
+                <TableHead className="py-4 px-4 font-bold align-top break-words whitespace-normal">
                   {t("roleConfigTable.tableHeadAccess")}
-                  <p className="text-muted-foreground mt-1 font-normal">
+                  <p className="text-muted-foreground mt-1 font-normal break-words whitespace-normal">
                     ＊Permission levels for each role
                     <ul>
                       <li>
                         <strong>Group-Owner:</strong> Can archive the group and
-                        add/remove members.
+                        add or remove members.
                       </li>
                       <li>
-                        <strong>Group-Admin:</strong> Can add/remove members.
+                        <strong>Group-Admin:</strong> Can add or remove members.
                       </li>
                       <li>
                         <strong>User:</strong> Cannot make any changes.
@@ -194,6 +194,7 @@ export default function RoleConfigTable() {
                     </ul>
                   </p>
                 </TableHead>
+                <TableHead className="w-16" />
               </TableRow>
             </TableHeader>
             <TableBody>
