@@ -43,12 +43,14 @@ export default function GroupListPage() {
         <div className="space-y-4">
           {data.items.map((group) => {
             return (
-              <NavLink key={group.id} to={`/groups/${group.id}/`}>
-                <GroupDescription
-                  title={group.title}
-                  desc={group.description}
-                />
-              </NavLink>
+              <div>
+                <NavLink key={group.id} to={`/groups/${group.id}/`}>
+                  <GroupDescription
+                    title={group.title}
+                    desc={group.description}
+                  />
+                </NavLink>
+              </div>
             );
           })}
         </div>
