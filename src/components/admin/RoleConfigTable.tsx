@@ -162,34 +162,41 @@ export default function RoleConfigTable() {
             {t("roleConfigTable.cardTitle")}
           </CardTitle>
           <CardDescription>
-            Create easy-to-read role names for different members within the
-            group and assign permissions to control group content.
+            {t("roleConfigTable.cardDescription")}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Table className="table-fixed w-full">
             <TableHeader>
               <TableRow>
-                <TableHead className="py-4 px-4 font-bold align-top break-words whitespace-normal">
+                <TableHead className="py-4 px-4 font-bold align-top whitespace-normal">
                   {t("roleConfigTable.tableHeadRole")}
-                  <p className="text-muted-foreground mt-1 font-normal break-words whitespace-normal">
-                    ＊Display names for various roles in the group
+                  <p className="text-muted-foreground mt-1 font-normal whitespace-normal">
+                    {t("roleConfigTable.tableHeadRoleDescription")}
                   </p>
                 </TableHead>
-                <TableHead className="py-4 px-4 font-bold align-top break-words whitespace-normal">
+                <TableHead className="py-4 px-4 font-bold align-top whitespace-normal">
                   {t("roleConfigTable.tableHeadAccess")}
-                  <p className="text-muted-foreground mt-1 font-normal break-words whitespace-normal">
-                    ＊Permission levels for each role
+                  <p className="text-muted-foreground mt-1 font-normal whitespace-normal">
+                    {t("roleConfigTable.tableHeadAccessDescription")}
                     <ul>
                       <li>
-                        <strong>Group-Owner:</strong> Can archive the group and
-                        add or remove members.
+                        <strong>
+                          {t("roleConfigTable.accessLevelGroupOwnerLabel")}:
+                        </strong>{" "}
+                        {t("roleConfigTable.accessLevelGroupOwnerDescription")}
                       </li>
                       <li>
-                        <strong>Group-Admin:</strong> Can add or remove members.
+                        <strong>
+                          {t("roleConfigTable.accessLevelGroupAdminLabel")}:
+                        </strong>{" "}
+                        {t("roleConfigTable.accessLevelGroupAdminDescription")}
                       </li>
                       <li>
-                        <strong>User:</strong> Cannot make any changes.
+                        <strong>
+                          {t("roleConfigTable.accessLevelUserLabel")}:
+                        </strong>{" "}
+                        {t("roleConfigTable.accessLevelUserDescription")}
                       </li>
                     </ul>
                   </p>
