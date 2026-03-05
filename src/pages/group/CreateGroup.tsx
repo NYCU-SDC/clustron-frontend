@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import AddMemberRow from "@/components/group/AddMemberRow";
 import CsvUploadButton from "@/components/group/CsvUploadButton";
 import { useCreateGroup } from "@/hooks/useCreateGroup";
-import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
 import {
   AccessLevelOwner,
@@ -22,7 +21,6 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { GlobalRole } from "@/lib/permission";
 import { CircleMinus, CirclePlus } from "lucide-react";
 import {
   Card,
@@ -35,7 +33,6 @@ import { Textarea } from "@/components/ui/textarea.tsx";
 export default function AddGroupPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const payload = useJwtPayload();
   const { roleNameToId, getRolesByAccessLevel } = useRoleMapper();
 
   const [title, setTitle] = useState("");
@@ -337,8 +334,7 @@ export default function AddGroupPage() {
                     onRemove={removeRow}
                     isLast={i === members.length - 1}
                     onAddBatch={handleAddBatch}
-                    globalRole={payload?.Role as GlobalRole}
-                    accessLevel={AccessLevelOwner}
+                    assignableRoles={assignableRoles}
                     isDuplicate={isDuplicate}
                   />
                 );

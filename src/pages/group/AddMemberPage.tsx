@@ -19,7 +19,6 @@ import {
   TableHead,
   TableBody,
 } from "@/components/ui/table";
-import { GlobalRole } from "@/lib/permission";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
 import { Button } from "@/components/ui/button";
 
@@ -199,8 +198,7 @@ export default function AddMemberPage() {
                   id={m.id}
                   roleName={m.roleName}
                   error={m.error}
-                  accessLevel={accessLevel}
-                  globalRole={payload?.Role as GlobalRole}
+                  assignableRoles={assignableRoles}
                   onChange={updateRow}
                   onAdd={addRow}
                   onRemove={removeRow}
