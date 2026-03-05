@@ -16,9 +16,7 @@ export default function GroupDescription({ title, desc, links }: Props) {
       </CardHeader>
 
       <CardContent className="space-y-2">
-        <p className="text-muted-foreground text-sm whitespace-pre-wrap">
-          {desc}
-        </p>
+        <p className="text-muted-foreground text-sm">{desc}</p>
 
         {links && links.length > 0 && (
           <>
