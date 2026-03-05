@@ -41,13 +41,17 @@ export default function UserConfigRow({
 
   return (
     <TableRow className="hover:bg-muted/50 transition-colors">
-      <TableCell className="font-medium">
-        {name}
-        {isSelf && (
-          <span className="text-[10px] ml-2 bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-full font-bold">
-            YOU
+      <TableCell className="font-medium max-w-0">
+        <div className="flex items-center">
+          <span className="truncate flex-1" title={name}>
+            {name}
           </span>
-        )}
+          {isSelf && (
+            <span className="text-[10px] ml-2 bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-full font-bold">
+              YOU
+            </span>
+          )}
+        </div>
       </TableCell>
       <TableCell>
         <div className="flex flex-col">

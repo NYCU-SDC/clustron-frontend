@@ -193,7 +193,9 @@ export default function UserConfigTable() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>{t("userConfigTable.tableHeadName")}</TableHead>
+                    <TableHead className="w-[30%]">
+                      {t("userConfigTable.tableHeadName")}
+                    </TableHead>
                     <TableHead>{t("userConfigTable.tableHeadId")}</TableHead>
                     <TableHead>{t("userConfigTable.tableHeadRole")}</TableHead>
                   </TableRow>
