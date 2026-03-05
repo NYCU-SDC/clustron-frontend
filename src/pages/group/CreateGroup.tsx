@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AddMemberRow from "@/components/group/AddMemberRow";
+import CsvUploadButton from "@/components/group/CsvUploadButton";
 import { useCreateGroup } from "@/hooks/useCreateGroup";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
@@ -35,7 +36,7 @@ export default function AddGroupPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const payload = useJwtPayload();
-  const { roleNameToId } = useRoleMapper();
+  const { roleNameToId, getRolesByAccessLevel } = useRoleMapper();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -139,12 +140,25 @@ export default function AddGroupPage() {
     (m, i) =>
       members.findIndex((other) => other.id.trim() === m.id.trim()) !== i,
   );
+  const hasEmptyId = members.some((m) => !m.id.trim());
 
   const handleAddBatch = (
     newMembers: { id: string; roleName: GroupMemberRoleName }[],
   ) => {
-    setMembers((prev) => [...prev, ...newMembers]);
+    setMembers((prev) => {
+      const next = [...prev];
+      let batchIndex = 0;
+      for (let i = 0; i < next.length && batchIndex < newMembers.length; i++) {
+        if (!next[i].id.trim()) {
+          next[i] = { ...next[i], ...newMembers[batchIndex] };
+          batchIndex++;
+        }
+      }
+      return [...next, ...newMembers.slice(batchIndex)];
+    });
   };
+
+  const assignableRoles = getRolesByAccessLevel(AccessLevelOwner);
 
   return (
     <div className="flex-1 flex flex-col justify-center items-center gap-6">
@@ -285,9 +299,16 @@ export default function AddGroupPage() {
       {/* Add Member */}
       <Card className="w-2/3 max-w-4xl p-6">
         <CardHeader className="text-2xl">
-          <CardTitle className="text-2xl">
-            {t("groupPages.createGroup.addInitialMembers")}
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-2xl">
+              {t("groupPages.createGroup.addInitialMembers")}
+            </CardTitle>
+            <CsvUploadButton
+              assignableRoles={assignableRoles}
+              onAddBatch={handleAddBatch}
+              disabled={createGroup.isPending}
+            />
+          </div>
         </CardHeader>
         <CardContent>
           <Table>
@@ -336,6 +357,7 @@ export default function AddGroupPage() {
           onClick={handleSave}
           disabled={
             hasDuplicate ||
+            hasEmptyId ||
             !title.trim() ||
             createGroup.isPending ||
             !description.trim()

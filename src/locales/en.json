@@ -212,6 +212,11 @@
       "updatingToast": "Updating...",
       "updateSuccessToast": "Member updated",
       "updateFailToast": "Failed to update member"
+    },
+    "csvUpload": {
+      "uploadButton": "Upload CSV",
+      "tooltipFormat": "CSV format: 1st column = Student ID or Email, 2nd column = Role (optional). Blank lines will be automatically skipped. Example:\ns123456,student\nuser@example.com,teacher_assistant",
+      "loadedToast": "Loaded {{count}} members from CSV"
     }
   },
   "groupPages": {
