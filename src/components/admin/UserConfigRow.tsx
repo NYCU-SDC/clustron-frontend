@@ -43,7 +43,7 @@ export default function UserConfigRow({
     <TableRow className="hover:bg-muted/50 transition-colors">
       <TableCell className="font-medium max-w-0">
         <div className="flex items-center">
-          <span className="truncate flex-1" title={name}>
+          <span className="truncate" title={name}>
             {name}
           </span>
           {isSelf && (
