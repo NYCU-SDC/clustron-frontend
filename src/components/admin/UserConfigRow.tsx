@@ -7,6 +7,12 @@ import {
   DropdownMenuContent,
   DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 import {
   GLOBAL_ROLE_OPTIONS,
@@ -43,9 +49,16 @@ export default function UserConfigRow({
     <TableRow className="hover:bg-muted/50 transition-colors">
       <TableCell className="font-medium max-w-0">
         <div className="flex items-center">
-          <span className="truncate" title={name}>
-            {name}
-          </span>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="truncate cursor-default">{name}</span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{name}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           {isSelf && (
             <span className="text-[10px] ml-2 bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-full font-bold">
               YOU
