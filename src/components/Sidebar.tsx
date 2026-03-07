@@ -1,6 +1,12 @@
 import { NavLink } from "react-router";
 import { useTranslation } from "react-i18next";
 import ErrorBoundary from "./ErrorBoundary";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 function navLinkClass(isActive: boolean): string {
   return [
@@ -41,9 +47,18 @@ export default function SideBar({ title, navItems, className }: SideBarProps) {
       <aside
         className={`sticky top-[7rem] self-start ml-15 my-8 ${className || ""}`}
       >
-        <div className="text-4xl font-semibold mb-8 truncate" title={title}>
-          {title}
-        </div>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="text-4xl font-semibold mb-8 truncate cursor-default">
+                {title}
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{title}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <ul className="space-y-4">
           {navItems.map((item) => (
             <li key={item.to}>
