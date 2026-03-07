@@ -136,7 +136,7 @@
     "tableHeadAccess": "權限",
     "tableHeadAccessDescription": "＊各角色的權限等級",
     "accessLevelGroupOwnerLabel": "Group-Owner",
-    "accessLevelGroupOwnerDescription": "可封存群組並新增或移除成員。",
+    "accessLevelGroupOwnerDescription": "可封存群組並新增或移除成員。可將擁有權轉移給其他成員。",
     "accessLevelGroupAdminLabel": "Group-Admin",
     "accessLevelGroupAdminDescription": "可新增或移除成員。",
     "accessLevelUserLabel": "User",
