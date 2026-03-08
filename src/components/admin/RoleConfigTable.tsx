@@ -16,7 +16,13 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -151,21 +157,51 @@ export default function RoleConfigTable() {
   return (
     <>
       <Card>
-        <CardHeader className="flex justify-between">
+        <CardHeader>
           <CardTitle className="text-2xl">
             {t("roleConfigTable.cardTitle")}
           </CardTitle>
+          <CardDescription>
+            {t("roleConfigTable.cardDescription")}
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <Table>
+          <Table className="table-fixed w-full">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-1/5 py-4 px-4 text-gray-500 dark:text-white">
+                <TableHead className="py-4 px-4 font-bold align-top whitespace-normal">
                   {t("roleConfigTable.tableHeadRole")}
+                  <p className="text-muted-foreground mt-1 font-normal whitespace-normal">
+                    {t("roleConfigTable.tableHeadRoleDescription")}
+                  </p>
                 </TableHead>
-                <TableHead className="w-1/5 py-4 px-4 text-gray-500 dark:text-white">
+                <TableHead className="py-4 px-4 font-bold align-top whitespace-normal">
                   {t("roleConfigTable.tableHeadAccess")}
+                  <p className="text-muted-foreground mt-1 font-normal whitespace-normal">
+                    {t("roleConfigTable.tableHeadAccessDescription")}
+                    <ul>
+                      <li>
+                        <strong>
+                          {t("roleConfigTable.accessLevelGroupOwnerLabel")}:
+                        </strong>{" "}
+                        {t("roleConfigTable.accessLevelGroupOwnerDescription")}
+                      </li>
+                      <li>
+                        <strong>
+                          {t("roleConfigTable.accessLevelGroupAdminLabel")}:
+                        </strong>{" "}
+                        {t("roleConfigTable.accessLevelGroupAdminDescription")}
+                      </li>
+                      <li>
+                        <strong>
+                          {t("roleConfigTable.accessLevelUserLabel")}:
+                        </strong>{" "}
+                        {t("roleConfigTable.accessLevelUserDescription")}
+                      </li>
+                    </ul>
+                  </p>
                 </TableHead>
+                <TableHead className="w-16" />
               </TableRow>
             </TableHeader>
             <TableBody>
