@@ -11,7 +11,7 @@ import AdminLayout from "./AdminLayout";
 
 // Mock react-cookie
 vi.mock("react-cookie", async () => {
-  const mod = await vi.importActual<typeof ReactCookie>("react-cookie");
+  const mod = await vi.importActual<any>("react-cookie");
   return {
     ...mod,
     useCookies: vi.fn(),
@@ -81,15 +81,11 @@ describe("AdminLayout", () => {
                 <Route path="/admin" element={<AdminLayout />}>
                   <Route
                     path="config"
-                    element={
-                      <div data-testid="config-page">Role Config Page</div>
-                    }
+                    element={<div>Role Config Page Content</div>}
                   />
                   <Route
                     path="users"
-                    element={
-                      <div data-testid="users-page">User Config Page</div>
-                    }
+                    element={<div>User Config Page Content</div>}
                   />
                 </Route>
                 <Route path="/" element={<div>Home Page</div>} />
@@ -107,32 +103,31 @@ describe("AdminLayout", () => {
 
     renderAdminLayout();
 
-    // Verify Title
+    // Verify Sidebar Title
     await waitFor(() => {
       expect(screen.getByText("adminSidebar.title")).toBeInTheDocument();
     });
 
-    // Test Navigation to User Config
+    // Navigate to User Config and verify content
     const userLink = screen.getByText("adminSidebar.userConfigLink");
     await user.click(userLink);
+    expect(screen.getByText("User Config Page Content")).toBeInTheDocument();
 
-    expect(screen.getByTestId("users-page")).toBeInTheDocument();
-
-    // Test Navigation back to Role Config
+    // Navigate back to Role Config and verify content
     const roleLink = screen.getByText("adminSidebar.roleAccessConfigLink");
     await user.click(roleLink);
-
-    expect(screen.getByTestId("config-page")).toBeInTheDocument();
+    expect(screen.getByText("Role Config Page Content")).toBeInTheDocument();
   });
 
-  it("should redirect non-admin users", async () => {
+  it("should redirect non-admin users to home page", async () => {
     vi.mocked(jwtDecode).mockReturnValue({ Role: "user" });
 
     renderAdminLayout();
 
     await waitFor(() => {
-      // Should redirect to "/"
+      // User should be redirected to "/" which renders "Home Page"
       expect(screen.getByText("Home Page")).toBeInTheDocument();
+      // Sidebar should not be visible
       expect(screen.queryByText("adminSidebar.title")).not.toBeInTheDocument();
     });
   });
