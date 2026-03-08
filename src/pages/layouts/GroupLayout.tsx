@@ -27,6 +27,13 @@ export default function GroupLayout() {
     },
   ];
 
+  const readonlyNavItems: NavItem[] = [
+    {
+      to: `/groups/${id}/`,
+      label: t("groupComponents.groupSideBar.overview"),
+    },
+  ];
+
   if (isLoading) {
     return <div>{t("loading")}</div>;
   }
@@ -40,11 +47,7 @@ export default function GroupLayout() {
       <div className="min-w-xs border-r px-4">
         <SideBar
           title={group.title}
-          navItems={
-            isReadonly
-              ? groupNavItems.filter((_, index) => index !== 1)
-              : groupNavItems
-          }
+          navItems={isReadonly ? readonlyNavItems : groupNavItems}
           className="min-w-36"
         />
       </div>
