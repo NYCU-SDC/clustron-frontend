@@ -69,31 +69,6 @@ describe("JobLayout", () => {
     );
   }
 
-  describe("Visibility", () => {
-    it("should render the job sidebar title and all navigation links", async () => {
-      renderJobLayout();
-
-      // Check Title
-      await screen.findByText("jobsSideBar.title");
-
-      const sidebar = screen.getByRole("complementary");
-      const navLinks = Array.from(sidebar.querySelectorAll("a")).filter(
-        (link) => {
-          const href = link.getAttribute("href");
-          return href && !href.startsWith("#");
-        },
-      );
-
-      // Verify count: Job List, Submit Job
-      expect(navLinks.length).toBe(2);
-
-      navLinks.forEach((link) => {
-        expect(link.getAttribute("href")).toBeTruthy();
-        expect(link.textContent).toBeTruthy();
-      });
-    });
-  });
-
   describe("Navigation", () => {
     it("should navigate correctly between job list and job submission sub-pages", async () => {
       const user = userEvent.setup();

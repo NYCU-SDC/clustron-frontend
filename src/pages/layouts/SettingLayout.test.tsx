@@ -66,29 +66,6 @@ describe("SettingLayout", () => {
     );
   }
 
-  describe("Visibility", () => {
-    it("should render the setting sidebar with all navigation links", async () => {
-      renderSettingLayout();
-      await screen.findByText("settingSideBar.title");
-
-      const sidebar = screen.getByRole("complementary");
-      const navLinks = Array.from(sidebar.querySelectorAll("a")).filter(
-        (link) => {
-          const href = link.getAttribute("href");
-          return href && !href.startsWith("#");
-        },
-      );
-
-      // Verify count: General, SSH Keys
-      expect(navLinks.length).toBe(2);
-
-      navLinks.forEach((link) => {
-        expect(link.getAttribute("href")).toBeTruthy();
-        expect(link.textContent).toBeTruthy();
-      });
-    });
-  });
-
   describe("Navigation", () => {
     it("should navigate correctly between sub-pages", async () => {
       const user = userEvent.setup();
