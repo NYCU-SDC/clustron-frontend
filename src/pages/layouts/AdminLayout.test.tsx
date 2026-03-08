@@ -9,31 +9,15 @@ import { jwtDecode } from "jwt-decode";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import AdminLayout from "./AdminLayout";
 
-// Mock react-cookie
+// 1. Setup Mocks (Mocking providers' dependencies)
 vi.mock("react-cookie", async () => {
   const mod = await vi.importActual<any>("react-cookie");
-  return {
-    ...mod,
-    useCookies: vi.fn(),
-  };
+  return { ...mod, useCookies: vi.fn() };
 });
 
-// Mock jwt-decode
-vi.mock("jwt-decode", () => ({
-  jwtDecode: vi.fn(),
-}));
-
-// Mock token getter
-vi.mock("@/lib/token", () => ({
-  getAccessToken: vi.fn(),
-}));
-
-// Mock logout
-vi.mock("@/lib/request/logout", () => ({
-  logout: vi.fn(),
-}));
-
-// Mock refreshAuthToken
+vi.mock("jwt-decode", () => ({ jwtDecode: vi.fn() }));
+vi.mock("@/lib/token", () => ({ getAccessToken: vi.fn() }));
+vi.mock("@/lib/request/logout", () => ({ logout: vi.fn() }));
 vi.mock("@/lib/request/refreshAuthToken", () => ({
   refreshAuthToken: vi.fn(async () => ({
     accessToken: "mock-access-token",
@@ -42,11 +26,10 @@ vi.mock("@/lib/request/refreshAuthToken", () => ({
   })),
 }));
 
-// Mock other APIs used in pages
+// Mock APIs for pages inside the layout to prevent 401s
 vi.mock("@/lib/request/getRoleConfigs", () => ({
   getRoleConfigs: vi.fn(async () => []),
 }));
-
 vi.mock("@/lib/request/getUsers", () => ({
   getUsers: vi.fn(async () => ({ items: [], totalPages: 0 })),
 }));
@@ -58,12 +41,8 @@ describe("AdminLayout", () => {
 
   function renderAdminLayout(initialRoute = "/admin/config") {
     const queryClient = new QueryClient({
-      defaultOptions: {
-        queries: { retry: false },
-      },
+      defaultOptions: { queries: { retry: false } },
     });
-
-    // Default mock implementation for cookies
     vi.mocked(useCookies).mockReturnValue([
       { refreshToken: "mock-refresh" },
       vi.fn(),
@@ -79,6 +58,7 @@ describe("AdminLayout", () => {
             <AuthProvider>
               <Routes>
                 <Route path="/admin" element={<AdminLayout />}>
+                  {/* Semantic mock components for navigation verification */}
                   <Route
                     path="config"
                     element={<div>Role Config Page Content</div>}
@@ -88,7 +68,7 @@ describe("AdminLayout", () => {
                     element={<div>User Config Page Content</div>}
                   />
                 </Route>
-                <Route path="/" element={<div>Home Page</div>} />
+                <Route path="/" element={<div>Home Page Content</div>} />
               </Routes>
             </AuthProvider>
           </MemoryRouter>
@@ -97,38 +77,47 @@ describe("AdminLayout", () => {
     );
   }
 
-  it("should render admin sidebar and navigate correctly for admin users", async () => {
-    vi.mocked(jwtDecode).mockReturnValue({ Role: "admin" });
-    const user = userEvent.setup();
+  describe("Security & Visibility", () => {
+    it("should render the admin sidebar when user has admin role", async () => {
+      vi.mocked(jwtDecode).mockReturnValue({ Role: "admin" });
+      renderAdminLayout();
 
-    renderAdminLayout();
-
-    // Verify Sidebar Title
-    await waitFor(() => {
-      expect(screen.getByText("adminSidebar.title")).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText("adminSidebar.title")).toBeInTheDocument();
+      });
     });
 
-    // Navigate to User Config and verify content
-    const userLink = screen.getByText("adminSidebar.userConfigLink");
-    await user.click(userLink);
-    expect(screen.getByText("User Config Page Content")).toBeInTheDocument();
+    it("should redirect to home page when user is not an admin", async () => {
+      vi.mocked(jwtDecode).mockReturnValue({ Role: "user" });
+      renderAdminLayout();
 
-    // Navigate back to Role Config and verify content
-    const roleLink = screen.getByText("adminSidebar.roleAccessConfigLink");
-    await user.click(roleLink);
-    expect(screen.getByText("Role Config Page Content")).toBeInTheDocument();
+      await waitFor(() => {
+        // App.tsx logic: non-admins are redirected back to "/" or away from /admin
+        expect(screen.getByText("Home Page Content")).toBeInTheDocument();
+        expect(
+          screen.queryByText("adminSidebar.title"),
+        ).not.toBeInTheDocument();
+      });
+    });
   });
 
-  it("should redirect non-admin users to home page", async () => {
-    vi.mocked(jwtDecode).mockReturnValue({ Role: "user" });
+  describe("Navigation", () => {
+    it("should navigate to every sidebar link correctly", async () => {
+      vi.mocked(jwtDecode).mockReturnValue({ Role: "admin" });
+      const user = userEvent.setup();
+      renderAdminLayout("/admin/config");
 
-    renderAdminLayout();
+      await waitFor(() => screen.getByText("adminSidebar.title"));
 
-    await waitFor(() => {
-      // User should be redirected to "/" which renders "Home Page"
-      expect(screen.getByText("Home Page")).toBeInTheDocument();
-      // Sidebar should not be visible
-      expect(screen.queryByText("adminSidebar.title")).not.toBeInTheDocument();
+      // Test User Configuration Link
+      const userLink = screen.getByText("adminSidebar.userConfigLink");
+      await user.click(userLink);
+      expect(screen.getByText("User Config Page Content")).toBeInTheDocument();
+
+      // Test Role Configuration Link
+      const roleLink = screen.getByText("adminSidebar.roleAccessConfigLink");
+      await user.click(roleLink);
+      expect(screen.getByText("Role Config Page Content")).toBeInTheDocument();
     });
   });
 });
