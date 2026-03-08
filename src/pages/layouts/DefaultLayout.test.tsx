@@ -8,10 +8,11 @@ import { getAccessToken } from "@/lib/token";
 import { jwtDecode } from "jwt-decode";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import DefaultLayout from "./DefaultLayout";
+import type * as ReactCookie from "react-cookie";
 
 // 1. Setup Global Mocks
 vi.mock("react-cookie", async () => {
-  const mod = await vi.importActual<any>("react-cookie");
+  const mod = await vi.importActual<typeof ReactCookie>("react-cookie");
   return { ...mod, useCookies: vi.fn() };
 });
 

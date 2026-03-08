@@ -9,10 +9,11 @@ import { jwtDecode } from "jwt-decode";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import GroupLayout from "./GroupLayout";
+import type * as ReactCookie from "react-cookie";
 
 // 1. Setup Global Mocks
 vi.mock("react-cookie", async () => {
-  const mod = await vi.importActual<any>("react-cookie");
+  const mod = await vi.importActual<typeof ReactCookie>("react-cookie");
   return { ...mod, useCookies: vi.fn() };
 });
 
