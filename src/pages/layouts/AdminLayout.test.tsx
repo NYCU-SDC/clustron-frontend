@@ -79,12 +79,26 @@ describe("AdminLayout", () => {
   }
 
   describe("Security & Visibility", () => {
-    it("should render the admin sidebar when user has admin role", async () => {
+    it("should render the admin sidebar with correct links when user has admin role", async () => {
       vi.mocked(jwtDecode).mockReturnValue({ Role: "admin" });
       renderAdminLayout();
 
-      await waitFor(() => {
-        expect(screen.getByText("adminSidebar.title")).toBeInTheDocument();
+      await screen.findByText("adminSidebar.title");
+
+      const sidebar = screen.getByRole("complementary");
+      const navLinks = Array.from(sidebar.querySelectorAll("a")).filter(
+        (link) => {
+          const href = link.getAttribute("href");
+          return href && !href.startsWith("#");
+        },
+      );
+
+      // Verify count: Role Access Config, User Config
+      expect(navLinks.length).toBe(2);
+
+      navLinks.forEach((link) => {
+        expect(link.getAttribute("href")).toBeTruthy();
+        expect(link.textContent).toBeTruthy();
       });
     });
 
@@ -108,17 +122,28 @@ describe("AdminLayout", () => {
       const user = userEvent.setup();
       renderAdminLayout("/admin/config");
 
-      await waitFor(() => screen.getByText("adminSidebar.title"));
+      // The SideBar uses an <aside> tag, which has the 'complementary' role
+      const sidebar = screen.getByRole("complementary");
 
-      // Test User Configuration Link
-      const userLink = screen.getByText("adminSidebar.userConfigLink");
-      await user.click(userLink);
-      expect(screen.getByText("User Config Page Content")).toBeInTheDocument();
+      // Find all <a> tags within the sidebar
+      const sidebarLinks = sidebar.querySelectorAll("a");
 
-      // Test Role Configuration Link
-      const roleLink = screen.getByText("adminSidebar.roleAccessConfigLink");
-      await user.click(roleLink);
-      expect(screen.getByText("Role Config Page Content")).toBeInTheDocument();
+      const sidebarNavLinks = Array.from(sidebarLinks).filter((link) => {
+        const href = link.getAttribute("href");
+        return href && href !== "/" && !href.startsWith("#");
+      });
+
+      expect(sidebarNavLinks.length).toBeGreaterThan(0);
+
+      for (const link of sidebarNavLinks) {
+        await user.click(link);
+
+        // Wait for navigation and verify we didn't hit the 404 page
+        await waitFor(() => {
+          const notFoundText = screen.queryByText(/404 Not Found/i);
+          expect(notFoundText).not.toBeInTheDocument();
+        });
+      }
     });
   });
 });

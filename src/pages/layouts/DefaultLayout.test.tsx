@@ -74,7 +74,7 @@ describe("DefaultLayout", () => {
   }
 
   describe("Visibility", () => {
-    it("should render the Navbar and the Outlet content", () => {
+    it("should render the Navbar with correct links for a standard user", () => {
       vi.mocked(jwtDecode).mockReturnValue({
         Role: "user",
         Email: "user@example.com",
@@ -83,24 +83,51 @@ describe("DefaultLayout", () => {
 
       expect(screen.getByRole("navigation")).toBeInTheDocument();
       expect(screen.getByText("Home Page Content")).toBeInTheDocument();
+
+      const navbar = screen.getByRole("navigation");
+      const navLinks = Array.from(navbar.querySelectorAll("a")).filter(
+        (link) => {
+          const href = link.getAttribute("href");
+          // We filter navigation links excluding non-links and specific internal hash links
+          return href && !href.startsWith("#");
+        },
+      );
+
+      // Standard user: Logo (to /groups), Groups, Settings
+      expect(navLinks.length).toBe(3);
+
+      navLinks.forEach((link) => {
+        expect(link.getAttribute("href")).toBeTruthy();
+        expect(link.textContent).toBeTruthy();
+      });
+
+      expect(screen.queryByText(/navbar\.adminLink/i)).not.toBeInTheDocument();
     });
 
-    it("should show the Admin link for admin users", () => {
+    it("should render the Navbar with all links for an admin user", () => {
       vi.mocked(jwtDecode).mockReturnValue({
         Role: "admin",
         Email: "admin@example.com",
       });
       renderDefaultLayout();
-      expect(screen.getByText(/navbar\.adminLink/i)).toBeInTheDocument();
-    });
 
-    it("should NOT show the Admin link for standard users", () => {
-      vi.mocked(jwtDecode).mockReturnValue({
-        Role: "user",
-        Email: "user@example.com",
+      const navbar = screen.getByRole("navigation");
+      const navLinks = Array.from(navbar.querySelectorAll("a")).filter(
+        (link) => {
+          const href = link.getAttribute("href");
+          return href && !href.startsWith("#");
+        },
+      );
+
+      // Admin user: Logo (to /groups), Groups, Settings, Admin
+      expect(navLinks.length).toBe(4);
+
+      navLinks.forEach((link) => {
+        expect(link.getAttribute("href")).toBeTruthy();
+        expect(link.textContent).toBeTruthy();
       });
-      renderDefaultLayout();
-      expect(screen.queryByText(/navbar\.adminLink/i)).not.toBeInTheDocument();
+
+      expect(screen.getByText(/navbar\.adminLink/i)).toBeInTheDocument();
     });
   });
 

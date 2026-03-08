@@ -84,10 +84,25 @@ describe("GroupLayout", () => {
   }
 
   describe("Data Loading & Error States", () => {
-    it("should render the group title in the sidebar when data is loaded", async () => {
+    it("should render the group title and all navigation links in the sidebar when data is loaded", async () => {
       renderGroupLayout();
-      const title = await screen.findByText(mockGroup.title);
-      expect(title).toBeInTheDocument();
+      await screen.findByText(mockGroup.title);
+
+      const sidebar = screen.getByRole("complementary");
+      const navLinks = Array.from(sidebar.querySelectorAll("a")).filter(
+        (link) => {
+          const href = link.getAttribute("href");
+          return href && !href.startsWith("#");
+        },
+      );
+
+      // Verify count: Overview, Group Settings
+      expect(navLinks.length).toBe(2);
+
+      navLinks.forEach((link) => {
+        expect(link.getAttribute("href")).toBeTruthy();
+        expect(link.textContent).toBeTruthy();
+      });
     });
 
     it("should redirect to group list if the group fetch fails", async () => {

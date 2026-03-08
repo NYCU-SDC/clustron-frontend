@@ -67,11 +67,25 @@ describe("SettingLayout", () => {
   }
 
   describe("Visibility", () => {
-    it("should render the setting sidebar for a logged-in user", async () => {
+    it("should render the setting sidebar with all navigation links", async () => {
       renderSettingLayout();
-      // Using findBy instead of waitFor for cleaner syntax
-      const title = await screen.findByText("settingSideBar.title");
-      expect(title).toBeInTheDocument();
+      await screen.findByText("settingSideBar.title");
+
+      const sidebar = screen.getByRole("complementary");
+      const navLinks = Array.from(sidebar.querySelectorAll("a")).filter(
+        (link) => {
+          const href = link.getAttribute("href");
+          return href && !href.startsWith("#");
+        },
+      );
+
+      // Verify count: General, SSH Keys
+      expect(navLinks.length).toBe(2);
+
+      navLinks.forEach((link) => {
+        expect(link.getAttribute("href")).toBeTruthy();
+        expect(link.textContent).toBeTruthy();
+      });
     });
   });
 

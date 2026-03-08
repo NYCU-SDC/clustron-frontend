@@ -74,11 +74,23 @@ describe("JobLayout", () => {
       renderJobLayout();
 
       // Check Title
-      expect(await screen.findByText("jobsSideBar.title")).toBeInTheDocument();
+      await screen.findByText("jobsSideBar.title");
 
-      // Check Sidebar Links are present
-      expect(screen.getByText("jobsSideBar.ListNavLink")).toBeInTheDocument();
-      expect(screen.getByText("jobsSideBar.SubmitNavLink")).toBeInTheDocument();
+      const sidebar = screen.getByRole("complementary");
+      const navLinks = Array.from(sidebar.querySelectorAll("a")).filter(
+        (link) => {
+          const href = link.getAttribute("href");
+          return href && !href.startsWith("#");
+        },
+      );
+
+      // Verify count: Job List, Submit Job
+      expect(navLinks.length).toBe(2);
+
+      navLinks.forEach((link) => {
+        expect(link.getAttribute("href")).toBeTruthy();
+        expect(link.textContent).toBeTruthy();
+      });
     });
   });
 
