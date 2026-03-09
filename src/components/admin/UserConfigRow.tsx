@@ -45,6 +45,18 @@ export default function UserConfigRow({
   const roleLabel =
     GLOBAL_ROLE_OPTIONS.find((r) => r.id === currentRole)?.label || currentRole;
 
+  const truncateMiddle = (text: string, maxLength: number = 15) => {
+    if (text.length <= maxLength) return text;
+
+    const charsToShow = maxLength - 3;
+    const frontChars = Math.ceil(charsToShow / 2);
+    const backChars = Math.floor(charsToShow / 2);
+
+    return `${text.slice(0, frontChars)}...${text.slice(-backChars)}`;
+  };
+
+  const displaySafeName = truncateMiddle(name, 15);
+
   return (
     <TableRow className="hover:bg-muted/50 transition-colors">
       <TableCell className="font-medium max-w-0">
@@ -52,9 +64,9 @@ export default function UserConfigRow({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <span className="truncate cursor-default">{name}</span>
+                <p className="truncate cursor-default">{displaySafeName}</p>
               </TooltipTrigger>
-              <TooltipContent>
+              <TooltipContent className="max-w-[40vw] break-words">
                 <p>{name}</p>
               </TooltipContent>
             </Tooltip>
