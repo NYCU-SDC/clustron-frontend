@@ -8,6 +8,19 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+export const truncateMiddle = (
+  text: string,
+  maxLength: number = 15,
+): string => {
+  if (text.length <= maxLength) return text;
+
+  const charsToShow = maxLength - 3;
+  const frontChars = Math.ceil(charsToShow / 2);
+  const backChars = Math.floor(charsToShow / 2);
+
+  return `${text.slice(0, frontChars)}...${text.slice(-backChars)}`;
+};
+
 function navLinkClass(isActive: boolean): string {
   return [
     "text-base",
@@ -42,6 +55,8 @@ interface SideBarProps {
 export default function SideBar({ title, navItems, className }: SideBarProps) {
   const { t } = useTranslation();
 
+  const displayTitle = truncateMiddle(title, 15);
+
   return (
     <ErrorBoundary>
       <aside
@@ -50,8 +65,8 @@ export default function SideBar({ title, navItems, className }: SideBarProps) {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="text-4xl font-semibold mb-8 truncate cursor-default">
-                {title}
+              <div className="text-4xl font-semibold mb-8 cursor-default">
+                {displayTitle}
               </div>
             </TooltipTrigger>
             <TooltipContent>
