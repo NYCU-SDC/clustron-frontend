@@ -25,7 +25,7 @@ export default function NavTabs({ title, navItems, className }: NavTabsProps) {
     <ErrorBoundary>
       <div className={className}>
         <h2 className="text-2xl font-semibold mb-4">{title}</h2>
-        <div className="flex gap-1 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
+        <div className="flex gap-1 border-b border-gray-200 dark:border-gray-700 overflow-x-auto pb-2">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
