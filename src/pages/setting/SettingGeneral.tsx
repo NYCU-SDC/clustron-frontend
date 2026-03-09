@@ -12,11 +12,11 @@ import { useTranslation } from "react-i18next";
 export default function SettingGeneral() {
   const { t } = useTranslation();
   return (
-    <div className="min-w-2xl max-w-2xl px-6 py-8 flex flex-col gap-10">
+    <div className="w-full max-w-2xl px-4 md:px-6 py-6 md:py-8 flex flex-col gap-6 md:gap-10">
       <SettingFullNameForm />
       <Card>
         <CardHeader>
-          <div className="flex justify-between">
+          <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-start">
             <div className="flex flex-col gap-1.5">
               <CardTitle className="text-2xl">
                 {t("settingFullNameForm.cardTitleForLanguage")}
