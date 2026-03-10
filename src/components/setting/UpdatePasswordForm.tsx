@@ -15,7 +15,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { PasswordInput } from "@/components/ui/password-input";
+import { PasswordInput } from "@/components/customUi/password-input";
 import { useMutation } from "@tanstack/react-query";
 import { updatePassword } from "@/lib/request/updatePassword";
 import { toast } from "sonner";
