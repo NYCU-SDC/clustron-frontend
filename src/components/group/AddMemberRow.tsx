@@ -1,6 +1,4 @@
 import { CircleMinus, CirclePlus } from "lucide-react";
-import { GlobalRole, type GroupRoleAccessLevel } from "@/lib/permission";
-import { useRoleMapper } from "@/hooks/useRoleMapper";
 import {
   Select,
   SelectTrigger,
@@ -9,9 +7,8 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { AccessLevelOwner, GroupMemberRoleName } from "@/types/group";
+import { GroupMemberRoleName, GroupRole } from "@/types/group";
 import { cn } from "@/lib/utils";
-import { AccessLevelUser } from "@/types/group";
 import { useTranslation } from "react-i18next";
 import { useUserAutocomplete } from "@/hooks/useUserAutocomplete";
 import {
@@ -32,14 +29,13 @@ type Props = {
   isDuplicate?: boolean;
   disabled?: boolean;
   isPending?: boolean;
+  assignableRoles: GroupRole[];
   onAddBatch: (
     newMembers: { id: string; roleName: GroupMemberRoleName }[],
   ) => void;
   onChange: (index: number, key: "id" | "roleName", value: string) => void;
   onRemove: (index: number) => void;
   onAdd: () => void;
-  accessLevel?: GroupRoleAccessLevel;
-  globalRole?: GlobalRole;
 };
 
 export default function AddMemberRow({
@@ -49,24 +45,18 @@ export default function AddMemberRow({
   error,
   isLast,
   isDuplicate,
-  globalRole,
   disabled = false,
   isPending = false,
+  assignableRoles,
   onAddBatch,
   onChange,
   onRemove,
   onAdd,
-  accessLevel = AccessLevelUser,
 }: Props) {
   const { t } = useTranslation();
-  const { getRolesByAccessLevel } = useRoleMapper();
   const { query, setQuery, suggestions, showSuggestions, handleSelect } =
     useUserAutocomplete();
 
-  const effectiveAccessLevel =
-    globalRole === "admin" ? AccessLevelOwner : accessLevel;
-
-  const assignableRoles = getRolesByAccessLevel(effectiveAccessLevel);
   const isInputDisabled = disabled || isPending;
 
   return (

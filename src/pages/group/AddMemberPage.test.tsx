@@ -51,6 +51,10 @@ vi.mock("@/hooks/useRoleMapper", () => ({
     // 測試重點：把 roleName 轉 id
     roleNameToId: (name: string) =>
       ({ student: "RID_STUDENT", ta: "RID_TA" })[name] ?? null,
+    getRolesByAccessLevel: () => [
+      { id: "RID_STUDENT", roleName: "student", accessLevel: "USER" },
+      { id: "RID_TA", roleName: "ta", accessLevel: "USER" },
+    ],
   }),
 }));
 
