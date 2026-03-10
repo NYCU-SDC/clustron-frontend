@@ -56,6 +56,12 @@ export default function AddGroupPage() {
       }
 
       const groupId = data.id;
+      const validMembers = members.filter((m) => m.id.trim());
+
+      if (validMembers.length === 0) {
+        navigate(`/groups/${groupId}`);
+        return;
+      }
 
       navigate(`/groups/${groupId}/add-member-result`, {
         state: {
@@ -64,12 +70,10 @@ export default function AddGroupPage() {
             addedFailureNumber: data.addedResult.addedFailureNumber,
             errors: data.addedResult.errors,
           },
-          members: members
-            .filter((m) => m.id.trim())
-            .map((m) => ({
-              member: m.id.trim(),
-              roleName: m.roleName,
-            })),
+          members: validMembers.map((m) => ({
+            member: m.id.trim(),
+            roleName: m.roleName,
+          })),
         },
       });
     },
