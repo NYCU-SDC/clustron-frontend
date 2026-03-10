@@ -10,7 +10,6 @@ import { AuthProvider } from "@/components/auth/AuthProvider";
 import JobLayout from "./JobLayout";
 import type * as ReactCookie from "react-cookie";
 
-// 1. Setup Global Mocks
 vi.mock("react-cookie", async () => {
   const mod = await vi.importActual<typeof ReactCookie>("react-cookie");
   return { ...mod, useCookies: vi.fn() };
@@ -74,15 +73,13 @@ describe("JobLayout", () => {
       const user = userEvent.setup();
       renderJobLayout();
 
-      // Ensure layout is ready
+      // ensre the side bar has already rendered.
       await screen.findByText("jobsSideBar.title");
 
-      // 1. Click Submit Job Link
       const submitLink = screen.getByText("jobsSideBar.SubmitNavLink");
       await user.click(submitLink);
       expect(screen.getByText("Submit Job Content")).toBeInTheDocument();
 
-      // 2. Click Job List Link
       const listLink = screen.getByText("jobsSideBar.ListNavLink");
       await user.click(listLink);
       expect(screen.getByText("Job List Content")).toBeInTheDocument();

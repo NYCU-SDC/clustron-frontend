@@ -10,7 +10,6 @@ import { AuthProvider } from "@/components/auth/AuthProvider";
 import DefaultLayout from "./DefaultLayout";
 import type * as ReactCookie from "react-cookie";
 
-// 1. Setup Global Mocks
 vi.mock("react-cookie", async () => {
   const mod = await vi.importActual<typeof ReactCookie>("react-cookie");
   return { ...mod, useCookies: vi.fn() };
@@ -74,21 +73,21 @@ describe("DefaultLayout", () => {
   }
 
   describe("Visibility", () => {
-    it("should render the Navbar with correct links for a standard user", () => {
+    it("should render the Navbar with correct links for a standard user", async () => {
       vi.mocked(jwtDecode).mockReturnValue({
         Role: "user",
         Email: "user@example.com",
       });
       renderDefaultLayout();
 
+      const navbar = await screen.findByRole("navigation");
+
       expect(screen.getByRole("navigation")).toBeInTheDocument();
       expect(screen.getByText("Home Page Content")).toBeInTheDocument();
 
-      const navbar = screen.getByRole("navigation");
       const navLinks = Array.from(navbar.querySelectorAll("a")).filter(
         (link) => {
           const href = link.getAttribute("href");
-          // We filter navigation links excluding non-links and specific internal hash links
           return href && !href.startsWith("#");
         },
       );
@@ -104,14 +103,14 @@ describe("DefaultLayout", () => {
       expect(screen.queryByText(/navbar\.adminLink/i)).not.toBeInTheDocument();
     });
 
-    it("should render the Navbar with all links for an admin user", () => {
+    it("should render the Navbar with all links for an admin user", async () => {
       vi.mocked(jwtDecode).mockReturnValue({
         Role: "admin",
         Email: "admin@example.com",
       });
       renderDefaultLayout();
 
-      const navbar = screen.getByRole("navigation");
+      const navbar = await screen.findByRole("navigation");
       const navLinks = Array.from(navbar.querySelectorAll("a")).filter(
         (link) => {
           const href = link.getAttribute("href");
@@ -140,15 +139,12 @@ describe("DefaultLayout", () => {
       const user = userEvent.setup();
       renderDefaultLayout();
 
-      // Test Groups Nav
       await user.click(screen.getByText(/navbar\.groupLink/i));
       expect(screen.getByText("Groups Page Content")).toBeInTheDocument();
 
-      // Test Settings Nav
       await user.click(screen.getByText(/navbar\.settingLink/i));
       expect(screen.getByText("Settings Page Content")).toBeInTheDocument();
 
-      // Test Admin Nav
       await user.click(screen.getByText(/navbar\.adminLink/i));
       expect(screen.getByText("Admin Page Content")).toBeInTheDocument();
     });
@@ -161,7 +157,6 @@ describe("DefaultLayout", () => {
       const user = userEvent.setup();
       renderDefaultLayout();
 
-      // Test Groups Nav
       await user.click(screen.getByText(/navbar\.groupLink/i));
       expect(screen.getByText("Groups Page Content")).toBeInTheDocument();
 

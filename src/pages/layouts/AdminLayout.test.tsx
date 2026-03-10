@@ -10,7 +10,6 @@ import { AuthProvider } from "@/components/auth/AuthProvider";
 import AdminLayout from "./AdminLayout";
 import type * as ReactCookie from "react-cookie";
 
-// 1. Setup Mocks (Mocking providers' dependencies)
 vi.mock("react-cookie", async () => {
   const mod = await vi.importActual<typeof ReactCookie>("react-cookie");
   return { ...mod, useCookies: vi.fn() };
@@ -59,7 +58,6 @@ describe("AdminLayout", () => {
             <AuthProvider>
               <Routes>
                 <Route path="/admin" element={<AdminLayout />}>
-                  {/* Semantic mock components for navigation verification */}
                   <Route
                     path="config"
                     element={<div>Role Config Page Content</div>}
@@ -83,6 +81,7 @@ describe("AdminLayout", () => {
       vi.mocked(jwtDecode).mockReturnValue({ Role: "admin" });
       renderAdminLayout();
 
+      // should ensure the sidebar already render
       await screen.findByText("adminSidebar.title");
 
       const sidebar = screen.getByRole("complementary");
@@ -93,7 +92,6 @@ describe("AdminLayout", () => {
         },
       );
 
-      // Verify count: Role Access Config, User Config
       expect(navLinks.length).toBe(2);
 
       navLinks.forEach((link) => {
@@ -107,7 +105,6 @@ describe("AdminLayout", () => {
       renderAdminLayout();
 
       await waitFor(() => {
-        // App.tsx logic: non-admins are redirected back to "/" or away from /admin
         expect(screen.getByText("Home Page Content")).toBeInTheDocument();
         expect(
           screen.queryByText("adminSidebar.title"),
@@ -116,16 +113,16 @@ describe("AdminLayout", () => {
     });
   });
 
-  describe("Navigation", () => {
+  describe("Navigation", async () => {
     it("should navigate to every sidebar link correctly", async () => {
       vi.mocked(jwtDecode).mockReturnValue({ Role: "admin" });
       const user = userEvent.setup();
       renderAdminLayout("/admin/config");
 
       // The SideBar uses an <aside> tag, which has the 'complementary' role
-      const sidebar = screen.getByRole("complementary");
+      // Change from getByRole to findByRole to ensure the sidebar has been render.
+      const sidebar = await screen.findByRole("complementary");
 
-      // Find all <a> tags within the sidebar
       const sidebarLinks = sidebar.querySelectorAll("a");
 
       const sidebarNavLinks = Array.from(sidebarLinks).filter((link) => {
@@ -138,7 +135,6 @@ describe("AdminLayout", () => {
       for (const link of sidebarNavLinks) {
         await user.click(link);
 
-        // Wait for navigation and verify we didn't hit the 404 page
         await waitFor(() => {
           const notFoundText = screen.queryByText(/404 Not Found/i);
           expect(notFoundText).not.toBeInTheDocument();
