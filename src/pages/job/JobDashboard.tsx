@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getJobs, type GetJobsParams } from "@/lib/request/jobs";
 import type { SortBy, FilterOptions, JobState } from "@/types/jobs";
 import CountsBar from "@/components/jobs/CountsBar";
-import PaginationControls from "@/components/PaginationControl";
+import PaginationControls from "@/components/customUI/PaginationControl";
 
 const PAGE_SIZE = 10;
 

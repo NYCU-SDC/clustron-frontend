@@ -21,7 +21,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import PaginationControls from "@/components/PaginationControl";
+import PaginationControls from "@/components/customUI/PaginationControl";
 import UserConfigRow from "@/components/admin/UserConfigRow";
 import { updateGlobalRole } from "@/lib/request/updateGlobalRole";
 import { getUsers } from "@/lib/request/getUsers";
