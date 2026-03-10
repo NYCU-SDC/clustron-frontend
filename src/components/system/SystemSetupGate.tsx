@@ -17,6 +17,7 @@ export default function SystemSetupGate() {
     mutate: fetchSetupStatus,
     isPending,
     isError,
+    isIdle,
   } = useMutation({
     mutationFn: getSetupStatus,
     onSuccess: (data) => {
@@ -35,7 +36,7 @@ export default function SystemSetupGate() {
     fetchSetupStatus();
   }, [fetchSetupStatus]);
 
-  if (isPending) {
+  if (isPending || isIdle) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-gray-50">
         <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
