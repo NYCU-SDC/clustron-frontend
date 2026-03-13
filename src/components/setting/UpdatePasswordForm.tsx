@@ -80,13 +80,16 @@ export default function SettingPasswordForm() {
             <div className="flex justify-end">
               <TooltipProvider>
                 {updatePasswordMutation.isPending ? (
-                  <Button className="px-7 py-5 w-44 cursor-pointer" disabled>
+                  <Button
+                    className="px-7 py-5 w-full sm:w-44 cursor-pointer"
+                    disabled
+                  >
                     <Loader2Icon className="animate-spin" />
                     {t("settingPasswordForm.loadingBtn")}
                   </Button>
                 ) : newPassword && confirmPassword ? (
                   <Button
-                    className="px-7 py-5 w-44 cursor-pointer"
+                    className="px-7 py-5 w-full sm:w-44 cursor-pointer"
                     onClick={() => {
                       if (!passwordSchema.safeParse(newPassword).success) {
                         toast.error(t("onboardingForm.passwordFormat"));
@@ -106,7 +109,7 @@ export default function SettingPasswordForm() {
                     <TooltipTrigger asChild>
                       <Button
                         disabled
-                        className="px-7 py-5 w-44 disabled:cursor-not-allowed disabled:pointer-events-auto"
+                        className="px-7 py-5 w-full sm:w-44 disabled:cursor-not-allowed disabled:pointer-events-auto"
                       >
                         {t("settingPasswordForm.saveBtn")}
                       </Button>

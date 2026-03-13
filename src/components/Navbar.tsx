@@ -43,8 +43,84 @@ export default function Navbar() {
   }, [accessToken]);
 
   return (
-    <nav className="sticky top-0 z-1 w-full border-b bg-white dark:bg-black">
-      <div className="flex items-center justify-between w-full px-6 py-4">
+    <nav className="sticky top-0 z-10 w-full border-b bg-white dark:bg-black">
+      {/* Mobile layout (hidden on md+) */}
+      <div className="md:hidden">
+        {/* Mobile row 1: logo + actions */}
+        <div className="flex items-center justify-between px-4 py-3">
+          <NavLink to="/groups" className="text-xl font-bold">
+            Clustron
+          </NavLink>
+          <div className="flex items-center gap-2">
+            <ColorModeToggle />
+            {isLoggedIn() ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger className="cursor-pointer">
+                  <CircleUserRound />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel className="text-gray-600 dark:text-gray-400">
+                    {email}
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut />
+                    {t("navbar.logoutBtn")}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : null}
+          </div>
+        </div>
+
+        {/* Mobile row 2: nav tabs */}
+        {(role === "user" || role === "admin") && (
+          <div className="flex bg-gray-50/50 dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-800 overflow-x-auto px-2">
+            <NavLink
+              to="/groups"
+              className={({ isActive }) =>
+                `text-sm font-medium px-3 py-2 whitespace-nowrap border-b-2 ${
+                  isActive
+                    ? "text-gray-900 dark:text-white border-gray-900 dark:border-white"
+                    : "text-gray-500 dark:text-gray-400 border-transparent"
+                }`
+              }
+            >
+              {t("navbar.groupLink")}
+            </NavLink>
+            {/* <NavLink to="/jobs" ...>{t("navbar.jobsLink")}</NavLink> */}
+            <NavLink
+              to="/setting"
+              className={({ isActive }) =>
+                `text-sm font-medium px-3 py-2 whitespace-nowrap border-b-2 ${
+                  isActive
+                    ? "text-gray-900 dark:text-white border-gray-900 dark:border-white"
+                    : "text-gray-500 dark:text-gray-400 border-transparent"
+                }`
+              }
+            >
+              {t("navbar.settingLink")}
+            </NavLink>
+            {role === "admin" && (
+              <NavLink
+                to="/admin"
+                className={({ isActive }) =>
+                  `text-sm font-medium px-3 py-2 whitespace-nowrap border-b-2 ${
+                    isActive
+                      ? "text-gray-900 dark:text-white border-gray-900 dark:border-white"
+                      : "text-gray-500 dark:text-gray-400 border-transparent"
+                  }`
+                }
+              >
+                {t("navbar.adminLink")}
+              </NavLink>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Desktop layout (hidden below md) */}
+      <div className="hidden md:flex items-center justify-between w-full px-6 py-4">
         <div className="flex items-center space-x-4">
           <NavLink to="/groups" className="text-2xl font-bold px-3 py-2">
             Clustron
