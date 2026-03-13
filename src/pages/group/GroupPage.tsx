@@ -21,15 +21,15 @@ export default function GroupPage() {
   return (
     <div className="flex w-full">
       {isReadonly ? (
-        <div className="flex-1 w-full items-center justify-center">
-          <main className="max-w-2xl items-center justify-center p-6">
+        <main className="flex-1 w-full p-6 space-y-6">
+          <div className="max-w-4xl mx-auto p-6 space-y-6">
             <GroupDescription
               title={group.title}
               desc={group.description}
               links={group.links ?? []}
             />
-          </main>
-        </div>
+          </div>
+        </main>
       ) : (
         <main className="flex-1 w-full p-6 space-y-6">
           <Outlet context={{ group, groupId }} />

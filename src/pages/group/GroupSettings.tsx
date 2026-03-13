@@ -45,11 +45,7 @@ export default function GroupSettings() {
   const globalRole = payload?.Role as GlobalRole;
   const isAdmin = group?.me?.type === "adminOverride";
   const accessLevel = group?.me.role.accessLevel;
-  const baseCanArchive = getGroupPermissions(
-    accessLevel,
-    globalRole,
-  ).canArchive;
-  const canArchive = isAdmin || baseCanArchive;
+  const canManage = getGroupPermissions(accessLevel, globalRole).canManageGroup;
 
   const [transferOwnerEmail, setTransferOwnerEmail] = useState("");
   const [isTransferExpanded, setIsTransferExpanded] = useState(false);
@@ -120,123 +116,126 @@ export default function GroupSettings() {
         isArchived={group.isArchived}
       />
 
-      {canArchive && (
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between gap-4">
-            <div>
-              <CardTitle>
-                {group.isArchived
-                  ? t("groupPages.groupSettings.unarchiveGroup")
-                  : t("groupPages.groupSettings.archiveGroup")}
-              </CardTitle>
-              <CardDescription>
-                {group.isArchived
-                  ? t("groupPages.groupSettings.unarchiveDescription")
-                  : t("groupPages.groupSettings.archiveDescription")}
-              </CardDescription>
-            </div>
-            <Button
-              onClick={toggleArchive}
-              className="min-w-[100px]"
-              disabled={isToggling}
-            >
-              {isToggling
-                ? t("groupPages.groupSettings.saving")
-                : group.isArchived
-                  ? t("groupPages.groupSettings.unarchive")
-                  : t("groupPages.groupSettings.archive")}
-            </Button>
-          </CardHeader>
-        </Card>
-      )}
-
-      <Card>
-        <CardHeader className="flex flex-row justify-between items-center">
-          <div>
-            <CardTitle>{t("groupSettings.transferOwnership.title")}</CardTitle>
-            <CardDescription>
-              {t("groupSettings.transferOwnership.description1")}
-            </CardDescription>
-          </div>
-
-          {!isTransferExpanded && (
-            <Button
-              onClick={() => setIsTransferExpanded(true)}
-              disabled={group.isArchived || isToggling}
-            >
-              {t("groupSettings.transferOwnership.startButton")}
-            </Button>
-          )}
-        </CardHeader>
-
-        {isTransferExpanded && (
-          <CardContent>
-            <p className="text-sm font-medium mb-2">
-              {t("groupSettings.transferOwnership.description2")}
-            </p>
-            <p className="text-sm text-red-500 font-medium mb-2">
-              {t("groupSettings.transferOwnership.notice")}
-            </p>
-            <div style={{ position: "relative" }}>
-              <Input
-                type="email"
-                placeholder="example@email.com"
-                value={transferOwnerEmail}
-                onChange={(e) => {
-                  setTransferOwnerEmail(e.target.value);
-                  setQuery(e.target.value);
-                }}
-                className="mb-4 placeholder:text-gray-400"
+      {canManage && (
+        <>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between gap-4">
+              <div>
+                <CardTitle>
+                  {group.isArchived
+                    ? t("groupPages.groupSettings.unarchiveGroup")
+                    : t("groupPages.groupSettings.archiveGroup")}
+                </CardTitle>
+                <CardDescription>
+                  {group.isArchived
+                    ? t("groupPages.groupSettings.unarchiveDescription")
+                    : t("groupPages.groupSettings.archiveDescription")}
+                </CardDescription>
+              </div>
+              <Button
+                onClick={toggleArchive}
+                className="min-w-[100px]"
                 disabled={isToggling}
-              />
+              >
+                {isToggling
+                  ? t("groupPages.groupSettings.saving")
+                  : group.isArchived
+                    ? t("groupPages.groupSettings.unarchive")
+                    : t("groupPages.groupSettings.archive")}
+              </Button>
+            </CardHeader>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row justify-between items-center">
+              <div>
+                <CardTitle>
+                  {t("groupSettings.transferOwnership.title")}
+                </CardTitle>
+                <CardDescription>
+                  {t("groupSettings.transferOwnership.description1")}
+                </CardDescription>
+              </div>
 
-              {showSuggestions && suggestions.length > 0 && (
-                <Command>
-                  <CommandList>
-                    {suggestions.map((user) => (
-                      <CommandItem
-                        key={user.identifier}
-                        onSelect={() => {
-                          handleSelect(user);
-                          setTransferOwnerEmail(user.identifier); // update input
-                          setQuery(user.identifier);
-                        }}
-                      >
-                        {user.identifier}
-                      </CommandItem>
-                    ))}
-                  </CommandList>
-                </Command>
+              {!isTransferExpanded && (
+                <Button
+                  onClick={() => setIsTransferExpanded(true)}
+                  disabled={group.isArchived || isToggling}
+                >
+                  {t("groupSettings.transferOwnership.startButton")}
+                </Button>
               )}
-            </div>
+            </CardHeader>
 
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setIsTransferExpanded(false);
-                  setTransferOwnerEmail("");
-                }}
-              >
-                {t("groupSettings.cancel")}
-              </Button>
-              <Button
-                onClick={handleTransfer}
-                disabled={
-                  !transferOwnerEmail ||
-                  isTransferring ||
-                  isToggling ||
-                  group.isArchived
-                }
-              >
-                {isTransferring
-                  ? t("groupSettings.transferOwnership.transferring")
-                  : t("groupSettings.transfer")}
-              </Button>
-            </div>
-          </CardContent>
-        )}
-      </Card>
+            {isTransferExpanded && (
+              <CardContent>
+                <p className="text-sm font-medium mb-2">
+                  {t("groupSettings.transferOwnership.description2")}
+                </p>
+                <p className="text-sm text-red-500 font-medium mb-2">
+                  {t("groupSettings.transferOwnership.notice")}
+                </p>
+                <div style={{ position: "relative" }}>
+                  <Input
+                    type="email"
+                    placeholder="example@email.com"
+                    value={transferOwnerEmail}
+                    onChange={(e) => {
+                      setTransferOwnerEmail(e.target.value);
+                      setQuery(e.target.value);
+                    }}
+                    className="mb-4 placeholder:text-gray-400"
+                    disabled={isToggling}
+                  />
+
+                  {showSuggestions && suggestions.length > 0 && (
+                    <Command>
+                      <CommandList>
+                        {suggestions.map((user) => (
+                          <CommandItem
+                            key={user.identifier}
+                            onSelect={() => {
+                              handleSelect(user);
+                              setTransferOwnerEmail(user.identifier); // update input
+                              setQuery(user.identifier);
+                            }}
+                          >
+                            {user.identifier}
+                          </CommandItem>
+                        ))}
+                      </CommandList>
+                    </Command>
+                  )}
+                </div>
+
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setIsTransferExpanded(false);
+                      setTransferOwnerEmail("");
+                    }}
+                  >
+                    {t("groupSettings.cancel")}
+                  </Button>
+                  <Button
+                    onClick={handleTransfer}
+                    disabled={
+                      !transferOwnerEmail ||
+                      isTransferring ||
+                      isToggling ||
+                      group.isArchived
+                    }
+                  >
+                    {isTransferring
+                      ? t("groupSettings.transferOwnership.transferring")
+                      : t("groupSettings.transfer")}
+                  </Button>
+                </div>
+              </CardContent>
+            )}
+          </Card>
+        </>
+      )}
     </div>
   );
 }

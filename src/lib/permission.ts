@@ -25,7 +25,7 @@ export function canEditMembers(
   );
 }
 
-export function canArchiveGroup(
+export function canManageGroup(
   accessLevel?: GroupRoleAccessLevel,
   globalRole?: GlobalRole,
 ) {
