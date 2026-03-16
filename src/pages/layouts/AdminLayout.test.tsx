@@ -1,13 +1,14 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, vi, beforeEach, expect } from "vitest";
-import { MemoryRouter, Routes, Route } from "react-router";
+import { MemoryRouter, useLocation } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useCookies, CookiesProvider } from "react-cookie";
 import { getAccessToken } from "@/lib/token";
 import { jwtDecode } from "jwt-decode";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import AdminLayout from "./AdminLayout";
+import App from "@/App";
 import type * as ReactCookie from "react-cookie";
 
 vi.mock("react-cookie", async () => {
@@ -39,6 +40,11 @@ describe("AdminLayout", () => {
     vi.clearAllMocks();
   });
 
+  function LocationDisplay() {
+    const location = useLocation();
+    return <div data-testid="location">{location.pathname}</div>;
+  }
+
   function renderAdminLayout(initialRoute = "/admin/config") {
     const queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },
@@ -56,19 +62,9 @@ describe("AdminLayout", () => {
         <CookiesProvider>
           <MemoryRouter initialEntries={[initialRoute]}>
             <AuthProvider>
-              <Routes>
-                <Route path="/admin" element={<AdminLayout />}>
-                  <Route
-                    path="config"
-                    element={<div>Role Config Page Content</div>}
-                  />
-                  <Route
-                    path="users"
-                    element={<div>User Config Page Content</div>}
-                  />
-                </Route>
-                <Route path="/" element={<div>Home Page Content</div>} />
-              </Routes>
+              <AdminLayout />
+              <App />
+              <LocationDisplay />
             </AuthProvider>
           </MemoryRouter>
         </CookiesProvider>
@@ -82,9 +78,10 @@ describe("AdminLayout", () => {
       renderAdminLayout();
 
       // should ensure the sidebar already render
-      await screen.findByText("adminSidebar.title");
+      await screen.findAllByText("adminSidebar.title");
 
-      const sidebar = screen.getByRole("complementary");
+      const sidebars = screen.getAllByRole("complementary");
+      const sidebar = sidebars[0];
       const navLinks = Array.from(sidebar.querySelectorAll("a")).filter(
         (link) => {
           const href = link.getAttribute("href");
@@ -105,7 +102,7 @@ describe("AdminLayout", () => {
       renderAdminLayout();
 
       await waitFor(() => {
-        expect(screen.getByText("Home Page Content")).toBeInTheDocument();
+        expect(screen.getByTestId("location")).toHaveTextContent("/");
         expect(
           screen.queryByText("adminSidebar.title"),
         ).not.toBeInTheDocument();
@@ -113,15 +110,15 @@ describe("AdminLayout", () => {
     });
   });
 
-  describe("Navigation", async () => {
+  describe("Navigation", () => {
     it("should navigate to every sidebar link correctly", async () => {
       vi.mocked(jwtDecode).mockReturnValue({ Role: "admin" });
       const user = userEvent.setup();
       renderAdminLayout("/admin/config");
 
       // The SideBar uses an <aside> tag, which has the 'complementary' role
-      // Change from getByRole to findByRole to ensure the sidebar has been render.
-      const sidebar = await screen.findByRole("complementary");
+      const sidebars = await screen.findAllByRole("complementary");
+      const sidebar = sidebars[0];
 
       const sidebarLinks = sidebar.querySelectorAll("a");
 
