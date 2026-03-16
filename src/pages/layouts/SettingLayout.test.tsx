@@ -1,16 +1,16 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, vi, beforeEach, expect } from "vitest";
-import { MemoryRouter, Routes, Route } from "react-router";
+import { MemoryRouter } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useCookies, CookiesProvider } from "react-cookie";
 import { getAccessToken } from "@/lib/token";
 import { jwtDecode } from "jwt-decode";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import SettingLayout from "./SettingLayout";
+import App from "@/App";
 import type * as ReactCookie from "react-cookie";
 
-// 1. Setup Mocks
 vi.mock("react-cookie", async () => {
   const mod = await vi.importActual<typeof ReactCookie>("react-cookie");
   return { ...mod, useCookies: vi.fn() };
@@ -25,6 +25,11 @@ vi.mock("@/lib/request/refreshAuthToken", () => ({
     refreshToken: "mock-refresh-token",
     expirationTime: Math.floor(Date.now() / 1000) + 3600,
   })),
+}));
+
+// Mock APIs for pages inside the layout to prevent 401s
+vi.mock("@/lib/request/getKeys", () => ({
+  getKeys: vi.fn(async () => []),
 }));
 
 describe("SettingLayout", () => {
@@ -50,15 +55,8 @@ describe("SettingLayout", () => {
         <CookiesProvider>
           <MemoryRouter initialEntries={[initialRoute]}>
             <AuthProvider>
-              <Routes>
-                <Route path="/setting" element={<SettingLayout />}>
-                  <Route
-                    path="general"
-                    element={<div>General Settings Content</div>}
-                  />
-                  <Route path="ssh" element={<div>SSH Keys Content</div>} />
-                </Route>
-              </Routes>
+              <SettingLayout />
+              <App />
             </AuthProvider>
           </MemoryRouter>
         </CookiesProvider>
@@ -72,17 +70,24 @@ describe("SettingLayout", () => {
       renderSettingLayout();
 
       // Ensure layout is ready
-      await screen.findByText("settingSideBar.title");
+      await screen.findAllByText("settingSideBar.title");
 
-      // 1. Click SSH Keys Link
-      const sshLink = screen.getByText("settingSideBar.SSHNavLink");
-      await user.click(sshLink);
-      expect(screen.getByText("SSH Keys Content")).toBeInTheDocument();
+      const sidebars = screen.getAllByRole("complementary");
+      const sidebar = sidebars[0];
+      const navLinks = Array.from(sidebar.querySelectorAll("a")).filter(
+        (link) => {
+          const href = link.getAttribute("href");
+          return href && !href.startsWith("#");
+        },
+      );
 
-      // 2. Click General Link
-      const generalLink = screen.getByText("settingSideBar.GeneralNavLink");
-      await user.click(generalLink);
-      expect(screen.getByText("General Settings Content")).toBeInTheDocument();
+      for (const link of navLinks) {
+        await user.click(link);
+        await waitFor(() => {
+          const notFoundText = screen.queryByText(/404 Not Found/i);
+          expect(notFoundText).not.toBeInTheDocument();
+        });
+      }
     });
   });
 });

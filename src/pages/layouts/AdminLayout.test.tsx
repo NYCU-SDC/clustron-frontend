@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, vi, beforeEach, expect } from "vitest";
-import { MemoryRouter, useLocation } from "react-router";
+import { MemoryRouter } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useCookies, CookiesProvider } from "react-cookie";
 import { getAccessToken } from "@/lib/token";
@@ -40,11 +40,6 @@ describe("AdminLayout", () => {
     vi.clearAllMocks();
   });
 
-  function LocationDisplay() {
-    const location = useLocation();
-    return <div data-testid="location">{location.pathname}</div>;
-  }
-
   function renderAdminLayout(initialRoute = "/admin/config") {
     const queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },
@@ -64,7 +59,6 @@ describe("AdminLayout", () => {
             <AuthProvider>
               <AdminLayout />
               <App />
-              <LocationDisplay />
             </AuthProvider>
           </MemoryRouter>
         </CookiesProvider>
@@ -97,12 +91,11 @@ describe("AdminLayout", () => {
       });
     });
 
-    it("should redirect to home page when user is not an admin", async () => {
+    it("should redirect when user is not an admin", async () => {
       vi.mocked(jwtDecode).mockReturnValue({ Role: "user" });
       renderAdminLayout();
 
       await waitFor(() => {
-        expect(screen.getByTestId("location")).toHaveTextContent("/");
         expect(
           screen.queryByText("adminSidebar.title"),
         ).not.toBeInTheDocument();

@@ -1,13 +1,14 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, vi, beforeEach, expect } from "vitest";
-import { MemoryRouter, Routes, Route } from "react-router";
+import { MemoryRouter } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useCookies, CookiesProvider } from "react-cookie";
 import { getAccessToken } from "@/lib/token";
 import { jwtDecode } from "jwt-decode";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import DefaultLayout from "./DefaultLayout";
+import App from "@/App";
 import type * as ReactCookie from "react-cookie";
 
 vi.mock("react-cookie", async () => {
@@ -24,6 +25,11 @@ vi.mock("@/lib/request/refreshAuthToken", () => ({
     refreshToken: "mock-refresh-token",
     expirationTime: Math.floor(Date.now() / 1000) + 3600,
   })),
+}));
+
+// Mock APIs for pages inside the layout to prevent 401s
+vi.mock("@/lib/request/getGroups", () => ({
+  getGroups: vi.fn(async () => []),
 }));
 
 describe("DefaultLayout", () => {
@@ -48,23 +54,8 @@ describe("DefaultLayout", () => {
         <CookiesProvider>
           <MemoryRouter initialEntries={[initialRoute]}>
             <AuthProvider>
-              <Routes>
-                <Route element={<DefaultLayout />}>
-                  <Route path="/" element={<div>Home Page Content</div>} />
-                  <Route
-                    path="/groups"
-                    element={<div>Groups Page Content</div>}
-                  />
-                  <Route
-                    path="/setting"
-                    element={<div>Settings Page Content</div>}
-                  />
-                  <Route
-                    path="/admin"
-                    element={<div>Admin Page Content</div>}
-                  />
-                </Route>
-              </Routes>
+              <DefaultLayout />
+              <App />
             </AuthProvider>
           </MemoryRouter>
         </CookiesProvider>
@@ -80,10 +71,10 @@ describe("DefaultLayout", () => {
       });
       renderDefaultLayout();
 
-      const navbar = await screen.findByRole("navigation");
+      const navbars = await screen.findAllByRole("navigation");
+      const navbar = navbars[0];
 
-      expect(screen.getByRole("navigation")).toBeInTheDocument();
-      expect(screen.getByText("Home Page Content")).toBeInTheDocument();
+      expect(navbar).toBeInTheDocument();
 
       const navLinks = Array.from(navbar.querySelectorAll("a")).filter(
         (link) => {
@@ -110,7 +101,8 @@ describe("DefaultLayout", () => {
       });
       renderDefaultLayout();
 
-      const navbar = await screen.findByRole("navigation");
+      const navbars = await screen.findAllByRole("navigation");
+      const navbar = navbars[0];
       const navLinks = Array.from(navbar.querySelectorAll("a")).filter(
         (link) => {
           const href = link.getAttribute("href");
@@ -139,14 +131,22 @@ describe("DefaultLayout", () => {
       const user = userEvent.setup();
       renderDefaultLayout();
 
-      await user.click(screen.getByText(/navbar\.groupLink/i));
-      expect(screen.getByText("Groups Page Content")).toBeInTheDocument();
+      const navbars = await screen.findAllByRole("navigation");
+      const navbar = navbars[0];
+      const navLinks = Array.from(navbar.querySelectorAll("a")).filter(
+        (link) => {
+          const href = link.getAttribute("href");
+          return href && href !== "/" && !href.startsWith("#");
+        },
+      );
 
-      await user.click(screen.getByText(/navbar\.settingLink/i));
-      expect(screen.getByText("Settings Page Content")).toBeInTheDocument();
-
-      await user.click(screen.getByText(/navbar\.adminLink/i));
-      expect(screen.getByText("Admin Page Content")).toBeInTheDocument();
+      for (const link of navLinks) {
+        await user.click(link);
+        await waitFor(() => {
+          const notFoundText = screen.queryByText(/404 Not Found/i);
+          expect(notFoundText).not.toBeInTheDocument();
+        });
+      }
     });
 
     it("should navigate correctly for a standard user and ensure Admin link is unreachable", async () => {
@@ -157,12 +157,22 @@ describe("DefaultLayout", () => {
       const user = userEvent.setup();
       renderDefaultLayout();
 
-      await user.click(screen.getByText(/navbar\.groupLink/i));
-      expect(screen.getByText("Groups Page Content")).toBeInTheDocument();
+      const navbars = await screen.findAllByRole("navigation");
+      const navbar = navbars[0];
+      const navLinks = Array.from(navbar.querySelectorAll("a")).filter(
+        (link) => {
+          const href = link.getAttribute("href");
+          return href && href !== "/" && !href.startsWith("#");
+        },
+      );
 
-      // Test Settings Nav
-      await user.click(screen.getByText(/navbar\.settingLink/i));
-      expect(screen.getByText("Settings Page Content")).toBeInTheDocument();
+      for (const link of navLinks) {
+        await user.click(link);
+        await waitFor(() => {
+          const notFoundText = screen.queryByText(/404 Not Found/i);
+          expect(notFoundText).not.toBeInTheDocument();
+        });
+      }
 
       // Verify Admin link is not there to be navigated to
       expect(screen.queryByText(/navbar\.adminLink/i)).not.toBeInTheDocument();

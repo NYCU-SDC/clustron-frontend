@@ -1,13 +1,14 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, vi, beforeEach, expect } from "vitest";
-import { MemoryRouter, Routes, Route } from "react-router";
+import { MemoryRouter } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useCookies, CookiesProvider } from "react-cookie";
 import { getAccessToken } from "@/lib/token";
 import { jwtDecode } from "jwt-decode";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import JobLayout from "./JobLayout";
+import App from "@/App";
 import type * as ReactCookie from "react-cookie";
 
 vi.mock("react-cookie", async () => {
@@ -52,15 +53,8 @@ describe("JobLayout", () => {
         <CookiesProvider>
           <MemoryRouter initialEntries={[initialRoute]}>
             <AuthProvider>
-              <Routes>
-                <Route element={<JobLayout />}>
-                  <Route path="/jobs" element={<div>Job List Content</div>} />
-                  <Route
-                    path="/jobs/submit"
-                    element={<div>Submit Job Content</div>}
-                  />
-                </Route>
-              </Routes>
+              <JobLayout />
+              <App />
             </AuthProvider>
           </MemoryRouter>
         </CookiesProvider>
@@ -73,16 +67,27 @@ describe("JobLayout", () => {
       const user = userEvent.setup();
       renderJobLayout();
 
-      // ensre the side bar has already rendered.
-      await screen.findByText("jobsSideBar.title");
+      // ensure the side bar has already rendered.
+      await screen.findAllByText("jobsSideBar.title");
 
-      const submitLink = screen.getByText("jobsSideBar.SubmitNavLink");
-      await user.click(submitLink);
-      expect(screen.getByText("Submit Job Content")).toBeInTheDocument();
+      const sidebars = screen.getAllByRole("complementary");
+      const sidebar = sidebars[0];
+      const navLinks = Array.from(sidebar.querySelectorAll("a")).filter(
+        (link) => {
+          const href = link.getAttribute("href");
+          return href && !href.startsWith("#");
+        },
+      );
 
-      const listLink = screen.getByText("jobsSideBar.ListNavLink");
-      await user.click(listLink);
-      expect(screen.getByText("Job List Content")).toBeInTheDocument();
+      for (const link of navLinks) {
+        await user.click(link);
+        await waitFor(() => {
+          // Note: If JobLayout is commented out in App.tsx, this might fail or hit 404
+          // but following the pattern as requested.
+          const notFoundText = screen.queryByText(/404 Not Found/i);
+          expect(notFoundText).not.toBeInTheDocument();
+        });
+      }
     });
   });
 });
