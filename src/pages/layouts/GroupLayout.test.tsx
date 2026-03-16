@@ -11,6 +11,7 @@ import { useGetGroupById } from "@/hooks/useGetGroupById";
 import GroupLayout from "./GroupLayout";
 import App from "@/App";
 import type * as ReactCookie from "react-cookie";
+import { AccessLevelOwner } from "@/types/group";
 
 vi.mock("react-cookie", async () => {
   const mod = await vi.importActual<typeof ReactCookie>("react-cookie");
@@ -47,7 +48,15 @@ vi.mock("@/lib/request/getPartitions", () => ({
 }));
 
 describe("GroupLayout", () => {
-  const mockGroup = { id: "123", title: "Engineering Team Cluster" };
+  const mockGroup = {
+    id: "123",
+    title: "Engineering Team Cluster",
+    me: {
+      role: {
+        accessLevel: AccessLevelOwner,
+      },
+    },
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
