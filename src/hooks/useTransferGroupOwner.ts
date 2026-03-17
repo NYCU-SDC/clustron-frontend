@@ -1,4 +1,8 @@
-import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  type UseMutationOptions,
+} from "@tanstack/react-query";
 import {
   transferGroupOwner,
   type TransferGroupOwnershipRequest,
@@ -16,6 +20,7 @@ export function useTransferGroupOwner(
   >,
 ) {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
   return useMutation({
     ...options,
@@ -40,6 +45,10 @@ export function useTransferGroupOwner(
         ),
         { id: ctx },
       );
+
+      queryClient.invalidateQueries({ queryKey: ["group", groupId] });
+      queryClient.invalidateQueries({ queryKey: ["GroupMember", groupId] });
+
       options?.onSuccess?.(data, vars, ctx, _);
     },
 
