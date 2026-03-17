@@ -42,6 +42,8 @@ export default function GroupLayout() {
     return <Navigate to="/groups" replace />;
   }
 
+  console.log("id:", id);
+
   return (
     <div className="flex w-full">
       <div className="w-xs border-r px-4">
