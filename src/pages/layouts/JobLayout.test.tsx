@@ -69,7 +69,7 @@ describe("JobLayout", () => {
       renderJobLayout();
 
       // ensure the side bar has already rendered.
-      await screen.findAllByText("jobsSideBar.title");
+      await screen.findAllByText(/jobsS.*title/);
 
       const sidebars = screen.getAllByRole("complementary");
       const sidebar = sidebars[0];
