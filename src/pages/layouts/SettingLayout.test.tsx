@@ -70,7 +70,7 @@ describe("SettingLayout", () => {
       renderSettingLayout();
 
       // Ensure layout is ready
-      await screen.findAllByText("settingSideBar.title");
+      await screen.findAllByText(/settin.*title/);
 
       const sidebars = screen.getAllByRole("complementary");
       const sidebar = sidebars[0];

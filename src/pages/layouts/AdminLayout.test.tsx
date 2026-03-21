@@ -72,7 +72,7 @@ describe("AdminLayout", () => {
       renderAdminLayout();
 
       // should ensure the sidebar already render
-      await screen.findAllByText("adminSidebar.title");
+      await screen.findAllByText(/adminS.*title/);
 
       const sidebars = screen.getAllByRole("complementary");
       const sidebar = sidebars[0];
@@ -97,7 +97,10 @@ describe("AdminLayout", () => {
 
       await waitFor(() => {
         expect(
-          screen.queryByText("adminSidebar.title"),
+          // In the test environment, i18n returns the key 'adminSidebar.title'.
+          // Due to the SideBar's truncation logic, this renders as 'adminS....title'
+          // (the 4th dot comes from the '.' in the translation key).
+          screen.queryByText(/adminS.*title/),
         ).not.toBeInTheDocument();
       });
     });

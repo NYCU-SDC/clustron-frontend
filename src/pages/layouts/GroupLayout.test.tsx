@@ -97,7 +97,7 @@ describe("GroupLayout", () => {
   describe("Data Loading & Error States", () => {
     it("should render the group title and all navigation links in the sidebar when data is loaded", async () => {
       renderGroupLayout();
-      await screen.findByText(mockGroup.title);
+      await screen.findByText(/Engine.*luster/);
 
       const sidebars = screen.getAllByRole("complementary");
       const sidebar = sidebars[0];
@@ -128,7 +128,7 @@ describe("GroupLayout", () => {
       // In App.tsx, /groups renders GroupListPage
       // We check if the sidebar with group title is NOT present and we don't see 404.
       await waitFor(() => {
-        expect(screen.queryByText(mockGroup.title)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Engine.*luster/)).not.toBeInTheDocument();
         expect(screen.queryByText(/404 Not Found/i)).not.toBeInTheDocument();
       });
     });
@@ -139,7 +139,7 @@ describe("GroupLayout", () => {
       const user = userEvent.setup();
       renderGroupLayout();
 
-      await screen.findByText(mockGroup.title);
+      await screen.findByText(/Engine.*luster/);
 
       const sidebars = await screen.findAllByRole("complementary");
       const sidebar = sidebars[0];
