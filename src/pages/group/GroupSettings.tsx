@@ -51,6 +51,7 @@ export default function GroupSettings() {
   const { mutate: transferOwner, isPending: isTransferring } =
     useTransferGroupOwner(groupId, {
       onSuccess: () => {
+        toast.success(t("groupSettings.toast.success"));
         setTransferOwnerEmail("");
         setIsTransferExpanded(false);
       },
