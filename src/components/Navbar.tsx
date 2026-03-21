@@ -27,6 +27,15 @@ function navLinkclass(isActive: boolean) {
     .join(" ");
 }
 
+function navLinkClassForMobile(isActive: boolean) {
+  return [
+    "text-sm font-medium px-3 py-2 whitespace-nowrap border-b-2",
+    isActive
+      ? "text-gray-900 dark:text-white border-gray-900 dark:border-white"
+      : "text-gray-500 dark:text-gray-400 border-transparent",
+  ].join(" ");
+}
+
 export default function Navbar() {
   const { handleLogout, isLoggedIn } = useContext(authContext);
   const { t } = useTranslation();
@@ -78,39 +87,21 @@ export default function Navbar() {
           <div className="flex bg-gray-50/50 dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-800 overflow-x-auto px-2">
             <NavLink
               to="/groups"
-              className={({ isActive }) =>
-                `text-sm font-medium px-3 py-2 whitespace-nowrap border-b-2 ${
-                  isActive
-                    ? "text-gray-900 dark:text-white border-gray-900 dark:border-white"
-                    : "text-gray-500 dark:text-gray-400 border-transparent"
-                }`
-              }
+              className={({ isActive }) => navLinkClassForMobile(isActive)}
             >
               {t("navbar.groupLink")}
             </NavLink>
             {/* <NavLink to="/jobs" ...>{t("navbar.jobsLink")}</NavLink> */}
             <NavLink
               to="/setting"
-              className={({ isActive }) =>
-                `text-sm font-medium px-3 py-2 whitespace-nowrap border-b-2 ${
-                  isActive
-                    ? "text-gray-900 dark:text-white border-gray-900 dark:border-white"
-                    : "text-gray-500 dark:text-gray-400 border-transparent"
-                }`
-              }
+              className={({ isActive }) => navLinkClassForMobile(isActive)}
             >
               {t("navbar.settingLink")}
             </NavLink>
             {role === "admin" && (
               <NavLink
                 to="/admin"
-                className={({ isActive }) =>
-                  `text-sm font-medium px-3 py-2 whitespace-nowrap border-b-2 ${
-                    isActive
-                      ? "text-gray-900 dark:text-white border-gray-900 dark:border-white"
-                      : "text-gray-500 dark:text-gray-400 border-transparent"
-                  }`
-                }
+                className={({ isActive }) => navLinkClassForMobile(isActive)}
               >
                 {t("navbar.adminLink")}
               </NavLink>
