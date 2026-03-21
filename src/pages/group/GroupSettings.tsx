@@ -21,7 +21,6 @@ import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { getGroupPermissions } from "@/lib/groupPermissions";
 import { GlobalRole } from "@/lib/permission";
 import { GroupDetail } from "@/types/group";
-import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useUserAutocomplete } from "@/hooks/useUserAutocomplete.ts";
 import { Command, CommandList, CommandItem } from "@/components/ui/command";
@@ -35,7 +34,6 @@ export default function GroupSettings() {
   const { group, groupId } = useOutletContext<GroupContextType>();
   const { t } = useTranslation();
   const user = useJwtPayload();
-  const queryClient = useQueryClient();
 
   const archiveMutation = useArchiveGroup(groupId);
   const unarchiveMutation = useUnarchiveGroup(groupId);
@@ -54,7 +52,6 @@ export default function GroupSettings() {
     useTransferGroupOwner(groupId, {
       onSuccess: () => {
         toast.success(t("groupSettings.toast.success"));
-        queryClient.invalidateQueries({ queryKey: ["group", groupId] });
         setTransferOwnerEmail("");
         setIsTransferExpanded(false);
       },
