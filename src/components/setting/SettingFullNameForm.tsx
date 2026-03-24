@@ -95,13 +95,16 @@ export default function SettingFullNameForm({
             <Separator />
             <TooltipProvider>
               {addMutation.isPending ? (
-                <Button className="px-7 py-5 w-24 cursor-pointer" disabled>
+                <Button
+                  className="px-7 py-5 w-full sm:w-24 cursor-pointer"
+                  disabled
+                >
                   <Loader2Icon className="animate-spin" />
                   {t("settingFullNameForm.loadingBtn")}
                 </Button>
               ) : fullName ? (
                 <Button
-                  className="px-7 py-5 w-24 cursor-pointer"
+                  className="px-7 py-5 w-full sm:w-24 cursor-pointer"
                   onClick={() => {
                     addMutation.mutate({ fullName, linuxUsername });
                   }}
@@ -113,7 +116,7 @@ export default function SettingFullNameForm({
                   <TooltipTrigger asChild>
                     <Button
                       disabled
-                      className="px-7 py-5 w-24 disabled:cursor-not-allowed disabled:pointer-events-auto"
+                      className="px-7 py-5 w-full sm:w-24 disabled:cursor-not-allowed disabled:pointer-events-auto"
                     >
                       {t("settingFullNameForm.saveBtn")}
                     </Button>
