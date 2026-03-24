@@ -1,6 +1,6 @@
 import {
   canEditMembers,
-  canArchiveGroup,
+  canManageGroup,
   isReadonlyMember,
 } from "@/lib/permission";
 
@@ -12,7 +12,7 @@ export function getGroupPermissions(
 ) {
   return {
     canEditMembers: canEditMembers(accessLevel, globalRole),
-    canArchive: canArchiveGroup(accessLevel, globalRole),
+    canManageGroup: canManageGroup(accessLevel, globalRole),
     isReadonly: isReadonlyMember(accessLevel),
   };
 }

@@ -38,6 +38,10 @@ vi.mock("@/hooks/useJwtPayload", () => ({
 vi.mock("@/hooks/useRoleMapper", () => ({
   useRoleMapper: vi.fn(() => ({
     roleNameToId: mockRoleNameToId,
+    getRolesByAccessLevel: () => [
+      { id: "RID_STUDENT", roleName: "student", accessLevel: "USER" },
+      { id: "RID_TA", roleName: "ta", accessLevel: "USER" },
+    ],
   })),
 }));
 
@@ -244,6 +248,7 @@ describe("CreateGroup", () => {
 
       await user.type(titleInput, "Test Group");
       await user.type(descriptionInput, "Test Description");
+      await user.type(screen.getByTestId("member-id-0"), "student@example.com");
 
       const buttons = screen.getAllByRole("button");
       const createButton = buttons.find((btn) =>
@@ -390,6 +395,7 @@ describe("CreateGroup", () => {
 
       await user.type(titleInput, "Test Group");
       await user.type(descriptionInput, "Test Description");
+      await user.type(screen.getByTestId("member-id-0"), "student@example.com");
       await user.type(linkTitleInput, "Example");
       await user.type(linkUrlInput, "example.com");
 
@@ -439,6 +445,7 @@ describe("CreateGroup", () => {
 
       await user.type(titleInput, "Test Group");
       await user.type(descriptionInput, "Test Description");
+      await user.type(screen.getByTestId("member-id-0"), "student@example.com");
       await user.type(linkTitleInput, "Example");
       await user.type(linkUrlInput, "http://example.com");
 
@@ -481,6 +488,7 @@ describe("CreateGroup", () => {
 
       await user.type(titleInput, "Test Group");
       await user.type(descriptionInput, "Test Description");
+      await user.type(screen.getByTestId("member-id-0"), "student@example.com");
       await user.type(linkTitleInput, "Example");
       await user.type(linkUrlInput, "https://example.com");
 

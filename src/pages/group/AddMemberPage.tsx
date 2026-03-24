@@ -2,11 +2,13 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useTranslation } from "react-i18next";
 import AddMemberRow from "@/components/group/AddMemberRow";
+import CsvUploadButton from "@/components/group/CsvUploadButton";
 import { useAddMember } from "@/hooks/useAddMember";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import {
   AccessLevelUser,
+  AccessLevelOwner,
   type GroupMemberRoleName,
   type AddMembersResult,
 } from "@/types/group";
@@ -17,7 +19,6 @@ import {
   TableHead,
   TableBody,
 } from "@/components/ui/table";
-import { GlobalRole } from "@/lib/permission";
 import { useRoleMapper } from "@/hooks/useRoleMapper";
 import { Button } from "@/components/ui/button";
 
@@ -33,7 +34,7 @@ export default function AddMemberPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { data: group, isLoading } = useGetGroupById(groupId!);
-  const { roleNameToId } = useRoleMapper();
+  const { roleNameToId, getRolesByAccessLevel } = useRoleMapper();
   const payload = useJwtPayload();
 
   const [members, setMembers] = useState<MemberRow[]>([
@@ -79,6 +80,9 @@ export default function AddMemberPage() {
     );
 
   const accessLevel = group.me.role.accessLevel ?? AccessLevelUser;
+  const effectiveCsvAccessLevel =
+    payload?.Role === "admin" ? AccessLevelOwner : accessLevel;
+  const assignableRoles = getRolesByAccessLevel(effectiveCsvAccessLevel);
 
   const updateRow = (index: number, key: "id" | "roleName", value: string) => {
     setMembers((prev) =>
@@ -119,23 +123,59 @@ export default function AddMemberPage() {
     (m, i) =>
       members.findIndex((other) => other.id.trim() === m.id.trim()) !== i,
   );
+  const hasEmptyId = members.some((m) => !m.id.trim());
 
+  /**
+   * Merges a batch of new members into the existing members list.
+   *
+   * Iterates over the current members and fills any empty rows (rows where `id` is blank)
+   * with members from the provided batch. If there are more new members than available
+   * empty rows, the remaining members are appended to the end of the list, each assigned
+   * a new unique `rowId` via `crypto.randomUUID()`.
+   *
+   * @param newMembers - An array of member objects to add, each containing:
+   *   - `id` - The unique identifier of the member.
+   *   - `roleName` - The role assigned to the member within the group.
+   *
+   * @example
+   * handleAddBatch([
+   *   { id: "user-1", roleName: "Member" },
+   *   { id: "user-2", roleName: "Admin" },
+   * ]);
+   */
   const handleAddBatch = (
     newMembers: { id: string; roleName: GroupMemberRoleName }[],
   ) => {
-    const batchWithIds = newMembers.map((m) => ({
-      ...m,
-      rowId: crypto.randomUUID(),
-    }));
-    setMembers((prev) => [...prev, ...batchWithIds]);
+    setMembers((prev) => {
+      const next = [...prev];
+      let batchIndex = 0;
+      for (let i = 0; i < next.length && batchIndex < newMembers.length; i++) {
+        if (!next[i].id.trim()) {
+          next[i] = { ...next[i], ...newMembers[batchIndex] };
+          batchIndex++;
+        }
+      }
+      const remaining = newMembers.slice(batchIndex).map((m) => ({
+        ...m,
+        rowId: crypto.randomUUID(),
+      }));
+      return [...next, ...remaining];
+    });
   };
 
   return (
     <div className="flex w-2/3 justify-center">
       <main className="w-full max-w-5xl p-6">
-        <h1 className="text-2xl font-bold mb-6">
-          {t("groupPages.addMemberPage.title")}
-        </h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold">
+            {t("groupPages.addMemberPage.title")}
+          </h1>
+          <CsvUploadButton
+            assignableRoles={assignableRoles}
+            onAddBatch={handleAddBatch}
+            disabled={addMember.isPending}
+          />
+        </div>
         <Table>
           <TableHeader>
             <TableRow>
@@ -158,8 +198,7 @@ export default function AddMemberPage() {
                   id={m.id}
                   roleName={m.roleName}
                   error={m.error}
-                  accessLevel={accessLevel}
-                  globalRole={payload?.Role as GlobalRole}
+                  assignableRoles={assignableRoles}
                   onChange={updateRow}
                   onAdd={addRow}
                   onRemove={removeRow}
@@ -182,7 +221,7 @@ export default function AddMemberPage() {
           </Button>
           <Button
             onClick={handleSave}
-            disabled={hasDuplicate || addMember.isPending}
+            disabled={hasDuplicate || hasEmptyId || addMember.isPending}
           >
             {t("groupPages.addMemberPage.save")}
           </Button>

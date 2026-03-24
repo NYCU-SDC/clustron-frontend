@@ -1,6 +1,25 @@
 import { NavLink } from "react-router";
 import { useTranslation } from "react-i18next";
 import ErrorBoundary from "./ErrorBoundary";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+export const truncateMiddle = (
+  text: string,
+  maxLength: number = 15,
+): string => {
+  if (text.length <= maxLength) return text;
+
+  const charsToShow = maxLength - 3;
+  const frontChars = Math.ceil(charsToShow / 2);
+  const backChars = Math.floor(charsToShow / 2);
+
+  return `${text.slice(0, frontChars)}...${text.slice(-backChars)}`;
+};
 
 function navLinkClass(isActive: boolean): string {
   return [
@@ -36,12 +55,25 @@ interface SideBarProps {
 export default function SideBar({ title, navItems, className }: SideBarProps) {
   const { t } = useTranslation();
 
+  const displayTitle = truncateMiddle(title, 15);
+
   return (
     <ErrorBoundary>
       <aside
         className={`sticky top-[7rem] self-start ml-15 my-8 ${className || ""}`}
       >
-        <div className="text-4xl font-semibold mb-8">{title}</div>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="text-4xl font-semibold mb-8 cursor-default">
+                {displayTitle}
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{title}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <ul className="space-y-4">
           {navItems.map((item) => (
             <li key={item.to}>

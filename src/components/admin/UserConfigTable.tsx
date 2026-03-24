@@ -21,7 +21,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import PaginationControls from "@/components/PaginationControl";
+import PaginationControls from "@/components/customUI/PaginationControl";
 import UserConfigRow from "@/components/admin/UserConfigRow";
 import { updateGlobalRole } from "@/lib/request/updateGlobalRole";
 import { getUsers } from "@/lib/request/getUsers";
@@ -199,7 +199,9 @@ export default function UserConfigTable() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>{t("userConfigTable.tableHeadName")}</TableHead>
+                    <TableHead className="w-[30%]">
+                      {t("userConfigTable.tableHeadName")}
+                    </TableHead>
                     <TableHead>{t("userConfigTable.tableHeadId")}</TableHead>
                     <TableHead>
                       {t("userConfigTable.tableHeadLinuxUsername")}

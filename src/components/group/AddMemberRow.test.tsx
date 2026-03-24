@@ -49,17 +49,6 @@ vi.mock("@/components/ui/select", () => ({
   }) => <option value={value}>{children}</option>,
 }));
 
-// [MOCK] 把 hook 改成回傳固定的角色清單
-vi.mock("@/hooks/useRoleMapper", () => ({
-  // [VITEST MOCK]
-  useRoleMapper: () => ({
-    getRolesByAccessLevel: () => [
-      { id: "RID_STUDENT", roleName: "student" },
-      { id: "RID_TA", roleName: "ta" },
-    ],
-  }),
-}));
-
 // [MOCK] Mock the useUserAutocomplete hook to avoid QueryClient requirement
 vi.mock("@/hooks/useUserAutocomplete", () => ({
   useUserAutocomplete: () => ({
@@ -92,6 +81,10 @@ describe("AddMemberRow", () => {
       onAdd,
       onRemove,
       onAddBatch,
+      assignableRoles: [
+        { id: "RID_STUDENT", roleName: "student", accessLevel: "USER" },
+        { id: "RID_TA", roleName: "ta", accessLevel: "USER" },
+      ],
       isDuplicate: false,
       disabled: false,
       isPending: false,
