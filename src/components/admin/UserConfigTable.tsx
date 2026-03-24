@@ -124,6 +124,12 @@ export default function UserConfigTable() {
 
   const users = data.items;
   const totalPages = data.totalPages;
+  // TODO: Remove linuxUsername mock data after backend support it
+  const usersWithMockData = users.map((user) => ({
+    ...user,
+    linuxUsername:
+      user.linuxUsername || user.fullName.toLowerCase().replace(/\s+/g, "_"),
+  }));
 
   return (
     <div className="flex flex-col gap-4">
@@ -195,16 +201,20 @@ export default function UserConfigTable() {
                   <TableRow>
                     <TableHead>{t("userConfigTable.tableHeadName")}</TableHead>
                     <TableHead>{t("userConfigTable.tableHeadId")}</TableHead>
+                    <TableHead>
+                      {t("userConfigTable.tableHeadLinuxUsername")}
+                    </TableHead>
                     <TableHead>{t("userConfigTable.tableHeadRole")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {users.map((user) => (
+                  {usersWithMockData.map((user) => (
                     <UserConfigRow
                       key={user.id}
                       name={user.fullName}
                       id={user.studentId}
                       email={user.email}
+                      linuxUsername={user.linuxUsername}
                       currentRole={user.role}
                       isOnBoarding={user.role == "ROLE_NOT_SETUP"}
                       isSelf={user.id === currentUserId}

@@ -1,5 +1,5 @@
 import { TableRow, TableCell } from "@/components/ui/table";
-import { ChevronDown, Loader2 } from "lucide-react";
+import { ChevronDown, Link, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -19,6 +19,7 @@ type Props = {
   name: string;
   id: string;
   email: string;
+  linuxUsername: string;
   currentRole: GlobalRole;
   onUpdateRole: (newRole: UpdateUserRoleInput["role"]) => void;
   isOnBoarding?: boolean;
@@ -30,6 +31,7 @@ export default function UserConfigRow({
   name,
   id,
   email,
+  linuxUsername,
   currentRole,
   onUpdateRole,
   isOnBoarding = false,
@@ -56,6 +58,12 @@ export default function UserConfigRow({
         </div>
       </TableCell>
       <TableCell>
+        <div className="flex items-center gap-12">
+          <span className="font-medium">{linuxUsername}</span>
+          <Link className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-primary" />
+        </div>
+      </TableCell>
+      <TableCell>
         {isPending ? (
           <div className="flex items-center text-sm text-muted-foreground gap-2">
             <Loader2 className="w-4 h-4 animate-spin" />
@@ -66,7 +74,7 @@ export default function UserConfigRow({
             <DropdownMenuTrigger asChild disabled={isSelf || isOnBoarding}>
               <Button
                 variant="ghost"
-                className="flex items-center gap-1 font-medium text-sm px-2 py-1 h-8 hover:bg-muted"
+                className="flex items-center gap-1 font-medium text-sm p-0 h-8 has-[>svg]:px-0 hover:bg-muted"
               >
                 {roleLabel}
                 {!isOnBoarding && !isSelf && (

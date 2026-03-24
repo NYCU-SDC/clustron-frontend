@@ -166,6 +166,7 @@
     "searchPlaceholder": "Search users...",
     "tableHeadName": "Name",
     "tableHeadId": "Student ID or Email",
+    "tableHeadLinuxUsername": "Linux Username",
     "tableHeadRole": "Role",
     "resultPerPage": "Results per page:",
     "updatingToast": "Updating...",
