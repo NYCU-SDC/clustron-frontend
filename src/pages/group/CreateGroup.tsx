@@ -141,7 +141,6 @@ export default function AddGroupPage() {
     (m, i) =>
       members.findIndex((other) => other.id.trim() === m.id.trim()) !== i,
   );
-  const hasEmptyId = members.some((m) => !m.id.trim());
 
   const handleAddBatch = (
     newMembers: { id: string; roleName: GroupMemberRoleName }[],
@@ -357,7 +356,6 @@ export default function AddGroupPage() {
           onClick={handleSave}
           disabled={
             hasDuplicate ||
-            hasEmptyId ||
             !title.trim() ||
             createGroup.isPending ||
             !description.trim()
