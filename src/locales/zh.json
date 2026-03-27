@@ -167,11 +167,13 @@
     "tableHeadName": "姓名",
     "tableHeadId": "學號或電子信箱",
     "tableHeadLinuxUsername": "Linux 使用者名稱",
+    "updateUsernameSuccessToast": "更新 Linux 使用者名稱成功",
+    "updateUsernameFailToast": "更新 Linux 使用者名稱失敗",
     "tableHeadRole": "角色",
     "resultPerPage": "每頁顯示結果數：",
     "updatingToast": "正在更新...",
-    "updateSuccessToast": "角色更新成功",
-    "updateFailToast": "角色更新失敗"
+    "updateRoleSuccessToast": "角色更新成功",
+    "updateRoleFailToast": "角色更新失敗"
   },
   "adminSidebar": {
     "title": "管理",

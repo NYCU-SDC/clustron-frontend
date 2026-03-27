@@ -24,10 +24,12 @@ import {
 import PaginationControls from "@/components/customUI/PaginationControl";
 import UserConfigRow from "@/components/admin/UserConfigRow";
 import { updateGlobalRole } from "@/lib/request/updateGlobalRole";
+import { updateLinuxUsername } from "@/lib/request/updateLinuxUsername";
 import { getUsers } from "@/lib/request/getUsers";
 import {
   GLOBAL_ROLE_OPTIONS,
   type GlobalRole,
+  UpdateLinuxUsernameInput,
   type UpdateUserRoleInput,
 } from "@/types/admin";
 
@@ -67,9 +69,44 @@ export default function UserConfigTable() {
   });
 
   const {
+    mutateAsync: updateUsername,
+    isPending: isUpdatingUsername,
+    variables: usernameVariables,
+  } = useMutation({
+    mutationFn: (input: UpdateLinuxUsernameInput) => updateLinuxUsername(input),
+    onMutate: (input) => {
+      const toastId = `update-linux-username-${input.id}`;
+      toast.loading(t("userConfigTable.updatingToast"), {
+        id: toastId,
+      });
+      return toastId;
+    },
+    onSuccess: (_data, _vars, ctx) => {
+      toast.success(t("userConfigTable.updateUsernameSuccessToast"), {
+        id: ctx,
+      });
+      queryClient.invalidateQueries({ queryKey: ["AdminUsers"] });
+    },
+    onError: (_err, _vars, ctx) => {
+      toast.error(t("userConfigTable.updateUsernameFailToast"), {
+        id: ctx,
+      });
+    },
+  });
+  const handleUsernameUpdate = async (
+    userId: string,
+    newUsername: UpdateLinuxUsernameInput["linuxUsername"],
+  ) => {
+    await updateUsername({
+      id: userId,
+      linuxUsername: newUsername,
+    });
+  };
+
+  const {
     mutate: updateRole,
-    isPending: isUpdating,
-    variables,
+    isPending: isUpdatingRole,
+    variables: roleVariables,
   } = useMutation({
     mutationFn: (input: UpdateUserRoleInput) => updateGlobalRole(input),
     onMutate: (input) => {
@@ -80,13 +117,13 @@ export default function UserConfigTable() {
       return toastId;
     },
     onSuccess: (_data, _vars, ctx) => {
-      toast.success(t("userConfigTable.updateSuccessToast"), {
+      toast.success(t("userConfigTable.updateRoleSuccessToast"), {
         id: ctx,
       });
       queryClient.invalidateQueries({ queryKey: ["AdminUsers"] });
     },
     onError: (_err, _vars, ctx) => {
-      toast.error(t("userConfigTable.updateFailToast"), { id: ctx });
+      toast.error(t("userConfigTable.updateRoleFailToast"), { id: ctx });
     },
   });
 
@@ -124,12 +161,6 @@ export default function UserConfigTable() {
 
   const users = data.items;
   const totalPages = data.totalPages;
-  // TODO: Remove linuxUsername mock data after backend support it
-  const usersWithMockData = users.map((user) => ({
-    ...user,
-    linuxUsername:
-      user.linuxUsername || user.fullName.toLowerCase().replace(/\s+/g, "_"),
-  }));
 
   return (
     <div className="flex flex-col gap-4">
@@ -210,7 +241,7 @@ export default function UserConfigTable() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {usersWithMockData.map((user) => (
+                  {users.map((user) => (
                     <UserConfigRow
                       key={user.id}
                       name={user.fullName}
@@ -220,10 +251,17 @@ export default function UserConfigTable() {
                       currentRole={user.role}
                       isOnBoarding={user.role == "ROLE_NOT_SETUP"}
                       isSelf={user.id === currentUserId}
+                      onUpdateLinuxUsername={(newUsername) =>
+                        handleUsernameUpdate(user.id, newUsername)
+                      }
                       onUpdateRole={(newRole) =>
                         handleRoleUpdate(user.id, newRole)
                       }
-                      isPending={isUpdating && variables?.id === user.id}
+                      isPending={
+                        (isUpdatingRole && roleVariables?.id === user.id) ||
+                        (isUpdatingUsername &&
+                          usernameVariables?.id === user.id)
+                      }
                     />
                   ))}
                 </TableBody>
