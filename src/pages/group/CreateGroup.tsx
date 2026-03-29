@@ -36,6 +36,7 @@ export default function AddGroupPage() {
   const { roleNameToId, getRolesByAccessLevel } = useRoleMapper();
 
   const [title, setTitle] = useState("");
+  const [ldapGroupName, setLdapGroupName] = useState("");
   const [description, setDescription] = useState("");
   const [links, setLinks] = useState<GroupLinkPayload[]>([]);
   const [newLink, setNewLink] = useState<GroupLinkPayload>({
@@ -110,7 +111,19 @@ export default function AddGroupPage() {
     return `https://${trimmed}`;
   }
 
+  function isLdapGroupNameVerify(ldapGroupName: string): boolean {
+    if (/^[a-zA-Z]([a-zA-Z0-9- ]*[a-zA-Z0-9])?$/.test(ldapGroupName)) {
+      return true;
+    }
+    return false;
+  }
+
+  const isLdapValid = !ldapGroupName || isLdapGroupNameVerify(ldapGroupName);
+
   const handleSave = () => {
+    if (!isLdapValid) {
+      return;
+    }
     const newMembers = members.map((m) => {
       const roleId = roleNameToId(m.roleName);
       if (!roleId) throw new Error(`Invalid role: ${m.roleName}`);
@@ -131,6 +144,7 @@ export default function AddGroupPage() {
 
     createGroup.mutate({
       title,
+      ldapGroupName,
       description,
       members: newMembers,
       links: linksToSubmit,
@@ -175,6 +189,21 @@ export default function AddGroupPage() {
               placeholder={t("groupPages.createGroup.courseTitlePlaceholder")}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+            />
+          </CardContent>
+
+          {/* LDAP Group Name */}
+          <CardHeader className="mt-6">
+            <CardTitle className="text-2xl">
+              {t("groupPages.createGroup.ldapGroupNameTitle")}*
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            <Textarea
+              placeholder={t("groupPages.createGroup.ldapGroupNamePlaceholder")}
+              value={ldapGroupName}
+              onChange={(e) => setLdapGroupName(e.target.value)}
             />
           </CardContent>
 

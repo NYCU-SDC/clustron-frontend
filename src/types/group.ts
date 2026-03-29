@@ -57,6 +57,7 @@ export type GroupDetail = GroupSummary & {
 export type CreateGroupInput = {
   title: string;
   description: string;
+  ldapGroupName: string;
   members?: {
     member: string; // email or user id
     roleId: string;

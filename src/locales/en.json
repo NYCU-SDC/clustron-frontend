@@ -245,6 +245,8 @@
     "createGroup": {
       "courseTitle": "Group Title",
       "courseTitlePlaceholder": "Give your new group a title",
+      "ldapGroupNameTitle": "LDAP Group Name",
+      "ldapGroupNamePlaceholder": "The group name in LDAP",
       "descriptionTitle": "Description",
       "courseDescriptionPlaceholder": "Say something about this group",
       "linkTitle": "Link Resources",
