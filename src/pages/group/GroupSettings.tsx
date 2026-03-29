@@ -81,11 +81,11 @@ export default function GroupSettings() {
 
   const isToggling = archiveMutation.isPending || unarchiveMutation.isPending;
 
-  const { query, setQuery, suggestions, showSuggestions, handleSelect } =
+  const { setQuery, suggestions, showSuggestions, handleSelect } =
     useUserAutocomplete();
 
   const handleTransfer = () => {
-    transferOwner({ identifier: transferOwnerEmail || query });
+    transferOwner({ identifier: transferOwnerEmail });
   };
 
   if (!user || !group) {
@@ -182,7 +182,7 @@ export default function GroupSettings() {
                   <Combobox items={suggestions}>
                     <ComboboxInput
                       showTrigger={false}
-                      value={transferOwnerEmail || query}
+                      value={transferOwnerEmail}
                       disabled={isToggling}
                       placeholder="example@email.com"
                       className="h-10 w-full text-sm"
