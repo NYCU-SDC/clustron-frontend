@@ -126,7 +126,8 @@ describe("DefaultLayout", () => {
         expect(link.textContent).toBeTruthy();
       });
 
-      expect(screen.getByText("Admin")).toBeInTheDocument();
+      // Same, we render DefaultLayout twice time, so the array of elements should be double.
+      expect(screen.getAllByText("Admin")).toHaveLength(2);
     });
   });
 
