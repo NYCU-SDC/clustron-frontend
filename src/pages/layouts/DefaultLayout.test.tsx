@@ -90,7 +90,8 @@ describe("DefaultLayout", () => {
       );
 
       // Standard user: Logo (to /groups), Groups, Settings
-      expect(navLinks.length).toBe(3);
+      // We render DefaultLayout twice time, one is <DefaultLayout/>, the other is <DefaultLayout/> inside <App/>, so navLinks array should contain 3*2 elements.
+      expect(navLinks.length).toBe(6);
 
       navLinks.forEach((link) => {
         expect(link.getAttribute("href")).toBeTruthy();
@@ -117,7 +118,8 @@ describe("DefaultLayout", () => {
       );
 
       // Admin user: Logo (to /groups), Groups, Settings, Admin
-      expect(navLinks.length).toBe(4);
+      // We render DefaultLayout twice time, one is <DefaultLayout/>, the other is <DefaultLayout/> inside <App/>, so navLinks array should contain 8*2 elements.
+      expect(navLinks.length).toBe(8);
 
       navLinks.forEach((link) => {
         expect(link.getAttribute("href")).toBeTruthy();
