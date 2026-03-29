@@ -8,7 +8,6 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import GroupDescription from "@/components/group/GroupDescription.tsx";
 import GroupMemberTable from "@/components/group/GroupMemberTable";
@@ -23,7 +22,14 @@ import { GlobalRole } from "@/lib/permission";
 import { GroupDetail } from "@/types/group";
 import { toast } from "sonner";
 import { useUserAutocomplete } from "@/hooks/useUserAutocomplete.ts";
-import { Command, CommandList, CommandItem } from "@/components/ui/command";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox";
 
 type GroupContextType = {
   group: GroupDetail;
@@ -53,6 +59,7 @@ export default function GroupSettings() {
       onSuccess: () => {
         toast.success(t("groupSettings.toast.success"));
         setTransferOwnerEmail("");
+        setQuery("");
         setIsTransferExpanded(false);
       },
       onError: () => {
@@ -74,12 +81,12 @@ export default function GroupSettings() {
 
   const isToggling = archiveMutation.isPending || unarchiveMutation.isPending;
 
+  const { setQuery, suggestions, showSuggestions, handleSelect } =
+    useUserAutocomplete();
+
   const handleTransfer = () => {
     transferOwner({ identifier: transferOwnerEmail });
   };
-
-  const { setQuery, suggestions, showSuggestions, handleSelect } =
-    useUserAutocomplete();
 
   if (!user || !group) {
     return (
@@ -171,37 +178,40 @@ export default function GroupSettings() {
                 <p className="text-sm text-red-500 font-medium mb-2">
                   {t("groupSettings.transferOwnership.notice")}
                 </p>
-                <div style={{ position: "relative" }}>
-                  <Input
-                    type="email"
-                    placeholder="example@email.com"
-                    value={transferOwnerEmail}
-                    onChange={(e) => {
-                      setTransferOwnerEmail(e.target.value);
-                      setQuery(e.target.value);
-                    }}
-                    className="mb-4 placeholder:text-gray-400"
-                    disabled={isToggling}
-                  />
+                <div className="mb-4">
+                  <Combobox items={suggestions}>
+                    <ComboboxInput
+                      showTrigger={false}
+                      value={transferOwnerEmail}
+                      disabled={isToggling}
+                      placeholder="example@email.com"
+                      className="h-10 w-full text-sm"
+                      onChange={(e) => {
+                        setTransferOwnerEmail(e.target.value);
+                        setQuery(e.target.value);
+                      }}
+                    />
 
-                  {showSuggestions && suggestions.length > 0 && (
-                    <Command>
-                      <CommandList>
-                        {suggestions.map((user) => (
-                          <CommandItem
-                            key={user.identifier}
-                            onSelect={() => {
-                              handleSelect(user);
-                              setTransferOwnerEmail(user.identifier); // update input
-                              setQuery(user.identifier);
-                            }}
-                          >
-                            {user.identifier}
-                          </CommandItem>
-                        ))}
-                      </CommandList>
-                    </Command>
-                  )}
+                    <ComboboxContent>
+                      <ComboboxEmpty>No items found.</ComboboxEmpty>
+                      {showSuggestions && suggestions.length > 0 && (
+                        <ComboboxList>
+                          {(user) => (
+                            <ComboboxItem
+                              key={user.identifier}
+                              value={user.identifier}
+                              onClick={() => {
+                                handleSelect(user);
+                                setTransferOwnerEmail(user.identifier);
+                              }}
+                            >
+                              {user.identifier}
+                            </ComboboxItem>
+                          )}
+                        </ComboboxList>
+                      )}
+                    </ComboboxContent>
+                  </Combobox>
                 </div>
 
                 <div className="flex gap-2">
@@ -210,6 +220,7 @@ export default function GroupSettings() {
                     onClick={() => {
                       setIsTransferExpanded(false);
                       setTransferOwnerEmail("");
+                      setQuery("");
                     }}
                   >
                     {t("groupSettings.cancel")}
