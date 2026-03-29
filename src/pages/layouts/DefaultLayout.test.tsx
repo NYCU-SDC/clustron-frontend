@@ -1,3 +1,4 @@
+vi.unmock("react-i18next");
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, vi, beforeEach, expect } from "vitest";
@@ -10,6 +11,8 @@ import { AuthProvider } from "@/components/auth/AuthProvider";
 import DefaultLayout from "./DefaultLayout";
 import App from "@/App";
 import type * as ReactCookie from "react-cookie";
+import i18n from "@/i18n";
+import { I18nextProvider } from "react-i18next";
 
 vi.mock("react-cookie", async () => {
   const mod = await vi.importActual<typeof ReactCookie>("react-cookie");
@@ -33,8 +36,9 @@ vi.mock("@/lib/request/getGroups", () => ({
 }));
 
 describe("DefaultLayout", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
+    await i18n.changeLanguage("en");
   });
 
   function renderDefaultLayout(initialRoute = "/") {
@@ -50,16 +54,18 @@ describe("DefaultLayout", () => {
     vi.mocked(getAccessToken).mockReturnValue("mock-token");
 
     return render(
-      <QueryClientProvider client={queryClient}>
-        <CookiesProvider>
-          <MemoryRouter initialEntries={[initialRoute]}>
-            <AuthProvider>
-              <DefaultLayout />
-              <App />
-            </AuthProvider>
-          </MemoryRouter>
-        </CookiesProvider>
-      </QueryClientProvider>,
+      <I18nextProvider i18n={i18n}>
+        <QueryClientProvider client={queryClient}>
+          <CookiesProvider>
+            <MemoryRouter initialEntries={[initialRoute]}>
+              <AuthProvider>
+                <DefaultLayout />
+                <App />
+              </AuthProvider>
+            </MemoryRouter>
+          </CookiesProvider>
+        </QueryClientProvider>
+      </I18nextProvider>,
     );
   }
 
@@ -91,7 +97,7 @@ describe("DefaultLayout", () => {
         expect(link.textContent).toBeTruthy();
       });
 
-      expect(screen.queryByText(/navbar\.adminLink/i)).not.toBeInTheDocument();
+      expect(screen.queryByText("Admin")).not.toBeInTheDocument();
     });
 
     it("should render the Navbar with all links for an admin user", async () => {
@@ -118,7 +124,7 @@ describe("DefaultLayout", () => {
         expect(link.textContent).toBeTruthy();
       });
 
-      expect(screen.getByText(/navbar\.adminLink/i)).toBeInTheDocument();
+      expect(screen.getByText("Admin")).toBeInTheDocument();
     });
   });
 
@@ -175,7 +181,7 @@ describe("DefaultLayout", () => {
       }
 
       // Verify Admin link is not there to be navigated to
-      expect(screen.queryByText(/navbar\.adminLink/i)).not.toBeInTheDocument();
+      expect(screen.queryByText("Admin")).not.toBeInTheDocument();
     });
   });
 });

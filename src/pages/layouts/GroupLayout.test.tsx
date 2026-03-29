@@ -1,3 +1,4 @@
+vi.unmock("react-i18next");
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, vi, beforeEach, expect, Mock } from "vitest";
@@ -12,6 +13,8 @@ import GroupLayout from "./GroupLayout";
 import App from "@/App";
 import type * as ReactCookie from "react-cookie";
 import { AccessLevelOwner } from "@/types/group";
+import i18n from "@/i18n";
+import { I18nextProvider } from "react-i18next";
 
 vi.mock("react-cookie", async () => {
   const mod = await vi.importActual<typeof ReactCookie>("react-cookie");
@@ -58,8 +61,9 @@ describe("GroupLayout", () => {
     },
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
+    await i18n.changeLanguage("en");
     (useGetGroupById as Mock).mockReturnValue({
       data: mockGroup,
       isLoading: false,
@@ -81,16 +85,18 @@ describe("GroupLayout", () => {
     vi.mocked(jwtDecode).mockReturnValue({ Role: "user" });
 
     return render(
-      <QueryClientProvider client={queryClient}>
-        <CookiesProvider>
-          <MemoryRouter initialEntries={[initialRoute]}>
-            <AuthProvider>
-              <GroupLayout />
-              <App />
-            </AuthProvider>
-          </MemoryRouter>
-        </CookiesProvider>
-      </QueryClientProvider>,
+      <I18nextProvider i18n={i18n}>
+        <QueryClientProvider client={queryClient}>
+          <CookiesProvider>
+            <MemoryRouter initialEntries={[initialRoute]}>
+              <AuthProvider>
+                <GroupLayout />
+                <App />
+              </AuthProvider>
+            </MemoryRouter>
+          </CookiesProvider>
+        </QueryClientProvider>
+      </I18nextProvider>,
     );
   }
 

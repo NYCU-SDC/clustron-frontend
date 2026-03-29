@@ -1,3 +1,4 @@
+vi.unmock("react-i18next");
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, vi, beforeEach, expect } from "vitest";
@@ -10,6 +11,8 @@ import { AuthProvider } from "@/components/auth/AuthProvider";
 import JobLayout from "./JobLayout";
 import App from "@/App";
 import type * as ReactCookie from "react-cookie";
+import i18n from "@/i18n";
+import { I18nextProvider } from "react-i18next";
 
 vi.mock("react-cookie", async () => {
   const mod = await vi.importActual<typeof ReactCookie>("react-cookie");
@@ -28,8 +31,9 @@ vi.mock("@/lib/request/refreshAuthToken", () => ({
 }));
 
 describe("JobLayout", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
+    await i18n.changeLanguage("en");
   });
 
   function renderJobLayout(initialRoute = "/jobs") {
@@ -49,16 +53,19 @@ describe("JobLayout", () => {
     });
 
     return render(
-      <QueryClientProvider client={queryClient}>
-        <CookiesProvider>
-          <MemoryRouter initialEntries={[initialRoute]}>
-            <AuthProvider>
-              <JobLayout />
-              <App />
-            </AuthProvider>
-          </MemoryRouter>
-        </CookiesProvider>
-      </QueryClientProvider>,
+      <I18nextProvider i18n={i18n}>
+        <QueryClientProvider client={queryClient}>
+          <CookiesProvider>
+            <MemoryRouter initialEntries={[initialRoute]}>
+              <AuthProvider>
+                <JobLayout />
+                <App />
+              </AuthProvider>
+            </MemoryRouter>
+          </CookiesProvider>
+        </QueryClientProvider>
+        ,
+      </I18nextProvider>,
     );
   }
 
@@ -69,7 +76,7 @@ describe("JobLayout", () => {
       renderJobLayout();
 
       // ensure the side bar has already rendered.
-      await screen.findAllByText(/jobsS.*title/);
+      await screen.findAllByText("Jobs");
 
       const sidebars = screen.getAllByRole("complementary");
       const sidebar = sidebars[0];
