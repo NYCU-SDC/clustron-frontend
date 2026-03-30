@@ -360,6 +360,9 @@
     "cwdLabel": "目前工作目錄",
     "cwdPlaceholder": "輸入目前工作目錄",
     "envSettingTitle": "環境設定",
+    "envModuleLabel": "環境模組",
+    "selectModulePlaceholder": "選擇模組...",
+    "loadingModulePlaceholder": "載入中...",
     "envVariable": "變數",
     "envValue": "值",
     "envVarPlaceholder": "VAR",
@@ -397,6 +400,23 @@
     "title": "工作任務",
     "ListNavLink": "清單",
     "SubmitNavLink": "提交"
+  },
+  "moduleCard": {
+    "deleteConfirmTitle": "確認刪除模組",
+    "deleteConfirmDescription": "您確定要刪除環境模組「{{title}}」嗎？",
+    "cancelBtn": "取消",
+    "deleteBtn": "刪除",
+    "saveBtn": "儲存",
+    "variableLabel": "變數",
+    "valueLabel": "值",
+    "saveSuccessToast": "模組儲存成功！",
+    "saveFailToast": "儲存模組失敗。"
+  },
+  "environmentModulePage": {
+    "newModuleBtn": "新增模組",
+    "emptyStatePrefix": "目前還沒有任何環境模組，點擊上方的 ",
+    "emptyStateHighlight": "新增模組",
+    "emptyStateSuffix": " 來建立第一個模組。"
   },
   "bindLoginForm": {
     "cardTitle": "連結其他登入方式",
