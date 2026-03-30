@@ -10,6 +10,8 @@ import { createModule } from "@/lib/request/createModule";
 import { updateModule } from "@/lib/request/updateModule";
 import { deleteModule } from "@/lib/request/deleteModule";
 
+import type { CreateModulePayload } from "@/lib/request/getModules";
+
 export default function EnvironmentModulePage() {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
@@ -27,8 +29,13 @@ export default function EnvironmentModulePage() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: any }) =>
-      updateModule(id, payload),
+    mutationFn: ({
+      id,
+      payload,
+    }: {
+      id: string;
+      payload: CreateModulePayload;
+    }) => updateModule(id, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["modules"] });
     },
