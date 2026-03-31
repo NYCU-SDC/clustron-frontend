@@ -130,7 +130,7 @@ export default function UserConfigRow({
         ) : (
           <div className="flex items-center gap-2 group">
             <span
-              className="font-bold font-mono text-black cursor-pointer hover:bg-muted px-1 rounded transition-colors"
+              className="font-semibold font-mono text-foreground cursor-pointer hover:bg-muted px-1 rounded transition-colors"
               onClick={startEditing}
             >
               {linuxUsername}
