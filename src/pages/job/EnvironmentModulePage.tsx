@@ -88,11 +88,17 @@ export default function EnvironmentModulePage() {
           <ModuleCard
             key={mod.id}
             module={mod}
-            onUpdate={async (id, payload) => {
-              await updateMutation.mutateAsync({ id, payload });
+            onUpdate={async (updatedModule) => {
+              updateMutation.mutate({
+                id: updatedModule.id,
+                payload: {
+                  title: updatedModule.title,
+                  environment: updatedModule.environment,
+                },
+              });
             }}
             onDelete={async (id) => {
-              await deleteMutation.mutateAsync(id);
+              deleteMutation.mutate(id);
             }}
           />
         ))}
