@@ -2,7 +2,10 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { VariableRow } from "./VariableRow";
 
-import type { ModuleData, EnvironmentVariable } from "@/lib/request/getModules";
+import type {
+  EnvironmentModule,
+  EnvironmentVariable,
+} from "@/lib/request/getModules";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,7 +32,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 export interface ModuleCardProps {
-  module: ModuleData;
+  module: EnvironmentModule;
   onUpdate: (
     id: string,
     payload: { title: string; environment: EnvironmentVariable[] },

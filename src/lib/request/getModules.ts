@@ -10,12 +10,12 @@ export interface CreateModulePayload {
   environment: EnvironmentVariable[];
 }
 
-export interface ModuleData {
+export interface EnvironmentModule {
   id: string;
   title: string;
   environment: EnvironmentVariable[];
 }
 
-export async function getModules(): Promise<ModuleData[]> {
-  return api<ModuleData[]>("/api/modules", { method: "GET" });
+export async function getModules(): Promise<EnvironmentModule[]> {
+  return api<EnvironmentModule[]>("/api/modules", { method: "GET" });
 }

@@ -1,10 +1,10 @@
 import { api } from "./api";
-import type { CreateModulePayload, ModuleData } from "./getModules";
+import type { CreateModulePayload, EnvironmentModule } from "./getModules";
 
 export async function createModule(
   payload: CreateModulePayload,
-): Promise<ModuleData> {
-  return api<ModuleData>("/api/modules", {
+): Promise<EnvironmentModule> {
+  return api<EnvironmentModule>("/api/modules", {
     method: "POST",
     body: JSON.stringify(payload),
   });
