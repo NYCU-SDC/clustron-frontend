@@ -1,5 +1,6 @@
 import { api } from "./api";
-import type { CreateModulePayload, EnvironmentModule } from "./getModules";
+import type { EnvironmentModule } from "./getModules";
+import type { CreateModulePayload } from "./createModule";
 
 export async function updateModule(
   id: string,

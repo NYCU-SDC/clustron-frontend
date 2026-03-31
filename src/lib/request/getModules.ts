@@ -5,11 +5,6 @@ export interface EnvironmentVariable {
   value: string;
 }
 
-export interface CreateModulePayload {
-  title: string;
-  environment: EnvironmentVariable[];
-}
-
 export interface EnvironmentModule {
   id: string;
   title: string;

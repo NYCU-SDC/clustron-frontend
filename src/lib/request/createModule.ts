@@ -1,5 +1,10 @@
 import { api } from "./api";
-import type { CreateModulePayload, EnvironmentModule } from "./getModules";
+import { EnvironmentModule, EnvironmentVariable } from "./getModules";
+
+export interface CreateModulePayload {
+  title: string;
+  environment: EnvironmentVariable[];
+}
 
 export async function createModule(
   payload: CreateModulePayload,

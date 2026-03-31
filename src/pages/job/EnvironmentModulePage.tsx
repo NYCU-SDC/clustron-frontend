@@ -10,7 +10,7 @@ import { createModule } from "@/lib/request/createModule";
 import { updateModule } from "@/lib/request/updateModule";
 import { deleteModule } from "@/lib/request/deleteModule";
 
-import type { CreateModulePayload } from "@/lib/request/getModules";
+import type { CreateModulePayload } from "@/lib/request/createModule";
 
 export default function EnvironmentModulePage() {
   const queryClient = useQueryClient();
