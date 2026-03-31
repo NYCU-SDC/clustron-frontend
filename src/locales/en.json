@@ -392,7 +392,8 @@
   "jobsSideBar": {
     "title": "Jobs",
     "ListNavLink": "List",
-    "SubmitNavLink": "Submit"
+    "SubmitNavLink": "Submit",
+    "EnvModuleNavLink": "Environment Module"
   },
   "moduleCard": {
     "deleteConfirmTitle": "Delete Module Confirm",

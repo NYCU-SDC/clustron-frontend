@@ -399,7 +399,8 @@
   "jobsSideBar": {
     "title": "工作任務",
     "ListNavLink": "清單",
-    "SubmitNavLink": "提交"
+    "SubmitNavLink": "提交",
+    "EnvModuleNavLink": "環境模組"
   },
   "moduleCard": {
     "deleteConfirmTitle": "確認刪除模組",
