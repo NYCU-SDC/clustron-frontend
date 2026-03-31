@@ -134,7 +134,7 @@ describe("DefaultLayout", () => {
         Role: "admin",
         Email: "admin@example.com",
       });
-      renderDefaultLayout();
+      renderDefaultLayoutOnly();
 
       const navbars = await screen.findAllByRole("navigation");
       const navbar = navbars[0];
