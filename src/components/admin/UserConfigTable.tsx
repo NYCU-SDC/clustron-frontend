@@ -69,7 +69,7 @@ export default function UserConfigTable() {
   });
 
   const {
-    mutateAsync: updateUsername,
+    mutate: updateUsername,
     isPending: isUpdatingUsername,
     variables: usernameVariables,
   } = useMutation({
@@ -93,14 +93,18 @@ export default function UserConfigTable() {
       });
     },
   });
-  const handleUsernameUpdate = async (
+  const handleUsernameUpdate = (
     userId: string,
     newUsername: UpdateLinuxUsernameInput["linuxUsername"],
+    options?: { onSettled?: () => void },
   ) => {
-    await updateUsername({
-      id: userId,
-      linuxUsername: newUsername,
-    });
+    updateUsername(
+      {
+        id: userId,
+        linuxUsername: newUsername,
+      },
+      options,
+    );
   };
 
   const {
@@ -251,8 +255,8 @@ export default function UserConfigTable() {
                       currentRole={user.role}
                       isOnBoarding={user.role == "ROLE_NOT_SETUP"}
                       isSelf={user.id === currentUserId}
-                      onUpdateLinuxUsername={(newUsername) =>
-                        handleUsernameUpdate(user.id, newUsername)
+                      onUpdateLinuxUsername={(newUsername, options) =>
+                        handleUsernameUpdate(user.id, newUsername, options)
                       }
                       onUpdateRole={(newRole) =>
                         handleRoleUpdate(user.id, newRole)

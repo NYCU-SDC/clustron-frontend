@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { TableRow, TableCell } from "@/components/ui/table";
 import { ChevronDown, Link2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,7 +19,6 @@ import {
 import {
   GLOBAL_ROLE_OPTIONS,
   GlobalRoleNotSetup,
-  UpdateLinuxUsernameInput,
   type UpdateUserRoleInput,
   type GlobalRole,
 } from "@/types/admin";
@@ -32,8 +31,9 @@ type Props = {
   currentRole: GlobalRole;
   onUpdateRole: (newRole: UpdateUserRoleInput["role"]) => void;
   onUpdateLinuxUsername: (
-    newUsername: UpdateLinuxUsernameInput["linuxUsername"],
-  ) => Promise<void>;
+    newUsername: string,
+    options?: { onSettled?: () => void },
+  ) => void;
   isOnBoarding?: boolean;
   isPending?: boolean;
   isSelf?: boolean;
@@ -53,33 +53,23 @@ export default function UserConfigRow({
 }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(linuxUsername);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    setEditValue(linuxUsername);
-  }, [linuxUsername]);
 
   const startEditing = () => {
     setEditValue(linuxUsername);
     setIsEditing(true);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (editValue === linuxUsername) {
       setIsEditing(false);
       return;
     }
-
-    setIsSubmitting(true);
-    try {
-      await onUpdateLinuxUsername(editValue);
-    } catch (error) {
-      console.error("Error updating Linux username:", error);
-    } finally {
-      setIsEditing(false);
-      setIsSubmitting(false);
-    }
+    onUpdateLinuxUsername(editValue, {
+      onSettled: () => {
+        setIsEditing(false);
+      },
+    });
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -129,11 +119,11 @@ export default function UserConfigRow({
               value={editValue}
               onChange={(e) => setEditValue(e.target.value)}
               onKeyDown={handleKeyDown}
-              onBlur={() => !isSubmitting && setIsEditing(false)}
+              onBlur={() => !isPending && setIsEditing(false)}
               className="h-8 py-1 font-mono text-sm w-32"
-              disabled={isSubmitting}
+              disabled={isPending}
             />
-            {isSubmitting && (
+            {isPending && (
               <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
             )}
           </div>
