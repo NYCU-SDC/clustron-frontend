@@ -110,7 +110,7 @@ export default function UserConfigRow({
           <span className="text-muted-foreground text-xs">{email}</span>
         </div>
       </TableCell>
-      <TableCell className="min-w-[200px]">
+      <TableCell className="min-w-[200px] max-w-0">
         {isEditing ? (
           <div className="flex items-center gap-2">
             <Input
@@ -120,7 +120,7 @@ export default function UserConfigRow({
               onChange={(e) => setEditValue(e.target.value)}
               onKeyDown={handleKeyDown}
               onBlur={() => !isPending && setIsEditing(false)}
-              className="h-8 py-1 font-mono text-sm w-32"
+              className="h-8 py-1 text-sm w-32"
               disabled={isPending}
             />
             {isPending && (
@@ -128,15 +128,24 @@ export default function UserConfigRow({
             )}
           </div>
         ) : (
-          <div className="flex items-center gap-2 group">
-            <span
-              className="font-semibold font-mono text-foreground cursor-pointer hover:bg-muted px-1 rounded transition-colors"
-              onClick={startEditing}
-            >
-              {linuxUsername}
-            </span>
+          <div className="flex items-center gap-2 group min-w-0">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <p
+                    className="truncate text-foreground cursor-pointer hover:bg-muted px-1 rounded transition-colors"
+                    onClick={startEditing}
+                  >
+                    {linuxUsername}
+                  </p>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-[40vw] break-words">
+                  <p>{linuxUsername}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             <Link2
-              className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-primary"
+              className="h-4 w-4 text-muted-foreground cursor-pointer hover:text-primary shrink-0"
               onClick={startEditing}
             />
           </div>
