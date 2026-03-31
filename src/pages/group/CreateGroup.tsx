@@ -200,7 +200,7 @@ export default function AddGroupPage() {
           </CardHeader>
 
           <CardContent>
-            <Textarea
+            <Input
               placeholder={t("groupPages.createGroup.ldapGroupNamePlaceholder")}
               value={ldapGroupName}
               onChange={(e) => setLdapGroupName(e.target.value)}
@@ -389,7 +389,8 @@ export default function AddGroupPage() {
             hasEmptyId ||
             !title.trim() ||
             createGroup.isPending ||
-            !description.trim()
+            !description.trim() ||
+            !isLdapValid
           }
         >
           {t("groupPages.createGroup.create")}
