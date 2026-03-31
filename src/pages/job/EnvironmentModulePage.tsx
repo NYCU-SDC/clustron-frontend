@@ -27,7 +27,7 @@ export default function EnvironmentModulePage() {
       queryClient.invalidateQueries({ queryKey: ["modules"] });
     },
     onError: (error) => {
-      console.error("User canceled operation or an error occurred:", error);
+      console.error("Failed to create environment module:", error);
     },
   });
 
