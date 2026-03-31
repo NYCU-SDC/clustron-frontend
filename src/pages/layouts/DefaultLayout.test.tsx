@@ -69,7 +69,7 @@ describe("DefaultLayout", () => {
     );
   }
 
-  function renderDefaultLayoutOnly(initialRoute = "/") {
+  function renderDefaultLayoutOnly(initialRoute = "/test-only-path") {
     const queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },
     });
