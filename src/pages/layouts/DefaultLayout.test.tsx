@@ -153,7 +153,7 @@ describe("DefaultLayout", () => {
         expect(link.textContent).toBeTruthy();
       });
 
-      expect(screen.getAllByText("Admin")).toHaveLength(2);
+      expect(screen.getAllByText("Admin")).toHaveLength(1);
     });
   });
 
