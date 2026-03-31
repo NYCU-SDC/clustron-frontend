@@ -6,6 +6,7 @@ import type {
   EnvironmentModule,
   EnvironmentVariable,
 } from "@/lib/request/getModules";
+import type { CreateModulePayload } from "@/lib/request/createModule";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,10 +34,7 @@ import { cn } from "@/lib/utils";
 
 export interface ModuleCardProps {
   module: EnvironmentModule;
-  onUpdate: (
-    id: string,
-    payload: { title: string; environment: EnvironmentVariable[] },
-  ) => Promise<void>;
+  onUpdate: (id: string, payload: CreateModulePayload) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
 }
 
