@@ -69,13 +69,42 @@ describe("DefaultLayout", () => {
     );
   }
 
+  function renderDefaultLayoutOnly(initialRoute = "/") {
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+    vi.mocked(useCookies).mockReturnValue([
+      { refreshToken: "mock-refresh" },
+      vi.fn(),
+      vi.fn(),
+      vi.fn(),
+    ]);
+    vi.mocked(getAccessToken).mockReturnValue("mock-token");
+
+    return render(
+      <I18nextProvider i18n={i18n}>
+        <QueryClientProvider client={queryClient}>
+          <CookiesProvider>
+            <MemoryRouter initialEntries={[initialRoute]}>
+              <AuthProvider>
+                <DefaultLayout />
+              </AuthProvider>
+            </MemoryRouter>
+          </CookiesProvider>
+        </QueryClientProvider>
+      </I18nextProvider>,
+    );
+  }
+
   describe("Visibility", () => {
     it("should render the Navbar with correct links for a standard user", async () => {
       vi.mocked(jwtDecode).mockReturnValue({
         Role: "user",
         Email: "user@example.com",
       });
-      renderDefaultLayout();
+
+      // We need unit test here, so I render DefaultLayout Only.
+      renderDefaultLayoutOnly();
 
       const navbars = await screen.findAllByRole("navigation");
       const navbar = navbars[0];
@@ -90,8 +119,7 @@ describe("DefaultLayout", () => {
       );
 
       // Standard user: Logo (to /groups), Groups, Settings
-      // We render DefaultLayout twice time, one is <DefaultLayout/>, the other is <DefaultLayout/> inside <App/>, so navLinks array should contain 3*2 elements.
-      expect(navLinks.length).toBe(6);
+      expect(navLinks.length).toBe(3);
 
       navLinks.forEach((link) => {
         expect(link.getAttribute("href")).toBeTruthy();
@@ -118,15 +146,13 @@ describe("DefaultLayout", () => {
       );
 
       // Admin user: Logo (to /groups), Groups, Settings, Admin
-      // We render DefaultLayout twice time, one is <DefaultLayout/>, the other is <DefaultLayout/> inside <App/>, so navLinks array should contain 8*2 elements.
-      expect(navLinks.length).toBe(8);
+      expect(navLinks.length).toBe(4);
 
       navLinks.forEach((link) => {
         expect(link.getAttribute("href")).toBeTruthy();
         expect(link.textContent).toBeTruthy();
       });
 
-      // Same, we render DefaultLayout twice time, so the array of elements should be double.
       expect(screen.getAllByText("Admin")).toHaveLength(2);
     });
   });
