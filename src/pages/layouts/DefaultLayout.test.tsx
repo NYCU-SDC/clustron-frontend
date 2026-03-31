@@ -69,7 +69,7 @@ describe("DefaultLayout", () => {
     );
   }
 
-  function renderDefaultLayoutOnly(initialRoute = "/test-only-path") {
+  function renderDefaultLayoutOnly(initialRoute = "/") {
     const queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },
     });
@@ -102,8 +102,6 @@ describe("DefaultLayout", () => {
         Role: "user",
         Email: "user@example.com",
       });
-
-      // We need unit test here, so I render DefaultLayout Only.
       renderDefaultLayoutOnly();
 
       const navbars = await screen.findAllByRole("navigation");
@@ -153,7 +151,7 @@ describe("DefaultLayout", () => {
         expect(link.textContent).toBeTruthy();
       });
 
-      expect(screen.getAllByText("Admin")).toHaveLength(1);
+      expect(screen.getByText("Admin")).toBeInTheDocument();
     });
   });
 
