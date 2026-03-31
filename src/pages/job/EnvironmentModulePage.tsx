@@ -26,6 +26,9 @@ export default function EnvironmentModulePage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["modules"] });
     },
+    onError: (error) => {
+      console.error("User canceled operation or an error occurred:", error);
+    },
   });
 
   const updateMutation = useMutation({
@@ -48,15 +51,11 @@ export default function EnvironmentModulePage() {
     },
   });
 
-  const handleCreateNew = async () => {
-    try {
-      await createMutation.mutateAsync({
-        title: "New Module", // 這個是傳給後端的預設資料名稱，不用翻譯沒關係
-        environment: [{ key: "EXAMPLE_VAR", value: "example_value" }],
-      });
-    } catch {
-      console.log("使用者操作取消或遭遇錯誤");
-    }
+  const handleCreateNew = () => {
+    createMutation.mutate({
+      title: "New Module",
+      environment: [{ key: "EXAMPLE_VAR", value: "example_value" }],
+    });
   };
 
   if (isLoading) {
