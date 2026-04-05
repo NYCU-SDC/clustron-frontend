@@ -1,5 +1,5 @@
 vi.unmock("react-i18next");
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, vi, beforeEach, expect } from "vitest";
 import { MemoryRouter } from "react-router";
@@ -109,7 +109,10 @@ describe("DefaultLayout", () => {
 
       expect(navbar).toBeInTheDocument();
 
-      const navLinks = Array.from(navbar.querySelectorAll("a")).filter(
+      const desktopNav = navbar.querySelector(".md\\:flex");
+      if (!desktopNav) throw new Error("Desktop nav not found");
+
+      const navLinks = Array.from(desktopNav.querySelectorAll("a")).filter(
         (link) => {
           const href = link.getAttribute("href");
           return href && !href.startsWith("#");
@@ -124,7 +127,7 @@ describe("DefaultLayout", () => {
         expect(link.textContent).toBeTruthy();
       });
 
-      expect(screen.queryByText("Admin")).not.toBeInTheDocument();
+      expect(within(desktopNav).queryByText("Admin")).not.toBeInTheDocument();
     });
 
     it("should render the Navbar with all links for an admin user", async () => {
@@ -136,7 +139,10 @@ describe("DefaultLayout", () => {
 
       const navbars = await screen.findAllByRole("navigation");
       const navbar = navbars[0];
-      const navLinks = Array.from(navbar.querySelectorAll("a")).filter(
+      const desktopNav = navbar.querySelector(".md\\:flex");
+      if (!desktopNav) throw new Error("Desktop nav not found");
+
+      const navLinks = Array.from(desktopNav.querySelectorAll("a")).filter(
         (link) => {
           const href = link.getAttribute("href");
           return href && !href.startsWith("#");
@@ -151,7 +157,7 @@ describe("DefaultLayout", () => {
         expect(link.textContent).toBeTruthy();
       });
 
-      expect(screen.getByText("Admin")).toBeInTheDocument();
+      expect(within(desktopNav).getByText("Admin")).toBeInTheDocument();
     });
   });
 
@@ -166,7 +172,10 @@ describe("DefaultLayout", () => {
 
       const navbars = await screen.findAllByRole("navigation");
       const navbar = navbars[0];
-      const navLinks = Array.from(navbar.querySelectorAll("a")).filter(
+      const desktopNav = navbar.querySelector(".md\\:flex");
+      if (!desktopNav) throw new Error("Desktop nav not found");
+
+      const navLinks = Array.from(desktopNav.querySelectorAll("a")).filter(
         (link) => {
           const href = link.getAttribute("href");
           return href && href !== "/" && !href.startsWith("#");
@@ -192,7 +201,11 @@ describe("DefaultLayout", () => {
 
       const navbars = await screen.findAllByRole("navigation");
       const navbar = navbars[0];
-      const navLinks = Array.from(navbar.querySelectorAll("a")).filter(
+
+      const desktopNav = navbar.querySelector(".md\\:flex");
+      if (!desktopNav) throw new Error("Desktop nav not found");
+
+      const navLinks = Array.from(desktopNav.querySelectorAll("a")).filter(
         (link) => {
           const href = link.getAttribute("href");
           return href && href !== "/" && !href.startsWith("#");
@@ -208,7 +221,7 @@ describe("DefaultLayout", () => {
       }
 
       // Verify Admin link is not there to be navigated to
-      expect(screen.queryByText("Admin")).not.toBeInTheDocument();
+      expect(within(desktopNav).queryByText("Admin")).not.toBeInTheDocument();
     });
   });
 });
