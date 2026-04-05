@@ -139,6 +139,7 @@ describe("DefaultLayout", () => {
 
       const navbars = await screen.findAllByRole("navigation");
       const navbar = navbars[0];
+      // Because we have two navbar rendering path, one for mobile and one for desktop. We should select the desktop navbar css here.
       const desktopNav = navbar.querySelector(".md\\:flex") as HTMLElement;
       if (!desktopNav) throw new Error("Desktop nav not found");
 

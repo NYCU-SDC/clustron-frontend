@@ -2,6 +2,7 @@
 import "@testing-library/jest-dom";
 import { vi } from "vitest";
 
+//mock localStorage in setup.ts because i18n calls getItem at import time in jsdom
 const localStorageMock = {
   getItem: vi.fn().mockReturnValue(null),
   setItem: vi.fn(),
