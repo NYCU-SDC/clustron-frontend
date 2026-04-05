@@ -109,7 +109,7 @@ describe("DefaultLayout", () => {
 
       expect(navbar).toBeInTheDocument();
 
-      const desktopNav = navbar.querySelector(".md\\:flex");
+      const desktopNav = navbar.querySelector(".md\\:flex") as HTMLElement;
       if (!desktopNav) throw new Error("Desktop nav not found");
 
       const navLinks = Array.from(desktopNav.querySelectorAll("a")).filter(
@@ -139,7 +139,7 @@ describe("DefaultLayout", () => {
 
       const navbars = await screen.findAllByRole("navigation");
       const navbar = navbars[0];
-      const desktopNav = navbar.querySelector(".md\\:flex");
+      const desktopNav = navbar.querySelector(".md\\:flex") as HTMLElement;
       if (!desktopNav) throw new Error("Desktop nav not found");
 
       const navLinks = Array.from(desktopNav.querySelectorAll("a")).filter(
@@ -172,7 +172,7 @@ describe("DefaultLayout", () => {
 
       const navbars = await screen.findAllByRole("navigation");
       const navbar = navbars[0];
-      const desktopNav = navbar.querySelector(".md\\:flex");
+      const desktopNav = navbar.querySelector(".md\\:flex") as HTMLElement;
       if (!desktopNav) throw new Error("Desktop nav not found");
 
       const navLinks = Array.from(desktopNav.querySelectorAll("a")).filter(
@@ -202,7 +202,7 @@ describe("DefaultLayout", () => {
       const navbars = await screen.findAllByRole("navigation");
       const navbar = navbars[0];
 
-      const desktopNav = navbar.querySelector(".md\\:flex");
+      const desktopNav = navbar.querySelector(".md\\:flex") as HTMLElement;
       if (!desktopNav) throw new Error("Desktop nav not found");
 
       const navLinks = Array.from(desktopNav.querySelectorAll("a")).filter(
