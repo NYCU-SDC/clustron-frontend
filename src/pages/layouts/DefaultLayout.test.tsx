@@ -109,9 +109,13 @@ describe("DefaultLayout", () => {
 
       expect(navbar).toBeInTheDocument();
 
-      const desktopNav = navbar.querySelector(".md\\:flex") as HTMLElement;
-      if (!desktopNav) throw new Error("Desktop nav not found");
+      const mobileNav = navbar.querySelector(".md\\:hidden") as HTMLElement;
+      expect(mobileNav).toBeInTheDocument();
 
+      const desktopNav = navbar.querySelector(".md\\:flex") as HTMLElement;
+      expect(desktopNav).toBeInTheDocument();
+
+      // Because we have two navbar rendering path, one for mobile and one for desktop. We should select the desktop navbar css here.
       const navLinks = Array.from(desktopNav.querySelectorAll("a")).filter(
         (link) => {
           const href = link.getAttribute("href");
@@ -139,9 +143,12 @@ describe("DefaultLayout", () => {
 
       const navbars = await screen.findAllByRole("navigation");
       const navbar = navbars[0];
-      // Because we have two navbar rendering path, one for mobile and one for desktop. We should select the desktop navbar css here.
+
+      const mobileNav = navbar.querySelector(".md\\:hidden") as HTMLElement;
+      expect(mobileNav).toBeInTheDocument();
+
       const desktopNav = navbar.querySelector(".md\\:flex") as HTMLElement;
-      if (!desktopNav) throw new Error("Desktop nav not found");
+      expect(desktopNav).toBeInTheDocument();
 
       const navLinks = Array.from(desktopNav.querySelectorAll("a")).filter(
         (link) => {
@@ -173,8 +180,12 @@ describe("DefaultLayout", () => {
 
       const navbars = await screen.findAllByRole("navigation");
       const navbar = navbars[0];
+
+      const mobileNav = navbar.querySelector(".md\\:hidden") as HTMLElement;
+      expect(mobileNav).toBeInTheDocument();
+
       const desktopNav = navbar.querySelector(".md\\:flex") as HTMLElement;
-      if (!desktopNav) throw new Error("Desktop nav not found");
+      expect(desktopNav).toBeInTheDocument();
 
       const navLinks = Array.from(desktopNav.querySelectorAll("a")).filter(
         (link) => {
@@ -203,8 +214,11 @@ describe("DefaultLayout", () => {
       const navbars = await screen.findAllByRole("navigation");
       const navbar = navbars[0];
 
+      const mobileNav = navbar.querySelector(".md\\:hidden") as HTMLElement;
+      expect(mobileNav).toBeInTheDocument();
+
       const desktopNav = navbar.querySelector(".md\\:flex") as HTMLElement;
-      if (!desktopNav) throw new Error("Desktop nav not found");
+      expect(desktopNav).toBeInTheDocument();
 
       const navLinks = Array.from(desktopNav.querySelectorAll("a")).filter(
         (link) => {
