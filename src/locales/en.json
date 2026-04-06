@@ -247,6 +247,7 @@
       "courseTitlePlaceholder": "Give your new group a title",
       "ldapGroupNameTitle": "LDAP Group Name",
       "ldapGroupNamePlaceholder": "The group name in LDAP",
+      "ldapGroupNameFormatError": "LDAP group name must start with a letter and end with a letter or number. It can only contain letters, numbers, hyphens, and spaces.",
       "descriptionTitle": "Description",
       "courseDescriptionPlaceholder": "Say something about this group",
       "linkTitle": "Link Resources",

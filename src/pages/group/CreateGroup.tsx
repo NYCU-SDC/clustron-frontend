@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AddMemberRow from "@/components/group/AddMemberRow";
@@ -118,10 +119,11 @@ export default function AddGroupPage() {
     return false;
   }
 
-  const isLdapValid = !ldapGroupName || isLdapGroupNameVerify(ldapGroupName);
+  const isLdapValid = isLdapGroupNameVerify(ldapGroupName);
 
   const handleSave = () => {
     if (!isLdapValid) {
+      toast.error(t("groupPages.createGroup.ldapGroupNameFormatError"));
       return;
     }
     const newMembers = members.map((m) => {
@@ -204,7 +206,17 @@ export default function AddGroupPage() {
               placeholder={t("groupPages.createGroup.ldapGroupNamePlaceholder")}
               value={ldapGroupName}
               onChange={(e) => setLdapGroupName(e.target.value)}
+              className={
+                !isLdapValid && ldapGroupName
+                  ? "border-destructive focus-visible:ring-destructive"
+                  : ""
+              }
             />
+            {!isLdapValid && ldapGroupName && (
+              <p className="text-sm font-medium text-destructive mt-1">
+                {t("groupPages.createGroup.ldapGroupNameFormatError")}
+              </p>
+            )}
           </CardContent>
 
           {/* Description */}
