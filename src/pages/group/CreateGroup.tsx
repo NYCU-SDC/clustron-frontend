@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AddMemberRow from "@/components/group/AddMemberRow";
@@ -123,7 +122,6 @@ export default function AddGroupPage() {
 
   const handleSave = () => {
     if (!isLdapValid) {
-      toast.error(t("groupPages.createGroup.ldapGroupNameFormatError"));
       return;
     }
     const newMembers = members.map((m) => {
