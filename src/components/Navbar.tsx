@@ -83,7 +83,7 @@ export default function Navbar() {
         </div>
 
         {/* Mobile row 2: nav tabs */}
-        {(role === "user" || role === "admin") && (
+        {(role === "user" || role === "organizer" || role === "admin") && (
           <div className="flex bg-gray-50/50 dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-800 overflow-x-auto px-2">
             <NavLink
               to="/groups"
@@ -117,7 +117,7 @@ export default function Navbar() {
             Clustron
           </NavLink>
           <>
-            {(role == "user" || role == "admin") && (
+            {(role === "user" || role === "organizer" || role === "admin") && (
               <>
                 <NavLink
                   to="/groups"
@@ -139,7 +139,7 @@ export default function Navbar() {
                 </NavLink>
               </>
             )}
-            {role == "admin" && (
+            {role === "admin" && (
               <NavLink
                 to="/admin"
                 className={({ isActive }) => navLinkclass(isActive)}
