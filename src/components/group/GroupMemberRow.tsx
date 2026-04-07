@@ -22,8 +22,8 @@ type Props = {
   id: string;
   email: string;
   globalRole: GlobalRole;
-  role?: string;
-  onlyInLDAP?: boolean;
+  role: string;
+  onlyInLDAP: boolean;
   accessLevel?: GroupRoleAccessLevel;
   onDelete?: () => void;
   onUpdateRole?: (newRoleId: string) => void;
@@ -38,7 +38,7 @@ export default function GroupMemberRow({
   email,
   globalRole,
   role,
-  onlyInLDAP = false,
+  onlyInLDAP,
   accessLevel = AccessLevelUser,
   onDelete,
   onUpdateRole,

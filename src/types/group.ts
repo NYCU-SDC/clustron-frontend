@@ -22,8 +22,8 @@ export type GroupMember = {
   fullName: string;
   email: string;
   studentId: string;
-  role?: GroupRole | null;
-  onlyInLDAP?: boolean;
+  role: GroupRole;
+  onlyInLDAP: boolean;
 };
 
 // GET /api/groups

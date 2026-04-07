@@ -18,7 +18,7 @@ import AddMemberButton from "@/components/group/AddMemberButton";
 import GroupMemberRow from "@/components/group/GroupMemberRow";
 
 import type { GlobalRole, GroupRoleAccessLevel } from "@/lib/permission";
-import { AccessLevelUser, type GroupMemberRoleName } from "@/types/group";
+import { AccessLevelUser } from "@/types/group";
 
 type Props = {
   groupId: string;
@@ -115,7 +115,7 @@ export default function GroupMemberTable({
                     id={m.studentId}
                     email={m.email}
                     globalRole={effectiveGlobalRole}
-                    role={m.role?.roleName as GroupMemberRoleName}
+                    role={m.role.roleName}
                     onlyInLDAP={m.onlyInLDAP}
                     accessLevel={accessLevel}
                     showActions={canEditMembers && !isOverview}
