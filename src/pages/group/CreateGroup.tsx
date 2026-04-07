@@ -111,17 +111,17 @@ export default function AddGroupPage() {
     return `https://${trimmed}`;
   }
 
-  function isLdapGroupNameVerify(ldapGroupName: string): boolean {
+  function verifyLdapGroupName(ldapGroupName: string): boolean {
     if (/^[a-zA-Z]([a-zA-Z0-9- ]*[a-zA-Z0-9])?$/.test(ldapGroupName)) {
       return true;
     }
     return false;
   }
 
-  const isLdapValid = isLdapGroupNameVerify(ldapGroupName);
+  const isLdapGroupNameValid = verifyLdapGroupName(ldapGroupName);
 
   const handleSave = () => {
-    if (!isLdapValid) {
+    if (!isLdapGroupNameValid) {
       return;
     }
     const newMembers = members.map((m) => {
@@ -205,12 +205,12 @@ export default function AddGroupPage() {
               value={ldapGroupName}
               onChange={(e) => setLdapGroupName(e.target.value)}
               className={
-                !isLdapValid && ldapGroupName
+                !isLdapGroupNameValid && ldapGroupName
                   ? "border-destructive focus-visible:ring-destructive"
                   : ""
               }
             />
-            {!isLdapValid && ldapGroupName && (
+            {!isLdapGroupNameValid && ldapGroupName && (
               <p className="text-sm font-medium text-destructive mt-1">
                 {t("groupPages.createGroup.ldapGroupNameFormatError")}
               </p>
@@ -400,7 +400,7 @@ export default function AddGroupPage() {
             !title.trim() ||
             createGroup.isPending ||
             !description.trim() ||
-            !isLdapValid
+            !isLdapGroupNameValid
           }
         >
           {t("groupPages.createGroup.create")}
