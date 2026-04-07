@@ -22,7 +22,8 @@ export type GroupMember = {
   fullName: string;
   email: string;
   studentId: string;
-  role: GroupRole;
+  role?: GroupRole | null;
+  onlyInLDAP?: boolean;
 };
 
 // GET /api/groups
@@ -57,6 +58,7 @@ export type GroupDetail = GroupSummary & {
 export type CreateGroupInput = {
   title: string;
   description: string;
+  ldapGroupName: string; // Temporary workaround for create-group API compatibility.
   members?: {
     member: string; // email or user id
     roleId: string;

@@ -12,15 +12,18 @@ import {
   AccessLevelOwner,
   type GroupRoleAccessLevel,
 } from "@/types/group";
-import { useRoleMapper } from "@/hooks/useRoleMapper"; //
+import { useRoleMapper } from "@/hooks/useRoleMapper";
 import { Button } from "@/components/ui/button";
 import { GlobalRole } from "@/lib/permission";
+import { useTranslation } from "react-i18next";
+
 type Props = {
   name: string;
   id: string;
   email: string;
   globalRole: GlobalRole;
-  role: string;
+  role?: string;
+  onlyInLDAP?: boolean;
   accessLevel?: GroupRoleAccessLevel;
   onDelete?: () => void;
   onUpdateRole?: (newRoleId: string) => void;
@@ -35,6 +38,7 @@ export default function GroupMemberRow({
   email,
   globalRole,
   role,
+  onlyInLDAP = false,
   accessLevel = AccessLevelUser,
   onDelete,
   onUpdateRole,
@@ -42,7 +46,7 @@ export default function GroupMemberRow({
   isArchived = false,
   isPending = false,
 }: Props) {
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
   const { getRolesByAccessLevel, roles } = useRoleMapper();
 
   const effectiveAccessLevel =
@@ -50,7 +54,10 @@ export default function GroupMemberRow({
 
   const assignableRoles = getRolesByAccessLevel(effectiveAccessLevel);
   const currentRole = roles.find((r) => r.roleName === role);
-  const currentRoleLabel = currentRole?.roleName || role;
+  const currentRoleLabel = currentRole?.roleName || role || "";
+  const displayRoleLabel = onlyInLDAP
+    ? t("groupComponents.groupMemberTable.onlyInLDAP")
+    : currentRoleLabel;
 
   return (
     <TableRow
@@ -68,7 +75,7 @@ export default function GroupMemberRow({
       </TableCell>
 
       <TableCell>
-        {showActions && !isArchived && role !== "group_owner" ? (
+        {showActions && !isArchived && !onlyInLDAP && role !== "group_owner" ? (
           isPending ? (
             <div className="flex items-center text-sm text-muted-foreground gap-2">
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -81,7 +88,7 @@ export default function GroupMemberRow({
                   variant="ghost"
                   className="flex items-center gap-1 font-medium text-sm px-2 py-1 hover:bg-muted"
                 >
-                  {currentRoleLabel}
+                  {displayRoleLabel}
                   <ChevronDown className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
@@ -99,7 +106,7 @@ export default function GroupMemberRow({
             </DropdownMenu>
           )
         ) : (
-          <span>{currentRoleLabel}</span>
+          <span>{displayRoleLabel}</span>
         )}
       </TableCell>
 
