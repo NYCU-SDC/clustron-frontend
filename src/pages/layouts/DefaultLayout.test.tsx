@@ -116,17 +116,17 @@ describe("DefaultLayout", () => {
       expect(desktopNav).toBeInTheDocument();
 
       // Because we have two navbar rendering path, one for mobile and one for desktop. We should select the desktop navbar css here.
-      const navLinks = Array.from(desktopNav.querySelectorAll("a")).filter(
-        (link) => {
-          const href = link.getAttribute("href");
-          return href && !href.startsWith("#");
-        },
-      );
+      const desktopNavLinks = Array.from(
+        desktopNav.querySelectorAll("a"),
+      ).filter((link) => {
+        const href = link.getAttribute("href");
+        return href && !href.startsWith("#");
+      });
 
       // Standard user: Logo (to /groups), Groups, Settings
-      expect(navLinks.length).toBe(3);
+      expect(desktopNavLinks.length).toBe(3);
 
-      navLinks.forEach((link) => {
+      desktopNavLinks.forEach((link) => {
         expect(link.getAttribute("href")).toBeTruthy();
         expect(link.textContent).toBeTruthy();
       });
@@ -166,17 +166,17 @@ describe("DefaultLayout", () => {
       const desktopNav = navbar.querySelector(".md\\:flex") as HTMLElement;
       expect(desktopNav).toBeInTheDocument();
 
-      const navLinks = Array.from(desktopNav.querySelectorAll("a")).filter(
-        (link) => {
-          const href = link.getAttribute("href");
-          return href && !href.startsWith("#");
-        },
-      );
+      const desktopNavLinks = Array.from(
+        desktopNav.querySelectorAll("a"),
+      ).filter((link) => {
+        const href = link.getAttribute("href");
+        return href && !href.startsWith("#");
+      });
 
       // Admin user: Logo (to /groups), Groups, Settings, Admin
-      expect(navLinks.length).toBe(4);
+      expect(desktopNavLinks.length).toBe(4);
 
-      navLinks.forEach((link) => {
+      desktopNavLinks.forEach((link) => {
         expect(link.getAttribute("href")).toBeTruthy();
         expect(link.textContent).toBeTruthy();
       });
@@ -219,14 +219,29 @@ describe("DefaultLayout", () => {
       const desktopNav = navbar.querySelector(".md\\:flex") as HTMLElement;
       expect(desktopNav).toBeInTheDocument();
 
-      const navLinks = Array.from(
-        navbar.querySelectorAll(".md\\:flex a, .md\\:hidden a"),
+      const desktopNavLinks = Array.from(
+        desktopNav.querySelectorAll("a"),
       ).filter((link) => {
         const href = link.getAttribute("href");
         return href && href !== "/" && !href.startsWith("#");
       });
 
-      for (const link of navLinks) {
+      for (const link of desktopNavLinks) {
+        await user.click(link);
+        await waitFor(() => {
+          const notFoundText = screen.queryByText(/404 Not Found/i);
+          expect(notFoundText).not.toBeInTheDocument();
+        });
+      }
+
+      const mobileNavLinks = Array.from(mobileNav.querySelectorAll("a")).filter(
+        (link) => {
+          const href = link.getAttribute("href");
+          return href && href !== "/" && !href.startsWith("#");
+        },
+      );
+
+      for (const link of mobileNavLinks) {
         await user.click(link);
         await waitFor(() => {
           const notFoundText = screen.queryByText(/404 Not Found/i);
@@ -252,14 +267,14 @@ describe("DefaultLayout", () => {
       const desktopNav = navbar.querySelector(".md\\:flex") as HTMLElement;
       expect(desktopNav).toBeInTheDocument();
 
-      const navLinks = Array.from(
-        navbar.querySelectorAll(".md\\:flex a, .md\\:hidden a"),
+      const desktopNavLinks = Array.from(
+        desktopNav.querySelectorAll("a"),
       ).filter((link) => {
         const href = link.getAttribute("href");
         return href && href !== "/" && !href.startsWith("#");
       });
 
-      for (const link of navLinks) {
+      for (const link of desktopNavLinks) {
         await user.click(link);
         await waitFor(() => {
           const notFoundText = screen.queryByText(/404 Not Found/i);
@@ -269,6 +284,23 @@ describe("DefaultLayout", () => {
 
       // Verify Admin link is not there to be navigated to
       expect(within(desktopNav).queryByText("Admin")).not.toBeInTheDocument();
+
+      const mobileNavLinks = Array.from(mobileNav.querySelectorAll("a")).filter(
+        (link) => {
+          const href = link.getAttribute("href");
+          return href && href !== "/" && !href.startsWith("#");
+        },
+      );
+
+      for (const link of mobileNavLinks) {
+        await user.click(link);
+        await waitFor(() => {
+          const notFoundText = screen.queryByText(/404 Not Found/i);
+          expect(notFoundText).not.toBeInTheDocument();
+        });
+      }
+
+      // Verify Admin link is not there to be navigated to
       expect(within(mobileNav).queryByText("Admin")).not.toBeInTheDocument();
     });
   });
