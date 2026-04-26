@@ -64,6 +64,7 @@ const createMockMembersResponse = (
       fullName: `Member ${startIndex + i + 1}`,
       email: `member${startIndex + i + 1}@example.com`,
       studentId: `S${(startIndex + i + 1).toString().padStart(4, "0")}`,
+      onlyInLDAP: false,
       role: {
         roleName: "USER",
         id: `role-${startIndex + i + 1}`,
