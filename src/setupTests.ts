@@ -2,6 +2,15 @@
 import "@testing-library/jest-dom";
 import { vi } from "vitest";
 
+//mock localStorage in setup.ts because i18n calls getItem at import time in jsdom
+const localStorageMock = {
+  getItem: vi.fn().mockReturnValue(null),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  clear: vi.fn(),
+};
+Object.defineProperty(window, "localStorage", { value: localStorageMock });
+
 // 全域 mock i18n：保留其他 export（如 initReactI18next），只覆蓋 useTranslation/Trans
 vi.mock("react-i18next", async () => {
   const actual =
