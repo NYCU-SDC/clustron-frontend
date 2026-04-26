@@ -88,18 +88,31 @@ export default function EnvironmentModulePage() {
           <ModuleCard
             key={mod.id}
             module={mod}
-            onUpdate={async (updatedModule) => {
-              updateMutation.mutate({
-                id: updatedModule.id,
-                payload: {
-                  title: updatedModule.title,
-                  environment: updatedModule.environment,
-                },
-              });
-            }}
-            onDelete={async (id) => {
-              deleteMutation.mutate(id);
-            }}
+            onUpdate={(updatedModule) =>
+              new Promise<void>((resolve, reject) => {
+                updateMutation.mutate(
+                  {
+                    id: updatedModule.id,
+                    payload: {
+                      title: updatedModule.title,
+                      environment: updatedModule.environment,
+                    },
+                  },
+                  {
+                    onSuccess: () => resolve(),
+                    onError: (error) => reject(error),
+                  },
+                );
+              })
+            }
+            onDelete={(id) =>
+              new Promise<void>((resolve, reject) => {
+                deleteMutation.mutate(id, {
+                  onSuccess: () => resolve(),
+                  onError: (error) => reject(error),
+                });
+              })
+            }
           />
         ))}
 
