@@ -25,6 +25,7 @@ export type User = {
   fullName: string;
   email: string;
   studentId: string;
+  linuxUsername: string;
   role: GlobalRole;
 };
 
@@ -54,3 +55,11 @@ export type UpdateUserRoleInput = {
 };
 
 export type UpdateUserRoleResponse = User;
+
+// PUT /api/users/{id}/ldapBind
+export type UpdateLinuxUsernameInput = {
+  id: string;
+  linuxUsername: string;
+};
+
+export type UpdateLinuxUsernameResponse = User;

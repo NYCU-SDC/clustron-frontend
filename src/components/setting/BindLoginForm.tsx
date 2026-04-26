@@ -138,7 +138,7 @@ export default function BindLoginForm() {
       <Separator />
       <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
         <Button
-          className="px-7 py-5 ml-5 w-fit cursor-pointer"
+          className="cursor-pointer mx-5 mb-5 w-[calc(100%-2.5rem)] sm:ml-5 sm:mr-0 sm:mb-0 sm:w-fit"
           onClick={() => setDialogOpen(true)}
         >
           {t("bindLoginForm.connectLoginMethodBtn")}

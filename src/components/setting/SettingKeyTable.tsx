@@ -134,19 +134,19 @@ export default function SettingKeyTable() {
 
   return (
     <Card>
-      <CardHeader className="py-5 flex justify-between">
+      <CardHeader className="py-5 flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
         <CardTitle className="text-2xl">
           {t("settingKeyTable.cardTitleForKeyTable")}
         </CardTitle>
-        <div className="flex gap-4">
+        <div className="flex flex-col w-full sm:w-auto sm:flex-row gap-3 sm:gap-4">
           <Button
-            className="py-5 cursor-pointer"
+            className="py-5 cursor-pointer w-full sm:w-auto"
             onClick={() => navigate("/setting/ssh/new")}
           >
             {t("settingKeyTable.addNewKeyBtn")}
           </Button>
           <Button
-            className="py-5 cursor-pointer"
+            className="py-5 cursor-pointer w-full sm:w-auto"
             onClick={handleGithubKeysImport}
           >
             <img
@@ -186,8 +186,10 @@ export default function SettingKeyTable() {
             ) : (
               keys.map((key) => (
                 <TableRow key={key.fingerprint}>
-                  <TableCell>{key.title}</TableCell>
-                  <TableCell>
+                  <TableCell className="max-w-0 truncate">
+                    {key.title}
+                  </TableCell>
+                  <TableCell className="max-w-0 truncate font-mono text-xs">
                     {key.publicKey.length < length
                       ? key.publicKey
                       : `${key.publicKey.slice(0, length)}...`}

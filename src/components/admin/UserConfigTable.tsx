@@ -21,13 +21,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import PaginationControls from "@/components/PaginationControl";
+import PaginationControls from "@/components/customUI/PaginationControl";
 import UserConfigRow from "@/components/admin/UserConfigRow";
 import { updateGlobalRole } from "@/lib/request/updateGlobalRole";
+import { updateLinuxUsername } from "@/lib/request/updateLinuxUsername";
 import { getUsers } from "@/lib/request/getUsers";
 import {
   GLOBAL_ROLE_OPTIONS,
   type GlobalRole,
+  UpdateLinuxUsernameInput,
   type UpdateUserRoleInput,
 } from "@/types/admin";
 
@@ -67,9 +69,48 @@ export default function UserConfigTable() {
   });
 
   const {
+    mutate: updateUsername,
+    isPending: isUpdatingUsername,
+    variables: usernameVariables,
+  } = useMutation({
+    mutationFn: (input: UpdateLinuxUsernameInput) => updateLinuxUsername(input),
+    onMutate: (input) => {
+      const toastId = `update-linux-username-${input.id}`;
+      toast.loading(t("userConfigTable.updatingToast"), {
+        id: toastId,
+      });
+      return toastId;
+    },
+    onSuccess: (_data, _vars, ctx) => {
+      toast.success(t("userConfigTable.updateUsernameSuccessToast"), {
+        id: ctx,
+      });
+      queryClient.invalidateQueries({ queryKey: ["AdminUsers"] });
+    },
+    onError: (_err, _vars, ctx) => {
+      toast.error(t("userConfigTable.updateUsernameFailToast"), {
+        id: ctx,
+      });
+    },
+  });
+  const handleUsernameUpdate = (
+    userId: string,
+    newUsername: UpdateLinuxUsernameInput["linuxUsername"],
+    options?: { onSettled?: () => void },
+  ) => {
+    updateUsername(
+      {
+        id: userId,
+        linuxUsername: newUsername,
+      },
+      options,
+    );
+  };
+
+  const {
     mutate: updateRole,
-    isPending: isUpdating,
-    variables,
+    isPending: isUpdatingRole,
+    variables: roleVariables,
   } = useMutation({
     mutationFn: (input: UpdateUserRoleInput) => updateGlobalRole(input),
     onMutate: (input) => {
@@ -80,13 +121,13 @@ export default function UserConfigTable() {
       return toastId;
     },
     onSuccess: (_data, _vars, ctx) => {
-      toast.success(t("userConfigTable.updateSuccessToast"), {
+      toast.success(t("userConfigTable.updateRoleSuccessToast"), {
         id: ctx,
       });
       queryClient.invalidateQueries({ queryKey: ["AdminUsers"] });
     },
     onError: (_err, _vars, ctx) => {
-      toast.error(t("userConfigTable.updateFailToast"), { id: ctx });
+      toast.error(t("userConfigTable.updateRoleFailToast"), { id: ctx });
     },
   });
 
@@ -193,8 +234,13 @@ export default function UserConfigTable() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>{t("userConfigTable.tableHeadName")}</TableHead>
+                    <TableHead className="w-[30%]">
+                      {t("userConfigTable.tableHeadName")}
+                    </TableHead>
                     <TableHead>{t("userConfigTable.tableHeadId")}</TableHead>
+                    <TableHead>
+                      {t("userConfigTable.tableHeadLinuxUsername")}
+                    </TableHead>
                     <TableHead>{t("userConfigTable.tableHeadRole")}</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -205,13 +251,21 @@ export default function UserConfigTable() {
                       name={user.fullName}
                       id={user.studentId}
                       email={user.email}
+                      linuxUsername={user.linuxUsername}
                       currentRole={user.role}
                       isOnBoarding={user.role == "ROLE_NOT_SETUP"}
                       isSelf={user.id === currentUserId}
+                      onUpdateLinuxUsername={(newUsername, options) =>
+                        handleUsernameUpdate(user.id, newUsername, options)
+                      }
                       onUpdateRole={(newRole) =>
                         handleRoleUpdate(user.id, newRole)
                       }
-                      isPending={isUpdating && variables?.id === user.id}
+                      isPending={
+                        (isUpdatingRole && roleVariables?.id === user.id) ||
+                        (isUpdatingUsername &&
+                          usernameVariables?.id === user.id)
+                      }
                     />
                   ))}
                 </TableBody>

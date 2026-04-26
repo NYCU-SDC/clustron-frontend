@@ -95,7 +95,7 @@ export default function SettingAddKeyForm({
                   <TooltipTrigger asChild>
                     <Button
                       disabled
-                      className="px-7 py-5 w-32 disabled:cursor-not-allowed disabled:pointer-events-auto"
+                      className="px-7 py-5 w-full sm:w-32 disabled:cursor-not-allowed disabled:pointer-events-auto"
                     >
                       {t("settingAddKeyForm.saveBtn")}
                     </Button>
@@ -106,7 +106,7 @@ export default function SettingAddKeyForm({
                 </Tooltip>
               ) : addMutation.isPending ? (
                 <Button
-                  className="px-7 py-5 w-32 disabled:cursor-not-allowed disabled:pointer-events-auto"
+                  className="px-7 py-5 w-full sm:w-32 disabled:cursor-not-allowed disabled:pointer-events-auto"
                   disabled
                 >
                   <Loader2Icon className="animate-spin" />
@@ -114,7 +114,7 @@ export default function SettingAddKeyForm({
                 </Button>
               ) : (
                 <Button
-                  className="px-7 py-5 w-32 cursor-pointer"
+                  className="px-7 py-5 w-full sm:w-32 cursor-pointer"
                   onClick={() => addMutation.mutate({ title, publicKey })}
                 >
                   {t("settingAddKeyForm.saveBtn")}
