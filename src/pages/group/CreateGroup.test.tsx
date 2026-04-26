@@ -613,6 +613,7 @@ describe("CreateGroup", () => {
         expect(mockCreateGroupMutate).toHaveBeenCalledWith({
           title: "Test Group",
           description: "Test Description",
+          ldapGroupName: "Test Group",
           members: [
             {
               member: "student123",
