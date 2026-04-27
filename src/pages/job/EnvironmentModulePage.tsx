@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { ModuleCard } from "@/components/EnvironmentModule/ModuleCard";
 import { Button } from "@/components/ui/button";
 import { Plus, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 import { getModules } from "@/lib/request/getModules";
 import { createModule } from "@/lib/request/createModule";
@@ -41,6 +42,11 @@ export default function EnvironmentModulePage() {
     }) => updateModule(id, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["modules"] });
+      toast.success(t("moduleCard.saveSuccessToast"));
+    },
+    onError: (error) => {
+      toast.error(t("moduleCard.saveFailToast"));
+      console.error("Failed to update environment module:", error);
     },
   });
 
@@ -48,6 +54,9 @@ export default function EnvironmentModulePage() {
     mutationFn: deleteModule,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["modules"] });
+    },
+    onError: (error) => {
+      console.error("Failed to delete environment module:", error);
     },
   });
 
@@ -88,31 +97,18 @@ export default function EnvironmentModulePage() {
           <ModuleCard
             key={mod.id}
             module={mod}
-            onUpdate={(updatedModule) =>
-              new Promise<void>((resolve, reject) => {
-                updateMutation.mutate(
-                  {
-                    id: updatedModule.id,
-                    payload: {
-                      title: updatedModule.title,
-                      environment: updatedModule.environment,
-                    },
-                  },
-                  {
-                    onSuccess: () => resolve(),
-                    onError: (error) => reject(error),
-                  },
-                );
-              })
-            }
-            onDelete={(id) =>
-              new Promise<void>((resolve, reject) => {
-                deleteMutation.mutate(id, {
-                  onSuccess: () => resolve(),
-                  onError: (error) => reject(error),
-                });
-              })
-            }
+            onUpdate={(updatedModule) => {
+              updateMutation.mutate({
+                id: updatedModule.id,
+                payload: {
+                  title: updatedModule.title,
+                  environment: updatedModule.environment,
+                },
+              });
+            }}
+            onDelete={(id) => {
+              deleteMutation.mutate(id);
+            }}
           />
         ))}
 

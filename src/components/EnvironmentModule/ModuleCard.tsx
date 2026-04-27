@@ -27,14 +27,13 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-import { Pencil, Trash2, ChevronRight, Loader2 } from "lucide-react";
-import { toast } from "sonner";
+import { Pencil, Trash2, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface ModuleCardProps {
   module: EnvironmentModule;
-  onUpdate: (module: EnvironmentModule) => Promise<void>;
-  onDelete: (id: string) => Promise<void>;
+  onUpdate: (module: EnvironmentModule) => void;
+  onDelete: (id: string) => void;
 }
 
 export function ModuleCard({ module, onUpdate, onDelete }: ModuleCardProps) {
@@ -46,7 +45,6 @@ export function ModuleCard({ module, onUpdate, onDelete }: ModuleCardProps) {
     module.environment,
   );
   const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (!isExpanded) {
@@ -78,28 +76,18 @@ export function ModuleCard({ module, onUpdate, onDelete }: ModuleCardProps) {
     setIsEditingTitle(false);
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (!editedTitle.trim()) return;
+
     const cleanEnv = editedEnv.filter((ev) => ev.key.trim() !== "");
 
-    setIsSaving(true);
+    onUpdate({
+      id: module.id,
+      title: editedTitle,
+      environment: cleanEnv,
+    });
 
-    try {
-      await onUpdate({
-        id: module.id,
-        title: editedTitle,
-        environment: cleanEnv,
-      });
-
-      toast.success(t("moduleCard.saveSuccessToast"));
-
-      setIsEditingTitle(false);
-    } catch (error) {
-      toast.error(t("moduleCard.saveFailToast"));
-      console.error(error);
-    } finally {
-      setIsSaving(false);
-    }
+    setIsEditingTitle(false);
   };
 
   return (
@@ -223,18 +211,13 @@ export function ModuleCard({ module, onUpdate, onDelete }: ModuleCardProps) {
                   variant="outline"
                   className="px-5 h-9"
                   onClick={handleCancel}
-                  disabled={isSaving}
                 >
                   {t("moduleCard.cancelBtn")}
                 </Button>
                 <Button
                   onClick={handleSave}
-                  disabled={isSaving}
                   className="px-5 h-9 bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-50 dark:text-slate-900"
                 >
-                  {isSaving && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  )}
                   {t("moduleCard.saveBtn")}
                 </Button>
               </div>
