@@ -248,7 +248,6 @@ describe("CreateGroup", () => {
 
       await user.type(titleInput, "Test Group");
       await user.type(descriptionInput, "Test Description");
-      await user.type(screen.getByTestId("member-id-0"), "student@example.com");
 
       const buttons = screen.getAllByRole("button");
       const createButton = buttons.find((btn) =>

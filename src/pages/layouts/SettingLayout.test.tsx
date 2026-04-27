@@ -1,3 +1,4 @@
+vi.unmock("react-i18next");
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, vi, beforeEach, expect } from "vitest";
@@ -10,6 +11,8 @@ import { AuthProvider } from "@/components/auth/AuthProvider";
 import SettingLayout from "./SettingLayout";
 import App from "@/App";
 import type * as ReactCookie from "react-cookie";
+import i18n from "@/i18n";
+import { I18nextProvider } from "react-i18next";
 
 vi.mock("react-cookie", async () => {
   const mod = await vi.importActual<typeof ReactCookie>("react-cookie");
@@ -33,8 +36,9 @@ vi.mock("@/lib/request/getKeys", () => ({
 }));
 
 describe("SettingLayout", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
+    await i18n.changeLanguage("en");
   });
 
   function renderSettingLayout(initialRoute = "/setting/general") {
@@ -51,16 +55,18 @@ describe("SettingLayout", () => {
     vi.mocked(jwtDecode).mockReturnValue({ Role: "user" });
 
     return render(
-      <QueryClientProvider client={queryClient}>
-        <CookiesProvider>
-          <MemoryRouter initialEntries={[initialRoute]}>
-            <AuthProvider>
-              <SettingLayout />
-              <App />
-            </AuthProvider>
-          </MemoryRouter>
-        </CookiesProvider>
-      </QueryClientProvider>,
+      <I18nextProvider i18n={i18n}>
+        <QueryClientProvider client={queryClient}>
+          <CookiesProvider>
+            <MemoryRouter initialEntries={[initialRoute]}>
+              <AuthProvider>
+                <SettingLayout />
+                <App />
+              </AuthProvider>
+            </MemoryRouter>
+          </CookiesProvider>
+        </QueryClientProvider>
+      </I18nextProvider>,
     );
   }
 
@@ -70,7 +76,7 @@ describe("SettingLayout", () => {
       renderSettingLayout();
 
       // Ensure layout is ready
-      await screen.findAllByText("settingSideBar.title");
+      await screen.findAllByText("Settings");
 
       const sidebars = screen.getAllByRole("complementary");
       const sidebar = sidebars[0];
