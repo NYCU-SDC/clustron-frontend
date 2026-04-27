@@ -3,16 +3,23 @@ import { useTranslation } from "react-i18next";
 
 type Props = {
   title: string;
+  ldapGroupName: string;
   desc: string;
   links?: { title: string; url: string }[];
 };
 
-export default function GroupDescription({ title, desc, links }: Props) {
+export default function GroupDescription({
+  title,
+  ldapGroupName,
+  desc,
+  links,
+}: Props) {
   const { t } = useTranslation();
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-lg font-bold">{title}</CardTitle>
+        <div className="text-sm text-muted-foreground">#{ldapGroupName}</div>
       </CardHeader>
 
       <CardContent className="space-y-2">
