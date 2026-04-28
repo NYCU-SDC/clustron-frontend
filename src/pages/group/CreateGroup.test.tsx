@@ -713,6 +713,7 @@ describe("CreateGroup", () => {
             options?.onSuccess?.({
               id: "group123",
               title: input.title,
+              ldapGroupName: input.ldapGroupName,
               description: input.description,
               isArchived: false,
               createdAt: new Date().toISOString(),
