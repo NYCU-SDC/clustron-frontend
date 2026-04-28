@@ -192,11 +192,15 @@ describe("CreateGroup", () => {
       const titleInput = screen.getByPlaceholderText(
         "groupPages.createGroup.courseTitlePlaceholder",
       );
+      const ldapInput = screen.getByPlaceholderText(
+        "groupPages.createGroup.ldapGroupNamePlaceholder",
+      );
       const descriptionInput = screen.getByPlaceholderText(
         "groupPages.createGroup.courseDescriptionPlaceholder",
       );
 
       await user.type(titleInput, "Test Group");
+      await user.type(ldapInput, "test-ldap-group");
       await user.type(descriptionInput, "Test Description");
 
       expect(titleInput).toHaveValue("Test Group");
@@ -242,11 +246,15 @@ describe("CreateGroup", () => {
       const titleInput = screen.getByPlaceholderText(
         "groupPages.createGroup.courseTitlePlaceholder",
       );
+      const ldapInput = screen.getByPlaceholderText(
+        "groupPages.createGroup.ldapGroupNamePlaceholder",
+      );
       const descriptionInput = screen.getByPlaceholderText(
         "groupPages.createGroup.courseDescriptionPlaceholder",
       );
 
       await user.type(titleInput, "Test Group");
+      await user.type(ldapInput, "test-ldap-group");
       await user.type(descriptionInput, "Test Description");
 
       const buttons = screen.getAllByRole("button");
@@ -379,6 +387,9 @@ describe("CreateGroup", () => {
       const titleInput = screen.getByPlaceholderText(
         "groupPages.createGroup.courseTitlePlaceholder",
       );
+      const ldapInput = screen.getByPlaceholderText(
+        "groupPages.createGroup.ldapGroupNamePlaceholder",
+      );
       const descriptionInput = screen.getByPlaceholderText(
         "groupPages.createGroup.courseDescriptionPlaceholder",
       );
@@ -393,6 +404,7 @@ describe("CreateGroup", () => {
       const linkUrlInput = urlInputs[urlInputs.length - 1];
 
       await user.type(titleInput, "Test Group");
+      await user.type(ldapInput, "test-ldap-group");
       await user.type(descriptionInput, "Test Description");
       await user.type(screen.getByTestId("member-id-0"), "student@example.com");
       await user.type(linkTitleInput, "Example");
@@ -429,6 +441,9 @@ describe("CreateGroup", () => {
       const titleInput = screen.getByPlaceholderText(
         "groupPages.createGroup.courseTitlePlaceholder",
       );
+      const ldapInput = screen.getByPlaceholderText(
+        "groupPages.createGroup.ldapGroupNamePlaceholder",
+      );
       const descriptionInput = screen.getByPlaceholderText(
         "groupPages.createGroup.courseDescriptionPlaceholder",
       );
@@ -443,6 +458,7 @@ describe("CreateGroup", () => {
       const linkUrlInput = urlInputs[urlInputs.length - 1];
 
       await user.type(titleInput, "Test Group");
+      await user.type(ldapInput, "test-ldap-group");
       await user.type(descriptionInput, "Test Description");
       await user.type(screen.getByTestId("member-id-0"), "student@example.com");
       await user.type(linkTitleInput, "Example");
@@ -472,6 +488,9 @@ describe("CreateGroup", () => {
       const titleInput = screen.getByPlaceholderText(
         "groupPages.createGroup.courseTitlePlaceholder",
       );
+      const ldapInput = screen.getByPlaceholderText(
+        "groupPages.createGroup.ldapGroupNamePlaceholder",
+      );
       const descriptionInput = screen.getByPlaceholderText(
         "groupPages.createGroup.courseDescriptionPlaceholder",
       );
@@ -486,6 +505,7 @@ describe("CreateGroup", () => {
       const linkUrlInput = urlInputs[urlInputs.length - 1];
 
       await user.type(titleInput, "Test Group");
+      await user.type(ldapInput, "test-ldap-group");
       await user.type(descriptionInput, "Test Description");
       await user.type(screen.getByTestId("member-id-0"), "student@example.com");
       await user.type(linkTitleInput, "Example");
@@ -563,11 +583,15 @@ describe("CreateGroup", () => {
       const titleInput = screen.getByPlaceholderText(
         "groupPages.createGroup.courseTitlePlaceholder",
       );
+      const ldapInput = screen.getByPlaceholderText(
+        "groupPages.createGroup.ldapGroupNamePlaceholder",
+      );
       const descriptionInput = screen.getByPlaceholderText(
         "groupPages.createGroup.courseDescriptionPlaceholder",
       );
 
       await user.type(titleInput, "Test Group");
+      await user.type(ldapInput, "test-ldap-group");
       await user.type(descriptionInput, "Test Description");
 
       // Add a second row
@@ -596,11 +620,15 @@ describe("CreateGroup", () => {
       const titleInput = screen.getByPlaceholderText(
         "groupPages.createGroup.courseTitlePlaceholder",
       );
+      const ldapInput = screen.getByPlaceholderText(
+        "groupPages.createGroup.ldapGroupNamePlaceholder",
+      );
       const descriptionInput = screen.getByPlaceholderText(
         "groupPages.createGroup.courseDescriptionPlaceholder",
       );
 
       await user.type(titleInput, "Test Group");
+      await user.type(ldapInput, "test-ldap-group");
       await user.type(descriptionInput, "Test Description");
 
       const memberIdInput = screen.getByTestId("member-id-0");
@@ -612,6 +640,7 @@ describe("CreateGroup", () => {
       await waitFor(() => {
         expect(mockCreateGroupMutate).toHaveBeenCalledWith({
           title: "Test Group",
+          ldapGroupName: "test-ldap-group",
           description: "Test Description",
           ldapGroupName: "Test Group",
           members: [
@@ -632,11 +661,15 @@ describe("CreateGroup", () => {
       const titleInput = screen.getByPlaceholderText(
         "groupPages.createGroup.courseTitlePlaceholder",
       );
+      const ldapInput = screen.getByPlaceholderText(
+        "groupPages.createGroup.ldapGroupNamePlaceholder",
+      );
       const descriptionInput = screen.getByPlaceholderText(
         "groupPages.createGroup.courseDescriptionPlaceholder",
       );
 
       await user.type(titleInput, "Test Group");
+      await user.type(ldapInput, "test-ldap-group");
       await user.type(descriptionInput, "Test Description");
 
       // Add a second row but leave it empty
@@ -709,11 +742,15 @@ describe("CreateGroup", () => {
       const titleInput = screen.getByPlaceholderText(
         "groupPages.createGroup.courseTitlePlaceholder",
       );
+      const ldapInput = screen.getByPlaceholderText(
+        "groupPages.createGroup.ldapGroupNamePlaceholder",
+      );
       const descriptionInput = screen.getByPlaceholderText(
         "groupPages.createGroup.courseDescriptionPlaceholder",
       );
 
       await user.type(titleInput, "Test Group");
+      await user.type(ldapInput, "test-ldap-group");
       await user.type(descriptionInput, "Test Description");
 
       const memberIdInput = screen.getByTestId("member-id-0");

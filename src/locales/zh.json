@@ -249,6 +249,9 @@
     "createGroup": {
       "courseTitle": "群組名稱",
       "courseTitlePlaceholder": "為你的新群組取個名稱",
+      "ldapGroupNameTitle": "LDAP 群組名稱",
+      "ldapGroupNamePlaceholder": "LDAP 中的群組名稱",
+      "ldapGroupNameFormatError": "LDAP 群組名稱必須以字母開頭，以字母或數字結尾，且僅能包含字母、數字、連字號(-)與空格。",
       "descriptionTitle": "描述",
       "courseDescriptionPlaceholder": "介紹一下這個群組",
       "linkTitle": "連結資源",

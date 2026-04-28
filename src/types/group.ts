@@ -3,114 +3,114 @@ export const AccessLevelAdmin = "GROUP_ADMIN";
 export const AccessLevelOwner = "GROUP_OWNER";
 
 export const AccessLevels = [
-  AccessLevelUser,
-  AccessLevelAdmin,
-  AccessLevelOwner,
+AccessLevelUser,
+AccessLevelAdmin,
+AccessLevelOwner,
 ] as const;
 
 export type GroupRoleAccessLevel = (typeof AccessLevels)[number];
 export type GroupMemberRoleName = string;
 
 export type GroupRole = {
-  roleName: string;
-  id: string;
-  accessLevel: GroupRoleAccessLevel;
+roleName: string;
+id: string;
+accessLevel: GroupRoleAccessLevel;
 };
 // group member
 export type GroupMember = {
-  id: string;
-  fullName: string;
-  email: string;
-  studentId: string;
-  role: GroupRole;
-  onlyInLDAP: boolean;
+id: string;
+fullName: string;
+email: string;
+studentId: string;
+role: GroupRole;
+onlyInLDAP: boolean;
 };
 
 // GET /api/groups
 export type GroupSummary = {
-  id: string;
-  title: string;
-  description: string;
-  isArchived: boolean;
-  createdAt: string;
-  updatedAt: string;
+id: string;
+title: string;
+description: string;
+isArchived: boolean;
+createdAt: string;
+updatedAt: string;
 };
 
 export type GetGroupsResponse = {
-  items: GroupSummary[];
-  totalPages: number;
-  totalItems: number;
-  currentPage: number;
-  pageSize: number;
-  hasNextPage: boolean;
+items: GroupSummary[];
+totalPages: number;
+totalItems: number;
+currentPage: number;
+pageSize: number;
+hasNextPage: boolean;
 };
 
 // GET /api/groups/{id}
 export type GroupDetail = GroupSummary & {
-  me: {
-    type: string;
-    role: GroupRole;
-  };
-  links?: GroupLinkResponse[];
+me: {
+  type: string;
+  role: GroupRole;
+};
+links?: GroupLinkResponse[];
 };
 
 // POST /api/groups
 export type CreateGroupInput = {
-  title: string;
-  description: string;
-  ldapGroupName: string; // Temporary workaround for create-group API compatibility.
-  members?: {
-    member: string; // email or user id
-    roleId: string;
-  }[];
-  links?: GroupLinkPayload[];
+title: string;
+description: string;
+ldapGroupName: string;
+members?: {
+  member: string; // email or user id
+  roleId: string;
+}[];
+links?: GroupLinkPayload[];
 };
 
 export type JoinMemberErrorResponse = {
-  member: string;
-  role: string;
-  message: string;
+member: string;
+role: string;
+message: string;
 };
 
 export type CreateGroupResultData = AddMembersResult;
 
 export type CreateGroupResponse = GroupDetail & {
-  addedResult: CreateGroupResultData;
+addedResult: CreateGroupResultData;
 };
 
 // GET /api/groups/{id}/members
 export type GetGroupMembersResponse = {
-  items: GroupMember[];
-  totalPages: number;
-  totalItems: number;
-  currentPage: number;
-  pageSize: number;
-  hasNextPage: boolean;
+items: GroupMember[];
+totalPages: number;
+totalItems: number;
+currentPage: number;
+pageSize: number;
+hasNextPage: boolean;
 };
 
 // POST /api/groups/{id}/members
 export type AddGroupMemberInput = {
-  member: string;
-  roleId: string;
+member: string;
+roleId: string;
 };
 
 export type AddMembersResult = {
-  addedSuccessNumber: number;
-  addedFailureNumber: number;
-  errors: JoinMemberErrorResponse[];
+addedSuccessNumber: number;
+addedFailureNumber: number;
+errors: JoinMemberErrorResponse[];
 };
 
 // DELETE /api/groups/{id}/members/{memberId}
 export type RemoveMemberParams = {
-  id: string;
-  memberId: string;
+id: string;
+memberId: string;
 };
 
 // PUT /api/groups/{id}/members/{memberId}
 export type UpdateGroupMemberInput = {
-  groupId: string;
-  memberId: string;
-  roleId: GroupMemberRoleName;
+groupId: string;
+memberId: string;
+roleId: GroupMemberRoleName;
 };
 
 export type UpdateGroupMemberResponse = GroupMember;
@@ -118,52 +118,52 @@ export type UpdateGroupMemberResponse = GroupMember;
 // POST /api/groups/{id}/archive
 // POST /api/groups/{id}/unarchive
 export type ArchiveGroupParams = {
-  id: string;
+id: string;
 };
 
 // POST /api/roles
 // PUT /api/roles/{id}
 export type RoleConfigInput = {
-  role: GroupMemberRoleName;
-  accessLevel: GroupRoleAccessLevel;
+role: GroupMemberRoleName;
+accessLevel: GroupRoleAccessLevel;
 };
 
 // Pending Member Types
 export type PendingMember = {
+id: string;
+userIdentifier: string;
+role: {
   id: string;
-  userIdentifier: string;
-  role: {
-    id: string;
-    roleName: GroupMemberRoleName;
-    accessLevel: GroupRoleAccessLevel;
-  };
+  roleName: GroupMemberRoleName;
+  accessLevel: GroupRoleAccessLevel;
+};
 };
 
 // GET /api/groups/{id}/pendingMembers
 export type GetPendingMembersResponse = {
-  items: PendingMember[];
-  totalPages: number;
-  totalItems: number;
-  currentPage: number;
-  pageSize: number;
-  hasNextPage: boolean;
+items: PendingMember[];
+totalPages: number;
+totalItems: number;
+currentPage: number;
+pageSize: number;
+hasNextPage: boolean;
 };
 
 // PUT /api/groups/{id}/pendingMembers/{pendingId}
 export type UpdatePendingMemberInput = {
-  id: string;
-  pendingId: string;
-  roleId: string;
+id: string;
+pendingId: string;
+roleId: string;
 };
 
 export type UpdatePendingMemberResponse = {
-  pendingMember: PendingMember;
+pendingMember: PendingMember;
 };
 
 // DELETE /api/groups/{id}/pendingMembers/{pendingId}
 export type RemovePendingMemberParams = {
-  id: string;
-  pendingId: string;
+id: string;
+pendingId: string;
 };
 
 // Group Link Types
@@ -172,12 +172,12 @@ export type RemovePendingMemberParams = {
 // DELETE /api/groups/{id}/link/{linkId}
 
 export type GroupLinkPayload = {
-  title: string;
-  url: string;
+title: string;
+url: string;
 };
 
 export type GroupLinkResponse = {
-  id: string;
-  title: string;
-  url: string;
+id: string;
+title: string;
+url: string;
 };

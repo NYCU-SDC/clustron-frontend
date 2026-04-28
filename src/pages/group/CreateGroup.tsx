@@ -36,6 +36,7 @@ export default function AddGroupPage() {
   const { roleNameToId, getRolesByAccessLevel } = useRoleMapper();
 
   const [title, setTitle] = useState("");
+  const [ldapGroupName, setLdapGroupName] = useState("");
   const [description, setDescription] = useState("");
   const [links, setLinks] = useState<GroupLinkPayload[]>([]);
   const [newLink, setNewLink] = useState<GroupLinkPayload>({
@@ -110,7 +111,19 @@ export default function AddGroupPage() {
     return `https://${trimmed}`;
   }
 
+  function verifyLdapGroupName(ldapGroupName: string): boolean {
+    if (/^[a-zA-Z]([a-zA-Z0-9- ]*[a-zA-Z0-9])?$/.test(ldapGroupName)) {
+      return true;
+    }
+    return false;
+  }
+
+  const isLdapGroupNameValid = verifyLdapGroupName(ldapGroupName);
+
   const handleSave = () => {
+    if (!isLdapGroupNameValid) {
+      return;
+    }
     const newMembers = members.map((m) => {
       const roleId = roleNameToId(m.roleName);
       if (!roleId) throw new Error(`Invalid role: ${m.roleName}`);
@@ -131,6 +144,7 @@ export default function AddGroupPage() {
 
     createGroup.mutate({
       title,
+      ldapGroupName,
       description,
       ldapGroupName: title.trim(), // Temporary workaround until ldapGroupName has its own form field.
       members: newMembers,
@@ -176,6 +190,31 @@ export default function AddGroupPage() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
+          </CardContent>
+
+          {/* LDAP Group Name */}
+          <CardHeader className="mt-6">
+            <CardTitle className="text-2xl">
+              {t("groupPages.createGroup.ldapGroupNameTitle")}*
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            <Input
+              placeholder={t("groupPages.createGroup.ldapGroupNamePlaceholder")}
+              value={ldapGroupName}
+              onChange={(e) => setLdapGroupName(e.target.value)}
+              className={
+                !isLdapGroupNameValid && ldapGroupName
+                  ? "border-destructive focus-visible:ring-destructive"
+                  : ""
+              }
+            />
+            {!isLdapGroupNameValid && ldapGroupName && (
+              <p className="text-sm font-medium text-destructive mt-1">
+                {t("groupPages.createGroup.ldapGroupNameFormatError")}
+              </p>
+            )}
           </CardContent>
 
           {/* Description */}
@@ -359,7 +398,8 @@ export default function AddGroupPage() {
             hasDuplicate ||
             !title.trim() ||
             createGroup.isPending ||
-            !description.trim()
+            !description.trim() ||
+            !isLdapGroupNameValid
           }
         >
           {t("groupPages.createGroup.create")}
