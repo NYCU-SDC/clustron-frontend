@@ -146,7 +146,6 @@ export default function AddGroupPage() {
       title,
       ldapGroupName,
       description,
-      ldapGroupName: title.trim(), // Temporary workaround until ldapGroupName has its own form field.
       members: newMembers,
       links: linksToSubmit,
     } as CreateGroupInput);

@@ -642,7 +642,6 @@ describe("CreateGroup", () => {
           title: "Test Group",
           ldapGroupName: "test-ldap-group",
           description: "Test Description",
-          ldapGroupName: "Test Group",
           members: [
             {
               member: "student123",
