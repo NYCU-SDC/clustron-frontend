@@ -1,6 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { PlusCircledIcon, MinusCircledIcon } from "@radix-ui/react-icons";
 import { CircleCheckBig, ArrowRight } from "lucide-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createJob, getPartitions } from "@/lib/request/jobs";
@@ -20,6 +19,9 @@ import {
 import { Button } from "@/components/ui/button";
 
 import { toast } from "sonner";
+
+import { VariableRow } from "@/components/EnvironmentModule/VariableRow";
+import { getModules } from "@/lib/request/getModules";
 
 // Types
 type EnvVar = { key: string; value: string };
@@ -211,6 +213,11 @@ export default function JobSubmitForm() {
     });
   };
 
+  const { data: modulesData, isLoading: isModulesLoading } = useQuery({
+    queryKey: ["modules"],
+    queryFn: getModules,
+  });
+
   const handleEnvChange = (
     index: number,
     field: keyof EnvVar,
@@ -349,6 +356,37 @@ export default function JobSubmitForm() {
               {t("jobSubmitForm.envSettingTitle")}
             </h2>
 
+            <div className="grid gap-2 mb-4">
+              <Label>{t("jobSubmitForm.envModuleLabel")}</Label>
+              <Select
+                onValueChange={(selectedId) => {
+                  const selectedModule = modulesData?.find(
+                    (mod) => mod.id === selectedId,
+                  );
+                  if (selectedModule && selectedModule.environment.length > 0) {
+                    setEnvVars(selectedModule.environment);
+                  }
+                }}
+              >
+                <SelectTrigger className="w-[40%]">
+                  <SelectValue
+                    placeholder={
+                      isModulesLoading
+                        ? t("jobSubmitForm.loadingModulePlaceholder")
+                        : t("jobSubmitForm.selectModulePlaceholder")
+                    }
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {modulesData?.map((mod) => (
+                    <SelectItem key={mod.id} value={mod.id}>
+                      {mod.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             <div className="grid grid-cols-3 gap-3 text-sm font-medium">
               <span>{t("jobSubmitForm.envVariable")}</span>
               <span>{t("jobSubmitForm.envValue")}</span>
@@ -357,48 +395,20 @@ export default function JobSubmitForm() {
 
             <div className="space-y-3">
               {envVars.map((env, index) => (
-                <div
+                <VariableRow
                   key={index}
-                  className="grid grid-cols-3 gap-3 items-center"
-                >
-                  <Input
-                    placeholder={t("jobSubmitForm.envVarPlaceholder")}
-                    value={env.key}
-                    onChange={(e) =>
-                      handleEnvChange(index, "key", e.target.value)
-                    }
-                  />
-                  <Input
-                    placeholder={t("jobSubmitForm.envValPlaceholder")}
-                    value={env.value}
-                    onChange={(e) =>
-                      handleEnvChange(index, "value", e.target.value)
-                    }
-                  />
-                  <div className="flex items-center gap-2">
-                    {index === envVars.length - 1 ? (
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        className="px-2"
-                        onClick={addEnvVar}
-                        aria-label="add env var"
-                      >
-                        <PlusCircledIcon className="h-5 w-5" />
-                      </Button>
-                    ) : (
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        className="px-2"
-                        onClick={() => removeEnvVar(index)}
-                        aria-label="remove env var"
-                      >
-                        <MinusCircledIcon className="h-5 w-5" />
-                      </Button>
-                    )}
-                  </div>
-                </div>
+                  variableKey={env.key}
+                  variableValue={env.value}
+                  isLastRow={index === envVars.length - 1}
+                  onKeyChange={(newKey) =>
+                    handleEnvChange(index, "key", newKey)
+                  }
+                  onValueChange={(newValue) =>
+                    handleEnvChange(index, "value", newValue)
+                  }
+                  onAdd={addEnvVar}
+                  onRemove={() => removeEnvVar(index)}
+                />
               ))}
             </div>
           </section>

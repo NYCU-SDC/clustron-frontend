@@ -365,6 +365,9 @@
     "cwdLabel": "Current Working Directory",
     "cwdPlaceholder": "Enter current working directory",
     "envSettingTitle": "Environment Setting",
+    "envModuleLabel": "Environment Module",
+    "selectModulePlaceholder": "Select Module...",
+    "loadingModulePlaceholder": "Loading...",
     "envVariable": "Variable",
     "envValue": "Value",
     "envVarPlaceholder": "VAR",
@@ -395,7 +398,25 @@
   "jobsSideBar": {
     "title": "Jobs",
     "ListNavLink": "List",
-    "SubmitNavLink": "Submit"
+    "SubmitNavLink": "Submit",
+    "EnvModuleNavLink": "Environment Module"
+  },
+  "moduleCard": {
+    "deleteConfirmTitle": "Delete Module Confirm",
+    "deleteConfirmDescription": "Are you sure to remove environment module \"{{title}}\"?",
+    "cancelBtn": "Cancel",
+    "deleteBtn": "Delete",
+    "saveBtn": "Save",
+    "variableLabel": "Variable",
+    "valueLabel": "Value",
+    "saveSuccessToast": "Module saved successfully!",
+    "saveFailToast": "Failed to save module."
+  },
+  "environmentModulePage": {
+    "newModuleBtn": "New Module",
+    "emptyStatePrefix": "Currently there are no environment modules. Click ",
+    "emptyStateHighlight": "New Module",
+    "emptyStateSuffix": " above to create the first one."
   },
   "bindLoginForm": {
     "cardTitle": "Connect Another Login Method",
