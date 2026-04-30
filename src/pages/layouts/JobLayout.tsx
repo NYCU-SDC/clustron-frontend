@@ -15,6 +15,10 @@ export default function JobLayout() {
       to: `/jobs/submit`,
       label: t("jobsSideBar.SubmitNavLink"),
     },
+    {
+      to: `/jobs/environment-module`,
+      label: t("jobsSideBar.EnvModuleNavLink"),
+    },
   ];
 
   return (
