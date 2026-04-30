@@ -29,6 +29,7 @@ export type GroupMember = {
 export type GroupSummary = {
   id: string;
   title: string;
+  ldapGroupName: string;
   description: string;
   isArchived: boolean;
   createdAt: string;

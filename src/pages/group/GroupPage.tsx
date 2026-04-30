@@ -25,6 +25,7 @@ export default function GroupPage() {
           <div className="max-w-4xl mx-auto p-6 space-y-6">
             <GroupDescription
               title={group.title}
+              ldapGroupName={group.ldapGroupName}
               desc={group.description}
               links={group.links ?? []}
             />
