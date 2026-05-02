@@ -52,6 +52,7 @@ export default function GroupListPage() {
               <NavLink to={`/groups/${group.id}/`} className="block">
                 <GroupDescription
                   title={group.title}
+                  ldapGroupName={group.ldapGroupName}
                   desc={group.description}
                 />
               </NavLink>

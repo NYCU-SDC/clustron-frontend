@@ -112,7 +112,6 @@ The project enforces code quality through:
 
 - **ESLint**: Linting with React, TypeScript, and TanStack Query rules
 - **Prettier**: Automatic code formatting
-- **Husky**: Pre-commit hooks for automated formatting
 - **TypeScript**: Strict type checking
 
 ## API Configuration
