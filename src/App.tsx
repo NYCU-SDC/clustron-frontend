@@ -95,7 +95,7 @@ const App = () => {
             </Route>
 
             <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<Navigate to="config" replace />} />
+              <Route index element={<Navigate to="users" replace />} />
               <Route path="config" element={<RoleConfiguration />} />
               <Route path="users" element={<UserConfiguration />} />
             </Route>
