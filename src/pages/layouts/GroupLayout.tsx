@@ -1,6 +1,7 @@
 import { Outlet, useParams, Navigate } from "react-router";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import SideBar, { NavItem } from "@/components/Sidebar";
+import GroupMobileHeader from "@/components/group/GroupMobileHeader";
 import { useTranslation } from "react-i18next";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { GlobalRole } from "@/lib/permission";
@@ -43,15 +44,20 @@ export default function GroupLayout() {
   }
 
   return (
-    <div className="flex w-full">
-      <div className="w-xs border-r px-4">
+    <div className="flex w-full flex-col md:flex-row">
+      <GroupMobileHeader
+        title={group.title}
+        ldapGroupName={group.ldapGroupName}
+        navItems={isReadonly ? readonlyNavItems : groupNavItems}
+      />
+      <div className="hidden w-xs border-r px-4 md:block">
         <SideBar
           title={group.title}
           navItems={isReadonly ? readonlyNavItems : groupNavItems}
           className="min-w-36"
         />
       </div>
-      <main className="flex-1 flex justify-center">
+      <main className="flex flex-1 justify-center">
         <ErrorBoundary>
           <Outlet context={{ group, groupId: id }} />
         </ErrorBoundary>
