@@ -170,6 +170,14 @@ jobs:
           }'
 
       # the preview URL format in defined in Clustron document "Clustron Project Workflow" https://www.notion.so/sdc-nycu/Clustron-Project-Workflow-3497dadd804080bbac89d959c1beae0d?source=copy_link
+
+  Update-PR-Description:
+    name: Update PR description with preview URL
+    needs: Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
       - name: Update PR description with preview URL
         uses: actions/github-script@v8
         with:
