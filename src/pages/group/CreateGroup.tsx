@@ -392,7 +392,10 @@ export default function AddGroupPage() {
 
       {/* button */}
       <div className="mb-10 flex w-full max-w-4xl flex-col gap-3 sm:flex-row">
-        <Button className="w-full sm:w-auto" onClick={() => navigate("/groups")}>
+        <Button
+          className="w-full sm:w-auto"
+          onClick={() => navigate("/groups")}
+        >
           {t("groupPages.createGroup.cancel")}
         </Button>
         <Button
