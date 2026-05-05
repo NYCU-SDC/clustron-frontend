@@ -20,8 +20,8 @@ export default function AddMemberResult() {
   }
 
   return (
-    <div className="mx-auto">
-      <main className="min-w-4xl p-6">
+    <div className="mx-auto w-full px-4 py-6 sm:px-6">
+      <main className="mx-auto w-full max-w-5xl">
         <CreateGroupResultTable
           result={result as CreateGroupResultData}
           members={members as { member: string; roleName: string }[]}

@@ -81,14 +81,14 @@ export default function CreateGroupResultTable({
   });
 
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
-        <CardTitle className="text-2xl">
+        <CardTitle className="text-xl sm:text-2xl">
           {t("groupPages.addMemberResult.createGroupResultTitle")}
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <Table>
+        <Table className="min-w-[760px]">
           <TableHeader>
             <TableRow>
               <TableHead className="w-3/10 text-gray-500 dark:text-white">
@@ -110,10 +110,14 @@ export default function CreateGroupResultTable({
               <TableRow key={index}>
                 <TableCell>{member.member}</TableCell>
                 <TableCell>{member.roleName}</TableCell>
-                <TableCell className="flex justify-center">
-                  <StatusIcon type={member.status} />
+                <TableCell className="text-center">
+                  <span className="inline-flex justify-center">
+                    <StatusIcon type={member.status} />
+                  </span>
                 </TableCell>
-                <TableCell>{member.message}</TableCell>
+                <TableCell className="max-w-[280px] whitespace-normal">
+                  {member.message}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -175,12 +175,14 @@ export default function AddGroupPage() {
   const assignableRoles = getRolesByAccessLevel(AccessLevelOwner);
 
   return (
-    <div className="flex-1 flex flex-col justify-center items-center gap-6">
+    <div className="flex-1 flex w-full flex-col items-center gap-6 px-4 py-6 sm:px-6">
       {/* Title / Description */}
-      <Card className="w-2/3 max-w-4xl p-6">
+      <Card className="w-full max-w-4xl p-4 sm:p-6">
         <div className="space-y-2">
-          <CardHeader className="text-2xl">
-            <CardTitle>{t("groupPages.createGroup.courseTitle")}*</CardTitle>
+          <CardHeader>
+            <CardTitle className="text-xl sm:text-2xl">
+              {t("groupPages.createGroup.courseTitle")}*
+            </CardTitle>
           </CardHeader>
 
           <CardContent>
@@ -193,7 +195,7 @@ export default function AddGroupPage() {
 
           {/* LDAP Group Name */}
           <CardHeader className="mt-6">
-            <CardTitle className="text-2xl">
+            <CardTitle className="text-xl sm:text-2xl">
               {t("groupPages.createGroup.ldapGroupNameTitle")}*
             </CardTitle>
           </CardHeader>
@@ -218,7 +220,7 @@ export default function AddGroupPage() {
 
           {/* Description */}
           <CardHeader className="mt-6">
-            <CardTitle className="text-2xl">
+            <CardTitle className="text-xl sm:text-2xl">
               {t("groupPages.createGroup.descriptionTitle")}*
             </CardTitle>
           </CardHeader>
@@ -237,11 +239,13 @@ export default function AddGroupPage() {
 
         {/* Link Resource */}
         <div className="space-y-2">
-          <CardHeader className="text-2xl">
-            <CardTitle>{t("groupPages.createGroup.linkTitle")}</CardTitle>
+          <CardHeader>
+            <CardTitle className="text-xl sm:text-2xl">
+              {t("groupPages.createGroup.linkTitle")}
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <Table className="table-fixed w-full">
+            <Table className="min-w-[560px] table-fixed">
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[25%] text-gray-500 dark:text-white">
@@ -336,10 +340,10 @@ export default function AddGroupPage() {
       </Card>
 
       {/* Add Member */}
-      <Card className="w-2/3 max-w-4xl p-6">
-        <CardHeader className="text-2xl">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-2xl">
+      <Card className="w-full max-w-4xl p-4 sm:p-6">
+        <CardHeader>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <CardTitle className="text-xl sm:text-2xl">
               {t("groupPages.createGroup.addInitialMembers")}
             </CardTitle>
             <CsvUploadButton
@@ -350,7 +354,7 @@ export default function AddGroupPage() {
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
+          <Table className="min-w-[560px]">
             <TableHeader>
               <TableRow>
                 <TableHead>
@@ -387,11 +391,12 @@ export default function AddGroupPage() {
       </Card>
 
       {/* button */}
-      <div className="w-2/3 max-w-4xl flex justify-start gap-3 mb-10">
-        <Button onClick={() => navigate("/groups")}>
+      <div className="mb-10 flex w-full max-w-4xl flex-col gap-3 sm:flex-row">
+        <Button className="w-full sm:w-auto" onClick={() => navigate("/groups")}>
           {t("groupPages.createGroup.cancel")}
         </Button>
         <Button
+          className="w-full sm:w-auto"
           onClick={handleSave}
           disabled={
             hasDuplicate ||
