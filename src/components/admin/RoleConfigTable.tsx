@@ -1,10 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import {
   CircleMinus,
   CirclePlus,
+  Info,
   Loader2Icon,
   TriangleAlert,
 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -53,6 +60,36 @@ import { getRoleConfigs } from "@/lib/request/getRoleConfigs";
 import { createRoleConfig } from "@/lib/request/createRoleConfig";
 import { updateRoleConfig } from "@/lib/request/updateRoleConfig";
 import { removeRoleConfig } from "@/lib/request/removeRoleConfig";
+
+function MobileHeaderInfo({ children }: { children: ReactNode }) {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            className="inline-flex md:hidden items-center justify-center text-muted-foreground hover:text-foreground"
+            aria-label="More information"
+          >
+            <Info className="h-4 w-4" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent
+          side="top"
+          className="max-w-[260px] whitespace-normal text-sm"
+        >
+          {children}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}
+
+const ACCESS_LEVEL_LABELS: Record<GroupRoleAccessLevel, string> = {
+  USER: "User",
+  GROUP_ADMIN: "Group-Admin",
+  GROUP_OWNER: "Group-Owner",
+};
 
 export default function RoleConfigTable() {
   const { t } = useTranslation();
@@ -169,17 +206,62 @@ export default function RoleConfigTable() {
           <Table className="table-fixed w-full">
             <TableHeader>
               <TableRow>
-                <TableHead className="py-4 px-4 font-bold align-top whitespace-normal">
-                  {t("roleConfigTable.tableHeadRole")}
-                  <p className="text-muted-foreground mt-1 font-normal whitespace-normal">
+                <TableHead className="py-4 px-4 align-top whitespace-normal">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold">
+                      {t("roleConfigTable.tableHeadRole")}
+                    </span>
+
+                    <MobileHeaderInfo>
+                      <p>{t("roleConfigTable.tableHeadRoleDescription")}</p>
+                    </MobileHeaderInfo>
+                  </div>
+
+                  <p className="hidden md:block text-muted-foreground mt-1 font-normal whitespace-normal">
                     {t("roleConfigTable.tableHeadRoleDescription")}
                   </p>
                 </TableHead>
-                <TableHead className="py-4 px-4 font-bold align-top whitespace-normal">
-                  {t("roleConfigTable.tableHeadAccess")}
-                  <p className="text-muted-foreground mt-1 font-normal whitespace-normal">
-                    {t("roleConfigTable.tableHeadAccessDescription")}
-                    <ul>
+
+                <TableHead className="py-4 px-4 align-top whitespace-normal">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold">
+                      {t("roleConfigTable.tableHeadAccess")}
+                    </span>
+
+                    <MobileHeaderInfo>
+                      <div className="space-y-2">
+                        <p>{t("roleConfigTable.tableHeadAccessDescription")}</p>
+                        <ul className="list-disc pl-4 space-y-1">
+                          <li>
+                            <strong>
+                              {t("roleConfigTable.accessLevelGroupOwnerLabel")}:
+                            </strong>{" "}
+                            {t(
+                              "roleConfigTable.accessLevelGroupOwnerDescription",
+                            )}
+                          </li>
+                          <li>
+                            <strong>
+                              {t("roleConfigTable.accessLevelGroupAdminLabel")}:
+                            </strong>{" "}
+                            {t(
+                              "roleConfigTable.accessLevelGroupAdminDescription",
+                            )}
+                          </li>
+                          <li>
+                            <strong>
+                              {t("roleConfigTable.accessLevelUserLabel")}:
+                            </strong>{" "}
+                            {t("roleConfigTable.accessLevelUserDescription")}
+                          </li>
+                        </ul>
+                      </div>
+                    </MobileHeaderInfo>
+                  </div>
+
+                  <div className="hidden md:block text-muted-foreground mt-1 font-normal whitespace-normal">
+                    <p>{t("roleConfigTable.tableHeadAccessDescription")}</p>
+                    <ul className="mt-1 space-y-1">
                       <li>
                         <strong>
                           {t("roleConfigTable.accessLevelGroupOwnerLabel")}:
@@ -199,8 +281,9 @@ export default function RoleConfigTable() {
                         {t("roleConfigTable.accessLevelUserDescription")}
                       </li>
                     </ul>
-                  </p>
+                  </div>
                 </TableHead>
+
                 <TableHead className="w-16" />
               </TableRow>
             </TableHeader>
@@ -229,7 +312,7 @@ export default function RoleConfigTable() {
                           }
                           disabled={updateMutation.isPending}
                         >
-                          <SelectTrigger className="px-2 py-1 text-sm font-medium rounded-xl border-none bg-gray-100 dark:bg-gray-700 hover:cursor-pointer">
+                          <SelectTrigger className="h-8 w-auto min-w-0 max-w-[140px] rounded-full border-none bg-gray-100 px-3 text-sm font-semibold shadow-none hover:cursor-pointer [&>svg]:hidden">
                             <SelectValue
                               placeholder={t(
                                 "roleConfigTable.placeholderSelectAccess",
@@ -239,7 +322,7 @@ export default function RoleConfigTable() {
                           <SelectContent>
                             {AccessLevels.map((level) => (
                               <SelectItem key={level} value={level}>
-                                {level}
+                                {ACCESS_LEVEL_LABELS[level]}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -279,7 +362,7 @@ export default function RoleConfigTable() {
                     }
                     disabled={createMutation.isPending}
                   >
-                    <SelectTrigger className="px-2 py-1 text-sm shadow-none font-medium rounded-xl dark:bg-transparent border-none hover:cursor-pointer">
+                    <SelectTrigger className="h-8 w-auto min-w-0 max-w-[140px] rounded-full border-none bg-transparent px-3 text-sm font-medium shadow-none hover:cursor-pointer [&>svg]:hidden">
                       <SelectValue
                         placeholder={t(
                           "roleConfigTable.placeholderSelectAccess",
@@ -289,7 +372,7 @@ export default function RoleConfigTable() {
                     <SelectContent>
                       {AccessLevels.map((level) => (
                         <SelectItem key={level} value={level}>
-                          {level}
+                          {ACCESS_LEVEL_LABELS[level]}
                         </SelectItem>
                       ))}
                     </SelectContent>

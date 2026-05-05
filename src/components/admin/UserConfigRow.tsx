@@ -86,28 +86,30 @@ export default function UserConfigRow({
   return (
     <TableRow className="hover:bg-muted/50 transition-colors">
       <TableCell className="font-medium max-w-0">
-        <div className="flex items-center">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <p className="truncate cursor-default">{name}</p>
-              </TooltipTrigger>
-              <TooltipContent className="max-w-[40vw] break-words">
-                <p>{name}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          {isSelf && (
-            <span className="text-[10px] ml-2 bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-full font-bold">
-              YOU
-            </span>
-          )}
-        </div>
-      </TableCell>
-      <TableCell>
-        <div className="flex flex-col">
-          <span className="font-medium">{id}</span>
-          <span className="text-muted-foreground text-xs">{email}</span>
+        <div className="flex flex-col gap-1 min-w-0">
+          <div className="flex items-center min-w-0">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <p className="truncate cursor-default">{name}</p>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-[40vw] break-words">
+                  <p>{name}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            {isSelf && (
+              <span className="text-[10px] ml-2 bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-full font-bold shrink-0">
+                YOU
+              </span>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2 min-w-0 text-sm text-muted-foreground">
+            <span className="truncate">{email}</span>
+            <span className="shrink-0 font-medium text-foreground">{id}</span>
+          </div>
         </div>
       </TableCell>
       <TableCell className="min-w-[200px] max-w-0">

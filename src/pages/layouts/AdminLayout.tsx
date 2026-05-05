@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { AccessToken } from "@/types/settings";
 import { useTranslation } from "react-i18next";
 import SideBar, { NavItem } from "@/components/Sidebar";
+import NavTabs from "@/components/NavTabs";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
 export default function AdminLayout() {
@@ -28,11 +29,11 @@ export default function AdminLayout() {
   const adminNavItems: NavItem[] = [
     {
       to: "/admin/config",
-      label: t("adminSidebar.roleAccessConfigLink"),
+      label: "adminSidebar.roleAccessConfigLink",
     },
     {
       to: "/admin/users",
-      label: t("adminSidebar.userConfigLink"),
+      label: "adminSidebar.userConfigLink",
     },
   ];
 
@@ -40,18 +41,30 @@ export default function AdminLayout() {
 
   return (
     <div className="flex w-full">
-      <div className="min-w-xs border-r px-4">
+      {/* Desktop sidebar */}
+      <div className="hidden md:block min-w-xs border-r px-4">
         <SideBar
           title={t("adminSidebar.title")}
           navItems={adminNavItems}
           className="min-w-36"
         />
       </div>
-      <main className="flex-1 flex justify-center">
-        <ErrorBoundary>
-          <Outlet />
-        </ErrorBoundary>
-      </main>
+
+      {/* Right content */}
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Mobile tabs */}
+        <NavTabs
+          className="md:hidden px-4 pt-6 pb-0"
+          title={t("adminSidebar.title")}
+          navItems={adminNavItems}
+        />
+
+        <main className="flex-1 flex md:justify-center min-w-0">
+          <ErrorBoundary>
+            <Outlet />
+          </ErrorBoundary>
+        </main>
+      </div>
     </div>
   );
 }
