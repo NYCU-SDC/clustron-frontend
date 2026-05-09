@@ -19,13 +19,14 @@ import AddMemberPage from "@/pages/group/AddMemberPage";
 import AddGroupPage from "@/pages/group/CreateGroup";
 import GroupLayout from "@/pages/layouts/GroupLayout";
 import AddMemberResult from "@/pages/group/AddMemberResult";
-// import JobDashboard from "@/pages/job/JobDashboard";
+import JobDashboard from "@/pages/job/JobDashboard";
+import EnvironmentModulePage from "@/pages/job/EnvironmentModulePage";
 import AdminLayout from "@/pages/layouts/AdminLayout";
 import RoleConfiguration from "@/pages/admin/RoleConfiguration";
 import UserConfiguration from "@/pages/admin/UserConfiguration";
 import BindCallback from "@/pages/BindCallback";
-// import JobSubmitPage from "@/pages/JobSubmitPage";
-// import JobLayout from "@/pages/layouts/JobLayout";
+import JobSubmitPage from "@/pages/JobSubmitPage";
+import JobLayout from "@/pages/layouts/JobLayout";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
 const App = () => {
@@ -75,10 +76,15 @@ const App = () => {
               path="/groups/:id/add-member-result"
               element={<AddMemberResult />}
             />
-            {/*<Route path="/jobs" element={<JobLayout />}>
+
+            <Route path="/jobs" element={<JobLayout />}>
               <Route index element={<JobDashboard />} />
               <Route path="submit" element={<JobSubmitPage />} />
-            </Route>*/}
+              <Route
+                path="environment-module"
+                element={<EnvironmentModulePage />}
+              />
+            </Route>
 
             <Route element={<GroupLayout />}>
               <Route path="/groups/:id" element={<GroupPage />}>
@@ -89,7 +95,7 @@ const App = () => {
             </Route>
 
             <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<Navigate to="config" replace />} />
+              <Route index element={<Navigate to="users" replace />} />
               <Route path="config" element={<RoleConfiguration />} />
               <Route path="users" element={<UserConfiguration />} />
             </Route>

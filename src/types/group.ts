@@ -29,6 +29,7 @@ export type GroupMember = {
 export type GroupSummary = {
   id: string;
   title: string;
+  ldapGroupName: string;
   description: string;
   isArchived: boolean;
   createdAt: string;
@@ -57,6 +58,7 @@ export type GroupDetail = GroupSummary & {
 export type CreateGroupInput = {
   title: string;
   description: string;
+  ldapGroupName: string;
   members?: {
     member: string; // email or user id
     roleId: string;

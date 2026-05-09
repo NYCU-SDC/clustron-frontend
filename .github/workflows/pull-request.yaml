@@ -168,3 +168,34 @@ jobs:
               }
             }
           }'
+
+      # the preview URL format in defined in Clustron document "Clustron Project Workflow" https://www.notion.so/sdc-nycu/Clustron-Project-Workflow-3497dadd804080bbac89d959c1beae0d?source=copy_link
+
+  Update-PR-Description:
+    name: Update PR description with preview URL
+    needs: Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Update PR description with preview URL
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const previewUrl = `https://pr-${pr.number}.clustron.sdc.nycu.club`;
+            const marker = '<!-- preview-url -->';
+
+            const currentBody = pr.body || '';
+            const previewSection = `${marker}\n## Preview Environment\n${previewUrl}`;
+
+            const newBody = currentBody.includes(marker)
+              ? currentBody.replace(/<!--\s*preview-url\s*-->[\s\S]*/, previewSection)
+              : `${currentBody}\n\n${previewSection}`;
+
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              body: newBody,
+            });

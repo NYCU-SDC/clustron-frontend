@@ -27,16 +27,15 @@ export default function AdminLayout() {
   }, [accessToken, navigate]);
 
   const adminNavItems: NavItem[] = [
-    {
-      to: "/admin/config",
-      label: "adminSidebar.roleAccessConfigLink",
-    },
-    {
-      to: "/admin/users",
-      label: "adminSidebar.userConfigLink",
-    },
-  ];
-
+  {
+    to: "/admin/config",
+    label: "adminSidebar.roleAccessConfigLink",
+  },
+  {
+    to: "/admin/users",
+    label: "adminSidebar.userConfigLink",
+  },
+];
   if (role !== "admin") return null;
 
   return (
