@@ -141,7 +141,7 @@
     "accessLevelGroupAdminDescription": "Can add or remove members.",
     "accessLevelUserLabel": "User",
     "accessLevelUserDescription": "Cannot make any changes.",
-    "placeholderRoleName": "Enter Role Name",
+    "placeholderRoleName": "Role Name",
     "placeholderSelectAccess": "Select Access",
     "confirmTitle": "Remove Role Confirm",
     "confirmDescription": "Are you sure to remove this role?",

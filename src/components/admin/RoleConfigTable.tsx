@@ -312,7 +312,10 @@ export default function RoleConfigTable() {
                           }
                           disabled={updateMutation.isPending}
                         >
-                          <SelectTrigger className="h-8 w-auto min-w-0 max-w-[140px] rounded-full border-none bg-gray-100 px-3 text-sm font-semibold shadow-none hover:cursor-pointer [&>svg]:hidden">
+                          <SelectTrigger
+                            size="sm"
+                            className="data-[size=sm]:h-6 w-auto min-w-0 max-w-[124px] rounded-full border-none bg-gray-100 px-2 py-0 text-[13px] font-medium shadow-none hover:cursor-pointer [&>svg]:hidden [&>span]:text-[13px] [&>span]:leading-none"
+                          >
                             <SelectValue
                               placeholder={t(
                                 "roleConfigTable.placeholderSelectAccess",
@@ -347,7 +350,7 @@ export default function RoleConfigTable() {
                   <Input
                     value={newRole.roleName}
                     placeholder={t("roleConfigTable.placeholderRoleName")}
-                    className="border-none shadow-none focus-visible:ring-0 p-0 dark:bg-transparent"
+                    className="h-8 border-none bg-transparent p-0 text-sm font-medium shadow-none placeholder:text-sm focus-visible:ring-0 dark:bg-transparent"
                     onChange={(e) =>
                       setNewRole({ ...newRole, roleName: e.target.value })
                     }
@@ -362,7 +365,7 @@ export default function RoleConfigTable() {
                     }
                     disabled={createMutation.isPending}
                   >
-                    <SelectTrigger className="h-8 w-auto min-w-0 max-w-[140px] rounded-full border-none bg-transparent px-3 text-sm font-medium shadow-none hover:cursor-pointer [&>svg]:hidden">
+                    <SelectTrigger className="h-8 w-auto min-w-0 max-w-[124px] rounded-none border-none bg-transparent px-0 text-sm font-medium shadow-none hover:cursor-pointer [&>svg]:hidden [&>span]:text-sm">
                       <SelectValue
                         placeholder={t(
                           "roleConfigTable.placeholderSelectAccess",
