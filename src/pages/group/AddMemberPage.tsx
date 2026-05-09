@@ -164,9 +164,9 @@ export default function AddMemberPage() {
   };
 
   return (
-    <div className="flex w-2/3 justify-center">
-      <main className="w-full max-w-5xl p-6">
-        <div className="flex items-center justify-between mb-6">
+    <div className="flex w-full justify-center md:w-2/3">
+      <main className="w-full max-w-5xl p-4 sm:p-6">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-2xl font-bold">
             {t("groupPages.addMemberPage.title")}
           </h1>
@@ -176,13 +176,14 @@ export default function AddMemberPage() {
             disabled={addMember.isPending}
           />
         </div>
-        <Table>
-          <TableHeader>
+        <Table className="min-w-[520px] sm:min-w-0">
+          <TableHeader className="hidden sm:table-header-group">
             <TableRow>
               <TableHead>
                 {t("groupPages.addMemberPage.studentIdOrEmail")}
               </TableHead>
               <TableHead>{t("groupPages.addMemberPage.role")}</TableHead>
+              <TableHead />
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -211,17 +212,18 @@ export default function AddMemberPage() {
           </TableBody>
         </Table>
 
-        <div className="mt-6 flex justify-end gap-3">
+        <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <Button
             variant="outline"
             onClick={() => navigate(`/groups/${group.id}/settings`)}
-            className="px-4 py-2 border rounded"
+            className="w-full px-4 py-2 border rounded sm:w-auto"
           >
             {t("groupPages.addMemberPage.cancel")}
           </Button>
           <Button
             onClick={handleSave}
             disabled={hasDuplicate || hasEmptyId || addMember.isPending}
+            className="w-full sm:w-auto"
           >
             {t("groupPages.addMemberPage.save")}
           </Button>
