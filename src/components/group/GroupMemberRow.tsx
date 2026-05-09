@@ -58,7 +58,7 @@ export default function GroupMemberRow({
         isPending ? "opacity-50 cursor-wait" : ""
       }`}
     >
-      <TableCell>{name}</TableCell>
+      <TableCell className="hidden sm:table-cell">{name}</TableCell>
 
       <TableCell>
         <div className="flex flex-col">

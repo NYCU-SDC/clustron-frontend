@@ -94,8 +94,8 @@ export default function GroupMemberTable({
         ) : (
           <>
             <div className="overflow-x-auto">
-              <Table className="min-w-[640px]">
-                <TableHeader>
+              <Table className="min-w-[520px] sm:min-w-[640px]">
+                <TableHeader className="hidden sm:table-header-group">
                   <TableRow>
                     <TableHead>
                       {t("groupComponents.groupMemberTable.name")}
