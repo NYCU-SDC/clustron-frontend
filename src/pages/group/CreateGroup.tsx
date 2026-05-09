@@ -177,15 +177,15 @@ export default function AddGroupPage() {
   return (
     <div className="flex-1 flex w-full flex-col items-center gap-6 px-4 py-6 sm:px-6">
       {/* Title / Description */}
-      <Card className="w-full max-w-4xl p-4 sm:p-6">
+      <Card className="w-full max-w-4xl p-3 sm:p-6">
         <div className="space-y-2">
-          <CardHeader>
+          <CardHeader className="px-3 sm:px-6">
             <CardTitle className="text-xl sm:text-2xl">
               {t("groupPages.createGroup.courseTitle")}*
             </CardTitle>
           </CardHeader>
 
-          <CardContent>
+          <CardContent className="px-3 sm:px-6">
             <Input
               placeholder={t("groupPages.createGroup.courseTitlePlaceholder")}
               value={title}
@@ -194,13 +194,13 @@ export default function AddGroupPage() {
           </CardContent>
 
           {/* LDAP Group Name */}
-          <CardHeader className="mt-6">
+          <CardHeader className="mt-6 px-3 sm:px-6">
             <CardTitle className="text-xl sm:text-2xl">
               {t("groupPages.createGroup.ldapGroupNameTitle")}*
             </CardTitle>
           </CardHeader>
 
-          <CardContent>
+          <CardContent className="px-3 sm:px-6">
             <Input
               placeholder={t("groupPages.createGroup.ldapGroupNamePlaceholder")}
               value={ldapGroupName}
@@ -219,13 +219,13 @@ export default function AddGroupPage() {
           </CardContent>
 
           {/* Description */}
-          <CardHeader className="mt-6">
+          <CardHeader className="mt-6 px-3 sm:px-6">
             <CardTitle className="text-xl sm:text-2xl">
               {t("groupPages.createGroup.descriptionTitle")}*
             </CardTitle>
           </CardHeader>
 
-          <CardContent>
+          <CardContent className="px-3 sm:px-6">
             <Textarea
               placeholder={t(
                 "groupPages.createGroup.courseDescriptionPlaceholder",
@@ -239,13 +239,13 @@ export default function AddGroupPage() {
 
         {/* Link Resource */}
         <div className="space-y-2">
-          <CardHeader>
+          <CardHeader className="px-3 sm:px-6">
             <CardTitle className="text-xl sm:text-2xl">
               {t("groupPages.createGroup.linkTitle")}
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <Table className="min-w-[560px] table-fixed">
+          <CardContent className="px-3 sm:px-6">
+            <Table className="min-w-[480px] table-fixed sm:min-w-[560px]">
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[25%] text-gray-500 dark:text-white">
@@ -340,8 +340,8 @@ export default function AddGroupPage() {
       </Card>
 
       {/* Add Member */}
-      <Card className="w-full max-w-4xl p-4 sm:p-6">
-        <CardHeader>
+      <Card className="w-full max-w-4xl p-3 sm:p-6">
+        <CardHeader className="px-3 sm:px-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <CardTitle className="text-xl sm:text-2xl">
               {t("groupPages.createGroup.addInitialMembers")}
@@ -353,8 +353,8 @@ export default function AddGroupPage() {
             />
           </div>
         </CardHeader>
-        <CardContent>
-          <Table className="min-w-[560px]">
+        <CardContent className="px-3 sm:px-6">
+          <Table className="min-w-[480px] sm:min-w-[560px]">
             <TableHeader>
               <TableRow>
                 <TableHead>
