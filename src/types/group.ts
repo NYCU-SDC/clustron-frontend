@@ -23,6 +23,7 @@ export type GroupMember = {
   email: string;
   studentId: string;
   role: GroupRole;
+  onlyInLDAP: boolean;
 };
 
 // GET /api/groups
