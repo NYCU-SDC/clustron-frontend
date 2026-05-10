@@ -4,6 +4,13 @@
 
 A React-based web application for HPC (High-Performance Computing) cluster management at National Yang Ming Chiao Tung University (NYCU).
 
+## Table of Content
+
+- [Overview](#overview)
+- [Tech Stack](#key-features)
+- [Deploy](#deploy)
+- [Developer Guide](#getting-started)
+
 ## Overview
 
 Clustron Frontend provides a comprehensive web portal for managing computational groups, submitting jobs to SLURM-based clusters, configuring SSH keys, and administering role-based access control.
@@ -30,6 +37,10 @@ Clustron Frontend provides a comprehensive web portal for managing computational
 | ShadCN                | Component library         |
 | react-hook-form + zod | Form validation           |
 | react-i18next         | Internationalization      |
+
+## Deploy
+
+### Build Docker Image
 
 ## Getting Started
 
