@@ -86,8 +86,8 @@ export default function UserConfigRow({
   return (
     <TableRow className="hover:bg-muted/50 transition-colors">
       <TableCell className="font-medium max-w-0">
-        <div className="flex flex-col gap-1 min-w-0">
-          <div className="flex items-center min-w-0">
+        <div className="flex flex-col gap-1 min-w-0 sm:flex-row sm:items-center sm:gap-2">
+          <div className="flex items-center min-w-0 sm:max-w-[40%]">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -106,7 +106,7 @@ export default function UserConfigRow({
             )}
           </div>
 
-          <div className="flex items-center gap-2 min-w-0 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2 min-w-0 text-sm text-muted-foreground sm:max-w-[60%]">
             <span className="truncate">{email}</span>
             <span className="shrink-0 font-medium text-foreground">{id}</span>
           </div>
