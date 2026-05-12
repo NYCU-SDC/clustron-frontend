@@ -368,7 +368,7 @@ export default function RoleConfigTable() {
                         ? "Role Name"
                         : t("roleConfigTable.placeholderRoleName")
                     }
-                    className="h-8 border-none bg-transparent p-0 text-sm font-medium shadow-none placeholder:text-sm focus-visible:ring-0 dark:bg-transparent"
+                    className="h-8 border-none bg-transparent p-0 text-sm font-medium shadow-none placeholder:text-sm focus-visible:ring-0"
                     onChange={(e) =>
                       setNewRole({ ...newRole, roleName: e.target.value })
                     }
