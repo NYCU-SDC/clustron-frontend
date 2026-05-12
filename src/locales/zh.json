@@ -192,6 +192,7 @@
       "name": "姓名",
       "studentIdOrEmail": "學號或電子信箱",
       "role": "角色",
+      "onlyInLDAP": "僅存在於 LDAP",
       "loadingMore": "載入更多中...",
       "loadMore": "載入更多"
     },

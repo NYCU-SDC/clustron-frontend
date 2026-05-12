@@ -192,6 +192,7 @@
       "name": "Name",
       "studentIdOrEmail": "Student ID or Email",
       "role": "Role",
+      "onlyInLDAP": "Only in LDAP",
       "loadingMore": "Loading more...",
       "loadMore": "Load more"
     },
