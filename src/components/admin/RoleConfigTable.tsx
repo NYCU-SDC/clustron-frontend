@@ -368,7 +368,7 @@ export default function RoleConfigTable() {
                         ? "Role Name"
                         : t("roleConfigTable.placeholderRoleName")
                     }
-                    className="h-8 rounded-none border-none bg-transparent p-0 text-sm font-medium shadow-none placeholder:text-sm focus-visible:ring-0 focus-visible:border-transparent dark:bg-transparent"
+                    className="h-8 rounded-none border-none p-0 text-sm font-medium shadow-none placeholder:text-sm focus-visible:ring-0 focus-visible:border-transparent dark:bg-transparent"
                     onChange={(e) =>
                       setNewRole({ ...newRole, roleName: e.target.value })
                     }
@@ -383,7 +383,7 @@ export default function RoleConfigTable() {
                     }
                     disabled={createMutation.isPending}
                   >
-                    <SelectTrigger className="h-8 w-auto min-w-0 max-w-[124px] rounded-none border-none bg-transparent px-0 text-sm font-medium shadow-none hover:cursor-pointer dark:bg-transparent dark:hover:bg-transparent focus-visible:ring-0 [&>svg]:hidden [&>span]:text-sm">
+                    <SelectTrigger className="h-8 w-auto min-w-0 max-w-[124px] rounded-none border-none px-0 text-sm font-medium shadow-none hover:cursor-pointer dark:bg-transparent dark:hover:bg-transparent focus-visible:ring-0 [&>svg]:hidden [&>span]:text-sm">
                       <SelectValue
                         placeholder={
                           isMobile
