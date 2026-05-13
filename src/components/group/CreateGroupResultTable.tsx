@@ -88,7 +88,7 @@ export default function CreateGroupResultTable({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <Table className="min-w-[760px]">
+        <Table className="min-w-3xl">
           <TableHeader>
             <TableRow>
               <TableHead className="w-3/10 text-gray-500 dark:text-white">
