@@ -21,39 +21,43 @@ export default function GroupListPage() {
   }
 
   return (
-    <div className="p-10 space-y-4 w-1/2 mx-auto">
+    <div className="w-full max-w-3xl mx-auto px-4 md:px-6 py-6 md:py-8 space-y-4 md:space-y-6">
       <div className="flex justify-between mb-6">
         {canCreateGroup && (
-          <Button onClick={() => navigate("/groups/new")}>
+          <Button
+            onClick={() => navigate("/groups/new")}
+            className="w-full sm:w-auto"
+          >
             {t("groupPages.groupList.newGroup")}
           </Button>
         )}
       </div>
 
       {isLoading ? (
-        <p className="text-gray-500">{t("groupPages.groupList.loading")}</p>
-      ) : isError ? (
-        <p className="text-red-500">
+        <div className="flex items-center gap-2 text-gray-500">
           <Loader2 className="w-4 h-4 animate-spin" />
-          {t("groupPages.groupList.loadingFailed")}
-        </p>
+          <span>{t("groupPages.groupList.loading")}</span>
+        </div>
+      ) : isError ? (
+        <div className="flex items-center gap-2 text-red-500">
+          <Loader2 className="w-4 h-4" />
+          <span>{t("groupPages.groupList.loadingFailed")}</span>
+        </div>
       ) : !data || data.items.length === 0 ? (
         <p className="text-gray-500">{t("groupPages.groupList.noCourses")}</p>
       ) : (
         <div className="space-y-4">
-          {data.items.map((group) => {
-            return (
-              <div>
-                <NavLink key={group.id} to={`/groups/${group.id}/`}>
-                  <GroupDescription
-                    title={group.title}
-                    ldapGroupName={group.ldapGroupName}
-                    desc={group.description}
-                  />
-                </NavLink>
-              </div>
-            );
-          })}
+          {data.items.map((group) => (
+            <div key={group.id}>
+              <NavLink to={`/groups/${group.id}/`} className="block">
+                <GroupDescription
+                  title={group.title}
+                  ldapGroupName={group.ldapGroupName}
+                  desc={group.description}
+                />
+              </NavLink>
+            </div>
+          ))}
         </div>
       )}
     </div>

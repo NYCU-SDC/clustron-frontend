@@ -112,7 +112,7 @@ export default function AddGroupPage() {
   }
 
   function verifyLdapGroupName(ldapGroupName: string): boolean {
-    if (/^[a-zA-Z]([a-zA-Z0-9- ]*[a-zA-Z0-9])?$/.test(ldapGroupName)) {
+    if (/^[a-zA-Z]([a-zA-Z0-9-]*[a-zA-Z0-9])?$/.test(ldapGroupName)) {
       return true;
     }
     return false;
