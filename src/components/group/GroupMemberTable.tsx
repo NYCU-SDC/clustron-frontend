@@ -117,7 +117,7 @@ export default function GroupMemberTable({
                       email={m.email}
                       globalRole={effectiveGlobalRole}
                       role={m.role.roleName}
-                    onlyInLDAP={m.onlyInLDAP}
+                      onlyInLDAP={m.onlyInLDAP}
                       accessLevel={accessLevel}
                       showActions={canEditMembers && !isOverview}
                       isArchived={isArchived}
