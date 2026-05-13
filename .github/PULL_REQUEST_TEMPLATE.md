@@ -12,3 +12,6 @@
 ## Additional Information
 
 <!-- Optional: Add any other information that would be helpful for the reviewer. Like detail spec, decisions, trade-offs, links, etc. -->
+
+<!-- GitHub Action will insert the preview url in the preview-url tag -->
+<!-- preview-url -->
