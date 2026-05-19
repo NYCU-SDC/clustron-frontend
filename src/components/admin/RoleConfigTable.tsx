@@ -1,4 +1,4 @@
-import { useState, useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   CircleMinus,
   CirclePlus,
@@ -113,7 +113,6 @@ export default function RoleConfigTable() {
     accessLevel: "",
   });
   const [deleteRoleId, setDeleteRoleId] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
 
   const createMutation = useMutation({
     mutationFn: (payload: RoleConfigInput) => createRoleConfig(payload),
@@ -160,17 +159,6 @@ export default function RoleConfigTable() {
       toast.error(t("roleConfigTable.loadFailToast"));
     }
   }, [isError, roleConfigs, t]);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 767px)");
-    const updateIsMobile = (event?: MediaQueryListEvent) => {
-      setIsMobile(event ? event.matches : mediaQuery.matches);
-    };
-
-    updateIsMobile();
-    mediaQuery.addEventListener("change", updateIsMobile);
-    return () => mediaQuery.removeEventListener("change", updateIsMobile);
-  }, []);
 
   const handleAddRole = () => {
     if (newRole.roleName.trim() && newRole.accessLevel) {
@@ -237,9 +225,12 @@ export default function RoleConfigTable() {
                 <TableHead className="py-4 px-4 align-top whitespace-normal">
                   <div className="flex items-center gap-2">
                     <span className="font-bold">
-                      {isMobile
-                        ? "Access"
-                        : t("roleConfigTable.tableHeadAccess")}
+                      <span className="md:hidden">
+                        {t("roleConfigTable.tableHeadAccessMobile")}
+                      </span>
+                      <span className="hidden md:inline">
+                        {t("roleConfigTable.tableHeadAccess")}
+                      </span>
                     </span>
 
                     <MobileHeaderInfo>
@@ -328,7 +319,7 @@ export default function RoleConfigTable() {
                         >
                           <SelectTrigger
                             size="sm"
-                            className="w-32 rounded-full border-none bg-gray-100 px-2 py-0 text-[13px] font-medium shadow-none hover:cursor-pointer [&>span]:text-[13px] [&>span]:leading-none"
+                            className="w-32 md:w-40 rounded-full border-none bg-gray-100 px-2 py-0 text-[13px] font-medium shadow-none hover:cursor-pointer [&>span]:text-[13px] [&>span]:leading-none"
                           >
                             <SelectValue
                               placeholder={t(
@@ -363,11 +354,7 @@ export default function RoleConfigTable() {
                 <TableCell className="py-4 px-4">
                   <Input
                     value={newRole.roleName}
-                    placeholder={
-                      isMobile
-                        ? "Role Name"
-                        : t("roleConfigTable.placeholderRoleName")
-                    }
+                    placeholder={t("roleConfigTable.placeholderRoleName")}
                     className="h-8 rounded-none border-none p-0 text-sm font-medium shadow-none placeholder:text-sm focus-visible:ring-0 focus-visible:border-transparent dark:bg-transparent"
                     onChange={(e) =>
                       setNewRole({ ...newRole, roleName: e.target.value })
@@ -385,14 +372,12 @@ export default function RoleConfigTable() {
                   >
                     <SelectTrigger
                       size="sm"
-                      className="w-32 rounded-none border-none px-0 text-sm font-medium shadow-none hover:cursor-pointer dark:bg-transparent dark:hover:bg-transparent focus-visible:ring-0 [&>span]:text-sm"
+                      className="w-32 md:w-40 rounded-none border-none px-0 text-sm font-medium shadow-none hover:cursor-pointer dark:bg-transparent dark:hover:bg-transparent focus-visible:ring-0 [&>span]:text-sm"
                     >
                       <SelectValue
-                        placeholder={
-                          isMobile
-                            ? "Access"
-                            : t("roleConfigTable.placeholderSelectAccess")
-                        }
+                        placeholder={t(
+                          "roleConfigTable.placeholderSelectAccessMobile",
+                        )}
                       />
                     </SelectTrigger>
                     <SelectContent>
