@@ -1,5 +1,6 @@
 import { Outlet, useOutletContext } from "react-router";
 import GroupDescription from "@/components/group/GroupDescription.tsx";
+import GroupMemberTable from "@/components/group/GroupMemberTable";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { getGroupPermissions } from "@/lib/groupPermissions";
 import type { GlobalRole } from "@/lib/permission";
@@ -28,6 +29,11 @@ export default function GroupPage() {
               ldapGroupName={group.ldapGroupName}
               desc={group.description}
               links={group.links ?? []}
+            />
+            <GroupMemberTable
+              groupId={groupId}
+              isArchived={group.isArchived}
+              isOverview={true}
             />
           </div>
         </main>
