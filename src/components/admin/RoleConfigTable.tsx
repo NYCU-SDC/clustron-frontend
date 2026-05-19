@@ -355,7 +355,16 @@ export default function RoleConfigTable() {
                   <Input
                     value={newRole.roleName}
                     placeholder={t("roleConfigTable.placeholderRoleName")}
-                    className="h-8 rounded-none border-none p-0 text-sm font-medium shadow-none placeholder:text-sm focus-visible:ring-0 focus-visible:border-transparent dark:bg-transparent"
+                    className="hidden md:block h-8 rounded-none border-none p-0 text-sm font-medium shadow-none placeholder:text-sm focus-visible:ring-0 focus-visible:border-transparent dark:bg-transparent"
+                    onChange={(e) =>
+                      setNewRole({ ...newRole, roleName: e.target.value })
+                    }
+                    disabled={createMutation.isPending}
+                  />
+                  <Input
+                    value={newRole.roleName}
+                    placeholder={t("roleConfigTable.placeholderRoleNameMobile")}
+                    className="md:hidden h-8 rounded-none border-none p-0 text-sm font-medium shadow-none placeholder:text-sm focus-visible:ring-0 focus-visible:border-transparent dark:bg-transparent"
                     onChange={(e) =>
                       setNewRole({ ...newRole, roleName: e.target.value })
                     }

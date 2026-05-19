@@ -143,6 +143,7 @@
     "accessLevelUserLabel": "User",
     "accessLevelUserDescription": "無法進行任何更改。",
     "placeholderRoleName": "請輸入角色名稱",
+    "placeholderRoleNameMobile": "角色名稱",
     "placeholderSelectAccess": "選擇權限",
     "placeholderSelectAccessMobile": "權限",
     "confirmTitle": "確認刪除角色",
