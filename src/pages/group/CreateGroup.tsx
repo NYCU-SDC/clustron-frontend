@@ -245,7 +245,7 @@ export default function AddGroupPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="px-3 sm:px-6">
-            <Table className="min-w-[480px] table-fixed sm:min-w-[560px]">
+            <Table className="min-w-lg table-fixed sm:min-w-xl">
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[25%] text-gray-500 dark:text-white">
@@ -354,7 +354,7 @@ export default function AddGroupPage() {
           </div>
         </CardHeader>
         <CardContent className="px-3 sm:px-6">
-          <Table className="min-w-[480px] sm:min-w-[560px]">
+          <Table className="min-w-lg sm:min-w-xl">
             <TableHeader>
               <TableRow>
                 <TableHead>
