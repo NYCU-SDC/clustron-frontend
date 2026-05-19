@@ -105,14 +105,22 @@ export default function UserConfigRow({
           )}
         </div>
         <div className="mt-1 text-sm text-muted-foreground min-w-0 sm:hidden">
-          <p className="truncate">{id}</p>
-          <p className="truncate">{email}</p>
+          <p className="truncate" title={id}>
+            {id}
+          </p>
+          <p className="truncate" title={email}>
+            {email}
+          </p>
         </div>
       </TableCell>
       <TableCell className="max-w-0 hidden sm:table-cell">
         <div className="min-w-0">
-          <p className="font-medium text-foreground truncate">{id}</p>
-          <p className="text-sm text-muted-foreground truncate">{email}</p>
+          <p className="font-medium text-foreground truncate" title={id}>
+            {id}
+          </p>
+          <p className="text-sm text-muted-foreground truncate" title={email}>
+            {email}
+          </p>
         </div>
       </TableCell>
       <TableCell className="w-[30%] min-w-[200px] max-w-0">
