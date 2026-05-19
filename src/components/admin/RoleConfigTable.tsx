@@ -328,7 +328,7 @@ export default function RoleConfigTable() {
                         >
                           <SelectTrigger
                             size="sm"
-                            className="w-32 rounded-full border-none bg-gray-100 px-2 py-0 text-[13px] font-medium shadow-none hover:cursor-pointer [&>svg]:hidden [&>span]:text-[13px] [&>span]:leading-none"
+                            className="w-32 rounded-full border-none bg-gray-100 px-2 py-0 text-[13px] font-medium shadow-none hover:cursor-pointer [&>span]:text-[13px] [&>span]:leading-none"
                           >
                             <SelectValue
                               placeholder={t(
@@ -385,7 +385,7 @@ export default function RoleConfigTable() {
                   >
                     <SelectTrigger
                       size="sm"
-                      className="w-32 rounded-none border-none px-0 text-sm font-medium shadow-none hover:cursor-pointer dark:bg-transparent dark:hover:bg-transparent focus-visible:ring-0 [&>svg]:hidden [&>span]:text-sm"
+                      className="w-32 rounded-none border-none px-0 text-sm font-medium shadow-none hover:cursor-pointer dark:bg-transparent dark:hover:bg-transparent focus-visible:ring-0 [&>span]:text-sm"
                     >
                       <SelectValue
                         placeholder={
