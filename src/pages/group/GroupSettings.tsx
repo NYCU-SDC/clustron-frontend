@@ -165,7 +165,6 @@ export default function GroupSettings() {
                 <Button
                   onClick={() => setIsTransferExpanded(true)}
                   disabled={group.isArchived || isToggling}
-                  className="w-fit"
                 >
                   {t("groupSettings.transferOwnership.startButton")}
                 </Button>
