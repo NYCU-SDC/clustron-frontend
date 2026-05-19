@@ -383,7 +383,10 @@ export default function RoleConfigTable() {
                     }
                     disabled={createMutation.isPending}
                   >
-                    <SelectTrigger className="h-8 w-auto min-w-0 max-w-[124px] rounded-none border-none px-0 text-sm font-medium shadow-none hover:cursor-pointer dark:bg-transparent dark:hover:bg-transparent focus-visible:ring-0 [&>svg]:hidden [&>span]:text-sm">
+                    <SelectTrigger
+                      size="sm"
+                      className="w-32 rounded-none border-none px-0 text-sm font-medium shadow-none hover:cursor-pointer dark:bg-transparent dark:hover:bg-transparent focus-visible:ring-0 [&>svg]:hidden [&>span]:text-sm"
+                    >
                       <SelectValue
                         placeholder={
                           isMobile

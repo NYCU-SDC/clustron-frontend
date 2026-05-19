@@ -232,16 +232,19 @@ export default function UserConfigTable() {
           ) : (
             <>
               <div className="overflow-x-auto">
-                <Table className="min-w-[640px]">
+                <Table className="min-w-[640px] table-fixed">
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-[42%] whitespace-nowrap">
+                      <TableHead className="w-[20%] whitespace-nowrap">
                         {t("userConfigTable.tableHeadName")}
                       </TableHead>
-                      <TableHead className="whitespace-nowrap">
+                      <TableHead className="w-[30%] whitespace-nowrap hidden sm:table-cell">
+                        {t("userConfigTable.tableHeadId")}
+                      </TableHead>
+                      <TableHead className="w-[30%] whitespace-nowrap">
                         {t("userConfigTable.tableHeadLinuxUsername")}
                       </TableHead>
-                      <TableHead className="whitespace-nowrap">
+                      <TableHead className="w-[20%] whitespace-nowrap">
                         {t("userConfigTable.tableHeadRole")}
                       </TableHead>
                     </TableRow>
