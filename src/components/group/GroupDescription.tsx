@@ -16,13 +16,13 @@ export default function GroupDescription({
 }: Props) {
   const { t } = useTranslation();
   return (
-    <Card>
-      <CardHeader>
+    <Card className="gap-4 py-4 sm:gap-6 sm:py-6">
+      <CardHeader className="px-4 sm:px-6">
         <CardTitle className="text-lg font-bold">{title}</CardTitle>
         <div className="text-sm text-muted-foreground">#{ldapGroupName}</div>
       </CardHeader>
 
-      <CardContent className="space-y-2">
+      <CardContent className="space-y-2 px-4 sm:px-6">
         <p className="text-muted-foreground text-sm">{desc}</p>
 
         {links && links.length > 0 && (

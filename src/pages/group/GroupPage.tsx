@@ -21,8 +21,8 @@ export default function GroupPage() {
   return (
     <div className="flex w-full">
       {isReadonly ? (
-        <main className="flex-1 w-full p-6 space-y-6">
-          <div className="max-w-4xl mx-auto p-6 space-y-6">
+        <main className="w-full flex-1 space-y-6 p-4 sm:p-6">
+          <div className="mx-auto max-w-4xl space-y-6">
             <GroupDescription
               title={group.title}
               ldapGroupName={group.ldapGroupName}
@@ -32,7 +32,7 @@ export default function GroupPage() {
           </div>
         </main>
       ) : (
-        <main className="flex-1 w-full p-6 space-y-6">
+        <main className="w-full flex-1 space-y-6 p-4 sm:p-6">
           <Outlet context={{ group, groupId }} />
         </main>
       )}

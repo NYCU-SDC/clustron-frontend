@@ -67,9 +67,9 @@ export default function GroupMemberTable({
   };
 
   return (
-    <Card>
-      <CardContent className="p-6">
-        <div className="flex justify-between items-center mb-4">
+    <Card className="py-4 sm:py-6">
+      <CardContent className="px-4 sm:px-6">
+        <div className="mb-4 flex items-center justify-between gap-3">
           <h3 className="font-bold text-lg">
             {t("groupComponents.groupMemberTable.members")}
           </h3>
@@ -93,42 +93,44 @@ export default function GroupMemberTable({
           </p>
         ) : (
           <>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>
-                    {t("groupComponents.groupMemberTable.name")}
-                  </TableHead>
-                  <TableHead>
-                    {t("groupComponents.groupMemberTable.studentIdOrEmail")}
-                  </TableHead>
-                  <TableHead>
-                    {t("groupComponents.groupMemberTable.role")}
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {members.map((m) => (
-                  <GroupMemberRow
-                    key={m.id}
-                    name={m.fullName}
-                    id={m.studentId}
-                    email={m.email}
-                    globalRole={effectiveGlobalRole}
-                    role={m.role.roleName}
-                    onlyInLDAP={m.onlyInLDAP}
-                    accessLevel={accessLevel}
-                    showActions={canEditMembers && !isOverview}
-                    isArchived={isArchived}
-                    isPending={isUpdatingMember}
-                    onDelete={onRemove ? () => onRemove(m.id) : undefined}
-                    onUpdateRole={(newRoleId) =>
-                      updateMemberRole(m.id, newRoleId)
-                    }
-                  />
-                ))}
-              </TableBody>
-            </Table>
+            <div className="overflow-x-auto">
+              <Table className="min-w-xl sm:min-w-2xl">
+                <TableHeader className="hidden sm:table-header-group">
+                  <TableRow>
+                    <TableHead>
+                      {t("groupComponents.groupMemberTable.name")}
+                    </TableHead>
+                    <TableHead>
+                      {t("groupComponents.groupMemberTable.studentIdOrEmail")}
+                    </TableHead>
+                    <TableHead>
+                      {t("groupComponents.groupMemberTable.role")}
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {members.map((m) => (
+                    <GroupMemberRow
+                      key={m.id}
+                      name={m.fullName}
+                      id={m.studentId}
+                      email={m.email}
+                      globalRole={effectiveGlobalRole}
+                      role={m.role.roleName}
+                      onlyInLDAP={m.onlyInLDAP}
+                      accessLevel={accessLevel}
+                      showActions={canEditMembers && !isOverview}
+                      isArchived={isArchived}
+                      isPending={isUpdatingMember}
+                      onDelete={onRemove ? () => onRemove(m.id) : undefined}
+                      onUpdateRole={(newRoleId) =>
+                        updateMemberRole(m.id, newRoleId)
+                      }
+                    />
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
 
             <div className="mt-6 flex justify-center">
               <PaginationControls

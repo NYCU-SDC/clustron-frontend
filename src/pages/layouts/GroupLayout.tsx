@@ -1,6 +1,7 @@
 import { Outlet, useParams, Navigate } from "react-router";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import SideBar, { NavItem } from "@/components/Sidebar";
+import NavTabs from "@/components/NavTabs";
 import { useTranslation } from "react-i18next";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { GlobalRole } from "@/lib/permission";
@@ -19,18 +20,18 @@ export default function GroupLayout() {
   const groupNavItems: NavItem[] = [
     {
       to: `/groups/${id}/`,
-      label: t("groupComponents.groupSideBar.overview"),
+      label: "groupComponents.groupSideBar.overview",
     },
     {
       to: `/groups/${id}/settings`,
-      label: t("groupComponents.groupSideBar.groupSettings"),
+      label: "groupComponents.groupSideBar.groupSettings",
     },
   ];
 
   const readonlyNavItems: NavItem[] = [
     {
       to: `/groups/${id}/`,
-      label: t("groupComponents.groupSideBar.overview"),
+      label: "groupComponents.groupSideBar.overview",
     },
   ];
 
@@ -44,18 +45,27 @@ export default function GroupLayout() {
 
   return (
     <div className="flex w-full">
-      <div className="w-xs border-r px-4">
+      <div className="hidden w-xs border-r px-4 md:block">
         <SideBar
           title={group.title}
           navItems={isReadonly ? readonlyNavItems : groupNavItems}
           className="min-w-36"
         />
       </div>
-      <main className="flex-1 flex justify-center">
-        <ErrorBoundary>
-          <Outlet context={{ group, groupId: id }} />
-        </ErrorBoundary>
-      </main>
+
+      <div className="flex min-w-0 flex-1 flex-col">
+        <NavTabs
+          className="px-4 pt-6 pb-0 md:hidden"
+          title={group.title}
+          navItems={isReadonly ? readonlyNavItems : groupNavItems}
+        />
+
+        <main className="flex flex-1 justify-center">
+          <ErrorBoundary>
+            <Outlet context={{ group, groupId: id }} />
+          </ErrorBoundary>
+        </main>
+      </div>
     </div>
   );
 }
