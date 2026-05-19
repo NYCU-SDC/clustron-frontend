@@ -94,7 +94,7 @@ export default function GroupMemberTable({
         ) : (
           <>
             <div className="overflow-x-auto">
-              <Table className="min-w-[520px] sm:min-w-[640px]">
+              <Table className="min-w-xl sm:min-w-2xl">
                 <TableHeader className="hidden sm:table-header-group">
                   <TableRow>
                     <TableHead>
