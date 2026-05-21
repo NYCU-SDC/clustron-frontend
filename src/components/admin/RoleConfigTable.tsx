@@ -384,15 +384,8 @@ export default function RoleConfigTable() {
                       className="w-32 md:w-40 rounded-none border-none px-0 text-sm font-medium shadow-none hover:cursor-pointer dark:bg-transparent dark:hover:bg-transparent focus-visible:ring-0 [&>span]:text-sm"
                     >
                       <SelectValue
-                        className="hidden md:block"
                         placeholder={t(
                           "roleConfigTable.placeholderSelectAccess",
-                        )}
-                      />
-                      <SelectValue
-                        className="md:hidden"
-                        placeholder={t(
-                          "roleConfigTable.placeholderSelectAccessMobile",
                         )}
                       />
                     </SelectTrigger>
