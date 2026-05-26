@@ -1,4 +1,4 @@
-import { Outlet, useParams, Navigate } from "react-router";
+import { Outlet, useParams, Navigate, useLocation } from "react-router";
 import { useGetGroupById } from "@/hooks/useGetGroupById";
 import SideBar, { NavItem } from "@/components/Sidebar";
 import { useTranslation } from "react-i18next";
@@ -9,6 +9,7 @@ import { useJwtPayload } from "@/hooks/useJwtPayload";
 
 export default function GroupLayout() {
   const { id } = useParams<{ id: string }>();
+  const location = useLocation();
   const { data: group, isLoading, isError } = useGetGroupById(id!);
   const payload = useJwtPayload();
   const accessLevel = group?.me.role.accessLevel;
@@ -40,6 +41,14 @@ export default function GroupLayout() {
 
   if (isError || !group) {
     return <Navigate to="/groups" replace />;
+  }
+
+  const overviewPath = `/groups/${id}`;
+  const isOverviewRoute =
+    location.pathname === overviewPath || location.pathname === `${overviewPath}/`;
+
+  if (isReadonly && !isOverviewRoute) {
+    return <Navigate to={overviewPath} replace />;
   }
 
   return (
