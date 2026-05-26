@@ -46,7 +46,8 @@ export default function GroupLayout() {
 
   const overviewPath = `/groups/${id}`;
   const isOverviewRoute =
-    location.pathname === overviewPath || location.pathname === `${overviewPath}/`;
+    location.pathname === overviewPath ||
+    location.pathname === `${overviewPath}/`;
 
   if (isReadonly && !isOverviewRoute) {
     return <Navigate to={overviewPath} replace />;
