@@ -76,8 +76,8 @@ export default function PendingMemberTable({
   }
 
   return (
-    <Card>
-      <CardContent className="p-6">
+    <Card className="py-4 sm:py-6">
+      <CardContent className="px-4 sm:px-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-bold text-lg">
             {t("groupPages.pendingMembers.pendingMember")}
@@ -99,38 +99,40 @@ export default function PendingMemberTable({
           </p>
         ) : (
           <>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>
-                    {t("groupComponents.groupMemberTable.studentIdOrEmail")}
-                  </TableHead>
-                  <TableHead>
-                    {t("groupComponents.groupMemberTable.role")}
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {members.map((m) => {
-                  return (
-                    <PendingMemberRow
-                      key={m.id}
-                      id={m.userIdentifier}
-                      email={m.userIdentifier}
-                      role={m.role.roleName as GroupMemberRoleName}
-                      accessLevel={accessLevel}
-                      globalRole={effectiveGlobalRole}
-                      showActions={canEditMembers}
-                      isArchived={isArchived}
-                      onDelete={() => handleRemove(m.id)}
-                      onUpdateRole={(newRoleId) =>
-                        handleUpdateRole(m.id, newRoleId)
-                      }
-                    />
-                  );
-                })}
-              </TableBody>
-            </Table>
+            <div className="overflow-x-auto">
+              <Table className="min-w-[520px]">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>
+                      {t("groupComponents.groupMemberTable.studentIdOrEmail")}
+                    </TableHead>
+                    <TableHead>
+                      {t("groupComponents.groupMemberTable.role")}
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {members.map((m) => {
+                    return (
+                      <PendingMemberRow
+                        key={m.id}
+                        id={m.userIdentifier}
+                        email={m.userIdentifier}
+                        role={m.role.roleName as GroupMemberRoleName}
+                        accessLevel={accessLevel}
+                        globalRole={effectiveGlobalRole}
+                        showActions={canEditMembers}
+                        isArchived={isArchived}
+                        onDelete={() => handleRemove(m.id)}
+                        onUpdateRole={(newRoleId) =>
+                          handleUpdateRole(m.id, newRoleId)
+                        }
+                      />
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </div>
 
             <div className="mt-6 flex justify-center">
               <PaginationControls

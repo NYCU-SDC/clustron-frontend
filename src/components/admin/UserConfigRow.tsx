@@ -85,8 +85,8 @@ export default function UserConfigRow({
 
   return (
     <TableRow className="hover:bg-muted/50 transition-colors">
-      <TableCell className="font-medium max-w-0">
-        <div className="flex items-center">
+      <TableCell className="font-medium w-[20%] max-w-0">
+        <div className="flex items-center min-w-0">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -97,20 +97,33 @@ export default function UserConfigRow({
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+
           {isSelf && (
-            <span className="text-[10px] ml-2 bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-full font-bold">
+            <span className="text-[10px] ml-2 bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-full font-bold shrink-0">
               YOU
             </span>
           )}
         </div>
-      </TableCell>
-      <TableCell>
-        <div className="flex flex-col">
-          <span className="font-medium">{id}</span>
-          <span className="text-muted-foreground text-xs">{email}</span>
+        <div className="mt-1 text-sm text-muted-foreground min-w-0 sm:hidden">
+          <p className="truncate" title={id}>
+            {id}
+          </p>
+          <p className="truncate" title={email}>
+            {email}
+          </p>
         </div>
       </TableCell>
-      <TableCell className="min-w-[200px] max-w-0">
+      <TableCell className="max-w-0 hidden sm:table-cell">
+        <div className="min-w-0">
+          <p className="font-medium text-foreground truncate" title={id}>
+            {id}
+          </p>
+          <p className="text-sm text-muted-foreground truncate" title={email}>
+            {email}
+          </p>
+        </div>
+      </TableCell>
+      <TableCell className="w-[30%] min-w-[200px] max-w-0">
         {isEditing ? (
           <div className="flex items-center gap-2">
             <Input
@@ -151,7 +164,7 @@ export default function UserConfigRow({
           </div>
         )}
       </TableCell>
-      <TableCell>
+      <TableCell className="w-[20%]">
         {isPending ? (
           <div className="flex items-center text-sm text-muted-foreground gap-2">
             <Loader2 className="w-4 h-4 animate-spin" />
