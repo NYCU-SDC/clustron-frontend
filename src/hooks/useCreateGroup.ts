@@ -35,7 +35,7 @@ export function useCreateGroup(options?: {
       const detail = err.message.toLowerCase();
       let message;
       if (status === "409" || detail.includes("conflict")) {
-        message = t("groupPages.createGroup.createDuplicateToast");
+        message = t("groupPages.createGroup.createLDAPGroupNameConflictToast");
       } else if (status === "400" || detail.includes("validation")) {
         message = t("groupPages.createGroup.createValidationToast");
       } else {
