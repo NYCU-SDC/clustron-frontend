@@ -11,7 +11,6 @@ import SettingAddKey from "@/pages/setting/SettingAddKey";
 import SettingSSH from "@/pages/setting/SettingSSH";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import GuestOnlyRoute from "@/components/auth/GuestOnlyRoute";
-import GroupPage from "@/pages/group/GroupPage";
 import GroupListPage from "@/pages/group/GroupList";
 import GroupOverview from "@/pages/group/GroupOverview";
 import GroupSettings from "@/pages/group/GroupSettings";
@@ -86,12 +85,10 @@ const App = () => {
               />
             </Route>
 
-            <Route element={<GroupLayout />}>
-              <Route path="/groups/:id" element={<GroupPage />}>
-                <Route index element={<GroupOverview />} />
-                <Route path="settings" element={<GroupSettings />} />
-                <Route path="add-member" element={<AddMemberPage />} />
-              </Route>
+            <Route path="/groups/:id" element={<GroupLayout />}>
+              <Route index element={<GroupOverview />} />
+              <Route path="settings" element={<GroupSettings />} />
+              <Route path="add-member" element={<AddMemberPage />} />
             </Route>
 
             <Route path="/admin" element={<AdminLayout />}>
