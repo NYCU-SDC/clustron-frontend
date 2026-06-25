@@ -1,6 +1,7 @@
 import { useOutletContext } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { useGetMembers } from "@/hooks/useGetMembers";
 import {
   Card,
   CardHeader,
@@ -19,7 +20,7 @@ import { useTransferGroupOwner } from "@/hooks/useTransferGroupOwner";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { getGroupPermissions } from "@/lib/groupPermissions";
 import { GlobalRole } from "@/lib/permission";
-import { GroupDetail } from "@/types/group";
+import { AccessLevelOwner, GroupDetail } from "@/types/group";
 import { toast } from "sonner";
 import { useUserAutocomplete } from "@/hooks/useUserAutocomplete.ts";
 import {
@@ -50,6 +51,22 @@ export default function GroupSettings() {
   const isAdmin = group?.me?.type === "adminOverride";
   const accessLevel = group?.me.role.accessLevel;
   const canManage = getGroupPermissions(accessLevel, globalRole).canManageGroup;
+
+  const { data: membersData } = useGetMembers(groupId, 0);
+  const members = membersData?.items ?? [];
+
+  const currentMember = members.find(
+    (member) =>
+      member.email === user?.Email ||
+      member.id === user?.ID ||
+      member.studentId === user?.ID,
+  );
+
+  const isGroupOwner =
+    accessLevel === AccessLevelOwner ||
+    currentMember?.role.accessLevel === AccessLevelOwner;
+
+  const editable = isGroupOwner && !group.isArchived;
 
   const [transferOwnerEmail, setTransferOwnerEmail] = useState("");
   const [isTransferExpanded, setIsTransferExpanded] = useState(false);
@@ -99,10 +116,12 @@ export default function GroupSettings() {
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       <GroupDescription
+        groupId={groupId}
         title={group.title}
         ldapGroupName={group.ldapGroupName}
         desc={group.description}
         links={group.links ?? []}
+        editable={editable}
       />
 
       <GroupMemberTable

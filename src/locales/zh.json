@@ -292,7 +292,14 @@
       "archiveSuccessToast": "群組已封存",
       "archiveFailToast": "封存群組失敗",
       "unarchiveSuccessToast": "群組已解除封存",
-      "unarchiveFailToast": "解除封存群組失敗"
+      "unarchiveFailToast": "解除封存群組失敗",
+      "updateTitleSuccessToast": "群組標題更新成功",
+      "updateTitleFailToast": "群組標題更新失敗",
+      "updateDescriptionSuccessToast": "群組描述更新成功",
+      "updateDescriptionFailToast": "群組描述更新失敗",
+      "updateLinksSuccessToast": "群組連結更新成功",
+      "updateLinksFailToast": "群組連結更新失敗",
+      "noLinks": "尚未新增連結。"
     },
     "addMemberResult": {
       "title": "新增成員結果",
