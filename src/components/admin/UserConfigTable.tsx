@@ -231,46 +231,52 @@ export default function UserConfigTable() {
             </p>
           ) : (
             <>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[30%]">
-                      {t("userConfigTable.tableHeadName")}
-                    </TableHead>
-                    <TableHead>{t("userConfigTable.tableHeadId")}</TableHead>
-                    <TableHead>
-                      {t("userConfigTable.tableHeadLinuxUsername")}
-                    </TableHead>
-                    <TableHead>{t("userConfigTable.tableHeadRole")}</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {users.map((user) => (
-                    <UserConfigRow
-                      key={user.id}
-                      name={user.fullName}
-                      id={user.studentId}
-                      email={user.email}
-                      linuxUsername={user.linuxUsername}
-                      currentRole={user.role}
-                      isOnBoarding={user.role == "ROLE_NOT_SETUP"}
-                      isSelf={user.id === currentUserId}
-                      onUpdateLinuxUsername={(newUsername, options) =>
-                        handleUsernameUpdate(user.id, newUsername, options)
-                      }
-                      onUpdateRole={(newRole) =>
-                        handleRoleUpdate(user.id, newRole)
-                      }
-                      isPending={
-                        (isUpdatingRole && roleVariables?.id === user.id) ||
-                        (isUpdatingUsername &&
-                          usernameVariables?.id === user.id)
-                      }
-                    />
-                  ))}
-                </TableBody>
-              </Table>
-              <div className="flex items-center w-full">
+              <div className="overflow-x-auto">
+                <Table className="min-w-[640px] table-fixed">
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[20%] whitespace-nowrap">
+                        {t("userConfigTable.tableHeadName")}
+                      </TableHead>
+                      <TableHead className="w-[30%] whitespace-nowrap hidden sm:table-cell">
+                        {t("userConfigTable.tableHeadId")}
+                      </TableHead>
+                      <TableHead className="w-[30%] whitespace-nowrap">
+                        {t("userConfigTable.tableHeadLinuxUsername")}
+                      </TableHead>
+                      <TableHead className="w-[20%] whitespace-nowrap">
+                        {t("userConfigTable.tableHeadRole")}
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {users.map((user) => (
+                      <UserConfigRow
+                        key={user.id}
+                        name={user.fullName}
+                        id={user.studentId}
+                        email={user.email}
+                        linuxUsername={user.linuxUsername}
+                        currentRole={user.role}
+                        isOnBoarding={user.role == "ROLE_NOT_SETUP"}
+                        isSelf={user.id === currentUserId}
+                        onUpdateLinuxUsername={(newUsername, options) =>
+                          handleUsernameUpdate(user.id, newUsername, options)
+                        }
+                        onUpdateRole={(newRole) =>
+                          handleRoleUpdate(user.id, newRole)
+                        }
+                        isPending={
+                          (isUpdatingRole && roleVariables?.id === user.id) ||
+                          (isUpdatingUsername &&
+                            usernameVariables?.id === user.id)
+                        }
+                      />
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+              <div className="flex flex-col gap-4 md:flex-row md:items-center w-full">
                 <PaginationControls
                   currentPage={currentPage}
                   totalPages={totalPages}

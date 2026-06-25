@@ -2,9 +2,10 @@ import { Outlet, useNavigate } from "react-router";
 import { jwtDecode } from "jwt-decode";
 import { getAccessToken } from "@/lib/token";
 import { useState, useEffect } from "react";
-import { AccessToken } from "@/types/settings";
+import type { AccessToken } from "@/types/settings";
 import { useTranslation } from "react-i18next";
-import SideBar, { NavItem } from "@/components/Sidebar";
+import SideBar, { type NavItem } from "@/components/Sidebar";
+import NavTabs from "@/components/NavTabs";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
 export default function AdminLayout() {
@@ -18,8 +19,10 @@ export default function AdminLayout() {
       navigate("/", { replace: true });
       return;
     }
+
     const decodedRole = jwtDecode<AccessToken>(accessToken).Role;
     setRole(decodedRole);
+
     if (decodedRole !== "admin") {
       navigate("/", { replace: true });
     }
@@ -28,30 +31,41 @@ export default function AdminLayout() {
   const adminNavItems: NavItem[] = [
     {
       to: "/admin/users",
-      label: t("adminSidebar.userConfigLink"),
+      label: "adminSidebar.userConfigLink",
     },
     {
       to: "/admin/config",
-      label: t("adminSidebar.roleAccessConfigLink"),
+      label: "adminSidebar.roleAccessConfigLink",
     },
   ];
-
   if (role !== "admin") return null;
 
   return (
     <div className="flex w-full">
-      <div className="min-w-xs border-r px-4">
+      {/* Desktop sidebar */}
+      <div className="hidden md:block min-w-xs border-r px-4">
         <SideBar
           title={t("adminSidebar.title")}
           navItems={adminNavItems}
           className="min-w-36"
         />
       </div>
-      <main className="flex-1 flex justify-center">
-        <ErrorBoundary>
-          <Outlet />
-        </ErrorBoundary>
-      </main>
+
+      {/* Right content */}
+      <div className="flex min-w-0 flex-1 flex-col">
+        {/* Mobile tabs */}
+        <NavTabs
+          className="px-4 pt-6 pb-0 md:hidden"
+          title={t("adminSidebar.title")}
+          navItems={adminNavItems}
+        />
+
+        <main className="flex min-w-0 flex-1 md:justify-center">
+          <ErrorBoundary>
+            <Outlet />
+          </ErrorBoundary>
+        </main>
+      </div>
     </div>
   );
 }

@@ -448,8 +448,8 @@ export default function GroupDescription({
   };
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="gap-4 py-4 sm:gap-6 sm:py-6">
+      <CardHeader className="px-4 sm:px-6">
         <CardTitle className="text-lg font-bold">
           {isEditingTitle ? (
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -506,7 +506,7 @@ export default function GroupDescription({
         <div className="text-sm text-muted-foreground">#{ldapGroupName}</div>
       </CardHeader>
 
-      <CardContent className="space-y-2">
+      <CardContent className="space-y-2 px-4 sm:px-6">
         {isEditingDescription ? (
           <div className="space-y-2">
             <Textarea
