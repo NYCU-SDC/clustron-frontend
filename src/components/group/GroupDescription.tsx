@@ -2,14 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { updateGroupTitle } from "@/lib/request/updateGroupTitle";
 import { updateGroupDescription } from "@/lib/request/updateGroupDescription";
 import {
@@ -18,11 +10,14 @@ import {
   updateGroupLink,
 } from "@/lib/request/groupLinks";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CircleMinus, CirclePlus, Pencil } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { normalizeUrl } from "@/lib/normalizeUrl";
+import GroupLinkEditorTable, {
+  EditableGroupLink,
+} from "@/components/group/GroupLinkEditorTable";
 
 type Props = {
   groupId?: string;
@@ -31,12 +26,6 @@ type Props = {
   desc: string;
   links?: { id?: string; title: string; url: string }[];
   editable?: boolean;
-};
-
-type EditableGroupLink = {
-  id?: string;
-  title: string;
-  url: string;
 };
 
 export default function GroupDescription({
@@ -382,39 +371,6 @@ export default function GroupDescription({
     updateDescriptionMutation.mutate();
   };
 
-  const handleUpdateLink = (
-    index: number,
-    key: "title" | "url",
-    value: string,
-  ) => {
-    setEditedLinks((prev) => {
-      const next = [...prev];
-
-      next[index] = {
-        ...next[index],
-        [key]: value,
-      };
-
-      return next;
-    });
-  };
-
-  const handleAddLink = () => {
-    const title = newLink.title.trim();
-    const url = normalizeUrl(newLink.url);
-
-    if (!title || !url) {
-      return;
-    }
-
-    setEditedLinks((prev) => [...prev, { title, url }]);
-    setNewLink({ title: "", url: "" });
-  };
-
-  const handleRemoveLink = (index: number) => {
-    setEditedLinks((prev) => prev.filter((_, i) => i !== index));
-  };
-
   const handleCancelLinks = () => {
     setEditedLinks(links ?? []);
     setNewLink({ title: "", url: "" });
@@ -573,132 +529,13 @@ export default function GroupDescription({
 
               {isEditingLinks ? (
                 <div className="space-y-3">
-                  <Table className="min-w-lg table-fixed sm:min-w-xl">
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="w-[25%] text-gray-500 dark:text-white">
-                          {t("groupPages.createGroup.title")}
-                        </TableHead>
-                        <TableHead className="w-[60%] text-gray-500 dark:text-white">
-                          {t("groupPages.createGroup.URL")}
-                        </TableHead>
-                        <TableHead className="w-[15%]" />
-                      </TableRow>
-                    </TableHeader>
-
-                    <TableBody>
-                      {editedLinks.map((link, index) => (
-                        <TableRow
-                          key={link.id ?? index}
-                          className="hover:bg-muted"
-                        >
-                          <TableCell>
-                            <Input
-                              placeholder={t("groupPages.createGroup.title")}
-                              value={link.title}
-                              disabled={updateLinksMutation.isPending}
-                              onChange={(e) =>
-                                handleUpdateLink(index, "title", e.target.value)
-                              }
-                            />
-                          </TableCell>
-
-                          <TableCell>
-                            <Input
-                              placeholder={t("groupPages.createGroup.URL")}
-                              value={link.url}
-                              disabled={updateLinksMutation.isPending}
-                              onChange={(e) =>
-                                handleUpdateLink(index, "url", e.target.value)
-                              }
-                            />
-
-                            {link.url.trim() && (
-                              <div className="text-xs text-muted-foreground break-all overflow-hidden">
-                                <a
-                                  href={normalizeUrl(link.url)}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  className="break-all block"
-                                >
-                                  {normalizeUrl(link.url)}
-                                </a>
-                              </div>
-                            )}
-                          </TableCell>
-
-                          <TableCell className="flex justify-center">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => handleRemoveLink(index)}
-                              disabled={updateLinksMutation.isPending}
-                            >
-                              <CircleMinus size={16} />
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-
-                      <TableRow>
-                        <TableCell>
-                          <Input
-                            placeholder={t("groupPages.createGroup.title")}
-                            value={newLink.title}
-                            disabled={updateLinksMutation.isPending}
-                            onChange={(e) =>
-                              setNewLink((prev) => ({
-                                ...prev,
-                                title: e.target.value,
-                              }))
-                            }
-                          />
-                        </TableCell>
-
-                        <TableCell>
-                          <Input
-                            placeholder={t("groupPages.createGroup.URL")}
-                            value={newLink.url}
-                            disabled={updateLinksMutation.isPending}
-                            onChange={(e) =>
-                              setNewLink((prev) => ({
-                                ...prev,
-                                url: e.target.value,
-                              }))
-                            }
-                          />
-
-                          {newLink.url.trim() && (
-                            <div className="text-xs text-muted-foreground break-all overflow-hidden">
-                              <a
-                                href={normalizeUrl(newLink.url)}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="break-all block"
-                              >
-                                {normalizeUrl(newLink.url)}
-                              </a>
-                            </div>
-                          )}
-                        </TableCell>
-
-                        <TableCell className="flex justify-center">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={handleAddLink}
-                            disabled={
-                              updateLinksMutation.isPending ||
-                              !newLink.title.trim() ||
-                              !newLink.url.trim()
-                            }
-                          >
-                            <CirclePlus size={16} />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
+                  <GroupLinkEditorTable
+                    links={editedLinks}
+                    newLink={newLink}
+                    onLinksChange={setEditedLinks}
+                    onNewLinkChange={setNewLink}
+                    disabled={updateLinksMutation.isPending}
+                  />
 
                   <div className="flex gap-2">
                     <Button
