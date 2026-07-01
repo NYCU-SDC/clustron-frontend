@@ -324,7 +324,7 @@ export default function GroupDescription({
         await queryClient.invalidateQueries({ queryKey: ["groups"] });
       }
     },
-    onError: (err) => {
+    onError: async (err) => {
       const message =
         err instanceof Error
           ? err.message
@@ -336,6 +336,10 @@ export default function GroupDescription({
       toast.error(message, {
         id: "update-group-links",
       });
+
+      if (groupId) {
+        await queryClient.invalidateQueries({ queryKey: ["group", groupId] });
+      }
     },
   });
 
