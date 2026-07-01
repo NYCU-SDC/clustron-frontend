@@ -1,7 +1,6 @@
 import { useOutletContext } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { useGetMembers } from "@/hooks/useGetMembers";
 import {
   Card,
   CardHeader,
@@ -20,7 +19,7 @@ import { useTransferGroupOwner } from "@/hooks/useTransferGroupOwner";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { getGroupPermissions } from "@/lib/groupPermissions";
 import { GlobalRole } from "@/lib/permission";
-import { AccessLevelOwner, GroupDetail } from "@/types/group";
+import { GroupDetail } from "@/types/group";
 import { toast } from "sonner";
 import { useUserAutocomplete } from "@/hooks/useUserAutocomplete.ts";
 import {
@@ -40,7 +39,6 @@ type GroupContextType = {
 export default function GroupSettings() {
   const { group, groupId } = useOutletContext<GroupContextType>();
   const { t } = useTranslation();
-  const user = useJwtPayload();
 
   const archiveMutation = useArchiveGroup(groupId);
   const unarchiveMutation = useUnarchiveGroup(groupId);
@@ -52,21 +50,7 @@ export default function GroupSettings() {
   const accessLevel = group?.me.role.accessLevel;
   const canManage = getGroupPermissions(accessLevel, globalRole).canManageGroup;
 
-  const { data: membersData } = useGetMembers(groupId, 0);
-  const members = membersData?.items ?? [];
-
-  const currentMember = members.find(
-    (member) =>
-      member.email === user?.Email ||
-      member.id === user?.ID ||
-      member.studentId === user?.ID,
-  );
-
-  const isGroupOwner =
-    accessLevel === AccessLevelOwner ||
-    currentMember?.role.accessLevel === AccessLevelOwner;
-
-  const editable = isGroupOwner && !group.isArchived;
+  const editable = !group.isArchived;
 
   const [transferOwnerEmail, setTransferOwnerEmail] = useState("");
   const [isTransferExpanded, setIsTransferExpanded] = useState(false);
@@ -105,7 +89,7 @@ export default function GroupSettings() {
     transferOwner({ identifier: transferOwnerEmail });
   };
 
-  if (!user || !group) {
+  if (!payload || !group) {
     return (
       <div className="p-4 text-gray-600">
         {t("groupPages.groupSettings.loadingGroupInfo")}
