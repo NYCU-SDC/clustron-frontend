@@ -22,6 +22,7 @@ import { CircleMinus, CirclePlus, Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { normalizeUrl } from "@/lib/normalizeUrl";
 
 type Props = {
   groupId?: string;
@@ -37,18 +38,6 @@ type EditableGroupLink = {
   title: string;
   url: string;
 };
-
-function normalizeUrl(url: string): string {
-  const trimmed = url.trim();
-
-  if (!trimmed) return "";
-
-  if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:\/\//.test(trimmed)) {
-    return trimmed;
-  }
-
-  return `https://${trimmed}`;
-}
 
 export default function GroupDescription({
   groupId,

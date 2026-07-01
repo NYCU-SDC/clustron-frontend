@@ -29,6 +29,7 @@ import {
   CardTitle,
 } from "@/components/ui/card.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
+import { normalizeUrl } from "@/lib/normalizeUrl";
 
 export default function AddGroupPage() {
   const navigate = useNavigate();
@@ -101,15 +102,6 @@ export default function AddGroupPage() {
   const handleRemoveLink = (index: number) => {
     setLinks((prev) => prev.filter((_, i) => i !== index));
   };
-
-  function normalizeUrl(url: string): string {
-    const trimmed = url.trim();
-    if (!trimmed) return "";
-    if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:\/\//.test(trimmed)) {
-      return trimmed;
-    }
-    return `https://${trimmed}`;
-  }
 
   function verifyLdapGroupName(ldapGroupName: string): boolean {
     if (/^[a-zA-Z]([a-zA-Z0-9-]*[a-zA-Z0-9])?$/.test(ldapGroupName)) {
