@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, afterEach, vi, expect, beforeEach } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -292,9 +292,9 @@ describe("CreateGroup", () => {
       await user.click(addLinkButton!);
 
       await waitFor(() => {
-        expect(screen.getByText("Documentation")).toBeInTheDocument();
+        expect(screen.getByDisplayValue("Documentation")).toBeInTheDocument();
         expect(
-          screen.getByText("https://docs.example.com"),
+          screen.getByDisplayValue("https://docs.example.com"),
         ).toBeInTheDocument();
       });
     });
@@ -364,19 +364,20 @@ describe("CreateGroup", () => {
       await user.click(addLinkButton!);
 
       await waitFor(() => {
-        expect(screen.getByText("Documentation")).toBeInTheDocument();
+        expect(screen.getByDisplayValue("Documentation")).toBeInTheDocument();
       });
 
-      // Find and click the remove button
-      const removeLinkButtons = screen.getAllByRole("button");
-      const removeLinkButton = removeLinkButtons.find((btn) =>
-        btn.closest("tr")?.textContent?.includes("Documentation"),
-      );
+      // Find and click the remove button in the added link row
+      const addedLinkTitleInput = screen.getByDisplayValue("Documentation");
+      const addedLinkRow = addedLinkTitleInput.closest("tr");
+      const removeLinkButton = within(addedLinkRow!).getByRole("button");
 
-      await user.click(removeLinkButton!);
+      await user.click(removeLinkButton);
 
       await waitFor(() => {
-        expect(screen.queryByText("Documentation")).not.toBeInTheDocument();
+        expect(
+          screen.queryByDisplayValue("Documentation"),
+        ).not.toBeInTheDocument();
       });
     });
 
