@@ -1,5 +1,10 @@
 {
   "loading": "Loading...",
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "saving": "Saving..."
+  },
   "onboardingForm": {
     "cardTitleForName": "Enter Your Basic Information",
     "saveBtn": "Save",

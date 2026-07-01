@@ -227,7 +227,7 @@ export default function GroupSettings() {
                       setQuery("");
                     }}
                   >
-                    {t("groupSettings.cancel")}
+                    {t("common.cancel", "Cancel")}
                   </Button>
                   <Button
                     onClick={handleTransfer}

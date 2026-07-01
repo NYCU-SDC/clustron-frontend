@@ -1,5 +1,10 @@
 {
   "loading": "載入中...",
+  "common": {
+    "save": "儲存",
+    "cancel": "取消",
+    "saving": "儲存中..."
+  },
   "onboardingForm": {
     "cardTitleForName": "輸入您的基本資料",
     "saveBtn": "儲存",
