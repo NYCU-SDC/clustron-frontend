@@ -56,16 +56,22 @@ export default function GroupDescription({
   });
 
   useEffect(() => {
-    setEditedTitle(title);
-  }, [title]);
+    if (!isEditingTitle) {
+      setEditedTitle(title);
+    }
+  }, [title, isEditingTitle]);
 
   useEffect(() => {
-    setEditedDescription(desc);
-  }, [desc]);
+    if (!isEditingDescription) {
+      setEditedDescription(desc);
+    }
+  }, [desc, isEditingDescription]);
 
   useEffect(() => {
-    setEditedLinks(links ?? []);
-  }, [links]);
+    if (!isEditingLinks) {
+      setEditedLinks(links ?? []);
+    }
+  }, [links, isEditingLinks]);
 
   const trimmedEditedTitle = editedTitle.trim();
   const isTitleInvalid = !trimmedEditedTitle;
