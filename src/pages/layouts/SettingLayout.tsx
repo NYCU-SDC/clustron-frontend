@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 import { useTranslation } from "react-i18next";
-import SideBar, { NavItem } from "@/components/Sidebar";
+import SideBar, { type NavItem } from "@/components/Sidebar";
 import NavTabs from "@/components/NavTabs";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
@@ -10,12 +10,12 @@ export default function SettingLayout() {
   const settingNavItems: NavItem[] = [
     {
       to: "/setting/general",
-      label: "settingSideBar.GeneralNavLink",
+      label: t("settingSideBar.GeneralNavLink"),
       end: true,
     },
     {
       to: "/setting/ssh",
-      label: "settingSideBar.SSHNavLink",
+      label: t("settingSideBar.SSHNavLink"),
       end: false,
     },
   ];
