@@ -12,7 +12,7 @@ export default function GroupOverviewPage() {
   const { group, groupId } = useOutletContext<GroupContext>();
 
   return (
-    <div className="mx-auto w-full max-w-4xl space-y-4 sm:space-y-6">
+    <div className="w-full max-w-2xl px-4 md:px-6 py-6 md:py-8 flex flex-col gap-6 md:gap-10">
       <GroupDescription
         title={group.title}
         ldapGroupName={group.ldapGroupName}

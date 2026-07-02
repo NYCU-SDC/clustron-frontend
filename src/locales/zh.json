@@ -233,6 +233,11 @@
       "uploadButton": "上傳 CSV",
       "tooltipFormat": "CSV 格式：第一欄 = 學號或電子信箱，第二欄 = 角色（可選）。空白行將自動略過。範例：\ns123456,student\nuser@example.com,teacher_assistant",
       "loadedToast": "已從 CSV 載入 {{count}} 位成員"
+    },
+    "memberDetailDrawer": {
+      "email": "電子信箱",
+      "studentId": "學號",
+      "role": "角色"
     }
   },
   "groupPages": {

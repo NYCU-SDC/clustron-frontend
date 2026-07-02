@@ -1,6 +1,7 @@
 import { TableRow, TableCell } from "@/components/ui/table";
 import { ChevronDown, Loader2 } from "lucide-react";
 import MemberDeleteMenu from "./MemberDeleteMenu";
+import MemberDetailDrawer from "./MemberDetailDrawer";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -69,7 +70,8 @@ export default function GroupMemberRow({
 
       <TableCell>
         <div className="flex flex-col">
-          <span className="font-medium">{id}</span>
+          <span className="font-medium sm:hidden">{name}</span>
+          <span className="font-medium hidden sm:inline">{id}</span>
           <span className="text-muted-foreground text-xs">{email}</span>
         </div>
       </TableCell>
@@ -112,7 +114,21 @@ export default function GroupMemberRow({
 
       {showActions && (
         <TableCell className="text-right pr-4">
-          <MemberDeleteMenu onConfirm={onDelete!} isArchived={isArchived} />
+          {/* Desktop: dropdown menu */}
+          <div className="hidden sm:block">
+            <MemberDeleteMenu onConfirm={onDelete!} isArchived={isArchived} />
+          </div>
+          {/* Mobile: bottom drawer with member details */}
+          <div className="sm:hidden">
+            <MemberDetailDrawer
+              name={name}
+              email={email}
+              studentId={id}
+              role={displayRoleLabel}
+              onDelete={onDelete}
+              isArchived={isArchived}
+            />
+          </div>
         </TableCell>
       )}
     </TableRow>
