@@ -1,7 +1,6 @@
 import { NavLink } from "react-router";
-import { useTranslation } from "react-i18next";
 import ErrorBoundary from "./ErrorBoundary";
-import { NavItem } from "./Sidebar";
+import { type NavItem } from "./Sidebar";
 
 function tabLinkClass(isActive: boolean): string {
   return [
@@ -19,8 +18,6 @@ interface NavTabsProps {
 }
 
 export default function NavTabs({ title, navItems, className }: NavTabsProps) {
-  const { t } = useTranslation();
-
   return (
     <ErrorBoundary>
       <div className={className}>
@@ -33,7 +30,7 @@ export default function NavTabs({ title, navItems, className }: NavTabsProps) {
               end={item.end ?? true}
               className={({ isActive }) => tabLinkClass(isActive)}
             >
-              {t(item.label)}
+              {item.label}
             </NavLink>
           ))}
         </div>
