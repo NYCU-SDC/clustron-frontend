@@ -1,5 +1,10 @@
 {
   "loading": "Loading...",
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "saving": "Saving..."
+  },
   "onboardingForm": {
     "cardTitleForName": "Enter Your Basic Information",
     "saveBtn": "Save",
@@ -295,7 +300,14 @@
       "archiveSuccessToast": "Group archived successfully",
       "archiveFailToast": "Failed to archive group",
       "unarchiveSuccessToast": "Group unarchived successfully",
-      "unarchiveFailToast": "Failed to unarchive group"
+      "unarchiveFailToast": "Failed to unarchive group",
+      "updateTitleSuccessToast": "Group title updated successfully",
+      "updateTitleFailToast": "Failed to update group title",
+      "updateDescriptionSuccessToast": "Group description updated successfully",
+      "updateDescriptionFailToast": "Failed to update group description",
+      "updateLinksSuccessToast": "Group links updated successfully",
+      "updateLinksFailToast": "Failed to update group links",
+      "noLinks": "No links yet."
     },
     "addMemberResult": {
       "title": "Add Member Results",

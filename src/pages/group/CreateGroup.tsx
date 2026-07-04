@@ -19,9 +19,7 @@ import {
   TableRow,
   TableHead,
   TableBody,
-  TableCell,
 } from "@/components/ui/table";
-import { CircleMinus, CirclePlus } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -29,6 +27,10 @@ import {
   CardTitle,
 } from "@/components/ui/card.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
+import { normalizeUrl } from "@/lib/normalizeUrl";
+import GroupLinkEditorTable, {
+  type EditableGroupLink,
+} from "@/components/group/GroupLinkEditorTable";
 
 export default function AddGroupPage() {
   const navigate = useNavigate();
@@ -38,8 +40,8 @@ export default function AddGroupPage() {
   const [title, setTitle] = useState("");
   const [ldapGroupName, setLdapGroupName] = useState("");
   const [description, setDescription] = useState("");
-  const [links, setLinks] = useState<GroupLinkPayload[]>([]);
-  const [newLink, setNewLink] = useState<GroupLinkPayload>({
+  const [links, setLinks] = useState<EditableGroupLink[]>([]);
+  const [newLink, setNewLink] = useState<EditableGroupLink>({
     title: "",
     url: "",
   });
@@ -91,26 +93,6 @@ export default function AddGroupPage() {
     setMembers(next.length === 0 ? [{ id: "", roleName: "student" }] : next);
   };
 
-  const handleAddLink = () => {
-    const title = newLink.title.trim();
-    const url = newLink.url.trim();
-    if (!title || !url) return;
-    setLinks((prev) => [...prev, { title, url: normalizeUrl(url) }]);
-    setNewLink({ title: "", url: "" });
-  };
-  const handleRemoveLink = (index: number) => {
-    setLinks((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  function normalizeUrl(url: string): string {
-    const trimmed = url.trim();
-    if (!trimmed) return "";
-    if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:\/\//.test(trimmed)) {
-      return trimmed;
-    }
-    return `https://${trimmed}`;
-  }
-
   function verifyLdapGroupName(ldapGroupName: string): boolean {
     if (/^[a-zA-Z]([a-zA-Z0-9-]*[a-zA-Z0-9])?$/.test(ldapGroupName)) {
       return true;
@@ -133,13 +115,13 @@ export default function AddGroupPage() {
     const linksToSubmit: GroupLinkPayload[] = [
       ...links,
       ...(newLink.title.trim() && newLink.url.trim()
-        ? [{ title: newLink.title.trim(), url: normalizeUrl(newLink.url) }]
+        ? [{ title: newLink.title.trim(), url: newLink.url }]
         : []),
     ]
       .filter((l) => l.title.trim() && l.url.trim())
       .map((l) => ({
         title: l.title.trim(),
-        url: l.url,
+        url: normalizeUrl(l.url),
       }));
 
     createGroup.mutate({
@@ -245,96 +227,13 @@ export default function AddGroupPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="px-3 sm:px-6">
-            <Table className="min-w-lg table-fixed sm:min-w-xl">
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[25%] text-gray-500 dark:text-white">
-                    {t("groupPages.createGroup.title")}
-                  </TableHead>
-                  <TableHead className="w-[60%] text-gray-500 dark:text-white">
-                    {t("groupPages.createGroup.URL")}
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {links.map((link, index) => (
-                  <TableRow key={index} className="hover:bg-muted ">
-                    <TableCell>{link.title}</TableCell>
-                    <TableCell className="w-[30%] break-all text1-foreground">
-                      <div className="max-w-full overflow-hidden">
-                        <a
-                          href={link.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="break-all block"
-                        >
-                          {link.url}
-                        </a>
-                      </div>
-                    </TableCell>
-
-                    <TableCell className="flex justify-center ">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleRemoveLink(index)}
-                      >
-                        <CircleMinus size={16} />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-                <TableRow>
-                  <TableCell>
-                    <Input
-                      placeholder={t("groupPages.createGroup.title")}
-                      value={newLink.title}
-                      onChange={(e) =>
-                        setNewLink((prev) => ({
-                          ...prev,
-                          title: e.target.value,
-                        }))
-                      }
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Input
-                      placeholder={t("groupPages.createGroup.URL")}
-                      value={newLink.url}
-                      onChange={(e) =>
-                        setNewLink((prev) => ({
-                          ...prev,
-                          url: e.target.value,
-                        }))
-                      }
-                    />
-                    {newLink.url.trim() && (
-                      <div className="text-xs text-muted-foreground break-all overflow-hidden">
-                        <a
-                          href={normalizeUrl(newLink.url)}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="break-all block"
-                        >
-                          {normalizeUrl(newLink.url)}
-                        </a>
-                      </div>
-                    )}
-                  </TableCell>
-
-                  <TableCell className="flex justify-center">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={handleAddLink}
-                      disabled={!newLink.title.trim() || !newLink.url.trim()}
-                    >
-                      <CirclePlus size={16} />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+            <GroupLinkEditorTable
+              links={links}
+              newLink={newLink}
+              onLinksChange={setLinks}
+              onNewLinkChange={setNewLink}
+              disabled={createGroup.isPending}
+            />
           </CardContent>
         </div>
       </Card>
