@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 import { useTranslation } from "react-i18next";
-import SideBar, { NavItem } from "@/components/Sidebar";
+import SideBar, { type NavItem } from "@/components/Sidebar";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
 export default function JobLayout() {

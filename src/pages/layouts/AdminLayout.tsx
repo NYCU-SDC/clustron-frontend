@@ -31,11 +31,11 @@ export default function AdminLayout() {
   const adminNavItems: NavItem[] = [
     {
       to: "/admin/users",
-      label: "adminSidebar.userConfigLink",
+      label: t("adminSidebar.userConfigLink"),
     },
     {
       to: "/admin/config",
-      label: "adminSidebar.roleAccessConfigLink",
+      label: t("adminSidebar.roleAccessConfigLink"),
     },
   ];
   if (role !== "admin") return null;

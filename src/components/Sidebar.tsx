@@ -1,5 +1,4 @@
 import { NavLink } from "react-router";
-import { useTranslation } from "react-i18next";
 import ErrorBoundary from "./ErrorBoundary";
 import {
   Tooltip,
@@ -53,8 +52,6 @@ interface SideBarProps {
 }
 
 export default function SideBar({ title, navItems, className }: SideBarProps) {
-  const { t } = useTranslation();
-
   const displayTitle = truncateMiddle(title, 15);
 
   return (
@@ -82,7 +79,7 @@ export default function SideBar({ title, navItems, className }: SideBarProps) {
                 end={item.end ?? true}
                 className={({ isActive }) => navLinkClass(isActive)}
               >
-                {t(item.label)}
+                {item.label}
               </NavLink>
             </li>
           ))}
