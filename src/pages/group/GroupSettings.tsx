@@ -39,7 +39,6 @@ type GroupContextType = {
 export default function GroupSettings() {
   const { group, groupId } = useOutletContext<GroupContextType>();
   const { t } = useTranslation();
-  const user = useJwtPayload();
 
   const archiveMutation = useArchiveGroup(groupId);
   const unarchiveMutation = useUnarchiveGroup(groupId);
@@ -50,6 +49,8 @@ export default function GroupSettings() {
   const isAdmin = group?.me?.type === "adminOverride";
   const accessLevel = group?.me.role.accessLevel;
   const canManage = getGroupPermissions(accessLevel, globalRole).canManageGroup;
+
+  const editable = !group.isArchived;
 
   const [transferOwnerEmail, setTransferOwnerEmail] = useState("");
   const [isTransferExpanded, setIsTransferExpanded] = useState(false);
@@ -88,7 +89,7 @@ export default function GroupSettings() {
     transferOwner({ identifier: transferOwnerEmail });
   };
 
-  if (!user || !group) {
+  if (!payload || !group) {
     return (
       <div className="p-4 text-gray-600">
         {t("groupPages.groupSettings.loadingGroupInfo")}
@@ -99,10 +100,12 @@ export default function GroupSettings() {
   return (
     <div className="mx-auto w-full max-w-4xl space-y-4 sm:space-y-6">
       <GroupDescription
+        groupId={groupId}
         title={group.title}
         ldapGroupName={group.ldapGroupName}
         desc={group.description}
         links={group.links ?? []}
+        editable={editable}
       />
 
       <GroupMemberTable
@@ -224,7 +227,7 @@ export default function GroupSettings() {
                       setQuery("");
                     }}
                   >
-                    {t("groupSettings.cancel")}
+                    {t("common.cancel", "Cancel")}
                   </Button>
                   <Button
                     onClick={handleTransfer}

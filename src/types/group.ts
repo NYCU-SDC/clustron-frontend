@@ -37,6 +37,16 @@ export type GroupSummary = {
   updatedAt: string;
 };
 
+// PATCH /api/groups/{id}/title
+export type UpdateGroupTitleInput = {
+  title: string;
+};
+
+// PATCH /api/groups/{id}/description
+export type UpdateGroupDescriptionInput = {
+  description: string;
+};
+
 export type GetGroupsResponse = {
   items: GroupSummary[];
   totalPages: number;
