@@ -3,11 +3,10 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
   DialogFooter,
   DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog";
+import DeleteMemberConfirmDialog from "./DeleteMemberConfirmDialog";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -60,12 +59,7 @@ export default function MemberDetailDrawer({
     <>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            disabled={isArchived}
-            aria-label="user-actions-menu"
-          >
+          <Button variant="ghost" size="icon" aria-label="user-actions-menu">
             <MoreHorizontal className="w-4 h-4" />
           </Button>
         </DialogTrigger>
@@ -108,32 +102,12 @@ export default function MemberDetailDrawer({
         </DialogContent>
       </Dialog>
 
-      <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-red-600">
-              {t("groupComponents.memberDeleteButton.deleteUserConfirm")}
-            </DialogTitle>
-            <DialogDescription>
-              {t("groupComponents.memberDeleteButton.deleteConfirmation")}
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="flex justify-end gap-2">
-            <DialogClose asChild>
-              <Button variant="outline">
-                {t("groupComponents.memberDeleteButton.cancel")}
-              </Button>
-            </DialogClose>
-            <Button
-              variant="destructive"
-              onClick={handleDelete}
-              disabled={isPending}
-            >
-              {t("groupComponents.memberDeleteButton.delete")}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <DeleteMemberConfirmDialog
+        open={confirmOpen}
+        onOpenChange={setConfirmOpen}
+        onConfirm={handleDelete}
+        isPending={isPending}
+      />
     </>
   );
 }
