@@ -59,7 +59,7 @@ export default function MemberDetailDrawer({
     <>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant="ghost" size="icon" aria-label="user-actions-menu">
+          <Button variant="ghost" size="icon" aria-label="member-detail-drawer">
             <MoreHorizontal className="w-4 h-4" />
           </Button>
         </DialogTrigger>
