@@ -1,6 +1,7 @@
 import { TableRow, TableCell } from "@/components/ui/table";
 import { ChevronDown } from "lucide-react";
 import MemberDeleteMenu from "./MemberDeleteMenu";
+import MemberDetailDrawer from "./MemberDetailDrawer";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -88,7 +89,21 @@ export default function PendingMemberRow({
 
       {showActions && (
         <TableCell className="text-right pr-4">
-          <MemberDeleteMenu onConfirm={onDelete!} isArchived={isArchived} />
+          {/* Desktop: dropdown menu */}
+          <div className="hidden sm:block">
+            <MemberDeleteMenu onConfirm={onDelete!} isArchived={isArchived} />
+          </div>
+          {/* Mobile: bottom drawer with member details */}
+          <div className="sm:hidden">
+            <MemberDetailDrawer
+              name={id}
+              email={email}
+              studentId={id}
+              role={currentRoleLabel}
+              onDelete={onDelete}
+              isArchived={isArchived}
+            />
+          </div>
         </TableCell>
       )}
     </TableRow>

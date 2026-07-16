@@ -1,18 +1,10 @@
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  DialogClose,
-} from "@/components/ui/dialog";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import DeleteMemberConfirmDialog from "./DeleteMemberConfirmDialog";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
@@ -64,34 +56,12 @@ export default function MemberDeleteMenu({ onConfirm, isArchived }: Props) {
         )}
       </DropdownMenu>
 
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-red-600">
-              {t("groupComponents.memberDeleteButton.deleteUserConfirm")}
-            </DialogTitle>
-            <DialogDescription>
-              {t("groupComponents.memberDeleteButton.deleteConfirmation")}
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="flex justify-end gap-2">
-            <DialogClose asChild>
-              <Button variant="outline">
-                {t("groupComponents.memberDeleteButton.cancel")}
-              </Button>
-            </DialogClose>
-            <DialogClose asChild>
-              <Button
-                variant="destructive"
-                onClick={handleDelete}
-                disabled={isPending}
-              >
-                {t("groupComponents.memberDeleteButton.delete")}
-              </Button>
-            </DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <DeleteMemberConfirmDialog
+        open={open}
+        onOpenChange={setOpen}
+        onConfirm={handleDelete}
+        isPending={isPending}
+      />
     </>
   );
 }

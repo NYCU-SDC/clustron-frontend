@@ -94,7 +94,7 @@ export default function GroupMemberTable({
         ) : (
           <>
             <div className="overflow-x-auto">
-              <Table className="min-w-xl sm:min-w-2xl">
+              <Table>
                 <TableHeader className="hidden sm:table-header-group">
                   <TableRow>
                     <TableHead>
@@ -120,6 +120,7 @@ export default function GroupMemberTable({
                       onlyInLDAP={m.onlyInLDAP}
                       accessLevel={accessLevel}
                       showActions={canEditMembers && !isOverview}
+                      showDetail={isOverview}
                       isArchived={isArchived}
                       isPending={isUpdatingMember}
                       onDelete={onRemove ? () => onRemove(m.id) : undefined}

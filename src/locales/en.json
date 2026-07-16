@@ -238,6 +238,11 @@
       "uploadButton": "Upload CSV",
       "tooltipFormat": "CSV format: 1st column = Student ID or Email, 2nd column = Role (optional). Blank lines will be automatically skipped. Example:\ns123456,student\nuser@example.com,teacher_assistant",
       "loadedToast": "Loaded {{count}} members from CSV"
+    },
+    "memberDetailDrawer": {
+      "email": "Email",
+      "studentId": "Student ID",
+      "role": "Role"
     }
   },
   "groupPages": {

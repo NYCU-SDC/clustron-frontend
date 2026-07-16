@@ -1,6 +1,7 @@
 import { TableRow, TableCell } from "@/components/ui/table";
 import { ChevronDown, Loader2 } from "lucide-react";
 import MemberDeleteMenu from "./MemberDeleteMenu";
+import MemberDetailDrawer from "./MemberDetailDrawer";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -28,6 +29,7 @@ type Props = {
   onDelete?: () => void;
   onUpdateRole?: (newRoleId: string) => void;
   showActions?: boolean;
+  showDetail?: boolean;
   isArchived?: boolean;
   isPending?: boolean;
 };
@@ -43,6 +45,7 @@ export default function GroupMemberRow({
   onDelete,
   onUpdateRole,
   showActions = false,
+  showDetail = false,
   isArchived = false,
   isPending = false,
 }: Props) {
@@ -69,7 +72,8 @@ export default function GroupMemberRow({
 
       <TableCell>
         <div className="flex flex-col">
-          <span className="font-medium">{id}</span>
+          <span className="font-medium sm:hidden">{name}</span>
+          <span className="font-medium hidden sm:inline">{id}</span>
           <span className="text-muted-foreground text-xs">{email}</span>
         </div>
       </TableCell>
@@ -110,11 +114,37 @@ export default function GroupMemberRow({
         )}
       </TableCell>
 
-      {showActions && (
+      {showActions ? (
         <TableCell className="text-right pr-4">
-          <MemberDeleteMenu onConfirm={onDelete!} isArchived={isArchived} />
+          {/* Desktop: dropdown menu */}
+          <div className="hidden sm:block">
+            <MemberDeleteMenu onConfirm={onDelete!} isArchived={isArchived} />
+          </div>
+          {/* Mobile: bottom drawer with member details */}
+          <div className="sm:hidden">
+            <MemberDetailDrawer
+              name={name}
+              email={email}
+              studentId={id}
+              role={displayRoleLabel}
+              onDelete={onDelete}
+              isArchived={isArchived}
+            />
+          </div>
         </TableCell>
-      )}
+      ) : showDetail ? (
+        <TableCell className="text-right pr-4">
+          {/* Mobile only: view-only member details drawer (no delete) */}
+          <div className="sm:hidden">
+            <MemberDetailDrawer
+              name={name}
+              email={email}
+              studentId={id}
+              role={displayRoleLabel}
+            />
+          </div>
+        </TableCell>
+      ) : null}
     </TableRow>
   );
 }

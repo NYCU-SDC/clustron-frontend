@@ -100,7 +100,7 @@ export default function PendingMemberTable({
         ) : (
           <>
             <div className="overflow-x-auto">
-              <Table className="min-w-[520px]">
+              <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>
