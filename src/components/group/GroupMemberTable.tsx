@@ -120,6 +120,7 @@ export default function GroupMemberTable({
                       onlyInLDAP={m.onlyInLDAP}
                       accessLevel={accessLevel}
                       showActions={canEditMembers && !isOverview}
+                      showDetail={isOverview}
                       isArchived={isArchived}
                       isPending={isUpdatingMember}
                       onDelete={onRemove ? () => onRemove(m.id) : undefined}

@@ -29,6 +29,7 @@ type Props = {
   onDelete?: () => void;
   onUpdateRole?: (newRoleId: string) => void;
   showActions?: boolean;
+  showDetail?: boolean;
   isArchived?: boolean;
   isPending?: boolean;
 };
@@ -44,6 +45,7 @@ export default function GroupMemberRow({
   onDelete,
   onUpdateRole,
   showActions = false,
+  showDetail = false,
   isArchived = false,
   isPending = false,
 }: Props) {
@@ -112,7 +114,7 @@ export default function GroupMemberRow({
         )}
       </TableCell>
 
-      {showActions && (
+      {showActions ? (
         <TableCell className="text-right pr-4">
           {/* Desktop: dropdown menu */}
           <div className="hidden sm:block">
@@ -130,7 +132,19 @@ export default function GroupMemberRow({
             />
           </div>
         </TableCell>
-      )}
+      ) : showDetail ? (
+        <TableCell className="text-right pr-4">
+          {/* Mobile only: view-only member details drawer (no delete) */}
+          <div className="sm:hidden">
+            <MemberDetailDrawer
+              name={name}
+              email={email}
+              studentId={id}
+              role={displayRoleLabel}
+            />
+          </div>
+        </TableCell>
+      ) : null}
     </TableRow>
   );
 }
