@@ -52,6 +52,7 @@
     "groupLink": "群組",
     "settingLink": "設定",
     "jobsLink": "排程",
+    "resourceLink": "資源",
     "adminLink": "管理"
   },
   "callback": {
@@ -466,5 +467,86 @@
     "title": "無法連接至伺服器",
     "description": "無法確認系統設定狀態，請檢查您的網路連線或後端服務。",
     "retryBtn": "重試"
+  },
+  "resourcePages": {
+    "resourceList": {
+      "title": "資源列表"
+    }
+  },
+  "resourceComponents": {
+    "status": {
+      "active": "運作中",
+      "provisioning": "部署中",
+      "failed": "失敗",
+      "unset": "未設定"
+    },
+    "form": {
+      "name": "名稱",
+      "ipAddress": "IP 位址",
+      "ipAddressHint": "若未提供 SSH 設定主機則為必填",
+      "sshConfigHost": "SSH 設定主機",
+      "sshConfigHostHint": "可替代 IP 位址",
+      "privateIp": "內部 IP",
+      "privateIpHint": "叢集內部網路位址",
+      "sshUser": "SSH 使用者",
+      "sshKeyName": "SSH 金鑰名稱",
+      "role": "角色",
+      "roleHeadNode": "主節點",
+      "roleComputeNode": "運算節點",
+      "slurmPartition": "Slurm 分割區",
+      "selectPlaceholder": "請選擇",
+      "cpuCores": "CPU 核心數",
+      "memoryMb": "記憶體 (MB)",
+      "allowedLoginGroups": "允許登入的群組",
+      "groupsLoadFail": "無法載入群組",
+      "noGroups": "找不到群組"
+    },
+    "table": {
+      "loading": "正在載入資源...",
+      "loadingFailed": "無法載入資源",
+      "noResources": "找不到資源",
+      "name": "名稱",
+      "address": "位址",
+      "role": "角色",
+      "partition": "分割區",
+      "resources": "資源",
+      "status": "狀態"
+    },
+    "addResourceSheet": {
+      "trigger": "新增資源",
+      "title": "新增運算資源",
+      "submit": "新增節點"
+    },
+    "detailSheet": {
+      "resetNode": "重設節點",
+      "delete": "刪除",
+      "saveChanges": "儲存變更",
+      "saveSuccessToast": "變更已儲存",
+      "resetConfirmTitle": "要重設此節點嗎？",
+      "resetConfirmDescription": "這將重設節點的設定與狀態，並觸發背景重新部署。",
+      "deleteConfirmTitle": "要刪除此節點嗎？",
+      "deleteConfirmDescription": "這將永久移除此節點，且無法復原。"
+    },
+    "createServer": {
+      "creatingToast": "新增節點中...",
+      "createSuccessToast": "節點新增成功",
+      "createFailToast": "新增節點失敗"
+    },
+    "deleteServer": {
+      "deletingToast": "刪除中...",
+      "deleteSuccessToast": "節點已刪除",
+      "deleteFailToast": "刪除節點失敗"
+    },
+    "resetServer": {
+      "resettingToast": "重設節點中...",
+      "resetSuccessToast": "節點已重設",
+      "resetFailToast": "重設節點失敗"
+    },
+    "updateServerRole": {
+      "updateFailToast": "更新角色失敗"
+    },
+    "updateAllowedLoginGroups": {
+      "updateFailToast": "更新允許登入的群組失敗"
+    }
   }
 }
