@@ -234,6 +234,10 @@ export default function ResourceDetailSheet({
                 label={t("resourceComponents.form.memoryMb")}
                 value={server.memory_mb?.toString()}
               />
+              <DetailRow
+                label={t("resourceComponents.form.slurmPartition")}
+                value={server.slurm_partition}
+              />
             </div>
 
             <div className="grid gap-2">
@@ -254,13 +258,6 @@ export default function ResourceDetailSheet({
                   ))}
                 </SelectContent>
               </Select>
-            </div>
-
-            <div className="grid gap-2">
-              <Label>{t("resourceComponents.form.slurmPartition")}</Label>
-              <p className="text-sm font-medium">
-                {server.slurm_partition || "—"}
-              </p>
             </div>
 
             <AllowedLoginGroupsField
