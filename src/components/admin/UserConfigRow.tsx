@@ -282,16 +282,12 @@ export function UserConfigMobileRow({
   };
 
   return (
-    <Drawer open={open} onOpenChange={handleOpenChange} showSwipeHandle>
-      <DrawerTrigger
-        render={
-          <button
-            type="button"
-            className="grid w-full grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-3 border-b px-4 py-4 text-left transition-colors last:border-b-0 hover:bg-muted/50"
-          />
-        }
-      >
-        <>
+    <Drawer open={open} onOpenChange={handleOpenChange}>
+      <DrawerTrigger asChild>
+        <button
+          type="button"
+          className="grid w-full grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-3 border-b px-4 py-4 text-left transition-colors last:border-b-0 hover:bg-muted/50"
+        >
           <span className="min-w-0">
             <span className="block truncate text-sm font-medium">
               {identifier}
@@ -308,10 +304,10 @@ export function UserConfigMobileRow({
           ) : (
             <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
           )}
-        </>
+        </button>
       </DrawerTrigger>
 
-      <DrawerContent className="max-h-[85vh]">
+      <DrawerContent className="max-h-[85vh]" showCloseButton={false}>
         <DrawerHeader className="text-left">
           <DrawerTitle className="text-xl">{name}</DrawerTitle>
           <DrawerDescription className="break-all">
@@ -319,7 +315,7 @@ export function UserConfigMobileRow({
           </DrawerDescription>
         </DrawerHeader>
 
-        <div className="overflow-y-auto px-4 pb-2">
+        <div className="overflow-y-auto">
           <div className="overflow-hidden rounded-lg border">
             <MobileDetailRow label={t("userConfigTable.tableHeadName")}>
               <span className="break-words">{name}</span>
@@ -394,8 +390,10 @@ export function UserConfigMobileRow({
               t("userConfigTable.drawerSaveLinuxUsername")
             )}
           </Button>
-          <DrawerClose render={<Button variant="outline" className="w-full" />}>
-            {t("userConfigTable.drawerClose")}
+          <DrawerClose asChild>
+            <Button variant="outline" className="w-full">
+              {t("userConfigTable.drawerClose")}
+            </Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
