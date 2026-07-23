@@ -381,6 +381,46 @@ describe("CreateGroup", () => {
       });
     });
 
+    it("allows adding a link from the mobile drawer", async () => {
+      const user = userEvent.setup();
+      renderWithProviders();
+
+      await user.click(
+        screen.getByRole("button", {
+          name: "groupPages.createGroup.addMoreLinks",
+        }),
+      );
+
+      const drawer = screen.getByRole("dialog", {
+        name: "groupPages.createGroup.linkDrawerTitle",
+      });
+
+      await user.type(
+        within(drawer).getByPlaceholderText(
+          "groupPages.createGroup.linkTitlePlaceholder",
+        ),
+        "Documentation",
+      );
+      await user.type(
+        within(drawer).getByPlaceholderText("groupPages.createGroup.URL"),
+        "docs.example.com",
+      );
+
+      await user.click(
+        within(drawer).getByRole("button", {
+          name: "groupPages.createGroup.linkDrawerDone",
+        }),
+      );
+
+      await waitFor(() => {
+        const linkRow = screen.getByText("Documentation").closest("tr");
+
+        expect(
+          within(linkRow!).getByText("https://docs.example.com"),
+        ).toBeInTheDocument();
+      });
+    });
+
     it("normalizes URL without protocol by adding https://", async () => {
       const user = userEvent.setup();
       renderWithProviders();
@@ -609,6 +649,40 @@ describe("CreateGroup", () => {
       await waitFor(() => {
         const createButton = getCreateButton();
         expect(createButton).toBeDisabled();
+      });
+    });
+
+    it("allows adding a member from the mobile drawer", async () => {
+      const user = userEvent.setup();
+      renderWithProviders();
+
+      await user.click(
+        screen.getByRole("button", {
+          name: "groupPages.createGroup.addMoreUsers",
+        }),
+      );
+
+      const drawer = screen.getByRole("dialog", {
+        name: "groupPages.createGroup.memberDrawerTitle",
+      });
+
+      await user.type(
+        within(drawer).getByPlaceholderText(
+          "groupPages.createGroup.memberIdentifierPlaceholder",
+        ),
+        "113999321",
+      );
+
+      await user.click(
+        within(drawer).getByRole("button", {
+          name: "groupPages.createGroup.addMember",
+        }),
+      );
+
+      await waitFor(() => {
+        const memberRow = screen.getByText("113999321").closest("tr");
+
+        expect(within(memberRow!).getByText("Student")).toBeInTheDocument();
       });
     });
   });
