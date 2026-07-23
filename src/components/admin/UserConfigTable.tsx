@@ -22,7 +22,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import PaginationControls from "@/components/customUI/PaginationControl";
-import UserConfigRow from "@/components/admin/UserConfigRow";
+import UserConfigRow, {
+  UserConfigMobileRow,
+} from "@/components/admin/UserConfigRow";
 import { updateGlobalRole } from "@/lib/request/updateGlobalRole";
 import { updateLinuxUsername } from "@/lib/request/updateLinuxUsername";
 import { getUsers } from "@/lib/request/getUsers";
@@ -168,8 +170,8 @@ export default function UserConfigTable() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-2">
-        <div className="relative w-full max-w-sm">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+        <div className="relative w-full sm:max-w-sm">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
@@ -186,7 +188,7 @@ export default function UserConfigTable() {
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="flex items-center gap-1 font-medium text-sm px-2 py-1 h-8 hover:bg-muted"
+              className="flex h-8 w-fit items-center gap-1 px-2 py-1 text-sm font-medium hover:bg-muted"
             >
               Role: {currentRoleLabel}
               <ChevronDown className="w-4 h-4 opacity-50" />
@@ -218,20 +220,55 @@ export default function UserConfigTable() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <Card>
+      <Card className="gap-0 overflow-hidden md:gap-6">
         <CardHeader>
           <CardTitle className="text-2xl">
             {t("userConfigTable.cardTitle")}
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-0 md:px-6">
           {users.length === 0 ? (
-            <p className="text-sm text-gray-500">
+            <p className="px-6 text-sm text-gray-500 md:px-0">
               {t("userConfigTable.noUsersFound")}
             </p>
           ) : (
             <>
-              <div className="overflow-x-auto">
+              <div className="md:hidden">
+                <div className="grid grid-cols-[minmax(0,1fr)_auto_1.5rem] gap-3 border-b px-4 pb-3 text-sm font-medium text-muted-foreground">
+                  <span>{t("userConfigTable.tableHeadId")}</span>
+                  <span>{t("userConfigTable.tableHeadRole")}</span>
+                  <span className="sr-only">
+                    {t("userConfigTable.drawerDetails")}
+                  </span>
+                </div>
+                <div>
+                  {users.map((user) => (
+                    <UserConfigMobileRow
+                      key={user.id}
+                      name={user.fullName}
+                      id={user.studentId}
+                      email={user.email}
+                      linuxUsername={user.linuxUsername}
+                      currentRole={user.role}
+                      isOnBoarding={user.role == "ROLE_NOT_SETUP"}
+                      isSelf={user.id === currentUserId}
+                      onUpdateLinuxUsername={(newUsername, options) =>
+                        handleUsernameUpdate(user.id, newUsername, options)
+                      }
+                      onUpdateRole={(newRole) =>
+                        handleRoleUpdate(user.id, newRole)
+                      }
+                      isPending={
+                        (isUpdatingRole && roleVariables?.id === user.id) ||
+                        (isUpdatingUsername &&
+                          usernameVariables?.id === user.id)
+                      }
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className="hidden overflow-x-auto md:block">
                 <Table className="min-w-[640px] table-fixed">
                   <TableHeader>
                     <TableRow>
@@ -276,7 +313,7 @@ export default function UserConfigTable() {
                   </TableBody>
                 </Table>
               </div>
-              <div className="flex flex-col gap-4 md:flex-row md:items-center w-full">
+              <div className="flex w-full flex-col gap-4 px-4 md:flex-row md:items-center md:px-0">
                 <PaginationControls
                   currentPage={currentPage}
                   totalPages={totalPages}

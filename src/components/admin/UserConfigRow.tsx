@@ -1,6 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, type ReactNode } from "react";
 import { TableRow, TableCell } from "@/components/ui/table";
-import { ChevronDown, Link2, Loader2 } from "lucide-react";
+import { ChevronDown, Link2, Loader2, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -15,6 +15,23 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import {
   GLOBAL_ROLE_OPTIONS,
@@ -22,6 +39,7 @@ import {
   type UpdateUserRoleInput,
   type GlobalRole,
 } from "@/types/admin";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   name: string;
@@ -38,6 +56,10 @@ type Props = {
   isPending?: boolean;
   isSelf?: boolean;
 };
+
+function getRoleLabel(role: GlobalRole) {
+  return GLOBAL_ROLE_OPTIONS.find((r) => r.id === role)?.label || role;
+}
 
 export default function UserConfigRow({
   name,
@@ -80,8 +102,7 @@ export default function UserConfigRow({
       setEditValue(linuxUsername);
     }
   };
-  const roleLabel =
-    GLOBAL_ROLE_OPTIONS.find((r) => r.id === currentRole)?.label || currentRole;
+  const roleLabel = getRoleLabel(currentRole);
 
   return (
     <TableRow className="hover:bg-muted/50 transition-colors">
@@ -204,5 +225,178 @@ export default function UserConfigRow({
         )}
       </TableCell>
     </TableRow>
+  );
+}
+
+function MobileDetailRow({
+  label,
+  children,
+}: {
+  label: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-4 border-b px-4 py-3 last:border-b-0">
+      <span className="text-sm text-muted-foreground">{label}</span>
+      <div className="min-w-0 text-right text-sm font-medium">{children}</div>
+    </div>
+  );
+}
+
+export function UserConfigMobileRow({
+  name,
+  id,
+  email,
+  linuxUsername,
+  currentRole,
+  onUpdateRole,
+  onUpdateLinuxUsername,
+  isOnBoarding = false,
+  isPending = false,
+  isSelf = false,
+}: Props) {
+  const [open, setOpen] = useState(false);
+  const [editValue, setEditValue] = useState(linuxUsername);
+  const { t } = useTranslation();
+
+  const identifier = id || email;
+  const roleLabel = getRoleLabel(currentRole);
+  const canUpdateRole = !isSelf && !isOnBoarding;
+  const canSaveUsername = editValue !== linuxUsername && !isPending;
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+    if (nextOpen) {
+      setEditValue(linuxUsername);
+    }
+  };
+
+  const handleUsernameSubmit = () => {
+    if (!canSaveUsername) return;
+
+    onUpdateLinuxUsername(editValue, {
+      onSettled: () => {
+        setEditValue(editValue);
+      },
+    });
+  };
+
+  return (
+    <Drawer open={open} onOpenChange={handleOpenChange}>
+      <DrawerTrigger asChild>
+        <button
+          type="button"
+          className="grid w-full grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-3 border-b px-4 py-4 text-left transition-colors last:border-b-0 hover:bg-muted/50"
+        >
+          <span className="min-w-0">
+            <span className="block truncate text-sm font-medium">
+              {identifier}
+            </span>
+            <span className="mt-1 block truncate text-xs text-muted-foreground">
+              {name}
+            </span>
+          </span>
+          <span className="rounded-full bg-muted px-2 py-1 text-xs font-medium text-foreground">
+            {roleLabel}
+          </span>
+          {isPending ? (
+            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+          ) : (
+            <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
+          )}
+        </button>
+      </DrawerTrigger>
+
+      <DrawerContent className="max-h-[85vh]">
+        <DrawerHeader className="text-left">
+          <DrawerTitle className="text-xl">{name}</DrawerTitle>
+          <DrawerDescription className="break-all">
+            {identifier}
+          </DrawerDescription>
+        </DrawerHeader>
+
+        <div className="overflow-y-auto px-4 pb-2">
+          <div className="overflow-hidden rounded-lg border">
+            <MobileDetailRow label={t("userConfigTable.tableHeadName")}>
+              <span className="break-words">{name}</span>
+            </MobileDetailRow>
+            <MobileDetailRow label={t("userConfigTable.drawerStudentId")}>
+              <span className="break-all">{id || "-"}</span>
+            </MobileDetailRow>
+            <MobileDetailRow label={t("userConfigTable.drawerEmail")}>
+              <span className="break-all">{email || "-"}</span>
+            </MobileDetailRow>
+            <MobileDetailRow
+              label={t("userConfigTable.tableHeadLinuxUsername")}
+            >
+              <Input
+                value={editValue}
+                disabled={isPending}
+                className="h-8 w-40 text-right text-sm"
+                onChange={(e) => setEditValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleUsernameSubmit();
+                  }
+                }}
+              />
+            </MobileDetailRow>
+            <MobileDetailRow label={t("userConfigTable.tableHeadRole")}>
+              {canUpdateRole ? (
+                <Select
+                  value={currentRole}
+                  disabled={isPending}
+                  onValueChange={(value) =>
+                    onUpdateRole(value as UpdateUserRoleInput["role"])
+                  }
+                >
+                  <SelectTrigger
+                    size="sm"
+                    className="h-8 w-36 justify-end border-none bg-muted px-2 text-sm font-medium shadow-none hover:cursor-pointer focus-visible:ring-0"
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {GLOBAL_ROLE_OPTIONS.filter(
+                      (role) => role.id !== GlobalRoleNotSetup,
+                    ).map((role) => (
+                      <SelectItem key={role.id} value={role.id}>
+                        {role.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ) : (
+                <span className="rounded-full bg-muted px-2 py-1 text-xs font-medium">
+                  {roleLabel}
+                </span>
+              )}
+            </MobileDetailRow>
+          </div>
+        </div>
+
+        <DrawerFooter>
+          <Button
+            onClick={handleUsernameSubmit}
+            disabled={!canSaveUsername}
+            className="w-full"
+          >
+            {isPending ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                {t("userConfigTable.updatingToast")}
+              </>
+            ) : (
+              t("userConfigTable.drawerSaveLinuxUsername")
+            )}
+          </Button>
+          <DrawerClose asChild>
+            <Button variant="outline" className="w-full">
+              {t("userConfigTable.drawerClose")}
+            </Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   );
 }

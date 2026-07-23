@@ -181,7 +181,12 @@
     "resultPerPage": "每頁顯示結果數：",
     "updatingToast": "正在更新...",
     "updateRoleSuccessToast": "角色更新成功",
-    "updateRoleFailToast": "角色更新失敗"
+    "updateRoleFailToast": "角色更新失敗",
+    "drawerDetails": "使用者詳細資料",
+    "drawerStudentId": "學號",
+    "drawerEmail": "電子信箱",
+    "drawerSaveLinuxUsername": "儲存 Linux 使用者名稱",
+    "drawerClose": "關閉"
   },
   "adminSidebar": {
     "title": "管理",

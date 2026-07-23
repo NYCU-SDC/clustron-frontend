@@ -181,7 +181,12 @@
     "resultPerPage": "Results per page:",
     "updatingToast": "Updating...",
     "updateRoleSuccessToast": "Role updated",
-    "updateRoleFailToast": "Failed to update role"
+    "updateRoleFailToast": "Failed to update role",
+    "drawerDetails": "User details",
+    "drawerStudentId": "Student ID",
+    "drawerEmail": "Email",
+    "drawerSaveLinuxUsername": "Save Linux username",
+    "drawerClose": "Close"
   },
   "adminSidebar": {
     "title": "Admin",
