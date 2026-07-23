@@ -19,7 +19,6 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
@@ -310,16 +309,10 @@ export function UserConfigMobileRow({
       <DrawerContent className="max-h-[85vh]" showCloseButton={false}>
         <DrawerHeader className="text-left">
           <DrawerTitle className="text-xl">{name}</DrawerTitle>
-          <DrawerDescription className="break-all">
-            {identifier}
-          </DrawerDescription>
         </DrawerHeader>
 
         <div className="overflow-y-auto">
           <div className="overflow-hidden rounded-lg border">
-            <MobileDetailRow label={t("userConfigTable.tableHeadName")}>
-              <span className="break-words">{name}</span>
-            </MobileDetailRow>
             <MobileDetailRow label={t("userConfigTable.drawerStudentId")}>
               <span className="break-all">{id || "-"}</span>
             </MobileDetailRow>
