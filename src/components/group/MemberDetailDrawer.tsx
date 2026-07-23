@@ -1,11 +1,11 @@
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerFooter,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 import DeleteMemberConfirmDialog from "./DeleteMemberConfirmDialog";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Trash2 } from "lucide-react";
@@ -57,17 +57,17 @@ export default function MemberDetailDrawer({
 
   return (
     <>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
+      <Drawer open={open} onOpenChange={setOpen}>
+        <DrawerTrigger asChild>
           <Button variant="ghost" size="icon" aria-label="member-detail-drawer">
             <MoreHorizontal className="w-4 h-4" />
           </Button>
-        </DialogTrigger>
+        </DrawerTrigger>
 
-        <DialogContent className="fixed inset-x-0 bottom-0 top-auto w-full max-w-full translate-x-0 translate-y-0 gap-4 rounded-b-none rounded-t-2xl sm:top-[50%] sm:left-[50%] sm:right-auto sm:bottom-auto sm:max-w-md sm:translate-x-[-50%] sm:translate-y-[-50%] sm:rounded-lg">
-          <DialogHeader>
-            <DialogTitle>{name}</DialogTitle>
-          </DialogHeader>
+        <DrawerContent side="bottom">
+          <DrawerHeader>
+            <DrawerTitle>{name}</DrawerTitle>
+          </DrawerHeader>
 
           <div className="rounded-lg border">
             {detailRows.map((row, index) => (
@@ -88,7 +88,7 @@ export default function MemberDetailDrawer({
           </div>
 
           {onDelete && !isArchived && (
-            <DialogFooter>
+            <DrawerFooter>
               <Button
                 variant="ghost"
                 className="w-full justify-center gap-2 text-red-600 hover:bg-red-50 hover:text-red-600"
@@ -97,10 +97,10 @@ export default function MemberDetailDrawer({
                 <Trash2 className="w-4 h-4" />
                 {t("groupComponents.memberDeleteButton.removeUser")}
               </Button>
-            </DialogFooter>
+            </DrawerFooter>
           )}
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
 
       <DeleteMemberConfirmDialog
         open={confirmOpen}
