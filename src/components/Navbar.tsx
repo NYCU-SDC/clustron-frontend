@@ -93,16 +93,16 @@ export default function Navbar() {
             </NavLink>
             {/* <NavLink to="/jobs" ...>{t("navbar.jobsLink")}</NavLink> */}
             <NavLink
-              to="/resources"
-              className={({ isActive }) => navLinkClassForMobile(isActive)}
-            >
-              {t("navbar.resourceLink")}
-            </NavLink>
-            <NavLink
               to="/setting"
               className={({ isActive }) => navLinkClassForMobile(isActive)}
             >
               {t("navbar.settingLink")}
+            </NavLink>
+            <NavLink
+              to="/resources"
+              className={({ isActive }) => navLinkClassForMobile(isActive)}
+            >
+              {t("navbar.resourceLink")}
             </NavLink>
             {role === "admin" && (
               <NavLink
@@ -138,12 +138,6 @@ export default function Navbar() {
                           {t("navbar.jobsLink")}
                         </NavLink> */}
                 <NavLink
-                  to="/resources"
-                  className={({ isActive }) => navLinkclass(isActive)}
-                >
-                  {t("navbar.resourceLink")}
-                </NavLink>
-                <NavLink
                   to="/setting"
                   className={({ isActive }) => navLinkclass(isActive)}
                 >
@@ -151,6 +145,12 @@ export default function Navbar() {
                 </NavLink>
               </>
             )}
+            <NavLink
+              to="/resources"
+              className={({ isActive }) => navLinkclass(isActive)}
+            >
+              {t("navbar.resourceLink")}
+            </NavLink>
             {role === "admin" && (
               <NavLink
                 to="/admin"
