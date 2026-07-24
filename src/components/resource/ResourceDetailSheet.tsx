@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { RefreshCw } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -32,12 +33,14 @@ import {
 } from "@/types/resource";
 import {
   getAllowedLoginGroups,
+  getServerById,
   updateAllowedLoginGroups,
   updateServerRole,
   resetServer as resetServerRequest,
   deleteServer as deleteServerRequest,
   serverQueryKeys,
 } from "@/lib/request/resources";
+import { cn } from "@/lib/utils";
 import ResourceStatusBadge from "@/components/resource/ResourceStatusBadge";
 import AllowedLoginGroupsField from "@/components/resource/AllowedLoginGroupsField";
 import ConfirmActionDialog from "@/components/resource/ConfirmActionDialog";
@@ -72,6 +75,17 @@ export default function ResourceDetailSheet({
   const { data: allowedGroups } = useQuery({
     queryKey: serverQueryKeys.allowedLoginGroups,
     queryFn: getAllowedLoginGroups,
+  });
+
+  const {
+    data: currentServer = server,
+    isFetching: isRefetching,
+    refetch: refetchServer,
+  } = useQuery({
+    queryKey: serverQueryKeys.detail(server.id),
+    queryFn: () => getServerById(server.id),
+    initialData: server,
+    enabled: open,
   });
 
   useEffect(() => {
@@ -183,7 +197,7 @@ export default function ResourceDetailSheet({
   const handleSave = async () => {
     try {
       const tasks: Promise<unknown>[] = [updateGroupsAsync(groupIds)];
-      if (role !== server.ansible_role) {
+      if (role !== currentServer.ansible_role) {
         tasks.push(updateRoleAsync(role));
       }
       await Promise.all(tasks);
@@ -201,52 +215,68 @@ export default function ResourceDetailSheet({
       <Sheet open={open} onOpenChange={onOpenChange}>
         <SheetContent className="w-full gap-0 overflow-y-auto sm:max-w-lg">
           <SheetHeader>
-            <SheetTitle className="text-2xl">{server.ansible_name}</SheetTitle>
+            <SheetTitle className="text-2xl">
+              {currentServer.ansible_name}
+            </SheetTitle>
           </SheetHeader>
 
           <div className="flex flex-col gap-4 px-4">
-            <ResourceStatusBadge status={server.status} />
+            <div className="flex items-center justify-between">
+              <ResourceStatusBadge status={currentServer.status} />
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => refetchServer()}
+                disabled={isRefetching}
+              >
+                <RefreshCw
+                  className={cn("h-4 w-4", isRefetching && "animate-spin")}
+                />
+                {t("resourceComponents.detailSheet.refetch")}
+              </Button>
+            </div>
 
             <div className="rounded-md border">
               <DetailRow
                 label={t("resourceComponents.form.name")}
-                value={server.ansible_name}
+                value={currentServer.ansible_name}
               />
               <DetailRow
                 label={t("resourceComponents.form.ipAddress")}
-                value={server.ip_address}
+                value={currentServer.ip_address}
               />
               <DetailRow
                 label={t("resourceComponents.form.sshConfigHost")}
-                value={server.ssh_config_host}
+                value={currentServer.ssh_config_host}
               />
               <DetailRow
                 label={t("resourceComponents.form.privateIp")}
-                value={server.private_ip}
+                value={currentServer.private_ip}
               />
               <DetailRow
                 label={t("resourceComponents.form.sshUser")}
-                value={server.ssh_user}
+                value={currentServer.ssh_user}
               />
               <DetailRow
                 label={t("resourceComponents.form.sshKeyName")}
-                value={server.ssh_key_name}
+                value={currentServer.ssh_key_name}
               />
               <DetailRow
                 label={t("resourceComponents.form.cpuCores")}
-                value={server.cpu_cores?.toString()}
+                value={currentServer.cpu_cores?.toString()}
               />
               <DetailRow
                 label={t("resourceComponents.form.memoryMb")}
-                value={server.memory_mb?.toString()}
+                value={currentServer.memory_mb?.toString()}
               />
               <DetailRow
                 label={t("resourceComponents.form.slurmPartition")}
-                value={server.slurm_partition}
+                value={currentServer.slurm_partition}
               />
             </div>
 
-            {server.provision_detail && (
+            {currentServer.provision_detail && (
               <Accordion
                 type="single"
                 collapsible
@@ -258,7 +288,7 @@ export default function ResourceDetailSheet({
                   </AccordionTrigger>
                   <AccordionContent className="px-4">
                     <p className="whitespace-pre-wrap wrap-break-word text-sm">
-                      {server.provision_detail}
+                      {currentServer.provision_detail}
                     </p>
                   </AccordionContent>
                 </AccordionItem>

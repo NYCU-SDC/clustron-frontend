@@ -512,6 +512,7 @@
       "submit": "Add node"
     },
     "detailSheet": {
+      "refetch": "Refresh",
       "resetNode": "Reset node",
       "delete": "Delete",
       "saveChanges": "Save Changes",

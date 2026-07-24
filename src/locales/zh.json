@@ -519,6 +519,7 @@
       "submit": "新增節點"
     },
     "detailSheet": {
+      "refetch": "重新整理",
       "resetNode": "重設節點",
       "delete": "刪除",
       "saveChanges": "儲存變更",
