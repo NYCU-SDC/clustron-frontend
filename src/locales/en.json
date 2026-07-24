@@ -490,6 +490,7 @@
       "selectPlaceholder": "Select",
       "cpuCores": "CPU cores",
       "memoryMb": "Memory (MB)",
+      "provisionDetail": "Provisioning detail",
       "allowedLoginGroups": "Allowed login groups",
       "groupsLoadFail": "Failed to load groups",
       "noGroups": "No groups found"

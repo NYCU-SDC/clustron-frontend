@@ -15,6 +15,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { useTranslation } from "react-i18next";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -239,6 +245,25 @@ export default function ResourceDetailSheet({
                 value={server.slurm_partition}
               />
             </div>
+
+            {server.provision_detail && (
+              <Accordion
+                type="single"
+                collapsible
+                className="rounded-md border"
+              >
+                <AccordionItem value="provision-detail" className="border-b-0">
+                  <AccordionTrigger className="px-4 py-3 text-sm text-muted-foreground hover:no-underline">
+                    {t("resourceComponents.form.provisionDetail")}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-4">
+                    <p className="whitespace-pre-wrap wrap-break-word text-sm">
+                      {server.provision_detail}
+                    </p>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            )}
 
             <div className="grid gap-2">
               <Label>{t("resourceComponents.form.role")}</Label>

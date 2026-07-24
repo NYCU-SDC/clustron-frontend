@@ -497,6 +497,7 @@
       "selectPlaceholder": "請選擇",
       "cpuCores": "CPU 核心數",
       "memoryMb": "記憶體 (MB)",
+      "provisionDetail": "部署詳細資訊",
       "allowedLoginGroups": "允許登入的群組",
       "groupsLoadFail": "無法載入群組",
       "noGroups": "找不到群組"
