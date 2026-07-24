@@ -52,6 +52,7 @@
     "groupLink": "Groups",
     "settingLink": "Settings",
     "jobsLink": "Jobs",
+    "resourceLink": "Resource",
     "adminLink": "Admin"
   },
   "callback": {
@@ -459,5 +460,88 @@
     "title": "Connection Error",
     "description": "Unable to verify system setup status. Please check your network connection or backend service.",
     "retryBtn": "Retry"
+  },
+  "resourcePages": {
+    "resourceList": {
+      "title": "Resource List"
+    }
+  },
+  "resourceComponents": {
+    "status": {
+      "active": "Active",
+      "provisioning": "Provisioning",
+      "failed": "Failed",
+      "unset": "Unset"
+    },
+    "form": {
+      "name": "Name",
+      "ipAddress": "IP address",
+      "ipAddressHint": "Required if no SSH config host",
+      "sshConfigHost": "SSH config host",
+      "sshConfigHostHint": "Alternative to IP",
+      "privateIp": "Private IP",
+      "privateIpHint": "Internal cluster network address",
+      "sshUser": "SSH user",
+      "sshKeyName": "SSH key name",
+      "role": "Role",
+      "roleHeadNode": "Head node",
+      "roleComputeNode": "Compute node",
+      "slurmPartition": "Slurm partition",
+      "selectPlaceholder": "Select",
+      "cpuCores": "CPU cores",
+      "memoryMb": "Memory (MB)",
+      "provisionDetail": "Provisioning detail",
+      "allowedLoginGroups": "Allowed login groups",
+      "groupsLoadFail": "Failed to load groups",
+      "noGroups": "No groups found"
+    },
+    "table": {
+      "loading": "Loading resources...",
+      "loadingFailed": "Failed to load resources",
+      "noResources": "No resources found",
+      "name": "Name",
+      "address": "Address",
+      "role": "Role",
+      "partition": "Partition",
+      "resources": "Resources",
+      "status": "Status"
+    },
+    "addResourceSheet": {
+      "trigger": "Add resource",
+      "title": "New compute resource",
+      "submit": "Add node"
+    },
+    "detailSheet": {
+      "refetch": "Refresh",
+      "resetNode": "Reset node",
+      "delete": "Delete",
+      "saveChanges": "Save Changes",
+      "saveSuccessToast": "Changes saved",
+      "resetConfirmTitle": "Reset this node?",
+      "resetConfirmDescription": "This will reset the node's configuration and status, and trigger a background provisioning run.",
+      "deleteConfirmTitle": "Delete this node?",
+      "deleteConfirmDescription": "This will permanently remove the node from the cluster. This action cannot be undone."
+    },
+    "createServer": {
+      "creatingToast": "Adding node...",
+      "createSuccessToast": "Node added successfully",
+      "createFailToast": "Failed to add node"
+    },
+    "deleteServer": {
+      "deletingToast": "Deleting...",
+      "deleteSuccessToast": "Node deleted",
+      "deleteFailToast": "Failed to delete node"
+    },
+    "resetServer": {
+      "resettingToast": "Resetting node...",
+      "resetSuccessToast": "Node reset",
+      "resetFailToast": "Failed to reset node"
+    },
+    "updateServerRole": {
+      "updateFailToast": "Failed to update role"
+    },
+    "updateAllowedLoginGroups": {
+      "updateFailToast": "Failed to update allowed login groups"
+    }
   }
 }
