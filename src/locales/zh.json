@@ -534,6 +534,14 @@
       "createSuccessToast": "節點新增成功",
       "createFailToast": "新增節點失敗"
     },
+    "setupAllServers": {
+      "trigger": "設定所有節點",
+      "confirmTitle": "要設定所有節點嗎？",
+      "confirmDescription": "此操作將對叢集中的每個節點觸發設定流程。",
+      "settingUpToast": "正在設定所有節點...",
+      "setupSuccessToast": "已開始設定所有節點",
+      "setupFailToast": "設定所有節點失敗"
+    },
     "deleteServer": {
       "deletingToast": "刪除中...",
       "deleteSuccessToast": "節點已刪除",

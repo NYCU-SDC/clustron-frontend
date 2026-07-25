@@ -4,6 +4,7 @@ import { getServers, serverQueryKeys } from "@/lib/request/resources";
 import ResourceCountsBar from "@/components/resource/ResourceCountsBar";
 import ResourceTable from "@/components/resource/ResourceTable";
 import AddResourceSheet from "@/components/resource/AddResourceSheet";
+import SetupAllServersButton from "@/components/resource/SetupAllServersButton";
 
 export default function ResourceListPage() {
   const { t } = useTranslation();
@@ -19,7 +20,10 @@ export default function ResourceListPage() {
         <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
           {t("resourcePages.resourceList.title")}
         </h1>
-        <AddResourceSheet />
+        <div className="flex items-center gap-2">
+          <SetupAllServersButton />
+          <AddResourceSheet />
+        </div>
       </div>
 
       <div className="flex flex-col items-center gap-6">

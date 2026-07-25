@@ -527,6 +527,14 @@
       "createSuccessToast": "Node added successfully",
       "createFailToast": "Failed to add node"
     },
+    "setupAllServers": {
+      "trigger": "Setup All Nodes",
+      "confirmTitle": "Setup all nodes?",
+      "confirmDescription": "This will trigger the setup process for every node in the cluster.",
+      "settingUpToast": "Setting up all nodes...",
+      "setupSuccessToast": "Setup started for all nodes",
+      "setupFailToast": "Failed to set up all nodes"
+    },
     "deleteServer": {
       "deletingToast": "Deleting...",
       "deleteSuccessToast": "Node deleted",

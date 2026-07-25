@@ -38,6 +38,11 @@ export async function deleteServer(serverId: string): Promise<void> {
   return api(`/api/servers/${serverId}`, { method: "DELETE" });
 }
 
+// POST /api/servers/setup
+export async function setupAllServers(): Promise<void> {
+  return api("/api/servers/setup", { method: "POST" });
+}
+
 // POST /api/servers/{server_id}/reset
 export async function resetServer(serverId: string): Promise<Server> {
   return api(`/api/servers/${serverId}/reset`, { method: "POST" });
