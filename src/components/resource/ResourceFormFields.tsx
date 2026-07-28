@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
@@ -66,31 +66,26 @@ export default function ResourceFormFields({
         />
       </div>
 
-      <div className="grid gap-2">
-        <ToggleGroup
-          type="single"
-          variant="outline"
-          value={addressMode}
-          onValueChange={(value) => {
-            if (!value) return;
-            const mode = value as AddressMode;
-            setAddressMode(mode);
-            const otherField =
-              mode === "ip_address" ? "ssh_config_host" : "ip_address";
-            setField(otherField, "");
-          }}
-          disabled={disabled}
-          className="w-fit"
-        >
-          <ToggleGroupItem value="ip_address">
+      <Tabs
+        value={addressMode}
+        onValueChange={(value) => {
+          const mode = value as AddressMode;
+          setAddressMode(mode);
+          const otherField =
+            mode === "ip_address" ? "ssh_config_host" : "ip_address";
+          setField(otherField, "");
+        }}
+      >
+        <TabsList>
+          <TabsTrigger value="ip_address" disabled={disabled}>
             {t("resourceComponents.form.ipAddress")}
-          </ToggleGroupItem>
-          <ToggleGroupItem value="ssh_config_host">
+          </TabsTrigger>
+          <TabsTrigger value="ssh_config_host" disabled={disabled}>
             {t("resourceComponents.form.sshConfigHost")}
-          </ToggleGroupItem>
-        </ToggleGroup>
+          </TabsTrigger>
+        </TabsList>
 
-        {addressMode === "ip_address" ? (
+        <TabsContent value="ip_address" className="grid gap-2">
           <Input
             id="ip_address"
             value={formData.ip_address}
@@ -98,7 +93,12 @@ export default function ResourceFormFields({
             placeholder="192.168.1.100"
             disabled={disabled}
           />
-        ) : (
+          <p className="text-sm text-muted-foreground">
+            {t("resourceComponents.form.ipAddressHint")}
+          </p>
+        </TabsContent>
+
+        <TabsContent value="ssh_config_host" className="grid gap-2">
           <Input
             id="ssh_config_host"
             value={formData.ssh_config_host}
@@ -106,14 +106,11 @@ export default function ResourceFormFields({
             placeholder="my-cluster-node-1"
             disabled={disabled}
           />
-        )}
-
-        <p className="text-sm text-muted-foreground">
-          {addressMode === "ip_address"
-            ? t("resourceComponents.form.ipAddressHint")
-            : t("resourceComponents.form.sshConfigHostHint")}
-        </p>
-      </div>
+          <p className="text-sm text-muted-foreground">
+            {t("resourceComponents.form.sshConfigHostHint")}
+          </p>
+        </TabsContent>
+      </Tabs>
 
       <div className="grid gap-2">
         <Label htmlFor="private_ip">
