@@ -54,16 +54,6 @@ type MemberDraft = {
   roleName: GroupMemberRoleName;
 };
 
-function formatRoleName(roleName: string) {
-  const trimmedRoleName = roleName.trim();
-
-  if (!trimmedRoleName) {
-    return "-";
-  }
-
-  return trimmedRoleName.charAt(0).toUpperCase() + trimmedRoleName.slice(1);
-}
-
 export default function AddGroupPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -533,7 +523,7 @@ export default function AddGroupPage() {
                       </span>
                     </TableCell>
                     <TableCell className="font-medium">
-                      {formatRoleName(member.roleName)}
+                      {member.roleName}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -700,7 +690,7 @@ export default function AddGroupPage() {
                 <SelectContent>
                   {assignableRoles.map((role) => (
                     <SelectItem key={role.id} value={role.roleName}>
-                      {formatRoleName(role.roleName)}
+                      {role.roleName}
                     </SelectItem>
                   ))}
                 </SelectContent>
