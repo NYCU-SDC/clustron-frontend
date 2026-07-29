@@ -282,29 +282,35 @@ export function UserConfigMobileRow({
 
   return (
     <Drawer open={open} onOpenChange={handleOpenChange}>
-      <DrawerTrigger asChild>
-        <button
-          type="button"
-          className="grid w-full grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-3 border-b px-4 py-4 text-left transition-colors last:border-b-0 hover:bg-muted/50"
-        >
-          <span className="min-w-0">
-            <span className="block truncate text-sm font-medium">
-              {identifier}
-            </span>
-            <span className="mt-1 block truncate text-xs text-muted-foreground">
-              {name}
-            </span>
+      <div className="grid w-full grid-cols-[minmax(0,1fr)_auto_2rem] items-center gap-3 border-b px-4 py-4 text-left transition-colors last:border-b-0 hover:bg-muted/50">
+        <span className="min-w-0">
+          <span className="block truncate text-sm font-medium">
+            {identifier}
           </span>
-          <span className="rounded-full bg-muted px-2 py-1 text-xs font-medium text-foreground">
-            {roleLabel}
+          <span className="mt-1 block truncate text-xs text-muted-foreground">
+            {name}
           </span>
-          {isPending ? (
-            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-          ) : (
-            <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
-          )}
-        </button>
-      </DrawerTrigger>
+        </span>
+        <span className="rounded-full bg-muted px-2 py-1 text-xs font-medium text-foreground">
+          {roleLabel}
+        </span>
+        <DrawerTrigger asChild>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="size-8"
+            disabled={isPending}
+            aria-label={t("userConfigTable.drawerDetails")}
+          >
+            {isPending ? (
+              <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+            ) : (
+              <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
+            )}
+          </Button>
+        </DrawerTrigger>
+      </div>
 
       <DrawerContent className="max-h-[85vh]" showCloseButton={false}>
         <DrawerHeader className="text-left">
