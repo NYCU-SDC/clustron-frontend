@@ -336,7 +336,7 @@ export function UserConfigMobileRow({
       </div>
 
       <DrawerContent className="max-h-[85vh]" showCloseButton={false}>
-        <DrawerHeader className="text-left">
+        <DrawerHeader className="text-center">
           <DrawerTitle className="text-xl">{name}</DrawerTitle>
         </DrawerHeader>
 
