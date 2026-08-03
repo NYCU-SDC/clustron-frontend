@@ -262,7 +262,6 @@ export function UserConfigMobileRow({
   const identifier = id || email;
   const roleLabel = getRoleLabel(currentRole);
   const canUpdateRole = !isSelf && !isOnBoarding;
-  const canSaveUsername = editValue !== linuxUsername && !isPending;
 
   const handleOpenChange = (nextOpen: boolean) => {
     setOpen(nextOpen);
@@ -277,16 +276,22 @@ export function UserConfigMobileRow({
     setIsEditing(true);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (onSettled?: () => void) => {
     if (editValue === linuxUsername) {
       setIsEditing(false);
+      onSettled?.();
       return;
     }
     onUpdateLinuxUsername(editValue, {
       onSettled: () => {
         setIsEditing(false);
+        onSettled?.();
       },
     });
+  };
+
+  const handleComplete = () => {
+    handleSubmit(() => setOpen(false));
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -402,8 +407,8 @@ export function UserConfigMobileRow({
 
         <DrawerFooter>
           <Button
-            onClick={handleSubmit}
-            disabled={!canSaveUsername}
+            onClick={handleComplete}
+            disabled={isPending}
             className="w-full"
           >
             {isPending ? (
@@ -416,8 +421,11 @@ export function UserConfigMobileRow({
             )}
           </Button>
           <DrawerClose asChild>
-            <Button variant="outline" className="w-full">
-              {t("userConfigTable.drawerClose")}
+            <Button
+              variant="outline"
+              className="w-full border-destructive text-destructive hover:bg-destructive/10 hover:text-destructive"
+            >
+              {t("common.cancel")}
             </Button>
           </DrawerClose>
         </DrawerFooter>
