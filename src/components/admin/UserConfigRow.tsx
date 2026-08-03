@@ -255,6 +255,7 @@ export function UserConfigMobileRow({
   isSelf = false,
 }: Props) {
   const [open, setOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(linuxUsername);
   const { t } = useTranslation();
 
@@ -265,19 +266,36 @@ export function UserConfigMobileRow({
 
   const handleOpenChange = (nextOpen: boolean) => {
     setOpen(nextOpen);
+    setIsEditing(false);
     if (nextOpen) {
       setEditValue(linuxUsername);
     }
   };
 
-  const handleUsernameSubmit = () => {
-    if (!canSaveUsername) return;
+  const startEditing = () => {
+    setEditValue(linuxUsername);
+    setIsEditing(true);
+  };
 
+  const handleSubmit = () => {
+    if (editValue === linuxUsername) {
+      setIsEditing(false);
+      return;
+    }
     onUpdateLinuxUsername(editValue, {
       onSettled: () => {
-        setEditValue(editValue);
+        setIsEditing(false);
       },
     });
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    } else if (e.key === "Escape") {
+      setIsEditing(false);
+      setEditValue(linuxUsername);
+    }
   };
 
   return (
@@ -328,17 +346,25 @@ export function UserConfigMobileRow({
             <MobileDetailRow
               label={t("userConfigTable.tableHeadLinuxUsername")}
             >
-              <Input
-                value={editValue}
-                disabled={isPending}
-                className="h-8 w-40 text-right text-sm"
-                onChange={(e) => setEditValue(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleUsernameSubmit();
-                  }
-                }}
-              />
+              {isEditing ? (
+                <Input
+                  autoFocus
+                  value={editValue}
+                  disabled={isPending}
+                  className="h-8 w-40 text-right text-sm"
+                  onChange={(e) => setEditValue(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  onBlur={() => !isPending && setIsEditing(false)}
+                />
+              ) : (
+                <div className="flex items-center justify-end gap-2">
+                  <span className="break-all">{linuxUsername || "-"}</span>
+                  <Link2
+                    className="h-4 w-4 shrink-0 cursor-pointer text-muted-foreground hover:text-primary"
+                    onClick={startEditing}
+                  />
+                </div>
+              )}
             </MobileDetailRow>
             <MobileDetailRow label={t("userConfigTable.tableHeadRole")}>
               {canUpdateRole ? (
@@ -376,7 +402,7 @@ export function UserConfigMobileRow({
 
         <DrawerFooter>
           <Button
-            onClick={handleUsernameSubmit}
+            onClick={handleSubmit}
             disabled={!canSaveUsername}
             className="w-full"
           >
