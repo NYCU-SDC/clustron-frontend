@@ -377,7 +377,7 @@ export function UserConfigMobileRow({
                 >
                   <SelectTrigger
                     size="sm"
-                    className="h-8 w-36 justify-end border-none bg-muted px-2 text-sm font-medium shadow-none hover:cursor-pointer focus-visible:ring-0"
+                    className="h-8 w-36 justify-end rounded-none border-none bg-transparent px-0 text-sm font-medium shadow-none hover:cursor-pointer focus-visible:ring-0 dark:bg-transparent dark:hover:bg-transparent"
                   >
                     <SelectValue />
                   </SelectTrigger>
