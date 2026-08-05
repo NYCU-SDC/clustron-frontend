@@ -10,7 +10,8 @@ import type {
 export const serverQueryKeys = {
   all: ["servers"] as const,
   detail: (serverId: string) => ["servers", serverId] as const,
-  allowedLoginGroups: ["servers", "allowedLoginGroups"] as const,
+  allowedLoginGroups: (serverId: string) =>
+    ["servers", serverId, "allowedLoginGroups"] as const,
 };
 
 // GET /api/servers
@@ -59,16 +60,19 @@ export async function updateServerRole(
   });
 }
 
-// GET /api/servers/allowedLoginGroups
-export async function getAllowedLoginGroups(): Promise<AllowedLoginGroup[]> {
-  return api("/api/servers/allowedLoginGroups");
+// GET /api/servers/{server_id}/allowedLoginGroups
+export async function getAllowedLoginGroups(
+  serverId: string,
+): Promise<AllowedLoginGroup[]> {
+  return api(`/api/servers/${serverId}/allowedLoginGroups`);
 }
 
-// PUT /api/servers/allowedLoginGroups
+// PUT /api/servers/{server_id}/allowedLoginGroups
 export async function updateAllowedLoginGroups(
+  serverId: string,
   payload: UpdateAllowedLoginGroupsPayload,
 ): Promise<void> {
-  return api("/api/servers/allowedLoginGroups", {
+  return api(`/api/servers/${serverId}/allowedLoginGroups`, {
     method: "PUT",
     body: JSON.stringify(payload),
   });

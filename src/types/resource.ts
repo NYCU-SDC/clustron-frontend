@@ -19,7 +19,7 @@ export type Server = {
   memory_mb?: number;
 };
 
-// shape of GET /api/servers/allowedLoginGroups item
+// shape of GET /api/servers/{server_id}/allowedLoginGroups item
 export type AllowedLoginGroup = {
   groupId: string;
   title: string;
@@ -45,7 +45,7 @@ export type UpdateServerRolePayload = {
   ansible_role: AnsibleRole;
 };
 
-// body of PUT /api/servers/allowedLoginGroups
+// body of PUT /api/servers/{server_id}/allowedLoginGroups
 export type UpdateAllowedLoginGroupsPayload = {
   groupIds: string[];
 };

@@ -567,7 +567,8 @@
       "updateFailToast": "更新角色失敗"
     },
     "updateAllowedLoginGroups": {
-      "updateFailToast": "更新允許登入的群組失敗"
+      "updateFailToast": "更新允許登入的群組失敗",
+      "headNodeFailToast": "主節點無法設定允許登入的群組清單"
     }
   }
 }

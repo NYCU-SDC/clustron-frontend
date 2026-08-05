@@ -560,7 +560,8 @@
       "updateFailToast": "Failed to update role"
     },
     "updateAllowedLoginGroups": {
-      "updateFailToast": "Failed to update allowed login groups"
+      "updateFailToast": "Failed to update allowed login groups",
+      "headNodeFailToast": "Head nodes cannot have an allowed login group list"
     }
   }
 }

@@ -7,11 +7,13 @@ import { Loader2 } from "lucide-react";
 type Props = {
   selectedGroupIds: string[];
   onChange: (groupIds: string[]) => void;
+  disabled?: boolean;
 };
 
 export default function AllowedLoginGroupsField({
   selectedGroupIds,
   onChange,
+  disabled,
 }: Props) {
   const { t } = useTranslation();
   const { data, isLoading, isError } = useGetGroups();
@@ -47,13 +49,14 @@ export default function AllowedLoginGroupsField({
             <label
               key={group.id}
               htmlFor={`allowed-login-group-${group.id}`}
-              className={`flex items-center gap-2 px-3 py-2 cursor-pointer ${
-                index !== groups.length - 1 ? "border-b" : ""
-              }`}
+              className={`flex items-center gap-2 px-3 py-2 ${
+                disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+              } ${index !== groups.length - 1 ? "border-b" : ""}`}
             >
               <Checkbox
                 id={`allowed-login-group-${group.id}`}
                 checked={selectedGroupIds.includes(group.id)}
+                disabled={disabled}
                 onCheckedChange={(checked) =>
                   toggleGroup(group.id, checked === true)
                 }

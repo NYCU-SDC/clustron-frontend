@@ -73,8 +73,8 @@ export default function ResourceDetailSheet({
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
   const { data: allowedGroups } = useQuery({
-    queryKey: serverQueryKeys.allowedLoginGroups,
-    queryFn: getAllowedLoginGroups,
+    queryKey: serverQueryKeys.allowedLoginGroups(server.id),
+    queryFn: () => getAllowedLoginGroups(server.id),
   });
 
   const {
@@ -119,18 +119,22 @@ export default function ResourceDetailSheet({
   const { mutateAsync: updateGroupsAsync, isPending: isUpdatingGroups } =
     useMutation({
       mutationFn: (nextGroupIds: string[]) =>
-        updateAllowedLoginGroups({ groupIds: nextGroupIds }),
+        updateAllowedLoginGroups(server.id, { groupIds: nextGroupIds }),
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: serverQueryKeys.allowedLoginGroups,
+          queryKey: serverQueryKeys.allowedLoginGroups(server.id),
         });
       },
-      onError: (err) => {
+      onError: (err: Error) => {
         toast.error(
-          getErrMessage(
-            err,
-            t("resourceComponents.updateAllowedLoginGroups.updateFailToast"),
-          ),
+          err.name === "422"
+            ? t("resourceComponents.updateAllowedLoginGroups.headNodeFailToast")
+            : getErrMessage(
+                err,
+                t(
+                  "resourceComponents.updateAllowedLoginGroups.updateFailToast",
+                ),
+              ),
         );
       },
     });
@@ -196,7 +200,8 @@ export default function ResourceDetailSheet({
 
   const handleSave = async () => {
     try {
-      const tasks: Promise<unknown>[] = [updateGroupsAsync(groupIds)];
+      const tasks: Promise<unknown>[] =
+        role === "head_nodes" ? [] : [updateGroupsAsync(groupIds)];
       if (role !== currentServer.ansible_role) {
         tasks.push(updateRoleAsync(role));
       }
@@ -318,6 +323,7 @@ export default function ResourceDetailSheet({
             <AllowedLoginGroupsField
               selectedGroupIds={groupIds}
               onChange={setGroupIds}
+              disabled={role === "head_nodes"}
             />
           </div>
 
