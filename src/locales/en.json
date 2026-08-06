@@ -163,7 +163,12 @@
     "updateFailToast": "Failed to update role",
     "deleteSuccessToast": "Role deleted successfully",
     "deleteFailToast": "Failed to delete role",
-    "loadFailToast": "Failed to load roles"
+    "loadFailToast": "Failed to load roles",
+    "addRoleBtn": "+ Add Roles",
+    "roleNameFieldLabel": "Role Name",
+    "accessLevelFieldLabel": "Access Level",
+    "doneBtn": "Done",
+    "removeRoleBtn": "Remove Role"
   },
   "userConfigTable": {
     "cardTitle": "Users",
