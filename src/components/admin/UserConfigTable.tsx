@@ -76,7 +76,7 @@ export default function UserConfigTable() {
     mutationFn: (input: UpdateLinuxUsernameInput) => updateLinuxUsername(input),
     onMutate: (input) => {
       const toastId = `update-linux-username-${input.id}`;
-      toast.loading(t("userConfigTable.updatingToast"), {
+      toast.loading(t("common.updating"), {
         id: toastId,
       });
       return toastId;
@@ -115,7 +115,7 @@ export default function UserConfigTable() {
     mutationFn: (input: UpdateUserRoleInput) => updateGlobalRole(input),
     onMutate: (input) => {
       const toastId = `update-global-role-${input.id}`;
-      toast.loading(t("userConfigTable.updatingToast"), {
+      toast.loading(t("common.updating"), {
         id: toastId,
       });
       return toastId;

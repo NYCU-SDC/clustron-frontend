@@ -1,13 +1,16 @@
 {
-  "loading": "Loading...",
   "common": {
     "save": "Save",
     "cancel": "Cancel",
-    "saving": "Saving..."
+    "delete": "Delete",
+    "remove": "Remove",
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "updating": "Updating...",
+    "removing": "Removing..."
   },
   "onboardingForm": {
     "cardTitleForName": "Enter Your Basic Information",
-    "saveBtn": "Save",
     "labelForInputFullName": "Full Name",
     "placeHolderForInputFullName": "John Doe",
     "labelForInputLinuxUsername": "Linux Username",
@@ -15,7 +18,6 @@
     "formatErrorToast": "Linux Username must start with a lowercase letter or underscore, can include lowercase letters, numbers, underscores(_), or hyphens(-), may end with $, and must not contain spaces",
     "saveFailToast": "Failed to save your information",
     "EmptyLinuxUsernameToast": "Linux username cannot contain spaces",
-    "loadingBtn": "Loading...",
     "saveBtnToolTip": "Please fill in your full name and Linux username",
     "usernameExistsErrorToast": "This Linux username is already in use",
     "reservedKeywordErrorToast": "This Linux username is a reserved system keyword and cannot be used",
@@ -36,7 +38,6 @@
     "saveBtn": "Update password",
     "successToast": "Password updated successfully",
     "failToast": "Failed to update password",
-    "loadingBtn": "Updating...",
     "saveBtnToolTip": "Please fill in password fields"
   },
   "login": {
@@ -55,7 +56,6 @@
     "adminLink": "Admin"
   },
   "callback": {
-    "loadingMessage": "Loading...",
     "loginSuccessToast": "Login Successful",
     "loginFailToast": "Login Failed"
   },
@@ -85,19 +85,16 @@
     "saveBtnToolTip": "Please fill in title and key ",
     "successToast": "Key saved successfully",
     "formatErrorToast": "Public key format error",
-    "saveFailToast": "Failed to save your public key",
-    "loadingBtn": "Loading..."
+    "saveFailToast": "Failed to save your public key"
   },
   "settingFullNameForm": {
     "cardTitleForFullName": "Full Name",
     "cardDescriptionForFullName": "Enter your full name to let the group administrator recognize you",
-    "saveBtn": "Save",
     "placeHolderForInputFullName": "Jammy Wang",
     "successToast": "Name saved successfully",
     "emptyErrorToast": "Please enter your full name",
     "saveFailToast": "Failed to save your full name",
     "getFailToast": "Failed to get your full name",
-    "loadingBtn": "Loading...",
     "saveBtnToolTip": "Please fill in your full name",
     "cardTitleForLanguage": "Language",
     "cardDescriptionForLanguage": "Choose the display language in Clustron"
@@ -105,12 +102,9 @@
   "settingLinuxUsernameForm": {
     "cardTitleForLinuxUsername": "Linux Username",
     "cardDescriptionForLinuxUsername": "The username to login to the remote server",
-    "saveBtn": "Save",
     "successToast": "Linux username saved successfully",
-    "emptyErrorToast": "Please enter your Linux username",
     "saveFailToast": "Failed to save Linux username",
     "getFailToast": "Failed to get Linux username",
-    "loadingBtn": "Loading...",
     "saveBtnToolTip": "Please fill in your Linux username"
   },
   "settingKeyTable": {
@@ -128,10 +122,7 @@
     "deleteFailToast": "Failed to delete public key",
     "getFailToast": "Failed to get public key list",
     "confirmTitle": "Delete this public key?",
-    "confirmDescription": "This action cannot be undone. Please proceed with caution.",
-    "cancelBtn": "Cancel",
-    "confirmBtn": "Delete",
-    "loadingBtn": "Loading..."
+    "confirmDescription": "This action cannot be undone. Please proceed with caution."
   },
   "roleConfigTable": {
     "cardTitle": "Role Access Configuration",
@@ -153,9 +144,6 @@
     "placeholderSelectAccessMobile": "Select Access",
     "confirmTitle": "Remove Role Confirm",
     "confirmDescription": "Are you sure to remove this role?",
-    "cancelBtn": "Cancel",
-    "removeBtn": "Remove",
-    "removingBtn": "Removing...",
     "createSuccessToast": "Role created successfully",
     "createFailToast": "Failed to create role",
     "createDuplicateToast": "Role name already exists",
@@ -179,7 +167,6 @@
     "updateUsernameFailToast": "Failed to update Linux username",
     "tableHeadRole": "Role",
     "resultPerPage": "Results per page:",
-    "updatingToast": "Updating...",
     "updateRoleSuccessToast": "Role updated",
     "updateRoleFailToast": "Failed to update role"
   },
@@ -212,9 +199,6 @@
       "removeUser": "Remove User",
       "deleteUserConfirm": "Delete User Confirm",
       "deleteConfirmation": "Are you sure to delete this user? This action is not recoverable.",
-      "cancel": "Cancel",
-      "delete": "Delete",
-      "removingToast": "Removing...",
       "removeSuccessToast": "Member removed",
       "removeFailToast": "Failed to remove member"
     },
@@ -230,7 +214,6 @@
       "auditor": "Auditor"
     },
     "memberUpdate": {
-      "updatingToast": "Updating...",
       "updateSuccessToast": "Member updated",
       "updateFailToast": "Failed to update member"
     },
@@ -250,10 +233,7 @@
       "title": "Add New Members",
       "studentIdOrEmail": "Student ID or Email",
       "role": "Role",
-      "loading": "Loading...",
       "courseNotFound": "Course not found.",
-      "cancel": "Cancel",
-      "save": "Save",
       "toastAllSuccess": "{{success}}/{{total}} members added successfully",
       "toastAllFail": "Adding members failed ({{fail}}/{{total}} failed)",
       "toastPartialSuccess": "{{success}} success, {{fail}} failed (total {{total}})",
@@ -273,7 +253,6 @@
       "addInitialMembers": "Add Initial Members",
       "studentIdOrEmail": "Student ID or Email",
       "role": "Role",
-      "cancel": "Cancel",
       "create": "Create",
       "creatingToast": "Creating...",
       "createSuccessToast": "Group created successfully",
@@ -283,13 +262,11 @@
     },
     "groupList": {
       "newGroup": "+ New Group",
-      "loading": "Loading...",
       "loadingFailed": "Loading failed",
       "noCourses": "You haven't joined any courses yet."
     },
     "groupOverview": {
       "provideCourseId": "Please provide course ID",
-      "loading": "Loading...",
       "courseNotFound": "Course not found"
     },
     "groupSettings": {
@@ -299,7 +276,6 @@
       "archiveGroup": "Archive This Group",
       "unarchiveDescription": "This will reactivate the group and allow updates again.",
       "archiveDescription": "This will turn the group into archive state, no update can be made before it is activated again.",
-      "saving": "Saving...",
       "unarchive": "Unarchive",
       "archive": "Archive",
       "archiveSuccessToast": "Group archived successfully",
@@ -336,10 +312,8 @@
     },
     "pendingMembers": {
       "pendingMember": "Pending members",
-      "removingToast": "Removing...",
       "removeSuccessToast": "Removed from pending list",
       "removeFailToast": "Failed to remove pending member",
-      "updatingToast": "Updating...",
       "updateSuccessToast": "Pending member updated",
       "updateFailToast": "Failed to update pending member"
     },
@@ -362,7 +336,6 @@
       "failed": "Failed to transfer ownership."
     },
     "transfer": "Transfer",
-    "cancel": "Cancel",
     "toast": {
       "success": "Transfer successful",
       "fail": "Transfer fail"
@@ -388,7 +361,6 @@
     "envSettingTitle": "Environment Setting",
     "envModuleLabel": "Environment Module",
     "selectModulePlaceholder": "Select Module...",
-    "loadingModulePlaceholder": "Loading...",
     "envVariable": "Variable",
     "envValue": "Value",
     "envVarPlaceholder": "VAR",
@@ -425,9 +397,6 @@
   "moduleCard": {
     "deleteConfirmTitle": "Delete Module Confirm",
     "deleteConfirmDescription": "Are you sure to remove environment module \"{{title}}\"?",
-    "cancelBtn": "Cancel",
-    "deleteBtn": "Delete",
-    "saveBtn": "Save",
     "variableLabel": "Variable",
     "valueLabel": "Value",
     "saveSuccessToast": "Module saved successfully!",

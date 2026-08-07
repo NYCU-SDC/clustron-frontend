@@ -20,10 +20,7 @@ export function useRemoveMember(
     mutationFn: (memberId: string) => removeMember(groupId, memberId),
     onMutate: (memberId) => {
       const toastId = `remove-member-${groupId}-${memberId}`;
-      toast.loading(
-        t("groupComponents.memberDeleteButton.removingToast", "Removing..."),
-        { id: toastId },
-      );
+      toast.loading(t("common.removing"), { id: toastId });
       return toastId;
     },
     onSuccess: async (_data, _memberId, ctx) => {

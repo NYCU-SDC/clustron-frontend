@@ -72,8 +72,7 @@ export default function AddMemberPage() {
     },
   });
 
-  if (isLoading)
-    return <div className="p-6">{t("groupPages.addMemberPage.loading")}</div>;
+  if (isLoading) return <div className="p-6">{t("common.loading")}</div>;
   if (!group)
     return (
       <div className="p-6">{t("groupPages.addMemberPage.courseNotFound")}</div>
@@ -218,14 +217,14 @@ export default function AddMemberPage() {
             onClick={() => navigate(`/groups/${group.id}/settings`)}
             className="w-full px-4 py-2 border rounded sm:w-auto"
           >
-            {t("groupPages.addMemberPage.cancel")}
+            {t("common.cancel")}
           </Button>
           <Button
             onClick={handleSave}
             disabled={hasDuplicate || hasEmptyId || addMember.isPending}
             className="w-full sm:w-auto"
           >
-            {t("groupPages.addMemberPage.save")}
+            {t("common.save")}
           </Button>
         </div>
       </main>

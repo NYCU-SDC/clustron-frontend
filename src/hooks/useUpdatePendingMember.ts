@@ -13,10 +13,7 @@ export function useUpdatePendingMember(groupId: string) {
       updatePendingMember(params),
     onMutate: (params) => {
       const toastId = `update-pending:${groupId}:${String(params.id)}`;
-      toast.loading(
-        t("groupPages.pendingMembers.updatingToast", "Updating..."),
-        { id: toastId },
-      );
+      toast.loading(t("common.updating"), { id: toastId });
       return toastId;
     },
     onSuccess: (_data, _vars, ctx) => {

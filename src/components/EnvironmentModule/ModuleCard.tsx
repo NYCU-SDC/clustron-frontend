@@ -164,14 +164,12 @@ export function ModuleCard({ module, onUpdate, onDelete }: ModuleCardProps) {
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>
-                      {t("moduleCard.cancelBtn")}
-                    </AlertDialogCancel>
+                    <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
                     <AlertDialogAction
                       className="bg-destructive text-white hover:bg-destructive/90"
                       onClick={() => onDelete(module.id)}
                     >
-                      {t("moduleCard.deleteBtn")}
+                      {t("common.delete")}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -212,13 +210,13 @@ export function ModuleCard({ module, onUpdate, onDelete }: ModuleCardProps) {
                   className="px-5 h-9"
                   onClick={handleCancel}
                 >
-                  {t("moduleCard.cancelBtn")}
+                  {t("common.cancel")}
                 </Button>
                 <Button
                   onClick={handleSave}
                   className="px-5 h-9 bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-50 dark:text-slate-900"
                 >
-                  {t("moduleCard.saveBtn")}
+                  {t("common.save")}
                 </Button>
               </div>
             </div>

@@ -100,7 +100,7 @@ export default function SettingFullNameForm({
                   disabled
                 >
                   <Loader2Icon className="animate-spin" />
-                  {t("settingFullNameForm.loadingBtn")}
+                  {t("common.loading")}
                 </Button>
               ) : fullName ? (
                 <Button
@@ -109,7 +109,7 @@ export default function SettingFullNameForm({
                     addMutation.mutate({ fullName, linuxUsername });
                   }}
                 >
-                  {t("settingFullNameForm.saveBtn")}
+                  {t("common.save")}
                 </Button>
               ) : (
                 <Tooltip>
@@ -118,7 +118,7 @@ export default function SettingFullNameForm({
                       disabled
                       className="px-7 py-5 w-full sm:w-24 disabled:cursor-not-allowed disabled:pointer-events-auto"
                     >
-                      {t("settingFullNameForm.saveBtn")}
+                      {t("common.save")}
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent side="top" align="center">
