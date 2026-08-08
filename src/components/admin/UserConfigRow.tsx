@@ -1,6 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, type ReactNode } from "react";
 import { TableRow, TableCell } from "@/components/ui/table";
-import { ChevronDown, Link2, Loader2 } from "lucide-react";
+import { ChevronDown, Link2, Loader2, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -15,6 +15,22 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import {
   GLOBAL_ROLE_OPTIONS,
@@ -22,6 +38,7 @@ import {
   type UpdateUserRoleInput,
   type GlobalRole,
 } from "@/types/admin";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   name: string;
@@ -38,6 +55,10 @@ type Props = {
   isPending?: boolean;
   isSelf?: boolean;
 };
+
+function getRoleLabel(role: GlobalRole) {
+  return GLOBAL_ROLE_OPTIONS.find((r) => r.id === role)?.label || role;
+}
 
 export default function UserConfigRow({
   name,
@@ -80,8 +101,7 @@ export default function UserConfigRow({
       setEditValue(linuxUsername);
     }
   };
-  const roleLabel =
-    GLOBAL_ROLE_OPTIONS.find((r) => r.id === currentRole)?.label || currentRole;
+  const roleLabel = getRoleLabel(currentRole);
 
   return (
     <TableRow className="hover:bg-muted/50 transition-colors">
@@ -204,5 +224,212 @@ export default function UserConfigRow({
         )}
       </TableCell>
     </TableRow>
+  );
+}
+
+function MobileDetailRow({
+  label,
+  children,
+}: {
+  label: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-4 border-b px-4 py-3 last:border-b-0">
+      <span className="text-sm text-muted-foreground">{label}</span>
+      <div className="min-w-0 text-right text-sm font-medium">{children}</div>
+    </div>
+  );
+}
+
+export function UserConfigMobileRow({
+  name,
+  id,
+  email,
+  linuxUsername,
+  currentRole,
+  onUpdateRole,
+  onUpdateLinuxUsername,
+  isOnBoarding = false,
+  isPending = false,
+  isSelf = false,
+}: Props) {
+  const [open, setOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editValue, setEditValue] = useState(linuxUsername);
+  const { t } = useTranslation();
+
+  const identifier = id || email;
+  const roleLabel = getRoleLabel(currentRole);
+  const canUpdateRole = !isSelf && !isOnBoarding;
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+    setIsEditing(false);
+    if (nextOpen) {
+      setEditValue(linuxUsername);
+    }
+  };
+
+  const startEditing = () => {
+    setEditValue(linuxUsername);
+    setIsEditing(true);
+  };
+
+  const handleSubmit = (onSettled?: () => void) => {
+    if (editValue === linuxUsername) {
+      setIsEditing(false);
+      onSettled?.();
+      return;
+    }
+    onUpdateLinuxUsername(editValue, {
+      onSettled: () => {
+        setIsEditing(false);
+        onSettled?.();
+      },
+    });
+  };
+
+  const handleComplete = () => {
+    handleSubmit(() => setOpen(false));
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    } else if (e.key === "Escape") {
+      setIsEditing(false);
+      setEditValue(linuxUsername);
+    }
+  };
+
+  return (
+    <Drawer open={open} onOpenChange={handleOpenChange}>
+      <div className="grid w-full grid-cols-[minmax(0,1fr)_auto_2rem] items-center gap-3 border-b px-4 py-4 text-left transition-colors last:border-b-0 hover:bg-muted/50">
+        <span className="min-w-0">
+          <span className="block truncate text-sm font-medium">
+            {identifier}
+          </span>
+          <span className="mt-1 block truncate text-xs text-muted-foreground">
+            {name}
+          </span>
+        </span>
+        <span className="rounded-full bg-muted px-2 py-1 text-xs font-medium text-foreground">
+          {roleLabel}
+        </span>
+        <DrawerTrigger asChild>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="size-8"
+            disabled={isPending}
+            aria-label={t("userConfigTable.drawerDetails")}
+          >
+            {isPending ? (
+              <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+            ) : (
+              <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
+            )}
+          </Button>
+        </DrawerTrigger>
+      </div>
+
+      <DrawerContent className="max-h-[85vh]" showCloseButton={false}>
+        <DrawerHeader className="text-center">
+          <DrawerTitle className="text-xl">{name}</DrawerTitle>
+        </DrawerHeader>
+
+        <div className="overflow-y-auto">
+          <div className="overflow-hidden rounded-lg border">
+            <MobileDetailRow label={t("userConfigTable.drawerStudentId")}>
+              <span className="break-all">{id || "-"}</span>
+            </MobileDetailRow>
+            <MobileDetailRow label={t("userConfigTable.drawerEmail")}>
+              <span className="break-all">{email || "-"}</span>
+            </MobileDetailRow>
+            <MobileDetailRow
+              label={t("userConfigTable.tableHeadLinuxUsername")}
+            >
+              {isEditing ? (
+                <Input
+                  autoFocus
+                  value={editValue}
+                  disabled={isPending}
+                  className="h-8 w-40 text-right text-sm"
+                  onChange={(e) => setEditValue(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  onBlur={() => !isPending && setIsEditing(false)}
+                />
+              ) : (
+                <div className="flex items-center justify-end gap-2">
+                  <span className="break-all">{linuxUsername || "-"}</span>
+                  <Link2
+                    className="h-4 w-4 shrink-0 cursor-pointer text-muted-foreground hover:text-primary"
+                    onClick={startEditing}
+                  />
+                </div>
+              )}
+            </MobileDetailRow>
+            <MobileDetailRow label={t("userConfigTable.tableHeadRole")}>
+              {canUpdateRole ? (
+                <Select
+                  value={currentRole}
+                  disabled={isPending}
+                  onValueChange={(value) =>
+                    onUpdateRole(value as UpdateUserRoleInput["role"])
+                  }
+                >
+                  <SelectTrigger
+                    size="sm"
+                    className="h-8 w-36 justify-end rounded-none border-none bg-transparent px-0 text-sm font-medium shadow-none hover:cursor-pointer focus-visible:ring-0 dark:bg-transparent dark:hover:bg-transparent"
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {GLOBAL_ROLE_OPTIONS.filter(
+                      (role) => role.id !== GlobalRoleNotSetup,
+                    ).map((role) => (
+                      <SelectItem key={role.id} value={role.id}>
+                        {role.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ) : (
+                <span className="rounded-full bg-muted px-2 py-1 text-xs font-medium">
+                  {roleLabel}
+                </span>
+              )}
+            </MobileDetailRow>
+          </div>
+        </div>
+
+        <DrawerFooter>
+          <Button
+            onClick={handleComplete}
+            disabled={isPending}
+            className="w-full"
+          >
+            {isPending ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                {t("userConfigTable.updatingToast")}
+              </>
+            ) : (
+              t("userConfigTable.drawerSaveLinuxUsername")
+            )}
+          </Button>
+          <DrawerClose asChild>
+            <Button
+              variant="outline"
+              className="w-full border-destructive text-destructive hover:bg-destructive/10 hover:text-destructive"
+            >
+              {t("common.cancel")}
+            </Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   );
 }
