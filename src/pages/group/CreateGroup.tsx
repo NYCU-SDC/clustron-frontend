@@ -721,7 +721,7 @@ export default function AddGroupPage() {
           className="w-full sm:w-auto"
           onClick={() => navigate("/groups")}
         >
-          {t("groupPages.createGroup.cancel")}
+          {t("common.cancel")}
         </Button>
         <Button
           className="w-full sm:w-auto"

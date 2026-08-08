@@ -27,5 +27,5 @@ export default function BindCallback() {
     window.close();
   }, [navigate, location, t]);
 
-  return <div className="min-h-screen">{t("callback.loadingMessage")}</div>;
+  return <div className="min-h-screen">{t("common.loading")}</div>;
 }

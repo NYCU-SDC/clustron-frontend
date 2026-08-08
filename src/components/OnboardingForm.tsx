@@ -168,7 +168,7 @@ export default function OnboardingForm({
                 {addMutation.isPending ? (
                   <Button className="px-7 py-5 w-28 cursor-pointer" disabled>
                     <Loader2Icon className="animate-spin" />
-                    {t("onboardingForm.loadingBtn")}
+                    {t("common.loading")}
                   </Button>
                 ) : fullName && linuxUsername && password && confirmPassword ? (
                   <Button
@@ -195,7 +195,7 @@ export default function OnboardingForm({
                       });
                     }}
                   >
-                    {t("onboardingForm.saveBtn")}
+                    {t("common.save")}
                   </Button>
                 ) : (
                   <Tooltip>
@@ -204,7 +204,7 @@ export default function OnboardingForm({
                         disabled
                         className="px-7 py-5 w-16 disabled:cursor-not-allowed disabled:pointer-events-auto"
                       >
-                        {t("onboardingForm.saveBtn")}
+                        {t("common.save")}
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent side="top" align="center">

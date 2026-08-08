@@ -146,7 +146,7 @@ export default function GroupSettings() {
                 disabled={isToggling}
               >
                 {isToggling
-                  ? t("groupPages.groupSettings.saving")
+                  ? t("common.saving")
                   : group.isArchived
                     ? t("groupPages.groupSettings.unarchive")
                     : t("groupPages.groupSettings.archive")}
@@ -227,7 +227,7 @@ export default function GroupSettings() {
                       setQuery("");
                     }}
                   >
-                    {t("common.cancel", "Cancel")}
+                    {t("common.cancel")}
                   </Button>
                   <Button
                     onClick={handleTransfer}

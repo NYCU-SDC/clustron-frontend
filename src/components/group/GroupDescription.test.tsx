@@ -128,7 +128,7 @@ describe("GroupDescription", () => {
     const newLinkRow = newLinkTitleInput.closest("tr")!;
     await user.click(within(newLinkRow).getByRole("button"));
 
-    await user.click(screen.getByRole("button", { name: "Save" }));
+    await user.click(screen.getByRole("button", { name: "common.save" }));
 
     await waitFor(() => {
       expect(mockedUpdateGroupLink).toHaveBeenCalledWith("group-1", "link-1", {
