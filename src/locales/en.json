@@ -269,7 +269,6 @@
       "memberDrawerDescription": "Add users by email or student ID",
       "memberIdentifierPlaceholder": "Email or Student ID",
       "addMember": "Add",
-      "cancel": "Cancel",
       "create": "Create",
       "creatingToast": "Creating...",
       "createSuccessToast": "Group created successfully",

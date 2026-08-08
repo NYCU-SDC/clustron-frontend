@@ -269,7 +269,6 @@
       "memberDrawerDescription": "用 Email 或學號來新增使用者",
       "memberIdentifierPlaceholder": "Email 或學號",
       "addMember": "新增",
-      "cancel": "取消",
       "create": "建立",
       "creatingToast": "建立中...",
       "createSuccessToast": "群組建立成功",
