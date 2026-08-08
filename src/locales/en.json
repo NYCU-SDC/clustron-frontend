@@ -52,6 +52,7 @@
     "groupLink": "Groups",
     "settingLink": "Settings",
     "jobsLink": "Jobs",
+    "resourceLink": "Resource",
     "adminLink": "Admin"
   },
   "callback": {
@@ -475,5 +476,108 @@
     "title": "Connection Error",
     "description": "Unable to verify system setup status. Please check your network connection or backend service.",
     "retryBtn": "Retry"
+  },
+  "resourcePages": {
+    "resourceList": {
+      "title": "Resource List"
+    }
+  },
+  "resourceComponents": {
+    "status": {
+      "active": "Active",
+      "provisioning": "Provisioning",
+      "failed": "Failed",
+      "unset": "Unset"
+    },
+    "form": {
+      "name": "Host Name",
+      "ipAddress": "IP address",
+      "ipAddressHint": "Required if no SSH config host",
+      "sshConfigHost": "SSH config host",
+      "sshConfigHostHint": "Alternative to IP",
+      "privateIp": "Private IP",
+      "privateIpHint": "Internal cluster network address",
+      "sshUser": "SSH user",
+      "sshUserHint": "Required if no SSH config host",
+      "sshKeyName": "SSH key name",
+      "sshKeyNameHint": "Alternative to IP",
+      "machineDetailsTitle": "Machine Details",
+      "machineDetailsDescription": "Must match the real hardware — Clustron uses these to reach and account the machine.",
+      "clusterConfigTitle": "Cluster Configuration",
+      "clusterConfigDescription": "You choose these — Clustron configures the machine to match.",
+      "prepareMachineIntro": "Before you add this node, prepare the machine",
+      "prepareMachineStep1": "Ensure the machine is reachable from the Clustron server (network route, firewall/security group allows SSH on port 22).",
+      "prepareMachineStep2": "Install Clustron's SSH public key on the target machine, under the SSH user's ~/.ssh/authorized_keys.",
+      "prepareMachineStep3": "Grant that user passwordless sudo — run sudo visudo and add:",
+      "prepareMachineFootnote": "The run fails at the connectivity/auth stage if any of these are missing — see the node's provision_detail after a failed run.",
+      "role": "Role",
+      "roleHeadNode": "Head node",
+      "roleComputeNode": "Compute node",
+      "slurmPartition": "Slurm partition",
+      "selectPlaceholder": "Select",
+      "cpuCores": "CPU cores",
+      "memoryMb": "Memory (MB)",
+      "provisionDetail": "Provisioning detail",
+      "allowedLoginGroups": "Allowed login groups",
+      "groupsLoadFail": "Failed to load groups",
+      "noGroups": "No groups found"
+    },
+    "table": {
+      "loading": "Loading resources...",
+      "loadingFailed": "Failed to load resources",
+      "noResources": "No resources found",
+      "name": "Name",
+      "address": "Address",
+      "role": "Role",
+      "partition": "Partition",
+      "resources": "Resources",
+      "status": "Status"
+    },
+    "addResourceSheet": {
+      "trigger": "Add resource",
+      "title": "New compute resource",
+      "submit": "Add node"
+    },
+    "detailSheet": {
+      "refetch": "Refresh",
+      "resetNode": "Reset node",
+      "delete": "Delete",
+      "saveChanges": "Save Changes",
+      "saveSuccessToast": "Changes saved",
+      "resetConfirmTitle": "Reset this node?",
+      "resetConfirmDescription": "This will reset the node's configuration and status, and trigger a background provisioning run.",
+      "deleteConfirmTitle": "Delete this node?",
+      "deleteConfirmDescription": "This will permanently remove the node from the cluster. This action cannot be undone."
+    },
+    "createServer": {
+      "creatingToast": "Adding node...",
+      "createSuccessToast": "Node added successfully",
+      "createFailToast": "Failed to add node"
+    },
+    "setupAllServers": {
+      "trigger": "Setup All Nodes",
+      "confirmTitle": "Setup all nodes?",
+      "confirmDescription": "This will trigger the setup process for every node in the cluster.",
+      "settingUpToast": "Setting up all nodes...",
+      "setupSuccessToast": "Setup started for all nodes",
+      "setupFailToast": "Failed to set up all nodes"
+    },
+    "deleteServer": {
+      "deletingToast": "Deleting...",
+      "deleteSuccessToast": "Node deleted",
+      "deleteFailToast": "Failed to delete node"
+    },
+    "resetServer": {
+      "resettingToast": "Resetting node...",
+      "resetSuccessToast": "Node reset",
+      "resetFailToast": "Failed to reset node"
+    },
+    "updateServerRole": {
+      "updateFailToast": "Failed to update role"
+    },
+    "updateAllowedLoginGroups": {
+      "updateFailToast": "Failed to update allowed login groups",
+      "headNodeFailToast": "Head nodes cannot have an allowed login group list"
+    }
   }
 }
