@@ -637,7 +637,7 @@ export default function AddGroupPage() {
                 variant="outline"
                 className="border-destructive text-destructive hover:bg-destructive/10 hover:text-destructive"
               >
-                {t("groupPages.createGroup.cancel")}
+                {t("common.cancel")}
               </Button>
             </DrawerClose>
           </DrawerHeader>
