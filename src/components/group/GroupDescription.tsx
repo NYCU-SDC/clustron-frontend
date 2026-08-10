@@ -148,7 +148,7 @@ export default function GroupDescription({
       });
     },
     onMutate: () => {
-      toast.loading(t("common.saving", "Saving..."), {
+      toast.loading(t("common.saving"), {
         id: "update-group-title",
       });
     },
@@ -199,7 +199,7 @@ export default function GroupDescription({
       });
     },
     onMutate: () => {
-      toast.loading(t("common.saving", "Saving..."), {
+      toast.loading(t("common.saving"), {
         id: "update-group-description",
       });
     },
@@ -301,7 +301,7 @@ export default function GroupDescription({
       ]);
     },
     onMutate: () => {
-      toast.loading(t("common.saving", "Saving..."), {
+      toast.loading(t("common.saving"), {
         id: "update-group-links",
       });
     },
@@ -426,8 +426,8 @@ export default function GroupDescription({
                   }
                 >
                   {updateTitleMutation.isPending
-                    ? t("common.saving", "Saving...")
-                    : t("common.save", "Save")}
+                    ? t("common.saving")
+                    : t("common.save")}
                 </Button>
 
                 <Button
@@ -436,7 +436,7 @@ export default function GroupDescription({
                   onClick={handleCancelTitle}
                   disabled={updateTitleMutation.isPending}
                 >
-                  {t("common.cancel", "Cancel")}
+                  {t("common.cancel")}
                 </Button>
               </div>
             </div>
@@ -482,8 +482,8 @@ export default function GroupDescription({
                 }
               >
                 {updateDescriptionMutation.isPending
-                  ? t("common.saving", "Saving...")
-                  : t("common.save", "Save")}
+                  ? t("common.saving")
+                  : t("common.save")}
               </Button>
 
               <Button
@@ -492,7 +492,7 @@ export default function GroupDescription({
                 onClick={handleCancelDescription}
                 disabled={updateDescriptionMutation.isPending}
               >
-                {t("common.cancel", "Cancel")}
+                {t("common.cancel")}
               </Button>
             </div>
           </div>
@@ -559,8 +559,8 @@ export default function GroupDescription({
                       }
                     >
                       {updateLinksMutation.isPending
-                        ? t("common.saving", "Saving...")
-                        : t("groupPages.addMemberPage.save", "Save")}
+                        ? t("common.saving")
+                        : t("common.save")}
                     </Button>
 
                     <Button
@@ -569,7 +569,7 @@ export default function GroupDescription({
                       onClick={handleCancelLinks}
                       disabled={updateLinksMutation.isPending}
                     >
-                      {t("common.cancel", "Cancel")}
+                      {t("common.cancel")}
                     </Button>
                   </div>
                 </div>

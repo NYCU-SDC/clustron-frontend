@@ -12,10 +12,7 @@ export function useUpdateMember(groupId: string) {
     mutationFn: (params: UpdateGroupMemberInput) => updateMember(params),
     onMutate: (params) => {
       const toastId = `update-member-${groupId}-${String(params.memberId)}`;
-      toast.loading(
-        t("groupComponents.memberUpdate.updatingToast", "Updating..."),
-        { id: toastId },
-      );
+      toast.loading(t("common.updating"), { id: toastId });
       return toastId;
     },
     onSuccess: (_data, _vars, ctx) => {

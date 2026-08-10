@@ -44,5 +44,5 @@ export default function LoginCallback() {
     toast.success(t("callback.loginSuccessToast"));
   }, [navigate, setCookiesForAuthToken, location, t]);
 
-  return <div className="min-h-screen">{t("callback.loadingMessage")}</div>;
+  return <div className="min-h-screen">{t("common.loading")}</div>;
 }

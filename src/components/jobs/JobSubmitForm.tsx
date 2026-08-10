@@ -372,7 +372,7 @@ export default function JobSubmitForm() {
                   <SelectValue
                     placeholder={
                       isModulesLoading
-                        ? t("jobSubmitForm.loadingModulePlaceholder")
+                        ? t("common.loading")
                         : t("jobSubmitForm.selectModulePlaceholder")
                     }
                   />

@@ -13,10 +13,7 @@ export function useRemovePendingMember(groupId: string) {
       removePendingMember(params),
     onMutate: (params) => {
       const toastId = `remove-pending-${groupId}-${String(params.id)}`;
-      toast.loading(
-        t("groupPages.pendingMembers.removingToast", "Removing..."),
-        { id: toastId },
-      );
+      toast.loading(t("common.removing"), { id: toastId });
       return toastId;
     },
     onSuccess: (_data, _vars, ctx) => {

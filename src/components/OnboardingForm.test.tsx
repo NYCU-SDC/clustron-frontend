@@ -21,9 +21,9 @@ vi.mock("react-i18next", () => ({
         "onboardingForm.placeHolderForInputFullName": "Full name",
         "onboardingForm.labelForInputPassword": "Password",
         "onboardingForm.labelForInputConfirmPassword": "Confirm Password",
-        "onboardingForm.saveBtn": "Save",
         "onboardingForm.saveBtnToolTip": "Fill required fields",
-        "onboardingForm.loadingBtn": "Loading",
+        "common.save": "Save",
+        "common.loading": "Loading",
       };
       return map[key] ?? key;
     },

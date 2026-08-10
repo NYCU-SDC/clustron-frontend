@@ -414,7 +414,7 @@ export function UserConfigMobileRow({
             {isPending ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
-                {t("userConfigTable.updatingToast")}
+                {t("common.updating")}
               </>
             ) : (
               t("userConfigTable.drawerSaveLinuxUsername")

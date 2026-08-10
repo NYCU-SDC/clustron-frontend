@@ -38,16 +38,14 @@ export default function DeleteMemberConfirmDialog({
         </DialogHeader>
         <DialogFooter className="flex justify-end gap-2">
           <DialogClose asChild>
-            <Button variant="outline">
-              {t("groupComponents.memberDeleteButton.cancel")}
-            </Button>
+            <Button variant="outline">{t("common.cancel")}</Button>
           </DialogClose>
           <Button
             variant="destructive"
             onClick={onConfirm}
             disabled={isPending}
           >
-            {t("groupComponents.memberDeleteButton.delete")}
+            {t("common.delete")}
           </Button>
         </DialogFooter>
       </DialogContent>

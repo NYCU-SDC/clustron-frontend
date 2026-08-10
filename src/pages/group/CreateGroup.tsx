@@ -637,7 +637,7 @@ export default function AddGroupPage() {
                 variant="outline"
                 className="border-destructive text-destructive hover:bg-destructive/10 hover:text-destructive"
               >
-                {t("groupPages.createGroup.cancel")}
+                {t("common.cancel")}
               </Button>
             </DrawerClose>
           </DrawerHeader>
@@ -721,7 +721,7 @@ export default function AddGroupPage() {
           className="w-full sm:w-auto"
           onClick={() => navigate("/groups")}
         >
-          {t("groupPages.createGroup.cancel")}
+          {t("common.cancel")}
         </Button>
         <Button
           className="w-full sm:w-auto"

@@ -37,7 +37,7 @@ export default function GroupLayout() {
   ];
 
   if (isLoading) {
-    return <div>{t("loading")}</div>;
+    return <div>{t("common.loading")}</div>;
   }
 
   if (isError || !group) {
