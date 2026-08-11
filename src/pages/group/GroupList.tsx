@@ -36,7 +36,7 @@ export default function GroupListPage() {
       {isLoading ? (
         <div className="flex items-center gap-2 text-gray-500">
           <Loader2 className="w-4 h-4 animate-spin" />
-          <span>{t("groupPages.groupList.loading")}</span>
+          <span>{t("common.loading")}</span>
         </div>
       ) : isError ? (
         <div className="flex items-center gap-2 text-red-500">

@@ -606,7 +606,7 @@ export default function RoleConfigTable() {
               className="cursor-pointer"
               onClick={() => setDeleteRoleId(null)}
             >
-              {t("roleConfigTable.cancelBtn")}
+              {t("common.cancel")}
             </AlertDialogCancel>
             {deleteMutation.isPending ? (
               <AlertDialogAction
@@ -614,14 +614,14 @@ export default function RoleConfigTable() {
                 disabled
               >
                 <Loader2Icon className="animate-spin mr-2" size={16} />
-                {t("roleConfigTable.removingBtn")}
+                {t("common.removing")}
               </AlertDialogAction>
             ) : (
               <AlertDialogAction
                 onClick={confirmRemoveRole}
                 className="cursor-pointer bg-destructive hover:bg-destructive"
               >
-                {t("roleConfigTable.removeBtn")}
+                {t("common.remove")}
               </AlertDialogAction>
             )}
           </AlertDialogFooter>

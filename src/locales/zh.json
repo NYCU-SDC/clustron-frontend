@@ -1,13 +1,16 @@
 {
-  "loading": "載入中...",
   "common": {
     "save": "儲存",
     "cancel": "取消",
-    "saving": "儲存中..."
+    "delete": "刪除",
+    "remove": "移除",
+    "loading": "載入中...",
+    "saving": "儲存中...",
+    "updating": "更新中...",
+    "removing": "移除中..."
   },
   "onboardingForm": {
     "cardTitleForName": "輸入您的基本資料",
-    "saveBtn": "儲存",
     "labelForInputFullName": "姓名",
     "placeHolderForInputFullName": "王曉菲",
     "labelForInputLinuxUsername": "Linux 使用者名稱",
@@ -15,7 +18,6 @@
     "formatErrorToast": "Linux 使用者名稱須以小寫字母或底線開頭，可含小寫字母、數字、底線、連字號(-)，結尾可為 $，不可含空白",
     "saveFailToast": "基本資訊儲存失敗",
     "EmptyLinuxUsernameToast": "Linux 使用者名稱不可包含空白字元",
-    "loadingBtn": "載入中...",
     "saveBtnToolTip": "請填入你的姓名和Linux使用者名稱",
     "usernameExistsErrorToast": "此 Linux 使用者名稱已被使用",
     "reservedKeywordErrorToast": "此 Linux 使用者名稱為系統保留字，無法使用",
@@ -36,7 +38,6 @@
     "saveBtn": "更新密碼",
     "successToast": "密碼更新成功",
     "failToast": "密碼更新失敗",
-    "loadingBtn": "更新中...",
     "saveBtnToolTip": "請填寫密碼欄位"
   },
   "login": {
@@ -52,10 +53,10 @@
     "groupLink": "群組",
     "settingLink": "設定",
     "jobsLink": "排程",
+    "resourceLink": "資源",
     "adminLink": "管理"
   },
   "callback": {
-    "loadingMessage": "載入中...",
     "loginSuccessToast": "登入成功",
     "loginFailToast": "登入失敗"
   },
@@ -82,23 +83,19 @@
     "cardDescriptionForKey": "在此貼上公鑰內容(不是私鑰)，公鑰副檔名一般以 .pub 結尾",
     "placeHolderForInputKey": "開頭應為：ssh-rsa、ecdsa-sha2-nistp256、ecdsa-sha2-nistp384、ecdsa-sha2-nistp521、ssh-ed25519、sk-ecdsa-sha2-nistp256@openssh.com 或 sk-ssh-ed25519@openssh.com",
     "saveBtn": "新增公鑰",
-    "cancelBtn": "取消",
     "saveBtnToolTip": "請先填寫標題跟公鑰",
     "successToast": "公鑰儲存成功",
     "formatErrorToast": "公鑰格式錯誤",
-    "saveFailToast": "公鑰儲存失敗",
-    "loadingBtn": "載入中..."
+    "saveFailToast": "公鑰儲存失敗"
   },
   "settingFullNameForm": {
     "cardTitleForFullName": "姓名",
     "cardDescriptionForFullName": "你的真實姓名以讓群組管理員辨識你",
-    "saveBtn": "儲存",
     "placeHolderForInputFullName": "王曉菲",
     "successToast": "姓名儲存成功",
     "emptyErrorToast": "請輸入姓名",
     "saveFailToast": "無法儲存姓名",
     "getFailToast": "無法取得姓名",
-    "loadingBtn": "載入中...",
     "saveBtnToolTip": "請填入你的姓名",
     "cardTitleForLanguage": "語言",
     "cardDescriptionForLanguage": "選擇在 Clustron 顯示的語言"
@@ -106,11 +103,9 @@
   "settingLinuxUsernameForm": {
     "cardTitleForLinuxUsername": "Linux 使用者名稱",
     "cardDescriptionForLinuxUsername": "用於登入到遠端伺服器的名稱",
-    "saveBtn": "儲存",
     "successToast": "Linux 使用者名稱儲存成功",
     "saveFailToast": "無法儲存 Linux 使用者名稱",
     "getFailToast": "無法取得 Linux 使用者名稱",
-    "loadingBtn": "載入中...",
     "saveBtnToolTip": "請填入你的 Linux 使用者名稱"
   },
   "settingKeyTable": {
@@ -128,10 +123,7 @@
     "deleteFailToast": "公鑰刪除失敗",
     "getFailToast": "無法取得公鑰列表",
     "confirmTitle": "確定要刪除這把公鑰嗎？",
-    "confirmDescription": "刪除後將無法復原，請謹慎操作。",
-    "cancelBtn": "取消",
-    "confirmBtn": "刪除",
-    "loadingBtn": "載入中..."
+    "confirmDescription": "刪除後將無法復原，請謹慎操作。"
   },
   "roleConfigTable": {
     "cardTitle": "角色權限配置",
@@ -153,9 +145,6 @@
     "placeholderSelectAccessMobile": "權限",
     "confirmTitle": "確認刪除角色",
     "confirmDescription": "您確定要刪除此角色嗎？",
-    "cancelBtn": "取消",
-    "removeBtn": "刪除",
-    "removingBtn": "刪除中...",
     "createSuccessToast": "角色建立成功",
     "createFailToast": "角色建立失敗",
     "createDuplicateToast": "角色名稱已存在",
@@ -184,9 +173,13 @@
     "updateUsernameFailToast": "更新 Linux 使用者名稱失敗",
     "tableHeadRole": "角色",
     "resultPerPage": "每頁顯示結果數：",
-    "updatingToast": "正在更新...",
     "updateRoleSuccessToast": "角色更新成功",
-    "updateRoleFailToast": "角色更新失敗"
+    "updateRoleFailToast": "角色更新失敗",
+    "drawerDetails": "使用者詳細資料",
+    "drawerStudentId": "學號",
+    "drawerEmail": "電子信箱",
+    "drawerSaveLinuxUsername": "完成",
+    "drawerClose": "關閉"
   },
   "adminSidebar": {
     "title": "管理",
@@ -217,9 +210,6 @@
       "removeUser": "移除使用者",
       "deleteUserConfirm": "確認刪除使用者",
       "deleteConfirmation": "您確定要刪除這個使用者嗎？此操作無法復原。",
-      "cancel": "取消",
-      "delete": "刪除",
-      "removingToast": "正在移除...",
       "removeSuccessToast": "已移除成員",
       "removeFailToast": "移除成員失敗"
     },
@@ -235,7 +225,6 @@
       "auditor": "旁聽生"
     },
     "memberUpdate": {
-      "updatingToast": "正在更新...",
       "updateSuccessToast": "成員已更新",
       "updateFailToast": "更新成員失敗"
     },
@@ -255,10 +244,7 @@
       "title": "新增成員",
       "studentIdOrEmail": "學號或電子信箱",
       "role": "角色",
-      "loading": "載入中...",
       "courseNotFound": "找不到課程。",
-      "cancel": "取消",
-      "save": "儲存",
       "toastAllSuccess": "新增完成：{{success}} / {{total}}",
       "toastAllFail": "新增成員失敗（{{fail}} / {{total}} 失敗）",
       "toastPartialSuccess": "新增結果：成功 {{success}}、失敗 {{fail}}（共 {{total}}）",
@@ -275,10 +261,20 @@
       "linkTitle": "連結資源",
       "title": "標題",
       "URL": "網址",
+      "addMoreLinks": "+ 新增更多連結",
+      "linkTitlePlaceholder": "連結標題",
+      "linkDrawerTitle": "新增連結",
+      "linkDrawerDescription": "新增或編輯群組連結資源",
+      "linkDrawerDone": "完成",
+      "removeLink": "移除連結",
       "addInitialMembers": "新增初始成員",
       "studentIdOrEmail": "學號或電子信箱",
       "role": "角色",
-      "cancel": "取消",
+      "addMoreUsers": "+ 新增更多使用者",
+      "memberDrawerTitle": "新增使用者",
+      "memberDrawerDescription": "用 Email 或學號來新增使用者",
+      "memberIdentifierPlaceholder": "Email 或學號",
+      "addMember": "新增",
       "create": "建立",
       "creatingToast": "建立中...",
       "createSuccessToast": "群組建立成功",
@@ -288,13 +284,11 @@
     },
     "groupList": {
       "newGroup": "+ 新群組",
-      "loading": "載入中...",
       "loadingFailed": "載入失敗",
       "noCourses": "你尚未加入任何課程。"
     },
     "groupOverview": {
       "provideCourseId": "請提供課程 ID",
-      "loading": "載入中...",
       "courseNotFound": "找不到課程"
     },
     "groupSettings": {
@@ -304,7 +298,6 @@
       "archiveGroup": "封存此群組",
       "unarchiveDescription": "這將重新啟用群組並允許再次更新。",
       "archiveDescription": "這將把群組轉為封存狀態，在重新啟用前無法進行更動。",
-      "saving": "儲存中...",
       "unarchive": "解除封存",
       "archive": "封存",
       "archiveSuccessToast": "群組已封存",
@@ -341,10 +334,8 @@
     },
     "pendingMembers": {
       "pendingMember": "待定成員",
-      "removingToast": "正在移除...",
       "removeSuccessToast": "已從待定清單移除",
       "removeFailToast": "移除待定成員失敗",
-      "updatingToast": "正在更新...",
       "updateSuccessToast": "已更新待定成員",
       "updateFailToast": "更新待定成員失敗"
     },
@@ -367,7 +358,6 @@
       "failed": "擁有者轉移失敗。"
     },
     "transfer": "轉移",
-    "cancel": "取消",
     "toast": {
       "success": "轉移成功",
       "fail": "轉移失敗"
@@ -386,7 +376,6 @@
     "jobNameLabel": "工作名稱",
     "jobNamePlaceholder": "輸入工作名稱",
     "commentLabel": "備註",
-    "commentPlaceholder": "輸入備註",
     "scriptPathLabel": "腳本路徑",
     "scriptPathPlaceholder": "輸入腳本路徑",
     "cwdLabel": "目前工作目錄",
@@ -394,7 +383,6 @@
     "envSettingTitle": "環境設定",
     "envModuleLabel": "環境模組",
     "selectModulePlaceholder": "選擇模組...",
-    "loadingModulePlaceholder": "載入中...",
     "envVariable": "變數",
     "envValue": "值",
     "envVarPlaceholder": "VAR",
@@ -403,17 +391,11 @@
     "partitionLabel": "分區",
     "partitionPlaceholder": "選擇分區",
     "tasksLabel": "任務數",
-    "tasksPlaceholder": "輸入任務數",
     "cpusLabel": "每個任務 CPU 數",
-    "cpusPlaceholder": "輸入每個任務 CPU 數",
     "memPerCpuLabel": "每個 CPU 記憶體",
-    "memPerCpuPlaceholder": "輸入每個 CPU 記憶體",
     "nodesLabel": "節點數",
-    "nodesPlaceholder": "輸入節點數",
     "memPerNodeLabel": "每個節點記憶體",
-    "memPerNodePlaceholder": "輸入每個節點記憶體",
     "timeLimitLabel": "時間限制",
-    "timeLimitPlaceholder": "輸入時間限制",
     "ioSettingTitle": "輸入/輸出設定",
     "stdinLabel": "標準輸入",
     "stdinPlaceholder": "stdin 路徑",
@@ -437,9 +419,6 @@
   "moduleCard": {
     "deleteConfirmTitle": "確認刪除模組",
     "deleteConfirmDescription": "您確定要刪除環境模組「{{title}}」嗎？",
-    "cancelBtn": "取消",
-    "deleteBtn": "刪除",
-    "saveBtn": "儲存",
     "variableLabel": "變數",
     "valueLabel": "值",
     "saveSuccessToast": "模組儲存成功！",
@@ -471,5 +450,107 @@
     "title": "無法連接至伺服器",
     "description": "無法確認系統設定狀態，請檢查您的網路連線或後端服務。",
     "retryBtn": "重試"
+  },
+  "resourcePages": {
+    "resourceList": {
+      "title": "資源列表"
+    }
+  },
+  "resourceComponents": {
+    "status": {
+      "active": "運作中",
+      "provisioning": "部署中",
+      "failed": "失敗",
+      "unset": "未設定"
+    },
+    "form": {
+      "name": "主機名稱",
+      "ipAddress": "IP 位址",
+      "ipAddressHint": "若未提供 SSH 設定主機則為必填",
+      "sshConfigHost": "SSH 設定主機",
+      "sshConfigHostHint": "可替代 IP 位址",
+      "privateIp": "內部 IP",
+      "privateIpHint": "叢集內部網路位址",
+      "sshUser": "SSH 使用者",
+      "sshUserHint": "若未提供 SSH 設定主機則為必填",
+      "sshKeyName": "SSH 金鑰名稱",
+      "sshKeyNameHint": "可替代 IP 位址",
+      "machineDetailsTitle": "機器詳細資訊",
+      "machineDetailsDescription": "須與實際硬體相符 — Clustron 會用這些資訊連線並記錄該機器。",
+      "clusterConfigTitle": "叢集設定",
+      "clusterConfigDescription": "由你決定這些設定 — Clustron 會依此設定機器。",
+      "prepareMachineIntro": "在新增此節點前，請先準備好機器",
+      "prepareMachineStep1": "確認此機器可從 Clustron 伺服器連線（網路路由、防火牆/安全群組允許 SSH 埠 22）。",
+      "prepareMachineStep2": "在目標機器上安裝 Clustron 的 SSH 公鑰，放置於該 SSH 使用者的 ~/.ssh/authorized_keys。",
+      "prepareMachineStep3": "授予該使用者免密碼 sudo 權限 — 執行 sudo visudo 並新增：",
+      "prepareMachineFootnote": "若缺少上述任一項目，執行時會在連線／驗證階段失敗 — 請於執行失敗後查看該節點的 provision_detail。",
+      "role": "角色",
+      "roleHeadNode": "主節點",
+      "roleComputeNode": "運算節點",
+      "slurmPartition": "Slurm 分割區",
+      "selectPlaceholder": "請選擇",
+      "cpuCores": "CPU 核心數",
+      "memoryMb": "記憶體 (MB)",
+      "provisionDetail": "部署詳細資訊",
+      "allowedLoginGroups": "允許登入的群組",
+      "groupsLoadFail": "無法載入群組",
+      "noGroups": "找不到群組"
+    },
+    "table": {
+      "loading": "正在載入資源...",
+      "loadingFailed": "無法載入資源",
+      "noResources": "找不到資源",
+      "name": "名稱",
+      "address": "位址",
+      "role": "角色",
+      "partition": "分割區",
+      "resources": "資源",
+      "status": "狀態"
+    },
+    "addResourceSheet": {
+      "trigger": "新增資源",
+      "title": "新增運算資源",
+      "submit": "新增節點"
+    },
+    "detailSheet": {
+      "refetch": "重新整理",
+      "resetNode": "重設節點",
+      "saveChanges": "儲存變更",
+      "saveSuccessToast": "變更已儲存",
+      "resetConfirmTitle": "要重設此節點嗎？",
+      "resetConfirmDescription": "這將重設節點的設定與狀態，並觸發背景重新部署。",
+      "deleteConfirmTitle": "要刪除此節點嗎？",
+      "deleteConfirmDescription": "這將永久移除此節點，且無法復原。"
+    },
+    "createServer": {
+      "creatingToast": "新增節點中...",
+      "createSuccessToast": "節點新增成功",
+      "createFailToast": "新增節點失敗"
+    },
+    "setupAllServers": {
+      "trigger": "設定所有節點",
+      "confirmTitle": "要設定所有節點嗎？",
+      "confirmDescription": "此操作將對叢集中的每個節點觸發設定流程。",
+      "settingUpToast": "正在設定所有節點...",
+      "setupSuccessToast": "已開始設定所有節點",
+      "setupFailToast": "設定所有節點失敗"
+    },
+    "deleteServer": {
+      "deletingToast": "刪除中...",
+      "deleteSuccessToast": "節點已刪除",
+      "deleteFailToast": "刪除節點失敗"
+    },
+    "resetServer": {
+      "resettingToast": "重設節點中...",
+      "resetSuccessToast": "節點已重設",
+      "resetFailToast": "重設節點失敗"
+    },
+    "updateServerRole": {
+      "updateFailToast": "更新角色失敗"
+    },
+    "updateAllowedLoginGroups": {
+      "updateFailToast": "更新允許登入的群組失敗",
+      "headNodeFailToast": "主節點無法設定允許登入的群組清單"
+    }
   }
 }

@@ -492,9 +492,7 @@ describe("GroupMemberTable", () => {
       await user.click(deleteOption);
 
       // Click confirm in the dialog
-      const confirmButton = screen.getByText(
-        "groupComponents.memberDeleteButton.delete",
-      );
+      const confirmButton = screen.getByText("common.delete");
       await user.click(confirmButton);
 
       expect(mockOnRemove).toHaveBeenCalledWith("member-1");

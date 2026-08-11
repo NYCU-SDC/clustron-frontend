@@ -19,7 +19,7 @@ export function useUnarchiveGroup(
     mutationFn: () => unarchiveGroup(groupId),
     onMutate: () => {
       const toastId = `unarchive-group-${groupId}`;
-      toast.loading(t("groupPages.groupSettings.saving", "Saving..."), {
+      toast.loading(t("common.saving"), {
         id: toastId,
       });
       return toastId;

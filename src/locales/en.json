@@ -1,13 +1,16 @@
 {
-  "loading": "Loading...",
   "common": {
     "save": "Save",
     "cancel": "Cancel",
-    "saving": "Saving..."
+    "delete": "Delete",
+    "remove": "Remove",
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "updating": "Updating...",
+    "removing": "Removing..."
   },
   "onboardingForm": {
     "cardTitleForName": "Enter Your Basic Information",
-    "saveBtn": "Save",
     "labelForInputFullName": "Full Name",
     "placeHolderForInputFullName": "John Doe",
     "labelForInputLinuxUsername": "Linux Username",
@@ -15,7 +18,6 @@
     "formatErrorToast": "Linux Username must start with a lowercase letter or underscore, can include lowercase letters, numbers, underscores(_), or hyphens(-), may end with $, and must not contain spaces",
     "saveFailToast": "Failed to save your information",
     "EmptyLinuxUsernameToast": "Linux username cannot contain spaces",
-    "loadingBtn": "Loading...",
     "saveBtnToolTip": "Please fill in your full name and Linux username",
     "usernameExistsErrorToast": "This Linux username is already in use",
     "reservedKeywordErrorToast": "This Linux username is a reserved system keyword and cannot be used",
@@ -36,7 +38,6 @@
     "saveBtn": "Update password",
     "successToast": "Password updated successfully",
     "failToast": "Failed to update password",
-    "loadingBtn": "Updating...",
     "saveBtnToolTip": "Please fill in password fields"
   },
   "login": {
@@ -52,10 +53,10 @@
     "groupLink": "Groups",
     "settingLink": "Settings",
     "jobsLink": "Jobs",
+    "resourceLink": "Resource",
     "adminLink": "Admin"
   },
   "callback": {
-    "loadingMessage": "Loading...",
     "loginSuccessToast": "Login Successful",
     "loginFailToast": "Login Failed"
   },
@@ -85,19 +86,16 @@
     "saveBtnToolTip": "Please fill in title and key ",
     "successToast": "Key saved successfully",
     "formatErrorToast": "Public key format error",
-    "saveFailToast": "Failed to save your public key",
-    "loadingBtn": "Loading..."
+    "saveFailToast": "Failed to save your public key"
   },
   "settingFullNameForm": {
     "cardTitleForFullName": "Full Name",
     "cardDescriptionForFullName": "Enter your full name to let the group administrator recognize you",
-    "saveBtn": "Save",
     "placeHolderForInputFullName": "Jammy Wang",
     "successToast": "Name saved successfully",
     "emptyErrorToast": "Please enter your full name",
     "saveFailToast": "Failed to save your full name",
     "getFailToast": "Failed to get your full name",
-    "loadingBtn": "Loading...",
     "saveBtnToolTip": "Please fill in your full name",
     "cardTitleForLanguage": "Language",
     "cardDescriptionForLanguage": "Choose the display language in Clustron"
@@ -105,12 +103,9 @@
   "settingLinuxUsernameForm": {
     "cardTitleForLinuxUsername": "Linux Username",
     "cardDescriptionForLinuxUsername": "The username to login to the remote server",
-    "saveBtn": "Save",
     "successToast": "Linux username saved successfully",
-    "emptyErrorToast": "Please enter your Linux username",
     "saveFailToast": "Failed to save Linux username",
     "getFailToast": "Failed to get Linux username",
-    "loadingBtn": "Loading...",
     "saveBtnToolTip": "Please fill in your Linux username"
   },
   "settingKeyTable": {
@@ -128,10 +123,7 @@
     "deleteFailToast": "Failed to delete public key",
     "getFailToast": "Failed to get public key list",
     "confirmTitle": "Delete this public key?",
-    "confirmDescription": "This action cannot be undone. Please proceed with caution.",
-    "cancelBtn": "Cancel",
-    "confirmBtn": "Delete",
-    "loadingBtn": "Loading..."
+    "confirmDescription": "This action cannot be undone. Please proceed with caution."
   },
   "roleConfigTable": {
     "cardTitle": "Role Access Configuration",
@@ -153,9 +145,6 @@
     "placeholderSelectAccessMobile": "Select Access",
     "confirmTitle": "Remove Role Confirm",
     "confirmDescription": "Are you sure to remove this role?",
-    "cancelBtn": "Cancel",
-    "removeBtn": "Remove",
-    "removingBtn": "Removing...",
     "createSuccessToast": "Role created successfully",
     "createFailToast": "Failed to create role",
     "createDuplicateToast": "Role name already exists",
@@ -184,9 +173,13 @@
     "updateUsernameFailToast": "Failed to update Linux username",
     "tableHeadRole": "Role",
     "resultPerPage": "Results per page:",
-    "updatingToast": "Updating...",
     "updateRoleSuccessToast": "Role updated",
-    "updateRoleFailToast": "Failed to update role"
+    "updateRoleFailToast": "Failed to update role",
+    "drawerDetails": "User details",
+    "drawerStudentId": "Student ID",
+    "drawerEmail": "Email",
+    "drawerSaveLinuxUsername": "Done",
+    "drawerClose": "Close"
   },
   "adminSidebar": {
     "title": "Admin",
@@ -217,9 +210,6 @@
       "removeUser": "Remove User",
       "deleteUserConfirm": "Delete User Confirm",
       "deleteConfirmation": "Are you sure to delete this user? This action is not recoverable.",
-      "cancel": "Cancel",
-      "delete": "Delete",
-      "removingToast": "Removing...",
       "removeSuccessToast": "Member removed",
       "removeFailToast": "Failed to remove member"
     },
@@ -235,7 +225,6 @@
       "auditor": "Auditor"
     },
     "memberUpdate": {
-      "updatingToast": "Updating...",
       "updateSuccessToast": "Member updated",
       "updateFailToast": "Failed to update member"
     },
@@ -255,10 +244,7 @@
       "title": "Add New Members",
       "studentIdOrEmail": "Student ID or Email",
       "role": "Role",
-      "loading": "Loading...",
       "courseNotFound": "Course not found.",
-      "cancel": "Cancel",
-      "save": "Save",
       "toastAllSuccess": "{{success}}/{{total}} members added successfully",
       "toastAllFail": "Adding members failed ({{fail}}/{{total}} failed)",
       "toastPartialSuccess": "{{success}} success, {{fail}} failed (total {{total}})",
@@ -275,10 +261,20 @@
       "linkTitle": "Link Resources",
       "title": "title",
       "URL": "URL",
+      "addMoreLinks": "+ Add More Links",
+      "linkTitlePlaceholder": "Link Title",
+      "linkDrawerTitle": "Add Link",
+      "linkDrawerDescription": "Add or edit a group link resource",
+      "linkDrawerDone": "Done",
+      "removeLink": "Remove Link",
       "addInitialMembers": "Add Initial Members",
       "studentIdOrEmail": "Student ID or Email",
       "role": "Role",
-      "cancel": "Cancel",
+      "addMoreUsers": "+ Add More Users",
+      "memberDrawerTitle": "Add User",
+      "memberDrawerDescription": "Add users by email or student ID",
+      "memberIdentifierPlaceholder": "Email or Student ID",
+      "addMember": "Add",
       "create": "Create",
       "creatingToast": "Creating...",
       "createSuccessToast": "Group created successfully",
@@ -288,13 +284,11 @@
     },
     "groupList": {
       "newGroup": "+ New Group",
-      "loading": "Loading...",
       "loadingFailed": "Loading failed",
       "noCourses": "You haven't joined any courses yet."
     },
     "groupOverview": {
       "provideCourseId": "Please provide course ID",
-      "loading": "Loading...",
       "courseNotFound": "Course not found"
     },
     "groupSettings": {
@@ -304,7 +298,6 @@
       "archiveGroup": "Archive This Group",
       "unarchiveDescription": "This will reactivate the group and allow updates again.",
       "archiveDescription": "This will turn the group into archive state, no update can be made before it is activated again.",
-      "saving": "Saving...",
       "unarchive": "Unarchive",
       "archive": "Archive",
       "archiveSuccessToast": "Group archived successfully",
@@ -341,10 +334,8 @@
     },
     "pendingMembers": {
       "pendingMember": "Pending members",
-      "removingToast": "Removing...",
       "removeSuccessToast": "Removed from pending list",
       "removeFailToast": "Failed to remove pending member",
-      "updatingToast": "Updating...",
       "updateSuccessToast": "Pending member updated",
       "updateFailToast": "Failed to update pending member"
     },
@@ -367,7 +358,6 @@
       "failed": "Failed to transfer ownership."
     },
     "transfer": "Transfer",
-    "cancel": "Cancel",
     "toast": {
       "success": "Transfer successful",
       "fail": "Transfer fail"
@@ -393,7 +383,6 @@
     "envSettingTitle": "Environment Setting",
     "envModuleLabel": "Environment Module",
     "selectModulePlaceholder": "Select Module...",
-    "loadingModulePlaceholder": "Loading...",
     "envVariable": "Variable",
     "envValue": "Value",
     "envVarPlaceholder": "VAR",
@@ -430,9 +419,6 @@
   "moduleCard": {
     "deleteConfirmTitle": "Delete Module Confirm",
     "deleteConfirmDescription": "Are you sure to remove environment module \"{{title}}\"?",
-    "cancelBtn": "Cancel",
-    "deleteBtn": "Delete",
-    "saveBtn": "Save",
     "variableLabel": "Variable",
     "valueLabel": "Value",
     "saveSuccessToast": "Module saved successfully!",
@@ -464,5 +450,107 @@
     "title": "Connection Error",
     "description": "Unable to verify system setup status. Please check your network connection or backend service.",
     "retryBtn": "Retry"
+  },
+  "resourcePages": {
+    "resourceList": {
+      "title": "Resource List"
+    }
+  },
+  "resourceComponents": {
+    "status": {
+      "active": "Active",
+      "provisioning": "Provisioning",
+      "failed": "Failed",
+      "unset": "Unset"
+    },
+    "form": {
+      "name": "Host Name",
+      "ipAddress": "IP address",
+      "ipAddressHint": "Required if no SSH config host",
+      "sshConfigHost": "SSH config host",
+      "sshConfigHostHint": "Alternative to IP",
+      "privateIp": "Private IP",
+      "privateIpHint": "Internal cluster network address",
+      "sshUser": "SSH user",
+      "sshUserHint": "Required if no SSH config host",
+      "sshKeyName": "SSH key name",
+      "sshKeyNameHint": "Alternative to IP",
+      "machineDetailsTitle": "Machine Details",
+      "machineDetailsDescription": "Must match the real hardware — Clustron uses these to reach and account the machine.",
+      "clusterConfigTitle": "Cluster Configuration",
+      "clusterConfigDescription": "You choose these — Clustron configures the machine to match.",
+      "prepareMachineIntro": "Before you add this node, prepare the machine",
+      "prepareMachineStep1": "Ensure the machine is reachable from the Clustron server (network route, firewall/security group allows SSH on port 22).",
+      "prepareMachineStep2": "Install Clustron's SSH public key on the target machine, under the SSH user's ~/.ssh/authorized_keys.",
+      "prepareMachineStep3": "Grant that user passwordless sudo — run sudo visudo and add:",
+      "prepareMachineFootnote": "The run fails at the connectivity/auth stage if any of these are missing — see the node's provision_detail after a failed run.",
+      "role": "Role",
+      "roleHeadNode": "Head node",
+      "roleComputeNode": "Compute node",
+      "slurmPartition": "Slurm partition",
+      "selectPlaceholder": "Select",
+      "cpuCores": "CPU cores",
+      "memoryMb": "Memory (MB)",
+      "provisionDetail": "Provisioning detail",
+      "allowedLoginGroups": "Allowed login groups",
+      "groupsLoadFail": "Failed to load groups",
+      "noGroups": "No groups found"
+    },
+    "table": {
+      "loading": "Loading resources...",
+      "loadingFailed": "Failed to load resources",
+      "noResources": "No resources found",
+      "name": "Name",
+      "address": "Address",
+      "role": "Role",
+      "partition": "Partition",
+      "resources": "Resources",
+      "status": "Status"
+    },
+    "addResourceSheet": {
+      "trigger": "Add resource",
+      "title": "New compute resource",
+      "submit": "Add node"
+    },
+    "detailSheet": {
+      "refetch": "Refresh",
+      "resetNode": "Reset node",
+      "saveChanges": "Save Changes",
+      "saveSuccessToast": "Changes saved",
+      "resetConfirmTitle": "Reset this node?",
+      "resetConfirmDescription": "This will reset the node's configuration and status, and trigger a background provisioning run.",
+      "deleteConfirmTitle": "Delete this node?",
+      "deleteConfirmDescription": "This will permanently remove the node from the cluster. This action cannot be undone."
+    },
+    "createServer": {
+      "creatingToast": "Adding node...",
+      "createSuccessToast": "Node added successfully",
+      "createFailToast": "Failed to add node"
+    },
+    "setupAllServers": {
+      "trigger": "Setup All Nodes",
+      "confirmTitle": "Setup all nodes?",
+      "confirmDescription": "This will trigger the setup process for every node in the cluster.",
+      "settingUpToast": "Setting up all nodes...",
+      "setupSuccessToast": "Setup started for all nodes",
+      "setupFailToast": "Failed to set up all nodes"
+    },
+    "deleteServer": {
+      "deletingToast": "Deleting...",
+      "deleteSuccessToast": "Node deleted",
+      "deleteFailToast": "Failed to delete node"
+    },
+    "resetServer": {
+      "resettingToast": "Resetting node...",
+      "resetSuccessToast": "Node reset",
+      "resetFailToast": "Failed to reset node"
+    },
+    "updateServerRole": {
+      "updateFailToast": "Failed to update role"
+    },
+    "updateAllowedLoginGroups": {
+      "updateFailToast": "Failed to update allowed login groups",
+      "headNodeFailToast": "Head nodes cannot have an allowed login group list"
+    }
   }
 }

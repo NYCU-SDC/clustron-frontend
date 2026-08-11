@@ -215,7 +215,7 @@ export default function SettingKeyTable() {
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                           <AlertDialogCancel className="cursor-pointer mx-2">
-                            {t("settingKeyTable.cancelBtn")}
+                            {t("common.cancel")}
                           </AlertDialogCancel>
                           {deleteMutation.isPending ? (
                             <AlertDialogAction
@@ -223,7 +223,7 @@ export default function SettingKeyTable() {
                               disabled
                             >
                               <Loader2Icon className="animate-spin" />
-                              {t("settingKeyTable.loadingBtn")}
+                              {t("common.loading")}
                             </AlertDialogAction>
                           ) : (
                             <AlertDialogAction
@@ -232,7 +232,7 @@ export default function SettingKeyTable() {
                                 deleteMutation.mutate(key.fingerprint)
                               }
                             >
-                              {t("settingKeyTable.confirmBtn")}
+                              {t("common.delete")}
                             </AlertDialogAction>
                           )}
                         </AlertDialogFooter>

@@ -15,13 +15,21 @@ type Props = {
   onOpenChange: (open: boolean) => void;
   onConfirm: () => void;
   isPending?: boolean;
+  title: string;
+  description: string;
+  confirmLabel: string;
+  variant?: "destructive" | "default";
 };
 
-export default function DeleteMemberConfirmDialog({
+export default function ConfirmActionDialog({
   open,
   onOpenChange,
   onConfirm,
   isPending = false,
+  title,
+  description,
+  confirmLabel,
+  variant = "destructive",
 }: Props) {
   const { t } = useTranslation();
 
@@ -29,23 +37,19 @@ export default function DeleteMemberConfirmDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-red-600">
-            {t("groupComponents.memberDeleteButton.deleteUserConfirm")}
+          <DialogTitle
+            className={variant === "destructive" ? "text-red-600" : ""}
+          >
+            {title}
           </DialogTitle>
-          <DialogDescription>
-            {t("groupComponents.memberDeleteButton.deleteConfirmation")}
-          </DialogDescription>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <DialogFooter className="flex justify-end gap-2">
           <DialogClose asChild>
             <Button variant="outline">{t("common.cancel")}</Button>
           </DialogClose>
-          <Button
-            variant="destructive"
-            onClick={onConfirm}
-            disabled={isPending}
-          >
-            {t("common.delete")}
+          <Button variant={variant} onClick={onConfirm} disabled={isPending}>
+            {confirmLabel}
           </Button>
         </DialogFooter>
       </DialogContent>

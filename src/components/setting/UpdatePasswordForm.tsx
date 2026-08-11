@@ -85,7 +85,7 @@ export default function SettingPasswordForm() {
                     disabled
                   >
                     <Loader2Icon className="animate-spin" />
-                    {t("settingPasswordForm.loadingBtn")}
+                    {t("common.updating")}
                   </Button>
                 ) : newPassword && confirmPassword ? (
                   <Button

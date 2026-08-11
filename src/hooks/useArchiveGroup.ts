@@ -19,7 +19,7 @@ export function useArchiveGroup(
   return useMutation({
     mutationFn: () => archiveGroup(groupId),
     onMutate: () => {
-      toast.loading(t("groupPages.groupSettings.saving", "Saving..."), {
+      toast.loading(t("common.saving"), {
         id: toastId,
       });
     },
