@@ -110,7 +110,7 @@ export default function SettingAddKeyForm({
                   disabled
                 >
                   <Loader2Icon className="animate-spin" />
-                  {t("settingAddKeyForm.loadingBtn")}
+                  {t("common.loading")}
                 </Button>
               ) : (
                 <Button

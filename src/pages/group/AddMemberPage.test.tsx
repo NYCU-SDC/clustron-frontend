@@ -163,9 +163,7 @@ describe("AddMemberPage", () => {
   it("Should show loading text when group is loading", () => {
     getGroupResult = { data: null, isLoading: true };
     renderPage();
-    expect(
-      screen.getByText("groupPages.addMemberPage.loading"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("common.loading")).toBeInTheDocument();
   });
 
   it("Should show not found text when group is not found", () => {
@@ -189,7 +187,7 @@ describe("AddMemberPage", () => {
     // 兩列都應標示 duplicate，且 Save disabled
     expect(screen.getAllByRole("alert")[0]).toHaveTextContent("duplicate");
     const saveBtn = screen.getByRole("button", {
-      name: "groupPages.addMemberPage.save",
+      name: "common.save",
     });
     expect(saveBtn).toBeDisabled();
 
@@ -206,9 +204,7 @@ describe("AddMemberPage", () => {
     await user.type(screen.getByLabelText("member-0"), "s1@example.com");
     await user.selectOptions(screen.getByLabelText("role-0"), "student");
 
-    await user.click(
-      screen.getByRole("button", { name: "groupPages.addMemberPage.save" }),
-    );
+    await user.click(screen.getByRole("button", { name: "common.save" }));
 
     expect(mutateMock).toHaveBeenCalledTimes(1);
     expect(mutateMock).toHaveBeenCalledWith([
@@ -220,9 +216,7 @@ describe("AddMemberPage", () => {
     const user = userEvent.setup();
     renderPage();
 
-    await user.click(
-      screen.getByRole("button", { name: "groupPages.addMemberPage.cancel" }),
-    );
+    await user.click(screen.getByRole("button", { name: "common.cancel" }));
     expect(navigateMock).toHaveBeenCalledWith("/groups/g1/settings");
   });
 
@@ -237,9 +231,7 @@ describe("AddMemberPage", () => {
     await user.click(screen.getByLabelText("add-batch-0"));
 
     // 送出
-    await user.click(
-      screen.getByRole("button", { name: "groupPages.addMemberPage.save" }),
-    );
+    await user.click(screen.getByRole("button", { name: "common.save" }));
 
     expect(mutateMock).toHaveBeenCalledWith(
       expect.arrayContaining([
@@ -254,9 +246,7 @@ describe("AddMemberPage", () => {
     renderPage();
 
     await user.type(screen.getByLabelText("member-0"), "s1@example.com");
-    await user.click(
-      screen.getByRole("button", { name: "groupPages.addMemberPage.save" }),
-    );
+    await user.click(screen.getByRole("button", { name: "common.save" }));
 
     // mock useAddMember success
     onSuccessFromHook?.({

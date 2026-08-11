@@ -149,9 +149,7 @@ describe("CreateGroup", () => {
 
   function getCancelButton() {
     const buttons = screen.getAllByRole("button");
-    return buttons.find((btn) =>
-      btn.textContent?.includes("groupPages.createGroup.cancel"),
-    );
+    return buttons.find((btn) => btn.textContent?.includes("common.cancel"));
   }
 
   describe("Initial Rendering", () => {
