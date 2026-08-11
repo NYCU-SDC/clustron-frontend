@@ -34,7 +34,7 @@ export default function AllowedLoginGroupsField({
         {isLoading ? (
           <div className="flex items-center gap-2 p-3 text-sm text-muted-foreground">
             <Loader2 className="h-4 w-4 animate-spin" />
-            {t("loading")}
+            {t("common.loading")}
           </div>
         ) : isError ? (
           <p className="p-3 text-sm text-red-500">

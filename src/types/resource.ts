@@ -1,3 +1,5 @@
+import type { ParseKeys } from "i18next";
+
 export type AnsibleRole = "head_nodes" | "compute_nodes";
 
 export type ServerStatus = "unset" | "provisioning" | "active" | "failed";
@@ -64,16 +66,20 @@ export type ResourceFormData = {
   memory_mb: string;
 };
 
-export const RESOURCE_ROLE_OPTIONS: { value: AnsibleRole; labelKey: string }[] =
-  [
-    { value: "head_nodes", labelKey: "resourceComponents.form.roleHeadNode" },
-    {
-      value: "compute_nodes",
-      labelKey: "resourceComponents.form.roleComputeNode",
-    },
-  ];
+// ParseKeys is i18next's generated union of every valid translation key string.
+// So the type ensures that the labelKey values are valid translation keys exist in en.json and zh.json.
+export const RESOURCE_ROLE_OPTIONS: {
+  value: AnsibleRole;
+  labelKey: ParseKeys;
+}[] = [
+  { value: "head_nodes", labelKey: "resourceComponents.form.roleHeadNode" },
+  {
+    value: "compute_nodes",
+    labelKey: "resourceComponents.form.roleComputeNode",
+  },
+];
 
-export const RESOURCE_ROLE_LABEL_KEYS: Record<AnsibleRole, string> =
+export const RESOURCE_ROLE_LABEL_KEYS: Record<AnsibleRole, ParseKeys> =
   Object.fromEntries(
     RESOURCE_ROLE_OPTIONS.map((option) => [option.value, option.labelKey]),
-  ) as Record<AnsibleRole, string>;
+  ) as Record<AnsibleRole, ParseKeys>;
