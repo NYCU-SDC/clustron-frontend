@@ -124,7 +124,7 @@ describe("DefaultLayout", () => {
       });
 
       // Standard user: Logo (to /groups), Groups, Settings
-      expect(desktopNavLinks.length).toBe(3);
+      expect(desktopNavLinks.length).toBe(4);
 
       desktopNavLinks.forEach((link) => {
         expect(link.getAttribute("href")).toBeTruthy();
@@ -140,7 +140,7 @@ describe("DefaultLayout", () => {
         },
       );
 
-      expect(mobileNavLinks.length).toBe(3);
+      expect(mobileNavLinks.length).toBe(4);
 
       mobileNavLinks.forEach((link) => {
         expect(link.getAttribute("href")).toBeTruthy();
@@ -174,7 +174,7 @@ describe("DefaultLayout", () => {
       });
 
       // Admin user: Logo (to /groups), Groups, Settings, Admin
-      expect(desktopNavLinks.length).toBe(4);
+      expect(desktopNavLinks.length).toBe(5);
 
       desktopNavLinks.forEach((link) => {
         expect(link.getAttribute("href")).toBeTruthy();
@@ -190,7 +190,7 @@ describe("DefaultLayout", () => {
         },
       );
 
-      expect(mobileNavLinks.length).toBe(4);
+      expect(mobileNavLinks.length).toBe(5);
 
       mobileNavLinks.forEach((link) => {
         expect(link.getAttribute("href")).toBeTruthy();

@@ -26,6 +26,7 @@ import UserConfiguration from "@/pages/admin/UserConfiguration";
 import BindCallback from "@/pages/BindCallback";
 import JobSubmitPage from "@/pages/JobSubmitPage";
 import JobLayout from "@/pages/layouts/JobLayout";
+import ResourceListPage from "@/pages/resource/ResourceList";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
 const App = () => {
@@ -84,6 +85,8 @@ const App = () => {
                 element={<EnvironmentModulePage />}
               />
             </Route>
+
+            <Route path="/resources" element={<ResourceListPage />} />
 
             <Route path="/groups/:id" element={<GroupLayout />}>
               <Route index element={<GroupOverview />} />
