@@ -344,7 +344,7 @@ export default function ResourceDetailSheet({
                 onClick={() => setDeleteConfirmOpen(true)}
                 disabled={isDeleting}
               >
-                {t("resourceComponents.detailSheet.delete")}
+                {t("common.delete")}
               </Button>
             </div>
             <div className="flex gap-2">
@@ -389,7 +389,7 @@ export default function ResourceDetailSheet({
         description={t(
           "resourceComponents.detailSheet.deleteConfirmDescription",
         )}
-        confirmLabel={t("resourceComponents.detailSheet.delete")}
+        confirmLabel={t("common.delete")}
       />
     </>
   );

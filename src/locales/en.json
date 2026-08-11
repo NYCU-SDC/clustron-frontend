@@ -510,7 +510,6 @@
     "detailSheet": {
       "refetch": "Refresh",
       "resetNode": "Reset node",
-      "delete": "Delete",
       "saveChanges": "Save Changes",
       "saveSuccessToast": "Changes saved",
       "resetConfirmTitle": "Reset this node?",

@@ -510,7 +510,6 @@
     "detailSheet": {
       "refetch": "重新整理",
       "resetNode": "重設節點",
-      "delete": "刪除",
       "saveChanges": "儲存變更",
       "saveSuccessToast": "變更已儲存",
       "resetConfirmTitle": "要重設此節點嗎？",
