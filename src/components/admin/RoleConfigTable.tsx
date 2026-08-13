@@ -31,6 +31,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectTrigger,
@@ -50,8 +52,16 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import {
+  Drawer,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
+import {
   type GroupMemberRoleName,
   AccessLevels,
+  type GroupRole,
   type GroupRoleAccessLevel,
   type RoleConfigInput,
 } from "@/types/group";
@@ -113,6 +123,15 @@ export default function RoleConfigTable() {
     accessLevel: "",
   });
   const [deleteRoleId, setDeleteRoleId] = useState<string | null>(null);
+
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+  const [mobileEditingRoleId, setMobileEditingRoleId] = useState<string | null>(
+    null,
+  );
+  const [mobileRoleName, setMobileRoleName] = useState("");
+  const [mobileAccessLevel, setMobileAccessLevel] = useState<
+    GroupRoleAccessLevel | ""
+  >("");
 
   const createMutation = useMutation({
     mutationFn: (payload: RoleConfigInput) => createRoleConfig(payload),
@@ -189,6 +208,51 @@ export default function RoleConfigTable() {
         },
       });
     }
+  };
+
+  const openCreateDrawer = () => {
+    setMobileEditingRoleId(null);
+    setMobileRoleName("");
+    setMobileAccessLevel("");
+    setMobileDrawerOpen(true);
+  };
+
+  const openEditDrawer = (role: GroupRole) => {
+    setMobileEditingRoleId(role.id);
+    setMobileRoleName(role.roleName);
+    setMobileAccessLevel(role.accessLevel);
+    setMobileDrawerOpen(true);
+  };
+
+  const handleDrawerDone = () => {
+    if (!mobileRoleName.trim() || !mobileAccessLevel) return;
+
+    if (mobileEditingRoleId) {
+      updateMutation.mutate(
+        {
+          id: mobileEditingRoleId,
+          payload: {
+            role: mobileRoleName.trim() as GroupMemberRoleName,
+            accessLevel: mobileAccessLevel,
+          },
+        },
+        { onSuccess: () => setMobileDrawerOpen(false) },
+      );
+    } else {
+      createMutation.mutate(
+        {
+          role: mobileRoleName.trim() as GroupMemberRoleName,
+          accessLevel: mobileAccessLevel,
+        },
+        { onSuccess: () => setMobileDrawerOpen(false) },
+      );
+    }
+  };
+
+  const handleDrawerRemove = () => {
+    if (!mobileEditingRoleId) return;
+    setMobileDrawerOpen(false);
+    setDeleteRoleId(mobileEditingRoleId);
   };
 
   return (
@@ -305,7 +369,10 @@ export default function RoleConfigTable() {
                     </TableRow>
                   ))
                 : roleConfigs.map((role) => (
-                    <TableRow key={role.id} className="hover:bg-muted">
+                    <TableRow
+                      key={role.id}
+                      className="hidden md:table-row hover:bg-muted"
+                    >
                       <TableCell className="py-4 px-4">
                         {role.roleName}
                       </TableCell>
@@ -350,21 +417,28 @@ export default function RoleConfigTable() {
                     </TableRow>
                   ))}
 
-              <TableRow>
+              {!isLoading &&
+                roleConfigs.map((role) => (
+                  <TableRow
+                    key={`mobile-${role.id}`}
+                    className="md:hidden cursor-pointer"
+                    onClick={() => openEditDrawer(role)}
+                  >
+                    <TableCell className="py-4 px-4">{role.roleName}</TableCell>
+                    <TableCell className="py-4 px-4" colSpan={2}>
+                      <Badge variant="secondary" className="font-semibold">
+                        {ACCESS_LEVEL_LABELS[role.accessLevel]}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+
+              <TableRow className="hidden md:table-row">
                 <TableCell className="py-4 px-4">
                   <Input
                     value={newRole.roleName}
                     placeholder={t("roleConfigTable.placeholderRoleName")}
-                    className="hidden md:block h-8 rounded-none border-none p-0 text-sm font-medium shadow-none placeholder:text-sm focus-visible:ring-0 focus-visible:border-transparent dark:bg-transparent"
-                    onChange={(e) =>
-                      setNewRole({ ...newRole, roleName: e.target.value })
-                    }
-                    disabled={createMutation.isPending}
-                  />
-                  <Input
-                    value={newRole.roleName}
-                    placeholder={t("roleConfigTable.placeholderRoleNameMobile")}
-                    className="md:hidden h-8 rounded-none border-none p-0 text-sm font-medium shadow-none placeholder:text-sm focus-visible:ring-0 focus-visible:border-transparent dark:bg-transparent"
+                    className="h-8 rounded-none border-none p-0 text-sm font-medium shadow-none placeholder:text-sm focus-visible:ring-0 focus-visible:border-transparent dark:bg-transparent"
                     onChange={(e) =>
                       setNewRole({ ...newRole, roleName: e.target.value })
                     }
@@ -420,8 +494,96 @@ export default function RoleConfigTable() {
               </TableRow>
             </TableBody>
           </Table>
+
+          <Button
+            type="button"
+            onClick={openCreateDrawer}
+            className="mt-4 w-full rounded-md md:hidden"
+          >
+            {t("roleConfigTable.addRoleBtn")}
+          </Button>
         </CardContent>
       </Card>
+
+      <Drawer open={mobileDrawerOpen} onOpenChange={setMobileDrawerOpen}>
+        <DrawerContent
+          side="bottom"
+          className="md:hidden"
+          onOpenAutoFocus={(e) => e.preventDefault()}
+        >
+          <DrawerHeader>
+            <DrawerTitle>
+              {mobileEditingRoleId
+                ? t("roleConfigTable.tableHeadRole")
+                : t("roleConfigTable.addRoleBtn")}
+            </DrawerTitle>
+          </DrawerHeader>
+
+          <div className="flex flex-col gap-4 px-4">
+            <div className="flex flex-col gap-1.5">
+              <Label>{t("roleConfigTable.roleNameFieldLabel")}</Label>
+              <Input
+                value={mobileRoleName}
+                placeholder={t("roleConfigTable.placeholderRoleName")}
+                onChange={(e) => setMobileRoleName(e.target.value)}
+                disabled={createMutation.isPending || updateMutation.isPending}
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <Label>{t("roleConfigTable.accessLevelFieldLabel")}</Label>
+              <Select
+                value={mobileAccessLevel}
+                onValueChange={(value: GroupRoleAccessLevel) =>
+                  setMobileAccessLevel(value)
+                }
+                disabled={createMutation.isPending || updateMutation.isPending}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue
+                    placeholder={t("roleConfigTable.placeholderSelectAccess")}
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {AccessLevels.map((level) => (
+                    <SelectItem key={level} value={level}>
+                      {ACCESS_LEVEL_LABELS[level]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <DrawerFooter>
+            <Button
+              onClick={handleDrawerDone}
+              disabled={
+                !mobileRoleName.trim() ||
+                !mobileAccessLevel ||
+                createMutation.isPending ||
+                updateMutation.isPending
+              }
+            >
+              {createMutation.isPending || updateMutation.isPending ? (
+                <Loader2Icon className="animate-spin" size={16} />
+              ) : null}
+              {t("roleConfigTable.doneBtn")}
+            </Button>
+
+            {mobileEditingRoleId && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleDrawerRemove}
+                className="border-destructive text-destructive hover:bg-destructive/10 hover:text-destructive"
+              >
+                {t("roleConfigTable.removeRoleBtn")}
+              </Button>
+            )}
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
 
       <AlertDialog
         open={!!deleteRoleId}

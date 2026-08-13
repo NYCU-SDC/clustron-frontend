@@ -152,7 +152,12 @@
     "updateFailToast": "角色更新失敗",
     "deleteSuccessToast": "角色刪除成功",
     "deleteFailToast": "角色刪除失敗",
-    "loadFailToast": "角色載入失敗"
+    "loadFailToast": "角色載入失敗",
+    "addRoleBtn": "+ 新增角色",
+    "roleNameFieldLabel": "角色名稱",
+    "accessLevelFieldLabel": "權限等級",
+    "doneBtn": "完成",
+    "removeRoleBtn": "刪除角色"
   },
   "userConfigTable": {
     "cardTitle": "使用者",
