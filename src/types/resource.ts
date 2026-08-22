@@ -21,11 +21,20 @@ export type Server = {
   memory_mb?: number;
 };
 
+export type GroupType = "ADMIN" | "BASE";
+
 // shape of GET /api/servers/{server_id}/allowedLoginGroups item
 export type AllowedLoginGroup = {
   groupId: string;
+  type: GroupType;
   title: string;
   ldapCn: string;
+};
+
+// item of PUT /api/servers/{server_id}/allowedLoginGroups body
+export type AllowedLoginGroupSelection = {
+  groupId: string;
+  groupType: GroupType;
 };
 
 // body of POST /api/servers
@@ -48,9 +57,7 @@ export type UpdateServerRolePayload = {
 };
 
 // body of PUT /api/servers/{server_id}/allowedLoginGroups
-export type UpdateAllowedLoginGroupsPayload = {
-  groupIds: string[];
-};
+export type UpdateAllowedLoginGroupsPayload = AllowedLoginGroupSelection[];
 
 // state shape of the Add/Edit resource form
 export type ResourceFormData = {
