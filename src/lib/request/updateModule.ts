@@ -1,10 +1,10 @@
 import { api } from "./api";
 import type { EnvironmentModule } from "./getModules";
-import type { CreateModulePayload } from "./createModule";
+import type { CreateModuleRequest } from "./createModule";
 
 export async function updateModule(
   id: string,
-  payload: CreateModulePayload,
+  payload: CreateModuleRequest,
 ): Promise<EnvironmentModule> {
   return api<EnvironmentModule>(`/api/modules/${id}`, {
     method: "PUT",

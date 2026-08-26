@@ -63,7 +63,7 @@ import {
   AccessLevels,
   type GroupRole,
   type GroupRoleAccessLevel,
-  type RoleConfigInput,
+  type RoleConfigRequest,
 } from "@/types/group";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getRoleConfigs } from "@/lib/request/getRoleConfigs";
@@ -134,7 +134,7 @@ export default function RoleConfigTable() {
   >("");
 
   const createMutation = useMutation({
-    mutationFn: (payload: RoleConfigInput) => createRoleConfig(payload),
+    mutationFn: (payload: RoleConfigRequest) => createRoleConfig(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ROLE_CONFIGS_QUERY_KEY });
       toast.success(t("roleConfigTable.createSuccessToast"));
@@ -150,7 +150,7 @@ export default function RoleConfigTable() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: RoleConfigInput }) =>
+    mutationFn: ({ id, payload }: { id: string; payload: RoleConfigRequest }) =>
       updateRoleConfig(id, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ROLE_CONFIGS_QUERY_KEY });

@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { CircleCheckBig, ArrowRight } from "lucide-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createJob, getPartitions } from "@/lib/request/jobs";
-import type { JobCreatePayload, Job } from "@/lib/request/jobs";
+import type { CreateJobRequest, Job } from "@/lib/request/jobs";
 
 // ui components
 import { Label } from "@/components/ui/label";
@@ -242,7 +242,7 @@ export default function JobSubmitForm() {
       .filter((ev) => ev.key.trim() !== "")
       .map((ev) => `${ev.key}=${ev.value ?? ""}`);
 
-    const payload: JobCreatePayload = {
+    const payload: CreateJobRequest = {
       name: formData.jobName,
       comment: formData.comment,
       current_working_directory: formData.cwd,

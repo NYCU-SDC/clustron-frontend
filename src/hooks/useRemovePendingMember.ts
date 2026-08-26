@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { removePendingMember } from "@/lib/request/groupPendingMembers";
-import type { RemovePendingMemberParams } from "@/types/group";
+import type { RemovePendingMemberRequest } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
@@ -9,7 +9,7 @@ export function useRemovePendingMember(groupId: string) {
   const { t } = useTranslation();
 
   return useMutation({
-    mutationFn: (params: RemovePendingMemberParams) =>
+    mutationFn: (params: RemovePendingMemberRequest) =>
       removePendingMember(params),
     onMutate: (params) => {
       const toastId = `remove-pending-${groupId}-${String(params.id)}`;

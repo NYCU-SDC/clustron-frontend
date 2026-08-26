@@ -10,8 +10,8 @@ import { useRoleMapper } from "@/hooks/useRoleMapper";
 import {
   AccessLevelOwner,
   type GroupMemberRoleName,
-  type GroupLinkPayload,
-  CreateGroupInput,
+  type GroupLinkRequest,
+  CreateGroupRequest,
 } from "@/types/group";
 import {
   Table,
@@ -265,7 +265,7 @@ export default function AddGroupPage() {
         return { member: m.id.trim(), roleId };
       });
 
-    const linksToSubmit: GroupLinkPayload[] = [
+    const linksToSubmit: GroupLinkRequest[] = [
       ...links,
       ...(newLink.title.trim() && newLink.url.trim()
         ? [{ title: newLink.title.trim(), url: newLink.url }]
@@ -283,7 +283,7 @@ export default function AddGroupPage() {
       description,
       members: newMembers,
       links: linksToSubmit,
-    } as CreateGroupInput);
+    } as CreateGroupRequest);
   };
 
   const hasDuplicate = members.some(

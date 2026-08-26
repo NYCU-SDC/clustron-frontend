@@ -38,12 +38,12 @@ export type GroupSummary = {
 };
 
 // PATCH /api/groups/{id}/title
-export type UpdateGroupTitleInput = {
+export type UpdateGroupTitleRequest = {
   title: string;
 };
 
 // PATCH /api/groups/{id}/description
-export type UpdateGroupDescriptionInput = {
+export type UpdateGroupDescriptionRequest = {
   description: string;
 };
 
@@ -66,7 +66,7 @@ export type GroupDetail = GroupSummary & {
 };
 
 // POST /api/groups
-export type CreateGroupInput = {
+export type CreateGroupRequest = {
   title: string;
   description: string;
   ldapGroupName: string;
@@ -74,7 +74,7 @@ export type CreateGroupInput = {
     member: string; // email or user id
     roleId: string;
   }[];
-  links?: GroupLinkPayload[];
+  links?: GroupLinkRequest[];
 };
 
 export type JoinMemberErrorResponse = {
@@ -100,7 +100,7 @@ export type GetGroupMembersResponse = {
 };
 
 // POST /api/groups/{id}/members
-export type AddGroupMemberInput = {
+export type AddGroupMemberRequest = {
   member: string;
   roleId: string;
 };
@@ -112,13 +112,13 @@ export type AddMembersResult = {
 };
 
 // DELETE /api/groups/{id}/members/{memberId}
-export type RemoveMemberParams = {
+export type RemoveMemberRequest = {
   id: string;
   memberId: string;
 };
 
 // PUT /api/groups/{id}/members/{memberId}
-export type UpdateGroupMemberInput = {
+export type UpdateGroupMemberRequest = {
   groupId: string;
   memberId: string;
   roleId: GroupMemberRoleName;
@@ -128,13 +128,13 @@ export type UpdateGroupMemberResponse = GroupMember;
 
 // POST /api/groups/{id}/archive
 // POST /api/groups/{id}/unarchive
-export type ArchiveGroupParams = {
+export type ArchiveGroupRequest = {
   id: string;
 };
 
 // POST /api/roles
 // PUT /api/roles/{id}
-export type RoleConfigInput = {
+export type RoleConfigRequest = {
   role: GroupMemberRoleName;
   accessLevel: GroupRoleAccessLevel;
 };
@@ -161,7 +161,7 @@ export type GetPendingMembersResponse = {
 };
 
 // PUT /api/groups/{id}/pendingMembers/{pendingId}
-export type UpdatePendingMemberInput = {
+export type UpdatePendingMemberRequest = {
   id: string;
   pendingId: string;
   roleId: string;
@@ -172,7 +172,7 @@ export type UpdatePendingMemberResponse = {
 };
 
 // DELETE /api/groups/{id}/pendingMembers/{pendingId}
-export type RemovePendingMemberParams = {
+export type RemovePendingMemberRequest = {
   id: string;
   pendingId: string;
 };
@@ -182,7 +182,7 @@ export type RemovePendingMemberParams = {
 // PUT  /api/groups/{id}/link/{linkId}
 // DELETE /api/groups/{id}/link/{linkId}
 
-export type GroupLinkPayload = {
+export type GroupLinkRequest = {
   title: string;
   url: string;
 };
