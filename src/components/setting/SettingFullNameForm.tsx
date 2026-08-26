@@ -16,8 +16,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getSettings } from "@/lib/request/getSettings";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { SETTINGS_QUERY_KEY, useGetSettings } from "@/hooks/useGetSettings";
 import { saveSettings } from "@/lib/request/saveSettings";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
@@ -33,17 +33,15 @@ export default function SettingFullNameForm({
   const [linuxUsername, setLinuxUsername] = useState("");
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const PROFILE_QUERY_KEY = ["username"];
 
-  const { data, isSuccess, isLoading, isError } = useQuery({
-    queryKey: PROFILE_QUERY_KEY,
-    queryFn: getSettings,
-  });
+  const { data, isSuccess, isLoading, isError } = useGetSettings();
 
   const addMutation = useMutation({
     mutationFn: (payload: Settings) => saveSettings(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
+      queryClient.invalidateQueries({
+        queryKey: SETTINGS_QUERY_KEY,
+      });
       toast.success(t("settingFullNameForm.successToast"));
     },
     onError: (error: Error) => {

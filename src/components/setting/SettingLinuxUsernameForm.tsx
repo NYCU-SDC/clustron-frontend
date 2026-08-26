@@ -7,20 +7,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useQuery } from "@tanstack/react-query";
-import { getSettings } from "@/lib/request/getSettings";
+import { useGetSettings } from "@/hooks/useGetSettings";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function SettingLinuxUsernameForm() {
   const [linuxUsername, setLinuxUsername] = useState("");
   const { t } = useTranslation();
-  const PROFILE_QUERY_KEY = ["username"];
-
-  const { data, isSuccess, isLoading, isError } = useQuery({
-    queryKey: PROFILE_QUERY_KEY,
-    queryFn: getSettings,
-  });
+  const { data, isSuccess, isLoading, isError } = useGetSettings();
 
   useEffect(() => {
     if (isSuccess) {
