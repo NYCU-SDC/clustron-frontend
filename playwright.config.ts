@@ -13,7 +13,10 @@ export default defineConfig({
   projects: [
     {
       name: "mobile",
-      use: { ...devices["iPhone 14 Pro Max"] },
+      use: {
+        ...devices["iPhone 14 Pro Max"],
+        browserName: "chromium",
+      },
     },
   ],
   webServer: {
