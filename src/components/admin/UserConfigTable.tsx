@@ -313,44 +313,44 @@ export default function UserConfigTable() {
                   </TableBody>
                 </Table>
               </div>
-              <div className="flex w-full flex-col gap-4 px-4 md:flex-row md:items-center md:px-0">
-                <PaginationControls
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  setCurrentPage={setCurrentPage}
-                />
-                <div className="mt-6 ml-auto">
-                  <div className="flex justify-between items-center gap-2">
-                    <p>{t("userConfigTable.resultPerPage")}</p>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className="flex items-center gap-1 font-medium text-sm px-2 py-1 h-8 hover:bg-muted"
-                        >
-                          {resultsPerPage}
-                          <ChevronDown className="w-4 h-4 opacity-50" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="start">
-                        {[20, 40, 80, 100].map((size) => (
-                          <DropdownMenuItem
-                            key={size}
-                            onClick={() => {
-                              setResultsPerPage(size);
-                              setCurrentPage(0);
-                            }}
-                          >
-                            {size}
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </div>
-              </div>
             </>
           )}
+          <div className="flex w-full flex-col gap-4 px-4 md:flex-row md:items-center md:px-0">
+            <PaginationControls
+              currentPage={currentPage}
+              totalPages={totalPages}
+              setCurrentPage={setCurrentPage}
+            />
+            <div className="mt-6 ml-auto">
+              <div className="flex justify-between items-center gap-2">
+                <p>{t("userConfigTable.resultPerPage")}</p>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="flex items-center gap-1 font-medium text-sm px-2 py-1 h-8 hover:bg-muted"
+                    >
+                      {resultsPerPage}
+                      <ChevronDown className="w-4 h-4 opacity-50" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start">
+                    {[20, 40, 80, 100].map((size) => (
+                      <DropdownMenuItem
+                        key={size}
+                        onClick={() => {
+                          setResultsPerPage(size);
+                          setCurrentPage(0);
+                        }}
+                      >
+                        {size}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>
