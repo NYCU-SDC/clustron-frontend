@@ -16,7 +16,7 @@ import { toast } from "sonner";
 import { createServer, serverQueryKeys } from "@/lib/request/resources";
 import { getErrMessage } from "@/lib/errors";
 import ResourceFormFields from "@/components/resource/ResourceFormFields";
-import type { CreateResourceInput, ResourceFormData } from "@/types/resource";
+import type { CreateResourceRequest, ResourceFormData } from "@/types/resource";
 
 const emptyResourceFormData: ResourceFormData = {
   ansible_name: "",
@@ -75,11 +75,11 @@ export default function AddResourceSheet() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const payload: CreateResourceInput = {
+    const payload: CreateResourceRequest = {
       ansible_name: formData.ansible_name,
       ssh_user: formData.ssh_user,
       ansible_role:
-        formData.ansible_role as CreateResourceInput["ansible_role"],
+        formData.ansible_role as CreateResourceRequest["ansible_role"],
       ip_address: formData.ip_address || undefined,
       ssh_config_host: formData.ssh_config_host || undefined,
       private_ip: formData.private_ip || undefined,

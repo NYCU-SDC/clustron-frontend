@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateMember } from "@/lib/request/updateMember";
-import type { UpdateGroupMemberInput } from "@/types/group";
+import type { UpdateGroupMemberRequest } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
@@ -9,7 +9,7 @@ export function useUpdateMember(groupId: string) {
   const { t } = useTranslation();
 
   return useMutation({
-    mutationFn: (params: UpdateGroupMemberInput) => updateMember(params),
+    mutationFn: (params: UpdateGroupMemberRequest) => updateMember(params),
     onMutate: (params) => {
       const toastId = `update-member-${groupId}-${String(params.memberId)}`;
       toast.loading(t("common.updating"), { id: toastId });

@@ -6,7 +6,7 @@ import { MemoryRouter } from "react-router";
 import CreateGroup from "./CreateGroup";
 import { I18nextProvider } from "react-i18next";
 import i18n from "@/i18n";
-import type { CreateGroupInput, CreateGroupResponse } from "@/types/group";
+import type { CreateGroupRequest, CreateGroupResponse } from "@/types/group";
 
 // Mock react-router to track navigation calls
 const mockNavigate = vi.fn();
@@ -708,12 +708,12 @@ describe("CreateGroup", () => {
         useCreateGroup as unknown as ReturnType<typeof vi.fn>
       ).mockImplementation(
         (options: { onSuccess?: (data: CreateGroupResponse) => void }) => ({
-          mutate: vi.fn((input: CreateGroupInput) => {
+          mutate: vi.fn((request: CreateGroupRequest) => {
             options?.onSuccess?.({
               id: "group123",
-              title: input.title,
-              ldapGroupName: input.ldapGroupName,
-              description: input.description,
+              title: request.title,
+              ldapGroupName: request.ldapGroupName,
+              description: request.description,
               isArchived: false,
               createdAt: new Date().toISOString(),
               updatedAt: new Date().toISOString(),

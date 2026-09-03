@@ -1,8 +1,8 @@
 import { api } from "@/lib/request/api";
 import type {
   GetPendingMembersResponse,
-  RemovePendingMemberParams,
-  UpdatePendingMemberInput,
+  RemovePendingMemberRequest,
+  UpdatePendingMemberRequest,
   UpdatePendingMemberResponse,
 } from "@/types/group";
 
@@ -19,7 +19,7 @@ export async function updatePendingMember({
   id,
   pendingId,
   roleId,
-}: UpdatePendingMemberInput): Promise<UpdatePendingMemberResponse> {
+}: UpdatePendingMemberRequest): Promise<UpdatePendingMemberResponse> {
   return api(`/api/groups/${id}/pendingMembers/${pendingId}`, {
     method: "PUT",
     body: JSON.stringify({ roleId }),
@@ -30,7 +30,7 @@ export async function updatePendingMember({
 export async function removePendingMember({
   id,
   pendingId,
-}: RemovePendingMemberParams): Promise<void> {
+}: RemovePendingMemberRequest): Promise<void> {
   return api(`/api/groups/${id}/pendingMembers/${pendingId}`, {
     method: "DELETE",
   });

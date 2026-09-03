@@ -1,12 +1,12 @@
 import { api } from "@/lib/request/api";
-import type { GroupDetail, UpdateGroupTitleInput } from "@/types/group";
+import type { GroupDetail, UpdateGroupTitleRequest } from "@/types/group";
 
 export async function updateGroupTitle({
   groupId,
   payload,
 }: {
   groupId: string;
-  payload: UpdateGroupTitleInput;
+  payload: UpdateGroupTitleRequest;
 }): Promise<GroupDetail> {
   return api(`/api/groups/${groupId}/title`, {
     method: "PATCH",

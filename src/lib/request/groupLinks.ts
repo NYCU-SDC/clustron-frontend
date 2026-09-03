@@ -1,5 +1,5 @@
 import { api } from "@/lib/request/api";
-import type { GroupLinkPayload, GroupLinkResponse } from "@/types/group";
+import type { GroupLinkRequest, GroupLinkResponse } from "@/types/group";
 
 // 🔸 Create Link
 export async function createGroupLink({
@@ -7,7 +7,7 @@ export async function createGroupLink({
   payload,
 }: {
   groupId: string;
-  payload: GroupLinkPayload;
+  payload: GroupLinkRequest;
 }): Promise<GroupLinkResponse> {
   return api(`/api/groups/${groupId}/link`, {
     method: "POST",
@@ -19,7 +19,7 @@ export async function createGroupLink({
 export async function updateGroupLink(
   groupId: string,
   linkId: string,
-  payload: GroupLinkPayload,
+  payload: GroupLinkRequest,
 ): Promise<GroupLinkResponse> {
   return api(`/api/groups/${groupId}/link/${linkId}`, {
     method: "PUT",

@@ -1,8 +1,8 @@
 import { api } from "@/lib/request/api";
-import type { GetUsersParams, GetUsersResponse } from "@/types/admin";
+import type { GetUsersRequest, GetUsersResponse } from "@/types/admin";
 
 export async function getUsers(
-  params: GetUsersParams,
+  params: GetUsersRequest,
 ): Promise<GetUsersResponse> {
   const { page = 0, size = 20, search, role, sort, sortBy } = params;
 

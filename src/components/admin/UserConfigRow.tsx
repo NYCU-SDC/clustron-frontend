@@ -35,7 +35,7 @@ import {
 import {
   GLOBAL_ROLE_OPTIONS,
   GlobalRoleNotSetup,
-  type UpdateUserRoleInput,
+  type UpdateUserRoleRequest,
   type GlobalRole,
 } from "@/types/admin";
 import { useTranslation } from "react-i18next";
@@ -46,7 +46,7 @@ type Props = {
   email: string;
   linuxUsername: string;
   currentRole: GlobalRole;
-  onUpdateRole: (newRole: UpdateUserRoleInput["role"]) => void;
+  onUpdateRole: (newRole: UpdateUserRoleRequest["role"]) => void;
   onUpdateLinuxUsername: (
     newUsername: string,
     options?: { onSettled?: () => void },
@@ -212,7 +212,7 @@ export default function UserConfigRow({
                     key={role.id}
                     checked={role.id === currentRole}
                     onCheckedChange={() =>
-                      onUpdateRole(role.id as UpdateUserRoleInput["role"])
+                      onUpdateRole(role.id as UpdateUserRoleRequest["role"])
                     }
                   >
                     {role.label}
@@ -377,7 +377,7 @@ export function UserConfigMobileRow({
                   value={currentRole}
                   disabled={isPending}
                   onValueChange={(value) =>
-                    onUpdateRole(value as UpdateUserRoleInput["role"])
+                    onUpdateRole(value as UpdateUserRoleRequest["role"])
                   }
                 >
                   <SelectTrigger

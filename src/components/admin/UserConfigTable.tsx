@@ -31,8 +31,8 @@ import { getUsers } from "@/lib/request/getUsers";
 import {
   GLOBAL_ROLE_OPTIONS,
   type GlobalRole,
-  UpdateLinuxUsernameInput,
-  type UpdateUserRoleInput,
+  UpdateLinuxUsernameRequest,
+  type UpdateUserRoleRequest,
 } from "@/types/admin";
 
 export default function UserConfigTable() {
@@ -75,7 +75,8 @@ export default function UserConfigTable() {
     isPending: isUpdatingUsername,
     variables: usernameVariables,
   } = useMutation({
-    mutationFn: (input: UpdateLinuxUsernameInput) => updateLinuxUsername(input),
+    mutationFn: (request: UpdateLinuxUsernameRequest) =>
+      updateLinuxUsername(request),
     onMutate: (input) => {
       const toastId = `update-linux-username-${input.id}`;
       toast.loading(t("common.updating"), {
@@ -97,7 +98,7 @@ export default function UserConfigTable() {
   });
   const handleUsernameUpdate = (
     userId: string,
-    newUsername: UpdateLinuxUsernameInput["linuxUsername"],
+    newUsername: UpdateLinuxUsernameRequest["linuxUsername"],
     options?: { onSettled?: () => void },
   ) => {
     updateUsername(
@@ -114,7 +115,7 @@ export default function UserConfigTable() {
     isPending: isUpdatingRole,
     variables: roleVariables,
   } = useMutation({
-    mutationFn: (input: UpdateUserRoleInput) => updateGlobalRole(input),
+    mutationFn: (request: UpdateUserRoleRequest) => updateGlobalRole(request),
     onMutate: (input) => {
       const toastId = `update-global-role-${input.id}`;
       toast.loading(t("common.updating"), {
@@ -135,7 +136,7 @@ export default function UserConfigTable() {
 
   const handleRoleUpdate = (
     userId: string,
-    newRole: UpdateUserRoleInput["role"],
+    newRole: UpdateUserRoleRequest["role"],
   ) => {
     updateRole({ id: userId, role: newRole });
   };
