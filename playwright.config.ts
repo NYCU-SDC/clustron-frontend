@@ -13,6 +13,10 @@ export default defineConfig({
   projects: [
     {
       name: "mobile",
+      testMatch: [
+        "**/admin-user-drawer.spec.ts",
+        "**/create-group-drawers.spec.ts",
+      ],
       use: {
         ...devices["iPhone 14 Pro Max"],
         browserName: "chromium",
@@ -20,6 +24,7 @@ export default defineConfig({
     },
     {
       name: "desktop",
+      testMatch: "**/desktop-*.spec.ts",
       use: {
         ...devices["Desktop Chrome"],
         browserName: "chromium",
