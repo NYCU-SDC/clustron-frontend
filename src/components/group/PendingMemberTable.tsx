@@ -1,24 +1,190 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  Table,
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableBody,
-} from "@/components/ui/table";
-import PendingMemberRow from "@/components/group/PendingMemberRow";
+  DataTable,
+  createDataTableColumnHelper,
+  type DataTableColumns,
+} from "@/components/ui/data-table";
+import MemberDeleteMenu from "@/components/group/MemberDeleteMenu";
+import MemberDetailDrawer from "@/components/group/MemberDetailDrawer";
 import { getGroupPermissions } from "@/lib/groupPermissions";
 import { useJwtPayload } from "@/hooks/useJwtPayload";
 import { useGetPendingMembers } from "@/hooks/useGetPendingMembers";
 import { useUpdatePendingMember } from "@/hooks/useUpdatePendingMember";
 import { useRemovePendingMember } from "@/hooks/useRemovePendingMember";
+import { useRoleMapper } from "@/hooks/useRoleMapper";
 import { useTranslation } from "react-i18next";
-import type { GroupRoleAccessLevel, GroupMemberRoleName } from "@/types/group";
+import type { TFunction } from "i18next";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import type { GroupRoleAccessLevel, PendingMember } from "@/types/group";
 import { GlobalRole } from "@/lib/permission";
-import { AccessLevelUser } from "@/types/group";
-import { Loader2 } from "lucide-react";
+import { AccessLevelOwner, AccessLevelUser } from "@/types/group";
+import { ChevronDown } from "lucide-react";
 import PaginationControls from "@/components/customUI/PaginationControl";
+
+const helper = createDataTableColumnHelper<PendingMember>();
+
+function useRoleLabel(member: PendingMember) {
+  const { roles } = useRoleMapper();
+  const roleName = member.role.roleName;
+  const currentRole = roles.find((r) => r.roleName === roleName);
+
+  return currentRole?.roleName || roleName;
+}
+
+function PendingRoleCell({
+  member,
+  globalRole,
+  accessLevel,
+  canUpdate,
+  onUpdateRole,
+}: {
+  member: PendingMember;
+  globalRole: GlobalRole;
+  accessLevel: GroupRoleAccessLevel;
+  canUpdate: boolean;
+  onUpdateRole: (newRoleId: string) => void;
+}) {
+  const { getRolesByAccessLevel } = useRoleMapper();
+  const currentRoleLabel = useRoleLabel(member);
+
+  if (!canUpdate) {
+    return <span>{currentRoleLabel}</span>;
+  }
+
+  const effectiveAccessLevel =
+    globalRole === "admin" ? AccessLevelOwner : accessLevel;
+  const assignableRoles = getRolesByAccessLevel(effectiveAccessLevel);
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          className="flex items-center gap-1 cursor-pointer font-medium text-sm"
+        >
+          {currentRoleLabel}
+          <ChevronDown className="w-4 h-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        {assignableRoles.map((r) => (
+          <DropdownMenuItem
+            key={r.id}
+            onClick={() => onUpdateRole(r.id)}
+            disabled={r.roleName === member.role.roleName}
+          >
+            {r.roleName}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function PendingActionsCell({
+  member,
+  isArchived,
+  onDelete,
+}: {
+  member: PendingMember;
+  isArchived: boolean;
+  onDelete: () => void;
+}) {
+  const currentRoleLabel = useRoleLabel(member);
+
+  return (
+    <>
+      {/* Desktop: dropdown menu */}
+      <div className="hidden sm:block">
+        <MemberDeleteMenu onConfirm={onDelete} isArchived={isArchived} />
+      </div>
+      {/* Mobile: bottom drawer with member details */}
+      <div className="sm:hidden">
+        <MemberDetailDrawer
+          name={member.userIdentifier}
+          email={member.userIdentifier}
+          studentId={member.userIdentifier}
+          role={currentRoleLabel}
+          onDelete={onDelete}
+          isArchived={isArchived}
+        />
+      </div>
+    </>
+  );
+}
+
+function getColumns({
+  t,
+  globalRole,
+  accessLevel,
+  showActions,
+  isArchived,
+  onRemove,
+  onUpdateRole,
+}: {
+  t: TFunction;
+  globalRole: GlobalRole;
+  accessLevel: GroupRoleAccessLevel;
+  showActions: boolean;
+  isArchived: boolean;
+  onRemove: (pendingId: string) => void;
+  onUpdateRole: (pendingId: string, newRoleId: string) => void;
+}) {
+  const columns: DataTableColumns<PendingMember> = [
+    helper.accessor("userIdentifier", {
+      header: t("groupComponents.groupMemberTable.studentIdOrEmail"),
+      cell: ({ getValue }) => (
+        <div className="flex flex-col">
+          <span className="font-medium">{getValue()}</span>
+          <span className="text-muted-foreground text-xs">{getValue()}</span>
+        </div>
+      ),
+    }),
+    helper.display({
+      id: "role",
+      header: t("groupComponents.groupMemberTable.role"),
+      cell: ({ row }) => (
+        <PendingRoleCell
+          member={row.original}
+          globalRole={globalRole}
+          accessLevel={accessLevel}
+          canUpdate={
+            showActions &&
+            !isArchived &&
+            row.original.role.roleName !== "group_owner"
+          }
+          onUpdateRole={(newRoleId) => onUpdateRole(row.original.id, newRoleId)}
+        />
+      ),
+    }),
+  ];
+
+  if (showActions) {
+    columns.push(
+      helper.display({
+        id: "actions",
+        header: "",
+        meta: { cellClassName: "text-right pr-4" },
+        cell: ({ row }) => (
+          <PendingActionsCell
+            member={row.original}
+            isArchived={isArchived}
+            onDelete={() => onRemove(row.original.id)}
+          />
+        ),
+      }),
+    );
+  }
+
+  return columns;
+}
 
 type Props = {
   groupId: string;
@@ -67,13 +233,20 @@ export default function PendingMemberTable({
     removePendingMember({ id: groupId, pendingId });
   };
 
-  const maxVisiblePages = 4;
-  let startPage = Math.max(currentPage - 1, 0);
-  let endPage = startPage + maxVisiblePages - 1;
-  if (endPage >= totalPages) {
-    endPage = totalPages - 1;
-    startPage = Math.max(endPage - maxVisiblePages + 1, 0);
-  }
+  const columns = useMemo(
+    () =>
+      getColumns({
+        t,
+        globalRole: effectiveGlobalRole,
+        accessLevel,
+        showActions: canEditMembers,
+        isArchived,
+        onRemove: handleRemove,
+        onUpdateRole: handleUpdateRole,
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [t, effectiveGlobalRole, accessLevel, canEditMembers, isArchived, groupId],
+  );
 
   return (
     <Card className="py-4 sm:py-6">
@@ -84,64 +257,32 @@ export default function PendingMemberTable({
           </h3>
         </div>
 
-        {isLoading ? (
-          <div className="text-sm text-gray-500 flex items-center gap-2">
-            <Loader2 className="w-4 h-4 animate-spin" />
-            {t("groupComponents.groupMemberTable.loadingMembers")}
-          </div>
-        ) : isError ? (
-          <p className="text-sm text-red-500">
-            {t("groupComponents.groupMemberTable.failedToLoadMembers")}
-          </p>
-        ) : members.length === 0 ? (
-          <p className="text-sm text-gray-500">
-            {t("groupComponents.groupMemberTable.noMembersFound")}
-          </p>
-        ) : (
-          <>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>
-                      {t("groupComponents.groupMemberTable.studentIdOrEmail")}
-                    </TableHead>
-                    <TableHead>
-                      {t("groupComponents.groupMemberTable.role")}
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {members.map((m) => {
-                    return (
-                      <PendingMemberRow
-                        key={m.id}
-                        id={m.userIdentifier}
-                        email={m.userIdentifier}
-                        role={m.role.roleName as GroupMemberRoleName}
-                        accessLevel={accessLevel}
-                        globalRole={effectiveGlobalRole}
-                        showActions={canEditMembers}
-                        isArchived={isArchived}
-                        onDelete={() => handleRemove(m.id)}
-                        onUpdateRole={(newRoleId) =>
-                          handleUpdateRole(m.id, newRoleId)
-                        }
-                      />
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </div>
+        <div className="overflow-x-auto">
+          <DataTable
+            columns={columns}
+            data={members}
+            isLoading={isLoading}
+            isError={isError}
+            loadingMessage={t(
+              "groupComponents.groupMemberTable.loadingMembers",
+            )}
+            errorMessage={t(
+              "groupComponents.groupMemberTable.failedToLoadMembers",
+            )}
+            emptyMessage={t("groupComponents.groupMemberTable.noMembersFound")}
+            getRowId={(member) => member.id}
+            rowClassName="hover:bg-muted"
+          />
+        </div>
 
-            <div className="mt-6 flex justify-center">
-              <PaginationControls
-                currentPage={currentPage}
-                totalPages={totalPages}
-                setCurrentPage={setCurrentPage}
-              />
-            </div>
-          </>
+        {!isLoading && !isError && members.length > 0 && (
+          <div className="mt-6 flex justify-center">
+            <PaginationControls
+              currentPage={currentPage}
+              totalPages={totalPages}
+              setCurrentPage={setCurrentPage}
+            />
+          </div>
         )}
       </CardContent>
     </Card>

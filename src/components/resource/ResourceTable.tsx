@@ -1,14 +1,10 @@
-import {
-  Table,
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableBody,
-} from "@/components/ui/table";
-import { Loader2 } from "lucide-react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+
+import { DataTable } from "@/components/ui/data-table";
+import ResourceDetailSheet from "@/components/resource/ResourceDetailSheet";
+import { getResourceColumns } from "@/components/resource/resourceColumns";
 import type { Server } from "@/types/resource";
-import ResourceRow from "@/components/resource/ResourceRow";
 
 type Props = {
   servers: Server[];
@@ -18,53 +14,39 @@ type Props = {
 
 export default function ResourceTable({ servers, isLoading, isError }: Props) {
   const { t } = useTranslation();
+  const columns = useMemo(() => getResourceColumns(t), [t]);
+  const [selectedServer, setSelectedServer] = useState<Server | null>(null);
+  const [detailOpen, setDetailOpen] = useState(false);
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center gap-2 text-sm text-gray-500">
-        <Loader2 className="h-4 w-4 animate-spin" />
-        {t("resourceComponents.table.loading")}
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <p className="text-sm text-red-500">
-        {t("resourceComponents.table.loadingFailed")}
-      </p>
-    );
-  }
-
-  if (servers.length === 0) {
-    return (
-      <p className="text-sm text-gray-500">
-        {t("resourceComponents.table.noResources")}
-      </p>
-    );
-  }
+  const openDetail = (server: Server) => {
+    setSelectedServer(server);
+    setDetailOpen(true);
+  };
 
   return (
-    <div className="w-full overflow-x-auto rounded-lg border shadow-sm">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>{t("resourceComponents.table.name")}</TableHead>
-            <TableHead>{t("resourceComponents.table.address")}</TableHead>
-            <TableHead>{t("resourceComponents.table.role")}</TableHead>
-            <TableHead>{t("resourceComponents.table.partition")}</TableHead>
-            <TableHead className="text-right">
-              {t("resourceComponents.table.resources")}
-            </TableHead>
-            <TableHead>{t("resourceComponents.table.status")}</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {servers.map((server) => (
-            <ResourceRow key={server.id} server={server} />
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+    <>
+      <div className="w-full overflow-x-auto rounded-lg border shadow-sm">
+        <DataTable
+          columns={columns}
+          data={servers}
+          isLoading={isLoading}
+          isError={isError}
+          loadingMessage={t("resourceComponents.table.loading")}
+          errorMessage={t("resourceComponents.table.loadingFailed")}
+          emptyMessage={t("resourceComponents.table.noResources")}
+          getRowId={(server) => server.id}
+          onRowClick={openDetail}
+        />
+      </div>
+
+      {selectedServer && (
+        <ResourceDetailSheet
+          key={selectedServer.id}
+          server={selectedServer}
+          open={detailOpen}
+          onOpenChange={setDetailOpen}
+        />
+      )}
+    </>
   );
 }

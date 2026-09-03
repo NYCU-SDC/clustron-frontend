@@ -1,15 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  DataTable,
+  createDataTableColumnHelper,
+} from "@/components/ui/data-table";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,17 +24,105 @@ import { getPublicKey } from "@/lib/request/getPublicKey";
 import { deletePublicKey } from "@/lib/request/deletePublicKey";
 import { importPublicKeys } from "@/lib/request/importPublicKeys";
 import { toast } from "sonner";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Trash2, TriangleAlert, Loader2Icon } from "lucide-react";
 import GitHubBlackImg from "@/assets/GitHub_Black.png";
 import GitHubWhiteImg from "@/assets/GitHub_White.png";
+import type { PublicKeyInfo } from "@/types/settings";
+
+// Number of characters of a public key shown before it is truncated. Also sent
+// to the API so it only returns that much of each key.
+const KEY_PREVIEW_LENGTH = 30;
+
+const helper = createDataTableColumnHelper<PublicKeyInfo>();
+
+const HEAD_CLASS = "text-gray-500 dark:text-white";
+
+function getColumns({
+  t,
+  onDelete,
+  isDeleting,
+}: {
+  t: TFunction;
+  onDelete: (fingerprint: string) => void;
+  isDeleting: boolean;
+}) {
+  return helper.columns([
+    helper.accessor("title", {
+      header: t("settingKeyTable.tableHeadForTitle"),
+      meta: {
+        headClassName: `w-2/5 ${HEAD_CLASS}`,
+        cellClassName: "max-w-0 truncate",
+      },
+    }),
+    helper.accessor("publicKey", {
+      header: t("settingKeyTable.tableHeadForKey"),
+      meta: {
+        headClassName: `w-3/5 ${HEAD_CLASS}`,
+        cellClassName: "max-w-0 truncate font-mono text-xs",
+      },
+      cell: ({ getValue }) => {
+        const publicKey = getValue();
+        return publicKey.length < KEY_PREVIEW_LENGTH
+          ? publicKey
+          : `${publicKey.slice(0, KEY_PREVIEW_LENGTH)}...`;
+      },
+    }),
+    helper.display({
+      id: "actions",
+      header: "",
+      meta: { cellClassName: "text-right" },
+      cell: ({ row }) => (
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="ghost" className="cursor-pointer">
+              <Trash2 className="!w-5 !h-5" />
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                <div className="flex items-center gap-2">
+                  <TriangleAlert className="w-5 h-5" />
+                  {t("settingKeyTable.confirmTitle")}
+                </div>
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                {t("settingKeyTable.confirmDescription")}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="cursor-pointer mx-2">
+                {t("common.cancel")}
+              </AlertDialogCancel>
+              {isDeleting ? (
+                <AlertDialogAction
+                  className="mx-2 bg-destructive text-white shadow-xs disabled:cursor-not-allowed disabled:pointer-events-auto dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
+                  disabled
+                >
+                  <Loader2Icon className="animate-spin" />
+                  {t("common.loading")}
+                </AlertDialogAction>
+              ) : (
+                <AlertDialogAction
+                  className="cursor-pointer mx-2 bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
+                  onClick={() => onDelete(row.original.fingerprint)}
+                >
+                  {t("common.delete")}
+                </AlertDialogAction>
+              )}
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      ),
+    }),
+  ]);
+}
 
 export default function SettingKeyTable() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const length = 30;
-  const PUBLIC_KEYS_QUERY_KEY = ["publicKeys", length] as const;
+  const PUBLIC_KEYS_QUERY_KEY = ["publicKeys", KEY_PREVIEW_LENGTH] as const;
 
   const [searchParams] = useSearchParams();
 
@@ -106,6 +191,16 @@ export default function SettingKeyTable() {
     },
   });
 
+  const columns = useMemo(
+    () =>
+      getColumns({
+        t,
+        onDelete: deleteMutation.mutate,
+        isDeleting: deleteMutation.isPending,
+      }),
+    [t, deleteMutation.mutate, deleteMutation.isPending],
+  );
+
   const handleGithubKeysImport = async () => {
     try {
       const response = await importPublicKeys();
@@ -162,88 +257,13 @@ export default function SettingKeyTable() {
         </div>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-2/5 text-gray-500 dark:text-white">
-                {t("settingKeyTable.tableHeadForTitle")}
-              </TableHead>
-              <TableHead className="w-3/5 text-gray-500 dark:text-white">
-                {t("settingKeyTable.tableHeadForKey")}
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {isLoading ? (
-              <TableRow>
-                <TableCell>
-                  <Skeleton className="h-6 w-full" />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className="h-6 w-full" />
-                </TableCell>
-              </TableRow>
-            ) : (
-              keys.map((key) => (
-                <TableRow key={key.fingerprint}>
-                  <TableCell className="max-w-0 truncate">
-                    {key.title}
-                  </TableCell>
-                  <TableCell className="max-w-0 truncate font-mono text-xs">
-                    {key.publicKey.length < length
-                      ? key.publicKey
-                      : `${key.publicKey.slice(0, length)}...`}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="ghost" className="cursor-pointer">
-                          <Trash2 className="!w-5 !h-5" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            <div className="flex items-center gap-2">
-                              <TriangleAlert className="w-5 h-5" />
-                              {t("settingKeyTable.confirmTitle")}
-                            </div>
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            {t("settingKeyTable.confirmDescription")}
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel className="cursor-pointer mx-2">
-                            {t("common.cancel")}
-                          </AlertDialogCancel>
-                          {deleteMutation.isPending ? (
-                            <AlertDialogAction
-                              className="mx-2 bg-destructive text-white shadow-xs disabled:cursor-not-allowed disabled:pointer-events-auto dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
-                              disabled
-                            >
-                              <Loader2Icon className="animate-spin" />
-                              {t("common.loading")}
-                            </AlertDialogAction>
-                          ) : (
-                            <AlertDialogAction
-                              className="cursor-pointer mx-2 bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
-                              onClick={() =>
-                                deleteMutation.mutate(key.fingerprint)
-                              }
-                            >
-                              {t("common.delete")}
-                            </AlertDialogAction>
-                          )}
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
+        <DataTable
+          columns={columns}
+          data={keys}
+          isLoading={isLoading}
+          loadingRowCount={1}
+          getRowId={(key) => key.fingerprint}
+        />
       </CardContent>
     </Card>
   );
