@@ -18,6 +18,13 @@ export default defineConfig({
         browserName: "chromium",
       },
     },
+    {
+      name: "desktop",
+      use: {
+        ...devices["Desktop Chrome"],
+        browserName: "chromium",
+      },
+    },
   ],
   webServer: {
     command: "pnpm dev --host 127.0.0.1",
