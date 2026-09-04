@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { getGroups } from "@/lib/request/getGroups";
+import type { GetGroupsParams } from "@/types/group";
 
-export function useGetGroups(page = 0) {
+export function useGetGroups(params: GetGroupsParams = {}) {
   return useQuery({
-    queryKey: ["groups", page],
-    queryFn: () => getGroups(page),
+    queryKey: ["groups", params],
+    queryFn: () => getGroups(params),
     placeholderData: (previousData) => previousData,
   });
 }

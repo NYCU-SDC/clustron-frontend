@@ -1,8 +1,18 @@
 import { api } from "@/lib/request/api";
-import type { GetGroupsResponse } from "@/types/group";
+import type { GetGroupsParams, GetGroupsResponse } from "@/types/group";
 
-export async function getGroups(page = 0): Promise<GetGroupsResponse> {
-  const query = new URLSearchParams({ page: page.toString() });
+export async function getGroups(
+  params: GetGroupsParams = {},
+): Promise<GetGroupsResponse> {
+  const query = new URLSearchParams();
 
-  return api<GetGroupsResponse>(`/api/groups?${query.toString()}`);
+  if (params.page !== undefined) query.set("page", params.page.toString());
+  if (params.size !== undefined) query.set("size", params.size.toString());
+  if (params.sort) query.set("sort", params.sort);
+  if (params.sortBy) query.set("sortBy", params.sortBy);
+
+  const queryString = query.toString();
+  const path = queryString ? `/api/groups?${queryString}` : "/api/groups";
+
+  return api<GetGroupsResponse>(path);
 }

@@ -11,19 +11,26 @@ describe("getGroups", () => {
     vi.clearAllMocks();
   });
 
-  it("requests the selected page", async () => {
+  it("includes every supported query parameter", async () => {
     vi.mocked(api).mockResolvedValue({ items: [] });
 
-    await getGroups(2);
+    await getGroups({
+      page: 2,
+      size: 25,
+      sort: "desc",
+      sortBy: "created_at",
+    });
 
-    expect(api).toHaveBeenCalledWith("/api/groups?page=2");
+    expect(api).toHaveBeenCalledWith(
+      "/api/groups?page=2&size=25&sort=desc&sortBy=created_at",
+    );
   });
 
-  it("requests the first page by default", async () => {
+  it("omits the query string when no parameters are provided", async () => {
     vi.mocked(api).mockResolvedValue({ items: [] });
 
     await getGroups();
 
-    expect(api).toHaveBeenCalledWith("/api/groups?page=0");
+    expect(api).toHaveBeenCalledWith("/api/groups");
   });
 });

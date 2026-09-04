@@ -4,13 +4,13 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { MemoryRouter } from "react-router";
 import { authContext, type AuthContextType } from "@/lib/auth/authContext";
-import type { GetGroupsResponse } from "@/types/group";
+import type { GetGroupsParams, GetGroupsResponse } from "@/types/group";
 import GroupListPage from "@/pages/group/GroupList";
 
 const mockGetGroups = vi.fn();
 
 vi.mock("@/hooks/useGetGroups", () => ({
-  useGetGroups: (page: number) => mockGetGroups(page),
+  useGetGroups: (params: GetGroupsParams) => mockGetGroups(params),
 }));
 
 vi.mock("@/hooks/useGlobalPermissions", () => ({
@@ -60,8 +60,8 @@ function renderPage() {
 describe("GroupListPage pagination", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockGetGroups.mockImplementation((page: number) => ({
-      data: createGroupsResponse(page),
+    mockGetGroups.mockImplementation((params: GetGroupsParams) => ({
+      data: createGroupsResponse(params.page ?? 0),
       isLoading: false,
       isError: false,
     }));
@@ -70,7 +70,7 @@ describe("GroupListPage pagination", () => {
   it("loads the first page initially", () => {
     renderPage();
 
-    expect(mockGetGroups).toHaveBeenCalledWith(0);
+    expect(mockGetGroups).toHaveBeenCalledWith({ page: 0 });
     expect(screen.getByText("Group page 1")).toBeInTheDocument();
     expect(
       screen.getByRole("navigation", { name: "pagination" }),
@@ -83,7 +83,7 @@ describe("GroupListPage pagination", () => {
 
     await user.click(screen.getByLabelText("Go to next page"));
 
-    expect(mockGetGroups).toHaveBeenLastCalledWith(1);
+    expect(mockGetGroups).toHaveBeenLastCalledWith({ page: 1 });
     expect(screen.getByText("Group page 2")).toBeInTheDocument();
   });
 });

@@ -13,7 +13,7 @@ export default function GroupListPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isLoading, isError } = useGetGroups(currentPage);
+  const { data, isLoading, isError } = useGetGroups({ page: currentPage });
   const { canCreateGroup } = useGlobalPermissions();
   const { isLoggedIn } = useContext(authContext);
   const totalPages = data?.totalPages ?? 0;
