@@ -3,17 +3,20 @@ import { Button } from "@/components/ui/button";
 import GroupDescription from "@/components/group/GroupDescription.tsx";
 import { useGetGroups } from "@/hooks/useGetGroups";
 import { useGlobalPermissions } from "@/hooks/useGlobalPermissions";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { authContext } from "@/lib/auth/authContext";
 import { useTranslation } from "react-i18next";
 import { Loader2 } from "lucide-react";
+import PaginationControls from "@/components/customUI/PaginationControl";
 
 export default function GroupListPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { data, isLoading, isError } = useGetGroups();
+  const [currentPage, setCurrentPage] = useState(0);
+  const { data, isLoading, isError } = useGetGroups({ page: currentPage });
   const { canCreateGroup } = useGlobalPermissions();
   const { isLoggedIn } = useContext(authContext);
+  const totalPages = data?.totalPages ?? 0;
 
   if (!isLoggedIn()) {
     navigate("/login");
@@ -46,19 +49,27 @@ export default function GroupListPage() {
       ) : !data || data.items.length === 0 ? (
         <p className="text-gray-500">{t("groupPages.groupList.noCourses")}</p>
       ) : (
-        <div className="space-y-4">
-          {data.items.map((group) => (
-            <div key={group.id}>
-              <NavLink to={`/groups/${group.id}/`} className="block">
-                <GroupDescription
-                  title={group.title}
-                  ldapGroupName={group.ldapGroupName}
-                  desc={group.description}
-                />
-              </NavLink>
-            </div>
-          ))}
-        </div>
+        <>
+          <div className="space-y-4">
+            {data.items.map((group) => (
+              <div key={group.id}>
+                <NavLink to={`/groups/${group.id}/`} className="block">
+                  <GroupDescription
+                    title={group.title}
+                    ldapGroupName={group.ldapGroupName}
+                    desc={group.description}
+                  />
+                </NavLink>
+              </div>
+            ))}
+          </div>
+
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            setCurrentPage={setCurrentPage}
+          />
+        </>
       )}
     </div>
   );

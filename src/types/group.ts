@@ -27,6 +27,13 @@ export type GroupMember = {
 };
 
 // GET /api/groups
+export type GetGroupsParams = {
+  page?: number;
+  size?: number;
+  sort?: "asc" | "desc";
+  sortBy?: "created_at";
+};
+
 export type GroupSummary = {
   id: string;
   title: string;
