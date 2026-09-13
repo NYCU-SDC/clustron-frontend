@@ -30,7 +30,7 @@ export type User = {
 };
 
 // GET /api/users
-export type GetUsersParams = {
+export type GetUsersRequest = {
   page?: number;
   size?: number;
   sort?: "asc" | "desc";
@@ -49,7 +49,7 @@ export type GetUsersResponse = {
 };
 
 // PUT /api/users/{id}/globalRole
-export type UpdateUserRoleInput = {
+export type UpdateUserRoleRequest = {
   id: string;
   role: Exclude<GlobalRole, typeof GlobalRoleNotSetup>;
 };
@@ -57,7 +57,7 @@ export type UpdateUserRoleInput = {
 export type UpdateUserRoleResponse = User;
 
 // PUT /api/users/{id}/ldapBind
-export type UpdateLinuxUsernameInput = {
+export type UpdateLinuxUsernameRequest = {
   id: string;
   linuxUsername: string;
 };

@@ -48,7 +48,7 @@ export type Partitions = {
 };
 
 // body of POST /api/jobs
-export type JobCreatePayload = {
+export type CreateJobRequest = {
   name?: string;
   comment?: string;
   current_working_directory?: string;
@@ -68,7 +68,7 @@ export type JobCreatePayload = {
   standard_error?: string;
 };
 
-export type GetJobsParams = {
+export type GetJobsRequest = {
   page?: number;
   size?: number;
   sort?: "asc" | "desc";
@@ -78,7 +78,7 @@ export type GetJobsParams = {
 };
 
 // GET /api/jobs
-export async function getJobs(params?: GetJobsParams): Promise<JobsPage> {
+export async function getJobs(params?: GetJobsRequest): Promise<JobsPage> {
   const q = new URLSearchParams();
   if (params?.page != null) q.set("page", String(params.page));
   if (params?.size != null) q.set("size", String(params.size));
@@ -105,7 +105,7 @@ export async function getPartitions(): Promise<Partitions> {
 }
 
 // POST /api/jobs
-export async function createJob(payload: JobCreatePayload): Promise<Job> {
+export async function createJob(payload: CreateJobRequest): Promise<Job> {
   return api("/api/jobs", {
     method: "POST",
     body: JSON.stringify(payload),

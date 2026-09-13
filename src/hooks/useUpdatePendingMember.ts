@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updatePendingMember } from "@/lib/request/groupPendingMembers";
-import type { UpdatePendingMemberInput } from "@/types/group";
+import type { UpdatePendingMemberRequest } from "@/types/group";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
@@ -9,7 +9,7 @@ export function useUpdatePendingMember(groupId: string) {
   const { t } = useTranslation();
 
   return useMutation({
-    mutationFn: (params: UpdatePendingMemberInput) =>
+    mutationFn: (params: UpdatePendingMemberRequest) =>
       updatePendingMember(params),
     onMutate: (params) => {
       const toastId = `update-pending:${groupId}:${String(params.id)}`;

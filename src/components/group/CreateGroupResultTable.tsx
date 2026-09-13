@@ -1,14 +1,12 @@
+import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  DataTable,
+  createDataTableColumnHelper,
+} from "@/components/ui/data-table";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import { useNavigate } from "react-router";
 import type { CreateGroupResultData } from "@/types/group";
 import { ArrowRightFromLine } from "lucide-react";
@@ -50,6 +48,49 @@ const StatusIcon = ({ type }: { type: "success" | "error" }) => {
   }
 };
 
+type MemberStatus = {
+  member: string;
+  roleName: string;
+  status: "success" | "error";
+  message: string;
+};
+
+const helper = createDataTableColumnHelper<MemberStatus>();
+
+const HEAD_CLASS = "text-gray-500 dark:text-white";
+
+function getColumns(t: TFunction) {
+  return helper.columns([
+    helper.accessor("member", {
+      header: t("groupPages.addMemberResult.studentIdOrEmail"),
+      meta: { headClassName: `w-3/10 ${HEAD_CLASS}` },
+    }),
+    helper.accessor("roleName", {
+      header: t("groupPages.addMemberResult.role"),
+      meta: { headClassName: `w-1/10 ${HEAD_CLASS}` },
+    }),
+    helper.accessor("status", {
+      header: t("groupPages.addMemberResult.status"),
+      meta: {
+        headClassName: `w-min text-center ${HEAD_CLASS}`,
+        cellClassName: "text-center",
+      },
+      cell: ({ getValue }) => (
+        <span className="inline-flex justify-center">
+          <StatusIcon type={getValue()} />
+        </span>
+      ),
+    }),
+    helper.accessor("message", {
+      header: t("groupPages.addMemberResult.additionalInfo"),
+      meta: {
+        headClassName: HEAD_CLASS,
+        cellClassName: "max-w-[280px] whitespace-normal",
+      },
+    }),
+  ]);
+}
+
 export default function CreateGroupResultTable({
   result,
   members,
@@ -62,7 +103,9 @@ export default function CreateGroupResultTable({
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const memberStatuses = members.map((member) => {
+  const columns = useMemo(() => getColumns(t), [t]);
+
+  const memberStatuses: MemberStatus[] = members.map((member) => {
     const error = result.errors.find((err) => err.member === member.member);
 
     if (error) {
@@ -88,40 +131,11 @@ export default function CreateGroupResultTable({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <Table className="min-w-3xl">
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-3/10 text-gray-500 dark:text-white">
-                {t("groupPages.addMemberResult.studentIdOrEmail")}
-              </TableHead>
-              <TableHead className="w-1/10 text-gray-500 dark:text-white">
-                {t("groupPages.addMemberResult.role")}
-              </TableHead>
-              <TableHead className="w-min text-center text-gray-500 dark:text-white">
-                {t("groupPages.addMemberResult.status")}
-              </TableHead>
-              <TableHead className=" text-gray-500 dark:text-white">
-                {t("groupPages.addMemberResult.additionalInfo")}
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {memberStatuses.map((member, index) => (
-              <TableRow key={index}>
-                <TableCell>{member.member}</TableCell>
-                <TableCell>{member.roleName}</TableCell>
-                <TableCell className="text-center">
-                  <span className="inline-flex justify-center">
-                    <StatusIcon type={member.status} />
-                  </span>
-                </TableCell>
-                <TableCell className="max-w-[280px] whitespace-normal">
-                  {member.message}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <DataTable
+          columns={columns}
+          data={memberStatuses}
+          className="min-w-3xl"
+        />
 
         <div className="flex justify-center gap-8 mt-6 text-sm text-gray-600 dark:text-gray-300">
           <div className="flex gap-2">

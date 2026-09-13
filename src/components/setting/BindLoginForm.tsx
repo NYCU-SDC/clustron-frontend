@@ -16,13 +16,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useTranslation } from "react-i18next";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getSettings } from "@/lib/request/getSettings";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { SETTINGS_QUERY_KEY, useGetSettings } from "@/hooks/useGetSettings";
 import { bindLoginMethods } from "@/lib/request/bindLoginMethods";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LoginMethodIcon } from "@/components/setting/LoginMethodIcon";
 import { toast } from "sonner";
-const PROFILE_QUERY_KEY = ["connectedAccounts"];
 
 export default function BindLoginForm() {
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -35,9 +34,7 @@ export default function BindLoginForm() {
     isLoading,
     isError,
     error: settingsError,
-  } = useQuery({
-    queryKey: PROFILE_QUERY_KEY,
-    queryFn: getSettings,
+  } = useGetSettings({
     retry: 1,
   });
 
@@ -82,7 +79,9 @@ export default function BindLoginForm() {
         toast.success(t("bindLoginForm.bindSuccessToast"), {
           id: "bind-success",
         });
-        queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
+        queryClient.invalidateQueries({
+          queryKey: SETTINGS_QUERY_KEY,
+        });
       } else if (event.data?.type === "BIND_CONFLICT") {
         toast.error(t("bindLoginForm.bindConflictToast"), {
           id: "bind-conflict",

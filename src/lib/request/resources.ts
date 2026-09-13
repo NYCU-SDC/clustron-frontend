@@ -1,10 +1,10 @@
 import { api } from "@/lib/request/api";
 import type {
   AllowedLoginGroup,
-  CreateResourceInput,
+  CreateResourceRequest,
   Server,
-  UpdateAllowedLoginGroupsPayload,
-  UpdateServerRolePayload,
+  UpdateAllowedLoginGroupsRequest,
+  UpdateServerRoleRequest,
 } from "@/types/resource";
 
 export const serverQueryKeys = {
@@ -26,7 +26,7 @@ export async function getServerById(serverId: string): Promise<Server> {
 
 // POST /api/servers
 export async function createServer(
-  payload: CreateResourceInput,
+  payload: CreateResourceRequest,
 ): Promise<Server> {
   return api("/api/servers", {
     method: "POST",
@@ -52,7 +52,7 @@ export async function resetServer(serverId: string): Promise<Server> {
 // PATCH /api/servers/{server_id}/role
 export async function updateServerRole(
   serverId: string,
-  payload: UpdateServerRolePayload,
+  payload: UpdateServerRoleRequest,
 ): Promise<Server> {
   return api(`/api/servers/${serverId}/role`, {
     method: "PATCH",
@@ -70,7 +70,7 @@ export async function getAllowedLoginGroups(
 // PUT /api/servers/{server_id}/allowedLoginGroups
 export async function updateAllowedLoginGroups(
   serverId: string,
-  payload: UpdateAllowedLoginGroupsPayload,
+  payload: UpdateAllowedLoginGroupsRequest,
 ): Promise<void> {
   return api(`/api/servers/${serverId}/allowedLoginGroups`, {
     method: "PUT",

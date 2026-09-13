@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addMember } from "@/lib/request/addMember";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import type { AddGroupMemberInput, AddMembersResult } from "@/types/group";
+import type { AddGroupMemberRequest, AddMembersResult } from "@/types/group";
 import { ApiError } from "@/types/generic";
 
 export type UseAddMemberOptions = {
@@ -15,7 +15,8 @@ export function useAddMember(groupId: string, options?: UseAddMemberOptions) {
   const { t } = useTranslation();
 
   return useMutation({
-    mutationFn: (members: AddGroupMemberInput[]) => addMember(groupId, members),
+    mutationFn: (members: AddGroupMemberRequest[]) =>
+      addMember(groupId, members),
 
     onSuccess: async (data, variables) => {
       const { addedSuccessNumber, addedFailureNumber } = data;

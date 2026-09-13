@@ -11,7 +11,7 @@ import { createModule } from "@/lib/request/createModule";
 import { updateModule } from "@/lib/request/updateModule";
 import { deleteModule } from "@/lib/request/deleteModule";
 
-import type { CreateModulePayload } from "@/lib/request/createModule";
+import type { CreateModuleRequest } from "@/lib/request/createModule";
 
 export default function EnvironmentModulePage() {
   const queryClient = useQueryClient();
@@ -38,7 +38,7 @@ export default function EnvironmentModulePage() {
       payload,
     }: {
       id: string;
-      payload: CreateModulePayload;
+      payload: CreateModuleRequest;
     }) => updateModule(id, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["modules"] });

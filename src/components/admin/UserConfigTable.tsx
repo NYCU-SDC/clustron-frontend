@@ -31,8 +31,8 @@ import { getUsers } from "@/lib/request/getUsers";
 import {
   GLOBAL_ROLE_OPTIONS,
   type GlobalRole,
-  UpdateLinuxUsernameInput,
-  type UpdateUserRoleInput,
+  UpdateLinuxUsernameRequest,
+  type UpdateUserRoleRequest,
 } from "@/types/admin";
 
 export default function UserConfigTable() {
@@ -75,7 +75,8 @@ export default function UserConfigTable() {
     isPending: isUpdatingUsername,
     variables: usernameVariables,
   } = useMutation({
-    mutationFn: (input: UpdateLinuxUsernameInput) => updateLinuxUsername(input),
+    mutationFn: (request: UpdateLinuxUsernameRequest) =>
+      updateLinuxUsername(request),
     onMutate: (input) => {
       const toastId = `update-linux-username-${input.id}`;
       toast.loading(t("common.updating"), {
@@ -97,7 +98,7 @@ export default function UserConfigTable() {
   });
   const handleUsernameUpdate = (
     userId: string,
-    newUsername: UpdateLinuxUsernameInput["linuxUsername"],
+    newUsername: UpdateLinuxUsernameRequest["linuxUsername"],
     options?: { onSettled?: () => void },
   ) => {
     updateUsername(
@@ -114,7 +115,7 @@ export default function UserConfigTable() {
     isPending: isUpdatingRole,
     variables: roleVariables,
   } = useMutation({
-    mutationFn: (input: UpdateUserRoleInput) => updateGlobalRole(input),
+    mutationFn: (request: UpdateUserRoleRequest) => updateGlobalRole(request),
     onMutate: (input) => {
       const toastId = `update-global-role-${input.id}`;
       toast.loading(t("common.updating"), {
@@ -135,7 +136,7 @@ export default function UserConfigTable() {
 
   const handleRoleUpdate = (
     userId: string,
-    newRole: UpdateUserRoleInput["role"],
+    newRole: UpdateUserRoleRequest["role"],
   ) => {
     updateRole({ id: userId, role: newRole });
   };
@@ -313,44 +314,44 @@ export default function UserConfigTable() {
                   </TableBody>
                 </Table>
               </div>
-              <div className="flex w-full flex-col gap-4 px-4 md:flex-row md:items-center md:px-0">
-                <PaginationControls
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  setCurrentPage={setCurrentPage}
-                />
-                <div className="mt-6 ml-auto">
-                  <div className="flex justify-between items-center gap-2">
-                    <p>{t("userConfigTable.resultPerPage")}</p>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className="flex items-center gap-1 font-medium text-sm px-2 py-1 h-8 hover:bg-muted"
-                        >
-                          {resultsPerPage}
-                          <ChevronDown className="w-4 h-4 opacity-50" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="start">
-                        {[20, 40, 80, 100].map((size) => (
-                          <DropdownMenuItem
-                            key={size}
-                            onClick={() => {
-                              setResultsPerPage(size);
-                              setCurrentPage(0);
-                            }}
-                          >
-                            {size}
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </div>
-              </div>
             </>
           )}
+          <div className="flex w-full flex-col gap-4 px-4 md:flex-row md:items-center md:px-0">
+            <PaginationControls
+              currentPage={currentPage}
+              totalPages={totalPages}
+              setCurrentPage={setCurrentPage}
+            />
+            <div className="mt-6 ml-auto">
+              <div className="flex justify-between items-center gap-2">
+                <p>{t("userConfigTable.resultPerPage")}</p>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="flex items-center gap-1 font-medium text-sm px-2 py-1 h-8 hover:bg-muted"
+                    >
+                      {resultsPerPage}
+                      <ChevronDown className="w-4 h-4 opacity-50" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start">
+                    {[20, 40, 80, 100].map((size) => (
+                      <DropdownMenuItem
+                        key={size}
+                        onClick={() => {
+                          setResultsPerPage(size);
+                          setCurrentPage(0);
+                        }}
+                      >
+                        {size}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>

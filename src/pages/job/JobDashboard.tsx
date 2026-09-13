@@ -3,7 +3,7 @@ import JobList from "@/components/jobs/JobList";
 import SortSelector from "@/components/jobs/SortSelector";
 import FilterPanel from "@/components/jobs/FilterPanel";
 import { useQuery } from "@tanstack/react-query";
-import { getJobs, type GetJobsParams } from "@/lib/request/jobs";
+import { getJobs, type GetJobsRequest } from "@/lib/request/jobs";
 import type { SortBy, FilterOptions, JobState } from "@/types/jobs";
 import CountsBar from "@/components/jobs/CountsBar";
 import PaginationControls from "@/components/customUI/PaginationControl";
@@ -20,8 +20,8 @@ const JobDashboard: React.FC = () => {
   });
   const [currentPage, setCurrentPage] = useState(0);
 
-  const listParams = useMemo<GetJobsParams>(() => {
-    const base: GetJobsParams = {
+  const listParams = useMemo<GetJobsRequest>(() => {
+    const base: GetJobsRequest = {
       page: currentPage,
       size: PAGE_SIZE,
       sortBy,

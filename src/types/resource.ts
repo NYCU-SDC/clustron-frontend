@@ -38,7 +38,7 @@ export type AllowedLoginGroupSelection = {
 };
 
 // body of POST /api/servers
-export type CreateResourceInput = {
+export type CreateResourceRequest = {
   ansible_name: string;
   ip_address?: string;
   ssh_config_host?: string;
@@ -52,7 +52,7 @@ export type CreateResourceInput = {
 };
 
 // body of PATCH /api/servers/{server_id}/role
-export type UpdateServerRolePayload = {
+export type UpdateServerRoleRequest = {
   ansible_role: AnsibleRole;
 };
 
