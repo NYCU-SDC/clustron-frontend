@@ -57,7 +57,7 @@ export type UpdateServerRoleRequest = {
 };
 
 // body of PUT /api/servers/{server_id}/allowedLoginGroups
-export type UpdateAllowedLoginGroupsPayload = AllowedLoginGroupSelection[];
+export type UpdateAllowedLoginGroupsRequest = AllowedLoginGroupSelection[];
 
 // state shape of the Add/Edit resource form
 export type ResourceFormData = {
