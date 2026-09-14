@@ -3,15 +3,16 @@ import { Label } from "@/components/ui/label";
 import { useGetGroups } from "@/hooks/useGetGroups";
 import { useTranslation } from "react-i18next";
 import { Loader2 } from "lucide-react";
+import type { AllowedLoginGroupSelection, GroupType } from "@/types/resource";
 
 type Props = {
-  selectedGroupIds: string[];
-  onChange: (groupIds: string[]) => void;
+  selectedGroups: AllowedLoginGroupSelection[];
+  onChange: (groups: AllowedLoginGroupSelection[]) => void;
   disabled?: boolean;
 };
 
 export default function AllowedLoginGroupsField({
-  selectedGroupIds,
+  selectedGroups,
   onChange,
   disabled,
 }: Props) {
@@ -19,11 +20,20 @@ export default function AllowedLoginGroupsField({
   const { data, isLoading, isError } = useGetGroups();
   const groups = data?.items ?? [];
 
-  const toggleGroup = (groupId: string, checked: boolean) => {
+  const isChecked = (groupId: string, groupType: GroupType) =>
+    selectedGroups.some(
+      (g) => g.groupId === groupId && g.groupType === groupType,
+    );
+
+  const toggle = (groupId: string, groupType: GroupType, checked: boolean) => {
     if (checked) {
-      onChange([...selectedGroupIds, groupId]);
+      onChange([...selectedGroups, { groupId, groupType }]);
     } else {
-      onChange(selectedGroupIds.filter((id) => id !== groupId));
+      onChange(
+        selectedGroups.filter(
+          (g) => !(g.groupId === groupId && g.groupType === groupType),
+        ),
+      );
     }
   };
 
@@ -46,28 +56,44 @@ export default function AllowedLoginGroupsField({
           </p>
         ) : (
           groups.map((group, index) => (
-            <label
+            <div
               key={group.id}
-              htmlFor={`allowed-login-group-${group.id}`}
-              className={`flex items-center gap-2 px-3 py-2 ${
-                disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"
-              } ${index !== groups.length - 1 ? "border-b" : ""}`}
+              className={index !== groups.length - 1 ? "border-b" : ""}
             >
-              <Checkbox
-                id={`allowed-login-group-${group.id}`}
-                checked={selectedGroupIds.includes(group.id)}
-                disabled={disabled}
-                onCheckedChange={(checked) =>
-                  toggleGroup(group.id, checked === true)
-                }
-              />
-              <div className="flex flex-col">
-                <span className="text-sm font-medium">{group.title}</span>
-                <span className="text-xs text-muted-foreground">
-                  {group.ldapGroupName}
-                </span>
+              <div className="bg-muted px-3 py-2 text-sm font-medium">
+                {group.title}
               </div>
-            </label>
+              <div className="flex flex-col gap-2 px-4 py-2">
+                {(
+                  [
+                    ["BASE", "allMembers"],
+                    ["ADMIN", "administratorsOnly"],
+                  ] as const
+                ).map(([groupType, labelKey]) => (
+                  <label
+                    key={groupType}
+                    htmlFor={`allowed-login-group-${group.id}-${groupType}`}
+                    className={`flex items-center gap-2 ${
+                      disabled
+                        ? "cursor-not-allowed opacity-50"
+                        : "cursor-pointer"
+                    }`}
+                  >
+                    <Checkbox
+                      id={`allowed-login-group-${group.id}-${groupType}`}
+                      checked={isChecked(group.id, groupType)}
+                      disabled={disabled}
+                      onCheckedChange={(checked) =>
+                        toggle(group.id, groupType, checked === true)
+                      }
+                    />
+                    <span className="text-xs text-foreground">
+                      {t(`resourceComponents.form.${labelKey}`)}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
           ))
         )}
       </div>

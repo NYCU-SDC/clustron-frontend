@@ -493,6 +493,8 @@
       "memoryMb": "記憶體 (MB)",
       "provisionDetail": "部署詳細資訊",
       "allowedLoginGroups": "允許登入的群組",
+      "allMembers": "所有成員",
+      "administratorsOnly": "僅限管理員",
       "groupsLoadFail": "無法載入群組",
       "noGroups": "找不到群組"
     },

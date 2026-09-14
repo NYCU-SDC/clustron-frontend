@@ -98,19 +98,21 @@ export default function Navbar() {
             >
               {t("navbar.settingLink")}
             </NavLink>
-            <NavLink
-              to="/resources"
-              className={({ isActive }) => navLinkClassForMobile(isActive)}
-            >
-              {t("navbar.resourceLink")}
-            </NavLink>
             {role === "admin" && (
-              <NavLink
-                to="/admin"
-                className={({ isActive }) => navLinkClassForMobile(isActive)}
-              >
-                {t("navbar.adminLink")}
-              </NavLink>
+              <>
+                <NavLink
+                  to="/resources"
+                  className={({ isActive }) => navLinkClassForMobile(isActive)}
+                >
+                  {t("navbar.resourceLink")}
+                </NavLink>
+                <NavLink
+                  to="/admin"
+                  className={({ isActive }) => navLinkClassForMobile(isActive)}
+                >
+                  {t("navbar.adminLink")}
+                </NavLink>
+              </>
             )}
           </div>
         )}
@@ -145,19 +147,21 @@ export default function Navbar() {
                 </NavLink>
               </>
             )}
-            <NavLink
-              to="/resources"
-              className={({ isActive }) => navLinkclass(isActive)}
-            >
-              {t("navbar.resourceLink")}
-            </NavLink>
             {role === "admin" && (
-              <NavLink
-                to="/admin"
-                className={({ isActive }) => navLinkclass(isActive)}
-              >
-                {t("navbar.adminLink")}
-              </NavLink>
+              <>
+                <NavLink
+                  to="/resources"
+                  className={({ isActive }) => navLinkclass(isActive)}
+                >
+                  {t("navbar.resourceLink")}
+                </NavLink>
+                <NavLink
+                  to="/admin"
+                  className={({ isActive }) => navLinkclass(isActive)}
+                >
+                  {t("navbar.adminLink")}
+                </NavLink>
+              </>
             )}
           </>
         </div>

@@ -493,6 +493,8 @@
       "memoryMb": "Memory (MB)",
       "provisionDetail": "Provisioning detail",
       "allowedLoginGroups": "Allowed login groups",
+      "allMembers": "All members",
+      "administratorsOnly": "Administrators only",
       "groupsLoadFail": "Failed to load groups",
       "noGroups": "No groups found"
     },
