@@ -10,6 +10,7 @@ import { authContext } from "@/lib/auth/authContext";
 import type { AuthContextType } from "@/lib/auth/authContext";
 import type { UseMutationResult } from "@tanstack/react-query";
 import type { AuthCookie } from "@/types/settings";
+import { getAccessToken } from "@/lib/token";
 
 // Mock jwt-decode to return admin role token
 vi.mock("jwt-decode", () => ({
@@ -42,6 +43,7 @@ vi.mock("@/lib/request/refreshAuthToken", () => ({
 describe("Navbar", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(getAccessToken).mockReturnValue("mock-access-token");
   });
 
   function renderWithRouter() {
@@ -140,5 +142,27 @@ describe("Navbar", () => {
       expect(href).toBeTruthy();
       expect(link.textContent).toBeTruthy();
     });
+  });
+
+  it("should not render the resource link when logged out", () => {
+    vi.mocked(getAccessToken).mockReturnValue(null);
+
+    const mockAuthContextValue = {
+      login: vi.fn(),
+      setCookiesForAuthToken: vi.fn(),
+      handleLogout: vi.fn(),
+      isLoggedIn: () => false,
+      refreshMutation: {} as AuthContextType["refreshMutation"],
+    } satisfies AuthContextType;
+
+    const { container } = render(
+      <MemoryRouter initialEntries={["/login"]}>
+        <authContext.Provider value={mockAuthContextValue}>
+          <Navbar />
+        </authContext.Provider>
+      </MemoryRouter>,
+    );
+
+    expect(container.querySelector('a[href="/resources"]')).toBeNull();
   });
 });
