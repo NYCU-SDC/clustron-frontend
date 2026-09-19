@@ -4,6 +4,8 @@ import { ApiError } from "@/types/generic";
 // In container environments, backend URL is handled by Nginx. So keep VITE_BACKEND_BASE_URL empty in the app.
 // In local development, you still need to set VITE_BACKEND_BASE_URL to point to your backend.
 
+const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL || "";
+
 export async function api<T>(
   path: string,
   options: RequestInit = {},
@@ -19,7 +21,7 @@ export async function api<T>(
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}${path}`, {
+  const res = await fetch(`${BASE_URL}${path}`, {
     ...options,
     headers,
   });
