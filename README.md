@@ -1,5 +1,11 @@
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/NYCU-SDC/clustron-frontend)
 
+# Table of Content
+
+- [Overview](#clustron-frontend)
+- [Deploy](#deployment)
+- [Developer Guide](#developer-guide)
+
 # Clustron Frontend
 
 A React-based web application for HPC (High-Performance Computing) cluster management at National Yang Ming Chiao Tung University (NYCU).
@@ -31,14 +37,36 @@ Clustron Frontend provides a comprehensive web portal for managing computational
 | react-hook-form + zod | Form validation           |
 | react-i18next         | Internationalization      |
 
-## Getting Started
+# Deployment
 
-### Prerequisites
+## Docker
+
+We recommend to deploy Clustron with docker container.
+
+You can find the docker images on https://hub.docker.com/r/nycusdc/clustron-frontend.
+
+Tag `stage` for latest released stable version. Tag `dev` for development version.
+
+```yaml
+services:
+  frontend:
+    image: nycusdc/clustron-frontend:stage # Change as needed
+    container_name: clustron-frontend
+    environment:
+      HOST: 0.0.0.0
+      BACKEND_URL: https://backend.com # This point to the backend service URL
+```
+
+Set `BACKEND_URL` variable to point to the Clustron backend.
+
+# Developer Guide
+
+## Prerequisites
 
 - Node.js 23 or higher
 - npm (comes with Node.js)
 
-### Installation
+## Installation
 
 ```shell
 # Clone the repository
@@ -54,7 +82,7 @@ npm run dev
 
 The application will be available at `http://localhost:5173`.
 
-### Development Scripts
+## Development Scripts
 
 | Command           | Description                                       |
 | ----------------- | ------------------------------------------------- |
@@ -86,17 +114,7 @@ src/
 └── main.tsx            # Application entry point
 ```
 
-## Deployment
-
-The project uses GitHub Actions for CI/CD with three deployment environments:
-
-- **Snapshot**: Ephemeral PR preview environments at `pr-N.clustron.sdc.nycu.club`
-- **Dev**: Persistent development environment at `dev.clustron.sdc.nycu.club`
-- **Stage**: Staging environment deployed on version tags
-
-Docker images are published to `nycusdc/clustron-frontend` on Docker Hub.
-
-### CI/CD Pipeline
+## CI/CD Pipeline
 
 Each deployment runs through quality gates:
 
@@ -105,6 +123,14 @@ Each deployment runs through quality gates:
 3. **Build**: TypeScript compilation and Vite build
 4. **Docker**: Build and push container image
 5. **Deploy**: Trigger n8n webhook for orchestration
+
+The project uses GitHub Actions for CI/CD with three deployment environments:
+
+- **Snapshot**: Ephemeral PR preview environments at `pr-N.clustron.sdc.nycu.club`
+- **Dev**: Persistent development environment at `dev.clustron.sdc.nycu.club`
+- **Stage**: Staging environment deployed on version tags
+
+Docker images are published to `nycusdc/clustron-frontend` on Docker Hub.
 
 ## Code Quality
 
