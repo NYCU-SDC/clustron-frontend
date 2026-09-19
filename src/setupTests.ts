@@ -12,15 +12,21 @@ const localStorageMock = {
 Object.defineProperty(window, "localStorage", { value: localStorageMock });
 
 // 全域 mock i18n：保留其他 export（如 initReactI18next），只覆蓋 useTranslation/Trans
+//
+// `t` 和 `i18n` 必須是固定的 identity。真正的 useTranslation 會把 `t` 存在
+// useState 裡（只有語言/namespace 變了才換），所以每次 render 都回傳新的
+// function 會讓以 `t` 當 dependency 的 useMemo 全部失效——元件在測試裡會
+// remount，但在瀏覽器裡不會。
+const mockT = (key: string) => key; // 測試不關心翻譯文案，直接回 key
+const mockI18n = { changeLanguage: () => Promise.resolve() };
+const mockUseTranslation = () => ({ t: mockT, i18n: mockI18n });
+
 vi.mock("react-i18next", async () => {
   const actual =
     await vi.importActual<typeof import("react-i18next")>("react-i18next");
   return {
     ...actual,
-    useTranslation: () => ({
-      t: (key: string) => key, // 測試不關心翻譯文案，直接回 key
-      i18n: { changeLanguage: () => Promise.resolve() },
-    }),
+    useTranslation: mockUseTranslation,
     Trans: ({ children }: { children?: import("react").ReactNode }) => children,
   };
 });

@@ -23,6 +23,7 @@ import EnvironmentModulePage from "@/pages/job/EnvironmentModulePage";
 import AdminLayout from "@/pages/layouts/AdminLayout";
 import RoleConfiguration from "@/pages/admin/RoleConfiguration";
 import UserConfiguration from "@/pages/admin/UserConfiguration";
+import LinuxGroupConfiguration from "@/pages/admin/LinuxGroupConfiguration";
 import BindCallback from "@/pages/BindCallback";
 import JobSubmitPage from "@/pages/JobSubmitPage";
 import JobLayout from "@/pages/layouts/JobLayout";
@@ -98,6 +99,10 @@ const App = () => {
               <Route index element={<Navigate to="users" replace />} />
               <Route path="config" element={<RoleConfiguration />} />
               <Route path="users" element={<UserConfiguration />} />
+              <Route
+                path="linux-groups"
+                element={<LinuxGroupConfiguration />}
+              />
             </Route>
           </Route>
         </Route>
