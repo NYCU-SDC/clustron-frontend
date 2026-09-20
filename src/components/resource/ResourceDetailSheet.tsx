@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { getErrMessage } from "@/lib/errors";
 import {
   RESOURCE_ROLE_OPTIONS,
+  type AllowedLoginGroupSelection,
   type AnsibleRole,
   type Server,
 } from "@/types/resource";
@@ -68,7 +69,9 @@ export default function ResourceDetailSheet({
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [role, setRole] = useState<AnsibleRole>(server.ansible_role);
-  const [groupIds, setGroupIds] = useState<string[]>([]);
+  const [selectedGroups, setSelectedGroups] = useState<
+    AllowedLoginGroupSelection[]
+  >([]);
   const [resetConfirmOpen, setResetConfirmOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
@@ -91,7 +94,12 @@ export default function ResourceDetailSheet({
   useEffect(() => {
     if (open) {
       setRole(server.ansible_role);
-      setGroupIds((allowedGroups ?? []).map((g) => g.groupId));
+      setSelectedGroups(
+        (allowedGroups ?? []).map((g) => ({
+          groupId: g.groupId,
+          groupType: g.type,
+        })),
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, server.id, allowedGroups]);
@@ -118,8 +126,8 @@ export default function ResourceDetailSheet({
 
   const { mutateAsync: updateGroupsAsync, isPending: isUpdatingGroups } =
     useMutation({
-      mutationFn: (nextGroupIds: string[]) =>
-        updateAllowedLoginGroups(server.id, { groupIds: nextGroupIds }),
+      mutationFn: (nextGroups: AllowedLoginGroupSelection[]) =>
+        updateAllowedLoginGroups(server.id, nextGroups),
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: serverQueryKeys.allowedLoginGroups(server.id),
@@ -201,7 +209,7 @@ export default function ResourceDetailSheet({
   const handleSave = async () => {
     try {
       const tasks: Promise<unknown>[] =
-        role === "head_nodes" ? [] : [updateGroupsAsync(groupIds)];
+        role === "head_nodes" ? [] : [updateGroupsAsync(selectedGroups)];
       if (role !== currentServer.ansible_role) {
         tasks.push(updateRoleAsync(role));
       }
@@ -321,8 +329,8 @@ export default function ResourceDetailSheet({
             </div>
 
             <AllowedLoginGroupsField
-              selectedGroupIds={groupIds}
-              onChange={setGroupIds}
+              selectedGroups={selectedGroups}
+              onChange={setSelectedGroups}
               disabled={role === "head_nodes"}
             />
           </div>
