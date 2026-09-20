@@ -9,7 +9,7 @@ RUN npx vite build
 FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-COPY nginx.conf.template /etc/nginx/conf.d/default.conf.template
+COPY nginx.conf.template /etc/nginx/templates/nginx.conf.template
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
