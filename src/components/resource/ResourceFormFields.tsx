@@ -18,6 +18,7 @@ import {
   type AnsibleRole,
   type ResourceFormData,
 } from "@/types/resource";
+import ResourceServicesField from "@/components/resource/ResourceServicesField";
 
 type AddressMode = "ip_address" | "ssh_config_host";
 
@@ -263,6 +264,11 @@ export default function ResourceFormFields({
             </Select>
           </div>
         </div>
+        <ResourceServicesField
+          value={formData.services}
+          onChange={(nextServices) => setField("services", nextServices)}
+          disabled={disabled}
+        />
       </div>
 
       <Alert className="border-amber-500">
