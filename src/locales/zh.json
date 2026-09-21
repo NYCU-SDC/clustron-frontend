@@ -496,6 +496,16 @@
       "groupsLoadFail": "無法載入群組",
       "noGroups": "找不到群組"
     },
+    "servicesField": {
+      "title": "選擇要安裝的服務",
+      "columnTitle": "服務",
+      "infoLabel": "關於 {{service}}",
+      "descriptions": {
+        "ldap": "集中管理使用者身份驗證。",
+        "slurm": "管理叢集工作排程與運算資源。",
+        "nfs": "讓節點之間存取共同檔案"
+      }
+    },
     "table": {
       "loading": "正在載入資源...",
       "loadingFailed": "無法載入資源",

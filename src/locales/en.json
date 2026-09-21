@@ -496,6 +496,16 @@
       "groupsLoadFail": "Failed to load groups",
       "noGroups": "No groups found"
     },
+    "servicesField": {
+      "title": "Choose the service you want to install",
+      "columnTitle": "Service",
+      "infoLabel": "About {{service}}",
+      "descriptions": {
+        "ldap": "Centralize user authentication.",
+        "slurm": "Cluster job scheduling and resource management.",
+        "nfs": "Shared file access between nodes."
+      }
+    },
     "table": {
       "loading": "Loading resources...",
       "loadingFailed": "Failed to load resources",

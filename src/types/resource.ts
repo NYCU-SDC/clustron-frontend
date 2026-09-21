@@ -4,6 +4,8 @@ export type AnsibleRole = "head_nodes" | "compute_nodes";
 
 export type ServerStatus = "unset" | "provisioning" | "active" | "failed";
 
+export type AnsibleService = "ldap" | "slurm" | "nfs";
+
 // GET /api/servers item shape
 export type Server = {
   id: string;
@@ -64,6 +66,7 @@ export type ResourceFormData = {
   slurm_partition: string;
   cpu_cores: string;
   memory_mb: string;
+  services: AnsibleService[];
 };
 
 // ParseKeys is i18next's generated union of every valid translation key string.
