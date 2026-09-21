@@ -50,7 +50,7 @@
   "navbar": {
     "loginBtn": "登入",
     "logoutBtn": "登出",
-    "groupLink": "群組",
+    "groupLink": "專案",
     "settingLink": "設定",
     "jobsLink": "排程",
     "resourceLink": "資源",
@@ -251,8 +251,8 @@
       "toastFail": "發生錯誤，新增成員失敗，請稍後再試"
     },
     "createGroup": {
-      "courseTitle": "群組名稱",
-      "courseTitlePlaceholder": "為你的新群組取個名稱",
+      "courseTitle": "專案名稱",
+      "courseTitlePlaceholder": "為你的新專案取個名稱",
       "ldapGroupNameTitle": "LDAP 群組名稱",
       "ldapGroupNamePlaceholder": "LDAP 中的群組名稱",
       "ldapGroupNameFormatError": "LDAP 群組名稱必須以字母開頭，以字母或數字結尾，且僅能包含字母、數字與連字號(-)。",
@@ -277,13 +277,13 @@
       "addMember": "新增",
       "create": "建立",
       "creatingToast": "建立中...",
-      "createSuccessToast": "群組建立成功",
-      "createValidationToast": "群組名稱/描述/連結資源格式無效，請檢查輸入",
+      "createSuccessToast": "專案建立成功",
+      "createValidationToast": "專案名稱/描述/連結資源格式無效，請檢查輸入",
       "createLDAPGroupNameConflictToast": "LDAP 群組名稱已存在",
-      "createFailToast": "發生錯誤，無法建立群組，請稍後再試"
+      "createFailToast": "發生錯誤，無法建立專案，請稍後再試"
     },
     "groupList": {
-      "newGroup": "+ 新群組",
+      "newGroup": "+ 新專案",
       "loadingFailed": "載入失敗",
       "noCourses": "你尚未加入任何課程。"
     },
