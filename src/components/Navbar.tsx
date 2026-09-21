@@ -145,6 +145,12 @@ export default function Navbar() {
                 >
                   {t("navbar.settingLink")}
                 </NavLink>
+                <NavLink
+                  to="/resources"
+                  className={({ isActive }) => navLinkclass(isActive)}
+                >
+                  {t("navbar.resourceLink")}
+                </NavLink>
               </>
             )}
             {role === "admin" && (
