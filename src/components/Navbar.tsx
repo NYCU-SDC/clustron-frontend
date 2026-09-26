@@ -133,24 +133,12 @@ export default function Navbar() {
                 >
                   {t("navbar.groupLink")}
                 </NavLink>
-                {/* <NavLink
-                          to="/jobs"
-                          className={({ isActive }) => navLinkclass(isActive)}
-                        >
-                          {t("navbar.jobsLink")}
-                        </NavLink> */}
                 <NavLink
                   to="/setting"
                   className={({ isActive }) => navLinkclass(isActive)}
                 >
                   {t("navbar.settingLink")}
                 </NavLink>
-                {/* <NavLink
-                  to="/resources"
-                  className={({ isActive }) => navLinkclass(isActive)}
-                >
-                  {t("navbar.resourceLink")}
-                </NavLink> */}
               </>
             )}
             {role === "admin" && (
