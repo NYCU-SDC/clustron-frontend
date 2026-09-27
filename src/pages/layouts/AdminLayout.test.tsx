@@ -89,7 +89,11 @@ describe("AdminLayout", () => {
         },
       );
 
-      expect(navLinks.length).toBe(2);
+      expect(navLinks.map((link) => link.getAttribute("href"))).toEqual([
+        "/admin/users",
+        "/admin/config",
+        "/admin/linux-groups",
+      ]);
 
       navLinks.forEach((link) => {
         expect(link.getAttribute("href")).toBeTruthy();
