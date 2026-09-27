@@ -6,6 +6,7 @@ services:
       - traefik
     environment:
       HOST: 0.0.0.0
+      BACKEND_URL: https://api.stage.clustron.sdc.nycu.club
     labels:
       - "vector.enable=true"
       - "traefik.enable=true"
