@@ -50,7 +50,7 @@
   "navbar": {
     "logoutBtn": "Logout",
     "loginBtn": "Login",
-    "groupLink": "Groups",
+    "groupLink": "Projects",
     "settingLink": "Settings",
     "jobsLink": "Jobs",
     "resourceLink": "Resource",
@@ -251,13 +251,13 @@
       "toastFail": "An error occurred, failed to add members, please try again later"
     },
     "createGroup": {
-      "courseTitle": "Group Title",
-      "courseTitlePlaceholder": "Give your new group a title",
+      "courseTitle": "Project Title",
+      "courseTitlePlaceholder": "Give your new project a title",
       "ldapGroupNameTitle": "LDAP Group Name",
       "ldapGroupNamePlaceholder": "The group name in LDAP",
       "ldapGroupNameFormatError": "LDAP group name must start with a letter and end with a letter or number. It can only contain letters, numbers, and hyphens.",
       "descriptionTitle": "Description",
-      "courseDescriptionPlaceholder": "Say something about this group",
+      "courseDescriptionPlaceholder": "Say something about this project",
       "linkTitle": "Link Resources",
       "title": "title",
       "URL": "URL",
@@ -277,13 +277,13 @@
       "addMember": "Add",
       "create": "Create",
       "creatingToast": "Creating...",
-      "createSuccessToast": "Group created successfully",
-      "createValidationToast": "Group title/description/link format is invalid, please check your input",
+      "createSuccessToast": "Project created successfully",
+      "createValidationToast": "Project title/description/link format is invalid, please check your input",
       "createLDAPGroupNameConflictToast": "LDAP group name already exists",
-      "createFailToast": "An error occurred, failed to create group, please try again later"
+      "createFailToast": "An error occurred, failed to create project, please try again later"
     },
     "groupList": {
-      "newGroup": "+ New Group",
+      "newGroup": "+ New Project",
       "loadingFailed": "Loading failed",
       "noCourses": "You haven't joined any courses yet."
     },
@@ -497,6 +497,16 @@
       "administratorsOnly": "Administrators only",
       "groupsLoadFail": "Failed to load groups",
       "noGroups": "No groups found"
+    },
+    "servicesField": {
+      "title": "Choose the service you want to install",
+      "columnTitle": "Service",
+      "infoLabel": "About {{service}}",
+      "descriptions": {
+        "ldap": "Centralize user authentication.",
+        "slurm": "Cluster job scheduling and resource management.",
+        "nfs": "Shared file access between nodes."
+      }
     },
     "table": {
       "loading": "Loading resources...",
