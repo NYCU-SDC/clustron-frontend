@@ -92,6 +92,10 @@ describe("ProtectedRoute", () => {
   }
 
   it("renders Outlet when logged in and role is set", async () => {
+    // token exists and role is 'admin'
+    (getAccessToken as ReturnType<typeof vi.fn>).mockReturnValue("mock-token");
+    (jwtDecode as ReturnType<typeof vi.fn>).mockReturnValue({ Role: "admin" });
+
     // cookies indicate logged in
     renderWithProviders([
       { refreshToken: "mock-refresh" },
@@ -99,10 +103,6 @@ describe("ProtectedRoute", () => {
       vi.fn(),
       vi.fn(),
     ]);
-
-    // token exists and role is 'admin'
-    (getAccessToken as ReturnType<typeof vi.fn>).mockReturnValue("mock-token");
-    (jwtDecode as ReturnType<typeof vi.fn>).mockReturnValue({ Role: "admin" });
 
     await waitFor(() => {
       expect(screen.getByTestId("outlet")).toBeInTheDocument();
@@ -112,10 +112,10 @@ describe("ProtectedRoute", () => {
   });
 
   it("redirects to /login and shows toast when not logged in", async () => {
-    renderWithProviders([{}, vi.fn(), vi.fn(), vi.fn()]);
-
     // no token
     (getAccessToken as ReturnType<typeof vi.fn>).mockReturnValue(null);
+
+    renderWithProviders([{}, vi.fn(), vi.fn(), vi.fn()]);
 
     await waitFor(() => {
       expect(mockNavigate).toHaveBeenCalledWith("/login");
@@ -125,17 +125,17 @@ describe("ProtectedRoute", () => {
   });
 
   it("redirects to /onboarding and shows toast when role is not set up", async () => {
+    (getAccessToken as ReturnType<typeof vi.fn>).mockReturnValue("mock-token");
+    (jwtDecode as ReturnType<typeof vi.fn>).mockReturnValue({
+      Role: "role_not_setup",
+    });
+
     renderWithProviders([
       { refreshToken: "mock-refresh" },
       vi.fn(),
       vi.fn(),
       vi.fn(),
     ]);
-
-    (getAccessToken as ReturnType<typeof vi.fn>).mockReturnValue("mock-token");
-    (jwtDecode as ReturnType<typeof vi.fn>).mockReturnValue({
-      Role: "role_not_setup",
-    });
 
     await waitFor(() => {
       expect(mockNavigate).toHaveBeenCalledWith("/onboarding");
