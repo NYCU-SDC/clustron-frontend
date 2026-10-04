@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = useCallback((provider: "google" | "nycu") => {
     const callbackUrl = `${window.location.protocol}//${window.location.host}/callback/login`;
     const redirectUrl = `${window.location.protocol}//${window.location.host}/`;
-    const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+    const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL || ""; // fallback to empty string if not defined. prevents "undefined" to be in the URL
 
     const urlMap: Record<"google" | "nycu", string> = {
       google: `${baseUrl}/api/login/oauth/google?c=${callbackUrl}&r=${redirectUrl}`,

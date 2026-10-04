@@ -1,11 +1,10 @@
 import { getAccessToken } from "@/lib/token";
 import { ApiError } from "@/types/generic";
 
-const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
+// In container environments, backend URL is handled by Nginx. So keep VITE_BACKEND_BASE_URL empty in the app.
+// In local development, you still need to set VITE_BACKEND_BASE_URL to point to your backend.
 
-if (!BASE_URL) {
-  throw new Error("VITE_BACKEND_BASE_URL is not set");
-}
+const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL || "";
 
 export async function api<T>(
   path: string,
