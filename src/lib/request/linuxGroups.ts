@@ -30,7 +30,7 @@ export const linuxGroupQueryKeys = {
   list: (search?: string) => ["linuxGroups", "list", search ?? ""] as const,
   members: (name: string) => ["linuxGroups", name, "members"] as const,
   memberPage: (name: string, page: number) =>
-    ["linuxGroups", name, "members", page] as const,
+    [...linuxGroupQueryKeys.members(name), page] as const,
 };
 
 const MOCK_LATENCY_MS = 300;

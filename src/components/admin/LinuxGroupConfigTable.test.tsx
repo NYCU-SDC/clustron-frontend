@@ -267,6 +267,181 @@ describe("LinuxGroupConfigTable", () => {
     expect(userFields()[0]).toHaveValue("999");
   });
 
+  it("does not flag blank rows as duplicates", async () => {
+    renderTable();
+
+    await waitFor(() => expect(mockGetLinuxGroups).toHaveBeenCalled());
+
+    fireEvent.click(screen.getByLabelText("linuxGroupConfig.addRow"));
+    expect(userFields()).toHaveLength(2);
+    expect(
+      screen.queryByText("linuxGroupConfig.duplicateEntry"),
+    ).not.toBeInTheDocument();
+
+    typeUser(0, "313551002");
+    typeUser(1, "313551002");
+    expect(
+      screen.getByText("linuxGroupConfig.duplicateEntry"),
+    ).toBeInTheDocument();
+  });
+
+  it("finds a group beyond the first page through the search", async () => {
+    const user = userEvent.setup();
+    const zeta: LinuxGroup = { name: "zeta", gid: 2001, memberCount: 0 };
+    // The unfiltered first page stops short of "zeta"; only a search reaches it.
+    mockGetLinuxGroups.mockImplementation(
+      async ({ search }: { search?: string } = {}) =>
+        page(
+          search
+            ? [...groups, zeta].filter((g) => g.name.includes(search))
+            : groups,
+        ),
+    );
+    renderTable();
+
+    await waitFor(() => expect(mockGetLinuxGroups).toHaveBeenCalled());
+    await typeGroupName(user, "zeta");
+
+    expect(await screen.findByText("GID 2001")).toBeInTheDocument();
+    expect(mockGetLinuxGroups).toHaveBeenCalledWith(
+      expect.objectContaining({ search: "zeta" }),
+    );
+  });
+
+  describe("member pagination", () => {
+    function memberPage(
+      items: LinuxGroupMember[],
+      currentPage: number,
+      totalPages: number,
+    ) {
+      return { ...page(items), currentPage, totalPages };
+    }
+
+    function pagination() {
+      return screen.getByRole("navigation", { name: "pagination" });
+    }
+
+    it("shows a spinner, not the old group's members, after switching groups", async () => {
+      const user = userEvent.setup();
+      mockGetLinuxGroupMembers.mockImplementation(
+        ({ name }: { name: string }) =>
+          name === "docker"
+            ? Promise.resolve(page(dockerMembers))
+            : new Promise(() => {}),
+      );
+      renderTable();
+
+      await waitFor(() => expect(mockGetLinuxGroups).toHaveBeenCalled());
+
+      await user.click(within(await openGroupList(user)).getByText("docker"));
+      expect(await screen.findByText("Alice Chen")).toBeInTheDocument();
+
+      await user.click(within(await openGroupList(user)).getByText("sudo"));
+      await user.keyboard("{Escape}");
+
+      expect(await screen.findByText("GID 27")).toBeInTheDocument();
+      expect(
+        screen.getByText("linuxGroupConfig.loadingMembers"),
+      ).toBeInTheDocument();
+      expect(screen.queryByText("Alice Chen")).not.toBeInTheDocument();
+    });
+
+    it("keeps the current page on screen while the next one loads", async () => {
+      const user = userEvent.setup();
+      mockGetLinuxGroupMembers.mockImplementation(
+        ({ page: p }: { page: number }) =>
+          p === 0
+            ? Promise.resolve(memberPage(dockerMembers, 0, 2))
+            : new Promise(() => {}),
+      );
+      renderTable();
+
+      await waitFor(() => expect(mockGetLinuxGroups).toHaveBeenCalled());
+      await typeGroupName(user, "docker");
+
+      expect(await screen.findByText("Alice Chen")).toBeInTheDocument();
+      fireEvent.click(within(pagination()).getByText("2"));
+
+      await waitFor(() =>
+        expect(mockGetLinuxGroupMembers).toHaveBeenCalledWith(
+          expect.objectContaining({ page: 1 }),
+        ),
+      );
+      expect(screen.getByText("Alice Chen")).toBeInTheDocument();
+      expect(
+        screen.queryByText("linuxGroupConfig.loadingMembers"),
+      ).not.toBeInTheDocument();
+    });
+
+    it("stays available after a page fails to load", async () => {
+      const user = userEvent.setup();
+      mockGetLinuxGroupMembers.mockImplementation(
+        ({ page: p }: { page: number }) =>
+          p === 0
+            ? Promise.resolve(memberPage(dockerMembers, 0, 3))
+            : Promise.reject(new Error("boom")),
+      );
+      renderTable();
+
+      await waitFor(() => expect(mockGetLinuxGroups).toHaveBeenCalled());
+      await typeGroupName(user, "docker");
+
+      await screen.findByRole("navigation", { name: "pagination" });
+      fireEvent.click(within(pagination()).getByText("2"));
+
+      expect(
+        await screen.findByText("linuxGroupConfig.failedToLoadMembers"),
+      ).toBeInTheDocument();
+      // The failed page has no page count of its own; the last known one keeps
+      // the other pages reachable.
+      expect(within(pagination()).getByText("3")).toBeInTheDocument();
+    });
+
+    it("steps back after removing the only member on the last page", async () => {
+      const user = userEvent.setup();
+      const carol: LinuxGroupMember = {
+        id: "docker-carol",
+        userIdentifier: "313551002",
+        fullName: "Carol Wu",
+        linuxUsername: "carol",
+      };
+      let lastPage = [carol];
+      mockGetLinuxGroupMembers.mockImplementation(
+        async ({ page: p }: { page: number }) => {
+          const totalPages = lastPage.length > 0 ? 2 : 1;
+          return p === 0
+            ? memberPage(dockerMembers, 0, totalPages)
+            : memberPage(lastPage, p, totalPages);
+        },
+      );
+      mockRemoveLinuxGroupMember.mockImplementation(async () => {
+        lastPage = [];
+        return { message: "success" };
+      });
+      renderTable();
+
+      await waitFor(() => expect(mockGetLinuxGroups).toHaveBeenCalled());
+      await typeGroupName(user, "docker");
+
+      await screen.findByRole("navigation", { name: "pagination" });
+      fireEvent.click(within(pagination()).getByText("2"));
+      expect(await screen.findByText("Carol Wu")).toBeInTheDocument();
+
+      fireEvent.click(
+        screen.getByLabelText("linuxGroupConfig.removeFromGroup"),
+      );
+      fireEvent.click(
+        await screen.findByRole("button", { name: "common.remove" }),
+      );
+
+      // Back on the first page instead of stranded on an empty second one.
+      expect(await screen.findByText("Alice Chen")).toBeInTheDocument();
+      expect(
+        screen.queryByText("linuxGroupConfig.noMembers"),
+      ).not.toBeInTheDocument();
+    });
+  });
+
   describe("directory lookup feedback", () => {
     it("stays quiet until a search has actually run", async () => {
       renderTable();

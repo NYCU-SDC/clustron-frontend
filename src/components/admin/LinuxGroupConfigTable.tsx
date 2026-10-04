@@ -55,6 +55,7 @@ import {
 } from "@/types/linuxGroup";
 import { getErrMessage } from "@/lib/errors";
 import { cn } from "@/lib/utils";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 
 type UserRow = {
   rowId: string;
@@ -315,14 +316,33 @@ export default function LinuxGroupConfigTable() {
 
   const trimmedGroupName = groupName.trim();
 
-  const { data: groupsData } = useQuery({
+  const debouncedGroupName = useDebouncedValue(trimmedGroupName);
+
+  /**
+   * The unfiltered list only feeds the dropdown for browsing, so its first
+   * page is enough. Whether a typed name is a real group is answered by the
+   * server-side search below, which reaches groups beyond that page.
+   */
+  const { data: allGroupsData } = useQuery({
     queryKey: linuxGroupQueryKeys.list(),
     queryFn: () => getLinuxGroups({ size: 50 }),
+  });
+  const allGroups = useMemo(() => allGroupsData?.items ?? [], [allGroupsData]);
+
+  const { data: searchedGroupsData } = useQuery({
+    queryKey: linuxGroupQueryKeys.list(debouncedGroupName),
+    queryFn: () => getLinuxGroups({ search: debouncedGroupName, size: 50 }),
+    enabled: !!debouncedGroupName,
     placeholderData: (prev) => prev,
   });
-  const groups = useMemo(() => groupsData?.items ?? [], [groupsData]);
+  const searchedGroups = useMemo(
+    () => (debouncedGroupName ? searchedGroupsData?.items : undefined) ?? [],
+    [debouncedGroupName, searchedGroupsData],
+  );
 
-  const matchedGroup = groups.find((g) => g.name === trimmedGroupName);
+  const matchedGroup =
+    allGroups.find((g) => g.name === trimmedGroupName) ??
+    searchedGroups.find((g) => g.name === trimmedGroupName);
 
   /**
    * Options for the group field. Once the input holds a group name exactly,
@@ -334,10 +354,25 @@ export default function LinuxGroupConfigTable() {
    */
   const groupOptions = useMemo(() => {
     const keyword = trimmedGroupName.toLowerCase();
-    if (!keyword || matchedGroup) return groups;
+    if (!keyword) return allGroups;
+    if (matchedGroup) {
+      return allGroups.some((g) => g.name === matchedGroup.name)
+        ? allGroups
+        : [matchedGroup, ...allGroups];
+    }
 
-    return groups.filter((g) => g.name.toLowerCase().includes(keyword));
-  }, [groups, matchedGroup, trimmedGroupName]);
+    // Filtering locally as well keeps the options in step with the input
+    // while the debounced search has not caught up yet.
+    const source = debouncedGroupName ? searchedGroups : allGroups;
+    return source.filter((g) => g.name.toLowerCase().includes(keyword));
+  }, [
+    allGroups,
+    searchedGroups,
+    debouncedGroupName,
+    matchedGroup,
+    trimmedGroupName,
+  ]);
+
   const isGroupNameValid =
     !trimmedGroupName || isValidLinuxGroupName(trimmedGroupName);
 
@@ -345,16 +380,57 @@ export default function LinuxGroupConfigTable() {
     data: membersData,
     isLoading: isLoadingMembers,
     isError: isMembersError,
+    isPlaceholderData: isMembersPlaceholder,
   } = useQuery({
     queryKey: linuxGroupQueryKeys.memberPage(trimmedGroupName, memberPage),
     queryFn: () =>
       getLinuxGroupMembers({ name: trimmedGroupName, page: memberPage }),
     enabled: !!matchedGroup,
-    placeholderData: (prev) => prev,
+    // Keep the previous page on screen only while paging within the same
+    // group; another group's members would sit under the new group's header
+    // and could be removed from the wrong group. Index 1 is the group name in
+    // `linuxGroupQueryKeys.memberPage`.
+    placeholderData: (prev, prevQuery) =>
+      prevQuery?.queryKey[1] === trimmedGroupName ? prev : undefined,
   });
 
   const members = membersData?.items ?? [];
-  const totalMemberPages = membersData?.totalPages ?? 1;
+
+  /**
+   * The page count of the last page that actually loaded for this group. A
+   * failed page has no data, so without this the count would fall back to 1
+   * and the pagination would hide itself -- exactly when switching pages is
+   * the admin's way out. Placeholder data is skipped because it may belong to
+   * the previously selected group.
+   */
+  const [lastMemberPages, setLastMemberPages] = useState({
+    group: "",
+    total: 1,
+  });
+  const loadedMemberPages = isMembersPlaceholder
+    ? undefined
+    : membersData?.totalPages;
+
+  if (
+    loadedMemberPages !== undefined &&
+    (lastMemberPages.group !== trimmedGroupName ||
+      lastMemberPages.total !== loadedMemberPages)
+  ) {
+    setLastMemberPages({ group: trimmedGroupName, total: loadedMemberPages });
+  }
+
+  const totalMemberPages =
+    membersData?.totalPages ??
+    (lastMemberPages.group === trimmedGroupName ? lastMemberPages.total : 1);
+
+  // Removing the only member on the last page leaves the current page past
+  // the end; step back to the new last page instead of showing an empty one.
+  if (
+    loadedMemberPages !== undefined &&
+    memberPage > Math.max(loadedMemberPages - 1, 0)
+  ) {
+    setMemberPage(Math.max(loadedMemberPages - 1, 0));
+  }
 
   /**
    * Keeps only the rows the backend rejected and pins each error onto its row,
@@ -485,7 +561,8 @@ export default function LinuxGroupConfigTable() {
 
   const hasEmptyId = rows.some((r) => !r.id.trim());
   const hasDuplicate = rows.some(
-    (r, i) => rows.findIndex((o) => o.id.trim() === r.id.trim()) !== i,
+    (r, i) =>
+      !!r.id.trim() && rows.findIndex((o) => o.id.trim() === r.id.trim()) !== i,
   );
 
   const canSave =
@@ -675,15 +752,11 @@ export default function LinuxGroupConfigTable() {
               />
             </div>
 
-            {!isLoadingMembers && !isMembersError && members.length > 0 && (
-              <div className="mt-6 flex justify-center">
-                <PaginationControls
-                  currentPage={memberPage}
-                  totalPages={totalMemberPages}
-                  setCurrentPage={setMemberPage}
-                />
-              </div>
-            )}
+            <PaginationControls
+              currentPage={memberPage}
+              totalPages={totalMemberPages}
+              setCurrentPage={setMemberPage}
+            />
           </CardContent>
         </Card>
       )}
