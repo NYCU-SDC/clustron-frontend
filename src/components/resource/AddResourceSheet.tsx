@@ -29,6 +29,7 @@ const emptyResourceFormData: ResourceFormData = {
   slurm_partition: "",
   cpu_cores: "",
   memory_mb: "",
+  services: ["ldap"],
 };
 
 export default function AddResourceSheet() {
