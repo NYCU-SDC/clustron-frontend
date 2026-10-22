@@ -37,6 +37,10 @@ export default function AdminLayout() {
       to: "/admin/config",
       label: t("adminSidebar.roleAccessConfigLink"),
     },
+    {
+      to: "/admin/linux-groups",
+      label: t("adminSidebar.linuxGroupConfigLink"),
+    },
   ];
   if (role !== "admin") return null;
 
