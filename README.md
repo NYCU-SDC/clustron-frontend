@@ -63,7 +63,7 @@ Set `BACKEND_URL` variable to point to the Clustron backend.
 
 ## Prerequisites
 
-- Node.js 24.22.1 or higher (24 LTS)
+- Node.js 24 LTS, 24.22.1 or later
 - npm (comes with Node.js)
 
 ## Installation
