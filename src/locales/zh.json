@@ -7,7 +7,8 @@
     "loading": "載入中...",
     "saving": "儲存中...",
     "updating": "更新中...",
-    "removing": "移除中..."
+    "removing": "移除中...",
+    "deleting": "刪除中..."
   },
   "onboardingForm": {
     "cardTitleForName": "輸入您的基本資料",
@@ -197,7 +198,7 @@
     "membersCardDescription": "目前在此群組中的使用者。",
     "addUserLabel": "新增使用者",
     "userPlaceholder": "以學號、姓名或電子郵件搜尋",
-    "noUserMatch": "目錄中沒有相符的使用者。",
+    "noUserMatch": "找不到使用者。",
     "userSearchFailed": "無法搜尋使用者，請再試一次。",
     "addToGroup": "加入群組",
     "addUserHint": "搜尋使用者並從清單中選取。",
@@ -215,7 +216,37 @@
     "toastNoLdapAccount": "此使用者尚無 LDAP 帳號，無法加入。",
     "toastAddFail": "無法將使用者加入群組",
     "toastRemoveSuccess": "已將使用者移出群組",
-    "toastRemoveFail": "無法將使用者移出群組"
+    "toastRemoveFail": "無法將使用者移出群組",
+    "registerGroup": "註冊群組",
+    "deleteGroup": "刪除群組",
+    "deleteGroupConfirmTitle": "要刪除系統群組嗎？",
+    "deleteGroupConfirmDescription": "「{{group}}」群組及其 LDAP 群組將被刪除。成員將在下次登入時失去其 gid。此操作無法復原。",
+    "toastDeleteGroupSuccess": "已刪除「{{group}}」",
+    "toastDeleteGroupFail": "無法刪除群組",
+    "register": {
+      "title": "註冊系統群組",
+      "description": "從運算節點上探索到的本機群組中選擇一個。Clustron 會建立對應的 LDAP 群組，讓成員在登入時取得該群組的 gid。",
+      "candidatesLabel": "探索到的群組",
+      "rediscover": "重新探索",
+      "discovering": "正在運算節點上探索…清單將自動更新。",
+      "loading": "載入候選群組中...",
+      "loadFailed": "無法載入候選群組。",
+      "empty": "未探索到任何群組，請嘗試重新探索。",
+      "descriptionLabel": "描述（選填）",
+      "descriptionPlaceholder": "此群組授予的存取權限說明",
+      "submit": "註冊",
+      "badgeRegistered": "已註冊",
+      "badgeConflict": "GID 已被 {{server}} 上的「{{name}}」使用",
+      "inconsistentGid": "各運算節點的 GID 不一致",
+      "missingServers": "有 {{count}} 個節點缺少此群組",
+      "toastDiscoverStarted": "已開始探索。重新讀取運算節點後，候選群組將會更新。",
+      "toastDiscoverFail": "無法開始探索",
+      "toastRegisterSuccess": "已註冊「{{group}}」",
+      "toastRegisterFail": "無法註冊群組",
+      "toastDenylisted": "此群組在拒絕清單中，或其 gid 超出允許範圍。",
+      "toastNotDiscovered": "在任何使用中的運算節點上都找不到此群組。",
+      "toastConflict": "此群組的名稱或 gid 已被註冊，或已被其他群組使用。"
+    }
   },
   "groupComponents": {
     "addMemberButton": {

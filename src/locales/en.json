@@ -7,7 +7,8 @@
     "loading": "Loading...",
     "saving": "Saving...",
     "updating": "Updating...",
-    "removing": "Removing..."
+    "removing": "Removing...",
+    "deleting": "Deleting..."
   },
   "onboardingForm": {
     "cardTitleForName": "Enter Your Basic Information",
@@ -197,7 +198,7 @@
     "membersCardDescription": "Users currently in this group.",
     "addUserLabel": "Add a user",
     "userPlaceholder": "Search by student ID, name or email",
-    "noUserMatch": "No match in the directory.",
+    "noUserMatch": "No user found.",
     "userSearchFailed": "Could not search users. Please try again.",
     "addToGroup": "Add to group",
     "addUserHint": "Search for a user and select them from the list.",
@@ -215,7 +216,37 @@
     "toastNoLdapAccount": "This user does not have an LDAP account yet and cannot be added.",
     "toastAddFail": "Failed to add the user to the group",
     "toastRemoveSuccess": "User removed from group",
-    "toastRemoveFail": "Failed to remove user from group"
+    "toastRemoveFail": "Failed to remove user from group",
+    "registerGroup": "Register group",
+    "deleteGroup": "Delete group",
+    "deleteGroupConfirmTitle": "Delete system group?",
+    "deleteGroupConfirmDescription": "The \"{{group}}\" group and its LDAP group will be deleted. Members lose its gid on their next login. This cannot be undone.",
+    "toastDeleteGroupSuccess": "Deleted \"{{group}}\"",
+    "toastDeleteGroupFail": "Failed to delete the group",
+    "register": {
+      "title": "Register a system group",
+      "description": "Pick a local group discovered on the compute nodes. Clustron creates a matching LDAP group so its members receive the group's gid on login.",
+      "candidatesLabel": "Discovered groups",
+      "rediscover": "Rediscover",
+      "discovering": "Discovering on the compute nodes… the list updates automatically.",
+      "loading": "Loading candidates...",
+      "loadFailed": "Failed to load candidates.",
+      "empty": "No groups were discovered. Try rediscovering.",
+      "descriptionLabel": "Description (optional)",
+      "descriptionPlaceholder": "What this group grants access to",
+      "submit": "Register",
+      "badgeRegistered": "Already registered",
+      "badgeConflict": "GID used by \"{{name}}\" on {{server}}",
+      "inconsistentGid": "GID differs across compute nodes",
+      "missingServers": "Missing on {{count}} node(s)",
+      "toastDiscoverStarted": "Discovery started. Candidates refresh once the compute nodes are re-read.",
+      "toastDiscoverFail": "Failed to start discovery",
+      "toastRegisterSuccess": "Registered \"{{group}}\"",
+      "toastRegisterFail": "Failed to register the group",
+      "toastDenylisted": "This group is denylisted, or its gid is outside the allowed range.",
+      "toastNotDiscovered": "This group was not found on any active compute node.",
+      "toastConflict": "This group's name or gid is already registered or used by another group."
+    }
   },
   "groupComponents": {
     "addMemberButton": {

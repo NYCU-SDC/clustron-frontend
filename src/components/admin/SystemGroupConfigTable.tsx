@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 import { toast } from "sonner";
-import { Loader2, Trash2 } from "lucide-react";
+import { Loader2, Plus, Trash2 } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -46,15 +46,17 @@ import {
 } from "@/components/ui/data-table";
 import {
   addSystemGroupMember,
+  deleteSystemGroup,
   getSystemGroupMembers,
   getSystemGroups,
   removeSystemGroupMember,
   systemGroupQueryKeys,
 } from "@/lib/request/systemGroups";
-import { searchUser, type User } from "@/lib/request/searchUser";
-import type { SystemGroupMember } from "@/types/systemGroup";
+import { getUsers } from "@/lib/request/getUsers";
+import type { User } from "@/types/admin";
+import type { SystemGroup, SystemGroupMember } from "@/types/systemGroup";
+import RegisterSystemGroupDialog from "@/components/admin/RegisterSystemGroupDialog";
 import { getErrMessage } from "@/lib/errors";
-import { cn } from "@/lib/utils";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 
 const memberHelper = createDataTableColumnHelper<SystemGroupMember>();
@@ -118,6 +120,9 @@ export default function SystemGroupConfigTable() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [pendingRemoval, setPendingRemoval] =
     useState<SystemGroupMember | null>(null);
+  const [isRegisterOpen, setRegisterOpen] = useState(false);
+  const [pendingGroupDeletion, setPendingGroupDeletion] =
+    useState<SystemGroup | null>(null);
 
   const {
     data: groups = [],
@@ -146,8 +151,8 @@ export default function SystemGroupConfigTable() {
     isLoading: isSearchingUsers,
     isError: isUserSearchError,
   } = useQuery({
-    queryKey: ["searchUser", debouncedUserQuery],
-    queryFn: () => searchUser(debouncedUserQuery),
+    queryKey: ["users", "search", debouncedUserQuery],
+    queryFn: () => getUsers({ search: debouncedUserQuery, size: 10 }),
     enabled: !!debouncedUserQuery,
     placeholderData: (prev) => prev,
   });
@@ -167,7 +172,7 @@ export default function SystemGroupConfigTable() {
     onSuccess: (_data, user, ctx) => {
       toast.success(
         t("systemGroupConfig.toastAddSuccess", {
-          user: user.name || user.identifier,
+          user: user.email,
           group: selectedGroup?.name ?? "",
         }),
         { id: ctx },
@@ -216,10 +221,42 @@ export default function SystemGroupConfigTable() {
     },
   });
 
+  const deleteGroup = useMutation({
+    mutationFn: (group: SystemGroup) => deleteSystemGroup(group.id),
+    onMutate: (group) => {
+      const toastId = `delete-system-group-${group.id}`;
+      toast.loading(t("common.deleting"), { id: toastId });
+      return toastId;
+    },
+    onSuccess: (_data, group, ctx) => {
+      toast.success(
+        t("systemGroupConfig.toastDeleteGroupSuccess", { group: group.name }),
+        { id: ctx },
+      );
+      if (group.id === selectedGroupId) setSelectedGroupId("");
+      queryClient.invalidateQueries({ queryKey: systemGroupQueryKeys.list() });
+      queryClient.invalidateQueries({
+        queryKey: systemGroupQueryKeys.candidates(),
+      });
+    },
+    onError: (err, _group, ctx) => {
+      toast.error(
+        getErrMessage(err, t("systemGroupConfig.toastDeleteGroupFail")),
+        { id: ctx },
+      );
+    },
+  });
+
   const handleConfirmRemove = () => {
     if (!pendingRemoval) return;
     removeMember.mutate(pendingRemoval);
     setPendingRemoval(null);
+  };
+
+  const handleConfirmDeleteGroup = () => {
+    if (!pendingGroupDeletion) return;
+    deleteGroup.mutate(pendingGroupDeletion);
+    setPendingGroupDeletion(null);
   };
 
   const memberColumns = useMemo(
@@ -243,11 +280,21 @@ export default function SystemGroupConfigTable() {
   return (
     <div className="flex flex-col gap-6">
       <Card className="py-4 sm:py-6">
-        <CardHeader className="px-4 sm:px-6">
-          <CardTitle>{t("systemGroupConfig.selectCardTitle")}</CardTitle>
-          <CardDescription>
-            {t("systemGroupConfig.selectCardDescription")}
-          </CardDescription>
+        <CardHeader className="flex flex-col gap-2 px-4 sm:flex-row sm:items-start sm:justify-between sm:px-6">
+          <div className="flex flex-col gap-1.5">
+            <CardTitle>{t("systemGroupConfig.selectCardTitle")}</CardTitle>
+            <CardDescription>
+              {t("systemGroupConfig.selectCardDescription")}
+            </CardDescription>
+          </div>
+          <Button
+            variant="outline"
+            className="shrink-0"
+            onClick={() => setRegisterOpen(true)}
+          >
+            <Plus className="h-4 w-4" />
+            {t("systemGroupConfig.registerGroup")}
+          </Button>
         </CardHeader>
         <CardContent className="flex flex-col gap-2 px-4 sm:px-6">
           <Label htmlFor="system-group-select">
@@ -294,15 +341,25 @@ export default function SystemGroupConfigTable() {
 
       {selectedGroup && (
         <Card className="py-4 sm:py-6">
-          <CardHeader className="px-4 sm:px-6">
-            <CardTitle className="flex flex-wrap items-center gap-2">
-              <span className="font-mono">{selectedGroup.name}</span>
-              <Badge variant="secondary">GID {selectedGroup.gidNumber}</Badge>
-            </CardTitle>
-            <CardDescription>
-              {selectedGroup.description ||
-                t("systemGroupConfig.membersCardDescription")}
-            </CardDescription>
+          <CardHeader className="flex flex-col gap-2 px-4 sm:flex-row sm:items-start sm:justify-between sm:px-6">
+            <div className="flex flex-col gap-1.5">
+              <CardTitle className="flex flex-wrap items-center gap-2">
+                <span className="font-mono">{selectedGroup.name}</span>
+                <Badge variant="secondary">GID {selectedGroup.gidNumber}</Badge>
+              </CardTitle>
+              <CardDescription>
+                {selectedGroup.description ||
+                  t("systemGroupConfig.membersCardDescription")}
+              </CardDescription>
+            </div>
+            <Button
+              variant="outline"
+              className="shrink-0 text-red-600 hover:text-red-700"
+              onClick={() => setPendingGroupDeletion(selectedGroup)}
+            >
+              <Trash2 className="h-4 w-4" />
+              {t("systemGroupConfig.deleteGroup")}
+            </Button>
           </CardHeader>
           <CardContent className="flex flex-col gap-6 px-4 sm:px-6">
             <div className="flex flex-col gap-2">
@@ -333,15 +390,15 @@ export default function SystemGroupConfigTable() {
                           {(user: User) => (
                             <ComboboxItem
                               key={user.id}
-                              value={user.identifier}
+                              value={user.studentId}
                               onClick={() => {
                                 setSelectedUser(user);
-                                setUserQuery(user.identifier);
+                                setUserQuery(user.studentId);
                               }}
                             >
-                              <span>{user.identifier}</span>
-                              <span className="text-muted-foreground text-xs">
-                                {user.name}
+                              <span>{user.studentId}</span>
+                              <span className="text-muted-foreground">
+                                {user.email}
                               </span>
                             </ComboboxItem>
                           )}
@@ -365,18 +422,6 @@ export default function SystemGroupConfigTable() {
                   {t("systemGroupConfig.addToGroup")}
                 </Button>
               </div>
-              <p
-                className={cn(
-                  "text-muted-foreground text-xs",
-                  !selectedUser && userQuery && "text-amber-600",
-                )}
-              >
-                {selectedUser
-                  ? t("systemGroupConfig.selectedUser", {
-                      user: selectedUser.name || selectedUser.identifier,
-                    })
-                  : t("systemGroupConfig.addUserHint")}
-              </p>
             </div>
 
             <div className="overflow-x-auto">
@@ -423,6 +468,38 @@ export default function SystemGroupConfigTable() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <AlertDialog
+        open={!!pendingGroupDeletion}
+        onOpenChange={(open) => !open && setPendingGroupDeletion(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {t("systemGroupConfig.deleteGroupConfirmTitle")}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {t("systemGroupConfig.deleteGroupConfirmDescription", {
+                group: pendingGroupDeletion?.name ?? "",
+              })}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-red-600 hover:bg-red-700"
+              onClick={handleConfirmDeleteGroup}
+            >
+              {t("common.delete")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <RegisterSystemGroupDialog
+        open={isRegisterOpen}
+        onOpenChange={setRegisterOpen}
+      />
     </div>
   );
 }
