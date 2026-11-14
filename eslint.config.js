@@ -7,6 +7,23 @@ import css from "@eslint/css";
 import eslintConfigPrettier from "eslint-config-prettier/flat";
 import { defineConfig } from "eslint/config";
 import reactHooks from "eslint-plugin-react-hooks";
+import jsxA11y from "eslint-plugin-jsx-a11y";
+import pluginQuery from "@tanstack/eslint-plugin-query";
+
+// Downgrade a recommended ruleset's *active* rules to "warn" (incremental
+// rollout) while preserving each rule's options and keeping disabled rules off.
+/** @param {import("eslint").Linter.RulesRecord} rules */
+const asWarnings = (rules) =>
+  Object.fromEntries(
+    Object.entries(rules).map(([name, value]) => {
+      const severity = Array.isArray(value) ? value[0] : value;
+      if (severity === "off" || severity === 0) return [name, value];
+      return [
+        name,
+        Array.isArray(value) ? ["warn", ...value.slice(1)] : "warn",
+      ];
+    }),
+  );
 
 export default defineConfig([
   {
@@ -15,6 +32,7 @@ export default defineConfig([
       "**/package-lock.json",
       "dist",
       "src/components/ui/*",
+      "coverage",
     ],
   },
   {
@@ -54,6 +72,17 @@ export default defineConfig([
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
     },
+  },
+  // TanStack Query and jsx-a11y are reported as warnings for now (incremental
+  // rollout): surface the issues without failing lint/CI. Flip to the plugins'
+  // recommended error severities once the existing findings are cleared.
+  ...pluginQuery.configs["flat/recommended"].map((config) =>
+    config.rules ? { ...config, rules: asWarnings(config.rules) } : config,
+  ),
+  {
+    files: ["**/*.{jsx,tsx}"],
+    ...jsxA11y.flatConfigs.recommended,
+    rules: asWarnings(jsxA11y.flatConfigs.recommended.rules),
   },
   eslintConfigPrettier,
 ]);
