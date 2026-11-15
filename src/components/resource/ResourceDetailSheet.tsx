@@ -179,10 +179,7 @@ export default function ResourceDetailSheet({
   const { mutate: deleteServer, isPending: isDeleting } = useMutation({
     mutationFn: () => deleteServerRequest(server.id),
     onMutate: () => {
-      toast.loading(
-        t("resourceComponents.deleteServer.deletingToast", "Deleting..."),
-        { id: deleteToastId },
-      );
+      toast.loading(t("common.deleting"), { id: deleteToastId });
     },
     onSuccess: () => {
       toast.success(

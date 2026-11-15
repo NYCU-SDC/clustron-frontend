@@ -600,7 +600,6 @@
       "setupFailToast": "設定所有節點失敗"
     },
     "deleteServer": {
-      "deletingToast": "刪除中...",
       "deleteSuccessToast": "節點已刪除",
       "deleteFailToast": "刪除節點失敗"
     },
