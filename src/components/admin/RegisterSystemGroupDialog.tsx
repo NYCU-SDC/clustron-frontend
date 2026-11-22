@@ -71,9 +71,9 @@ export default function RegisterSystemGroupDialog({
 
   const [selectedName, setSelectedName] = useState<string | null>(null);
   const [description, setDescription] = useState("");
-  // Timestamp until which we keep polling for freshly discovered candidates,
-  // and the list fingerprint captured when discovery was triggered.
-  const [pollUntil, setPollUntil] = useState(0);
+  // Whether we're currently polling for freshly discovered candidates, plus the
+  // list fingerprint captured when discovery was triggered.
+  const [isDiscovering, setIsDiscovering] = useState(false);
   const preDiscoverSignature = useRef<string | null>(null);
 
   // Reset the form whenever the dialog is opened.
@@ -81,12 +81,20 @@ export default function RegisterSystemGroupDialog({
     if (open) {
       setSelectedName(null);
       setDescription("");
-      setPollUntil(0);
+      setIsDiscovering(false);
       preDiscoverSignature.current = null;
     }
   }, [open]);
 
-  const isDiscovering = pollUntil > Date.now();
+  // Stop discovery after the poll window
+  useEffect(() => {
+    if (!isDiscovering) return;
+    const timer = setTimeout(() => {
+      setIsDiscovering(false);
+      preDiscoverSignature.current = null;
+    }, DISCOVER_POLL_WINDOW_MS);
+    return () => clearTimeout(timer);
+  }, [isDiscovering]);
 
   const {
     data: candidates = [],
@@ -104,7 +112,7 @@ export default function RegisterSystemGroupDialog({
   useEffect(() => {
     if (!isDiscovering || preDiscoverSignature.current === null) return;
     if (candidatesSignature(candidates) !== preDiscoverSignature.current) {
-      setPollUntil(0);
+      setIsDiscovering(false);
       preDiscoverSignature.current = null;
     }
   }, [candidates, isDiscovering]);
@@ -123,7 +131,7 @@ export default function RegisterSystemGroupDialog({
       // Poll for a window while the background run re-reads the compute nodes,
       // stopping early once the list changes from this snapshot.
       preDiscoverSignature.current = candidatesSignature(candidates);
-      setPollUntil(Date.now() + DISCOVER_POLL_WINDOW_MS);
+      setIsDiscovering(true);
       queryClient.invalidateQueries({
         queryKey: systemGroupQueryKeys.candidates(),
       });
