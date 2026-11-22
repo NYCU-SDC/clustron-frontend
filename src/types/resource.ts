@@ -21,6 +21,7 @@ export type Server = {
   provision_detail?: string;
   cpu_cores?: number;
   memory_mb?: number;
+  host_key?: string;
 };
 
 export type GroupType = "ADMIN" | "BASE";
@@ -51,6 +52,33 @@ export type CreateResourceRequest = {
   slurm_partition?: string;
   cpu_cores?: number;
   memory_mb?: number;
+  host_key?: string;
+};
+
+// trust state of a scanned SSH host key
+export type HostKeyStatus = "new" | "changed" | "ok" | "skipped";
+
+// body of POST /api/servers/health-check
+export type HealthCheckRequest = {
+  ansible_name: string;
+  ip_address?: string;
+  ssh_config_host?: string;
+  ssh_user?: string;
+  ssh_key_name?: string;
+  trusted_host_key?: string;
+};
+
+// response of POST /api/servers/health-check
+export type HealthCheckResponse = {
+  ok: boolean;
+  stage: string;
+  reachable: boolean;
+  host_key?: string;
+  fingerprint?: string;
+  host_key_status: HostKeyStatus;
+  login_ok: boolean;
+  ansible_ping_ok: boolean;
+  detail?: string;
 };
 
 // body of PATCH /api/servers/{server_id}/role

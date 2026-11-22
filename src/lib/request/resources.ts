@@ -2,6 +2,8 @@ import { api } from "@/lib/request/api";
 import type {
   AllowedLoginGroup,
   CreateResourceRequest,
+  HealthCheckRequest,
+  HealthCheckResponse,
   Server,
   UpdateAllowedLoginGroupsRequest,
   UpdateServerRoleRequest,
@@ -29,6 +31,16 @@ export async function createServer(
   payload: CreateResourceRequest,
 ): Promise<Server> {
   return api("/api/servers", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+// POST /api/servers/healthCheck
+export async function healthCheckServer(
+  payload: HealthCheckRequest,
+): Promise<HealthCheckResponse> {
+  return api("/api/servers/healthCheck", {
     method: "POST",
     body: JSON.stringify(payload),
   });
