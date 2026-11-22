@@ -558,7 +558,25 @@
     "addResourceSheet": {
       "trigger": "Add resource",
       "title": "New compute resource",
-      "submit": "Add node"
+      "submit": "Add node",
+      "healthCheck": "Health check",
+      "deploy": "Deploy"
+    },
+    "healthCheck": {
+      "checkingToast": "Checking connection...",
+      "passToast": "Connection check passed",
+      "failToast": "Connection check failed",
+      "resultTitle": "Connection health",
+      "stageReachable": "Reachable",
+      "stageHostKey": "Host key",
+      "stageLogin": "SSH login",
+      "stageAnsiblePing": "Ansible ping",
+      "trustTitleNew": "Trust this host?",
+      "trustTitleChanged": "Host key changed",
+      "trustDescriptionNew": "Clustron has not connected to this host before. Confirm the fingerprint below matches the server before trusting it.",
+      "trustDescriptionChanged": "This host is presenting a different key than before. This can mean it was reinstalled — or that the connection is being intercepted. Only trust it if you expected this change.",
+      "fingerprintLabel": "SSH host key fingerprint",
+      "trustConfirm": "Trust and continue"
     },
     "detailSheet": {
       "refetch": "Refresh",
