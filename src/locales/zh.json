@@ -50,7 +50,7 @@
   "navbar": {
     "loginBtn": "登入",
     "logoutBtn": "登出",
-    "groupLink": "專案",
+    "groupLink": "計劃",
     "settingLink": "設定",
     "jobsLink": "排程",
     "resourceLink": "資源",
