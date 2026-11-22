@@ -167,23 +167,26 @@ export default function SystemGroupConfigTable() {
     onMutate: () => {
       const toastId = "add-system-group-member";
       toast.loading(t("common.updating"), { id: toastId });
-      return toastId;
+      return [toastId, selectedGroup] as const;
     },
     onSuccess: (_data, user, ctx) => {
+      const [toastId, group] = ctx;
       toast.success(
         t("systemGroupConfig.toastAddSuccess", {
           user: user.email,
-          group: selectedGroup?.name ?? "",
+          group: group?.name ?? "",
         }),
-        { id: ctx },
+        { id: toastId },
       );
       setSelectedUser(null);
       setUserQuery("");
+      if (!group) return;
       queryClient.invalidateQueries({
-        queryKey: systemGroupQueryKeys.members(selectedGroupId),
+        queryKey: systemGroupQueryKeys.members(group.id),
       });
     },
     onError: (err, _user, ctx) => {
+      const [toastId] = ctx ?? [];
       const status = err instanceof Error ? err.name : "";
       let message: string;
       if (status === "409") {
@@ -193,7 +196,7 @@ export default function SystemGroupConfigTable() {
       } else {
         message = getErrMessage(err, t("systemGroupConfig.toastAddFail"));
       }
-      toast.error(message, { id: ctx });
+      toast.error(message, { id: toastId });
     },
   });
 
@@ -206,17 +209,20 @@ export default function SystemGroupConfigTable() {
     onMutate: (member) => {
       const toastId = `remove-system-group-member-${member.userId}`;
       toast.loading(t("common.removing"), { id: toastId });
-      return toastId;
+      return [toastId, selectedGroup] as const;
     },
     onSuccess: (_data, _member, ctx) => {
-      toast.success(t("systemGroupConfig.toastRemoveSuccess"), { id: ctx });
+      const [toastId, group] = ctx;
+      toast.success(t("systemGroupConfig.toastRemoveSuccess"), { id: toastId });
+      if (!group) return;
       queryClient.invalidateQueries({
-        queryKey: systemGroupQueryKeys.members(selectedGroupId),
+        queryKey: systemGroupQueryKeys.members(group?.id),
       });
     },
     onError: (err, _member, ctx) => {
+      const [toastId] = ctx ?? [];
       toast.error(getErrMessage(err, t("systemGroupConfig.toastRemoveFail")), {
-        id: ctx,
+        id: toastId,
       });
     },
   });
