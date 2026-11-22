@@ -38,8 +38,8 @@ export default function AdminLayout() {
       label: t("adminSidebar.roleAccessConfigLink"),
     },
     {
-      to: "/admin/linux-groups",
-      label: t("adminSidebar.linuxGroupConfigLink"),
+      to: "/admin/system-groups",
+      label: t("adminSidebar.systemGroupConfigLink"),
     },
   ];
   if (role !== "admin") return null;

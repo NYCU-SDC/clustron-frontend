@@ -46,8 +46,8 @@ export async function api<T>(
     throw err;
   }
 
-  // 204 means no content, so it will cause error when return res.json()
-  if (res.status === 204) {
+  // 204 (No Content) and 202 (Accepted) carry no body, so res.json() would throw.
+  if (res.status === 204 || res.status === 202) {
     return { message: "success" } as T;
   }
 
